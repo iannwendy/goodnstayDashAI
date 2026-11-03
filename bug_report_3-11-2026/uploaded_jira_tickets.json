@@ -1,0 +1,192 @@
+{
+  "board_name": "Internship Program 2026",
+  "board_id": 135,
+  "board_url": "https://optibide-org.atlassian.net/jira/software/c/projects/OP/boards/135/backlog",
+  "total_uploaded": 9,
+  "tickets": [
+    {
+      "bug_id": "BUG-01",
+      "issue_key": "OP-1663",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1663",
+      "title": "[Global Home - Mobile Drawer] Hamburger Drawer Covers 100vw×100dvh Without Close Button or Backdrop Area, Trapping Mobile Users & Crushing Partner CTA Height",
+      "severity": "S1 – Critical (Blocker trên Mobile)",
+      "priority_label": "P0",
+      "expected_attachments": 1,
+      "uploaded_attachments": 1,
+      "inline_embedded_count": 1,
+      "attachment_names": [
+        "bug01_mobile_drawer_trap_390x844.png"
+      ],
+      "warnings": [],
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 1,
+      "verified_priority": "Highest",
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": []
+    },
+    {
+      "bug_id": "BUG-02",
+      "issue_key": "OP-1664",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1664",
+      "title": "[Global Home - Currency & Language Selector] Dropdown Clipped Off-Screen in Mobile Drawer (470px Overflow / 118px Crushed Height) & Require Double-Click Due to State Desync",
+      "severity": "S2 – Major",
+      "priority_label": "P1",
+      "expected_attachments": 2,
+      "uploaded_attachments": 2,
+      "inline_embedded_count": 2,
+      "attachment_names": [
+        "bug02a_drawer_currency_overflow_390x844.png",
+        "bug02b_drawer_language_offscreen_375x667.png"
+      ],
+      "warnings": [],
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 2,
+      "verified_priority": "High",
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": []
+    },
+    {
+      "bug_id": "BUG-03",
+      "issue_key": "OP-1665",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1665",
+      "title": "[Global Home - Header & Drawer Links] \"Đăng ký làm Đối Tác\" Points to Staging URL (partners.stag.goodnstay.com/en-US) & Support/About Links Hardcode en-US on /vi-VN/home",
+      "severity": "S2 – Major",
+      "priority_label": "P1",
+      "expected_attachments": 1,
+      "uploaded_attachments": 1,
+      "inline_embedded_count": 1,
+      "attachment_names": [
+        "bug03_staging_url_and_locale_mismatch_1440x900.png"
+      ],
+      "warnings": [],
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 1,
+      "verified_priority": "High",
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": []
+    },
+    {
+      "bug_id": "BUG-04",
+      "issue_key": "OP-1666",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1666",
+      "title": "[Global Home - Guest Drawer] Clicking \"Lịch sử\" (History) as Guest Silently Closes Drawer with Zero Feedback or Redirect",
+      "severity": "S2 – Major",
+      "priority_label": "P2",
+      "expected_attachments": 1,
+      "uploaded_attachments": 1,
+      "inline_embedded_count": 1,
+      "attachment_names": [
+        "bug04_guest_history_silent_noop_1440x900.png"
+      ],
+      "warnings": [],
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 1,
+      "verified_priority": "Medium",
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": []
+    },
+    {
+      "bug_id": "BUG-05",
+      "issue_key": "OP-1667",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1667",
+      "title": "[Global Home - Hero Request Form] Empty Check-in/Check-out Bypasses Validation, Missing Date Error Text in Home Mode, 14-Day Max Date Lock & Squashed Inline Error on <1440px",
+      "severity": "S2 – Major",
+      "priority_label": "P1",
+      "expected_attachments": 2,
+      "uploaded_attachments": 2,
+      "inline_embedded_count": 2,
+      "attachment_names": [
+        "bug05a_hero_form_date_validation_and_14day_lock_1440x900.png",
+        "bug05b_inline_error_squashed_768x1024.png"
+      ],
+      "warnings": [],
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 2,
+      "verified_priority": "High",
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": []
+    },
+    {
+      "bug_id": "BUG-06",
+      "issue_key": "OP-1668",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1668",
+      "title": "[Global Home - Hero Responsive] \"Lưu trú ›\" Button Hardcoded at 466px Width Overflows Mobile Viewport (+92px) & Hero Copy/Form Have 0px Horizontal Padding on <1440px",
+      "severity": "S2 – Major",
+      "priority_label": "P1",
+      "expected_attachments": 2,
+      "uploaded_attachments": 2,
+      "inline_embedded_count": 2,
+      "attachment_names": [
+        "bug06_mobile_hero_overflow_466px_390x844.png",
+        "bug05b_inline_error_squashed_768x1024.png"
+      ],
+      "warnings": [],
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 2,
+      "verified_priority": "High",
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": []
+    },
+    {
+      "bug_id": "BUG-07",
+      "issue_key": "OP-1669",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1669",
+      "title": "[Global Home - Destination Carousel] Unclamped Parallax Shifts Photos Out of Bounds (73px Blank Strip) & Card Flip Reveals Empty Back Face with Disabled CTA",
+      "severity": "S2 – Major",
+      "priority_label": "P2",
+      "expected_attachments": 1,
+      "uploaded_attachments": 1,
+      "inline_embedded_count": 1,
+      "attachment_names": [
+        "bug07_dest_carousel_parallax_gap_and_broken_flip_1440x900.png"
+      ],
+      "warnings": [],
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 1,
+      "verified_priority": "Medium",
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": []
+    },
+    {
+      "bug_id": "BUG-08",
+      "issue_key": "OP-1670",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1670",
+      "title": "[Global Home - Section CTAs & Cards] Partner Network Cards, Inspiration/Community CTAs & Marketplace Cards Are Non-Functional (aria-disabled=\"true\") with Zero Feedback",
+      "severity": "S2 – Major",
+      "priority_label": "P2",
+      "expected_attachments": 1,
+      "uploaded_attachments": 1,
+      "inline_embedded_count": 1,
+      "attachment_names": [
+        "bug08_dead_ctas_inspire_partner_marketplace_1440x900.png"
+      ],
+      "warnings": [],
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 1,
+      "verified_priority": "Medium",
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": []
+    },
+    {
+      "bug_id": "BUG-09",
+      "issue_key": "OP-1671",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1671",
+      "title": "[Global Home - Signed-In Notifications & F12] Hardcoded Drawer Badge (\"1\" vs Actual \"2\"), Unclipped Floating Bell Button, Duplicate Notification API Calls & FocusTrap Warning",
+      "severity": "S2 – Major",
+      "priority_label": "P1",
+      "expected_attachments": 2,
+      "uploaded_attachments": 2,
+      "inline_embedded_count": 2,
+      "attachment_names": [
+        "bug09_signed_in_hardcoded_badge_and_floating_bell_1440x900.png",
+        "bug09b_drawer_hardcoded_badge_1_signed_in_1440x900.png"
+      ],
+      "warnings": [],
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 2,
+      "verified_priority": "High",
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": []
+    }
+  ]
+}

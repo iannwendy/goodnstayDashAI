@@ -1,0 +1,27 @@
+{
+  "title": "[Global Home - Section CTAs & Cards] Partner Network Cards, Inspiration/Community CTAs & Marketplace Cards Are Non-Functional (aria-disabled=\"true\") with Zero Feedback",
+  "environment": "Production · Desktop (1440x900), Tablet (768x1024) & Mobile (390x844) · Chrome 156.0.0.0 · vi-VN (/vi-VN/home)",
+  "test_account": "Guest Session & TEST_BAOMINH (baominh.internship@gmail.com)",
+  "steps_to_reproduce": [
+    "Mở https://goodnstay.com/vi-VN/home, cuộn tới section 'CẢM HỨNG & CỘNG ĐỒNG' và nhấn vào 2 nút CTA: 'Khám phá cảm hứng du lịch ->' (button.gns-home-inspire-cta) và 'Khám phá cộng đồng ->' (button.gns-home-inspire-cta-warm).",
+    "Cuộn tới section 'PHÁT TRIỂN CÙNG goodNstay · MẠNG LƯỚI ĐỐI TÁC' và nhấn vào 4 thẻ/nút mũi tên '->' (Lưu trú, Tour & Hoạt động, Công ty Du lịch, Trải nghiệm).",
+    "Cuộn tới section 'KHÁM PHÁ MARKETPLACE goodNstay' và nhấn vào 5 thẻ dịch vụ."
+  ],
+  "actual_result": "- Tất cả các nút và thẻ nêu trên đều hoàn toàn không phản hồi (dead buttons): khi nhấn vào không mở trang, không mở modal 'Sắp ra mắt', không cuộn trang, dù giao diện hiển thị như nút bấm chính thức hoặc có hiệu ứng nghiêng 3D khi rê chuột.\n- Thiếu nhất quán ngay trên cùng trang: nhấn 'Trải nghiệm' hoặc 'Cộng đồng' ở Header/Drawer/Footer thì mở modal 'Sắp ra mắt' (showComingSoon), nhưng 2 nút CTA chính giữa trang chủ lại im lặng hoàn toàn.",
+  "expected_result": "- Các nút CTA thuộc tính năng sắp ra mắt (Cảm hứng du lịch, Cộng đồng, Tour & Hoạt động, Công ty Du lịch) phải kích hoạt modal 'Sắp ra mắt' (showComingSoon) đồng nhất với Header/Footer, và thẻ Lưu trú / Đối tác phải điều hướng tới luồng Lưu trú hoặc trang Đối tác (/vi-VN/partner-portal).",
+  "evidence": {
+    "url": "https://goodnstay.com/vi-VN/home",
+    "datetime": "03/11/2026 11:35 ICT",
+    "console": "No JS error; root container carries attribute data-gns-home-pending='section-interactions'.",
+    "network": "Zero network requests or client route transitions triggered on click.",
+    "notes": "Trong 0y6prjzi0mbdc.js, các nút .gns-home-inspire-cta, .gns-home-partner-arrow, .gns-home-market-arrow, .gns-home-dest-cta đều render qua helper component E: function E({children: e, className: r, ...o}) { return jsx('button', { ...o, 'aria-disabled': 'true', className: r, type: 'button', children: e }); } không gắn onClick handler.",
+    "reference_url": "https://goodnstay.com/vi-VN/home"
+  },
+  "classification": "Needs Verification / Confirmed UX Bug — Unwired Section Interactions (data-gns-home-pending='section-interactions')",
+  "severity": "S2 – Major",
+  "priority_label": "P2",
+  "reproducibility": "Always (100% — 5/5 lần thử)",
+  "attachments": [
+    "../bug08_dead_ctas_inspire_partner_marketplace_1440x900.png"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "title": "Inconsistent currency display across accommodation offers (USD $ and KRW ₩ mixed on the same page despite USD $ selected)",
+  "environment": "Production · Desktop (macOS) · Chrome · en-US · Selected Currency: USD $",
+  "test_account": "TEST_BAOMINH (baominh.internship@gmail.com)",
+  "steps_to_reproduce": [
+    "Sign in at https://goodnstay.com/en-US using the test account (baominh.internship@gmail.com).",
+    "Verify that the top navigation bar currency selector is set to USD $.",
+    "Open the Accommodation Request page (Request 1: Seoul, 3 nights, 1 guest, 1 room).",
+    "Navigate to the 'HOTELS ARE MAKING OFFERS' section on the right panel.",
+    "Compare the Total price and currency symbols across all accommodation offers and inspect Chrome DevTools (F12 -> Console & Network)."
+  ],
+  "actual_result": "Only 1 offer displays in USD ($212.52) while the remaining 4 offers display unconverted prices in KRW (₩19,430 / ₩8,349 / ₩12,903 / ₩7,590) despite USD ($) being selected.",
+  "expected_result": "All accommodation offers on the page should display prices converted consistently into the user's selected currency (USD $), or exchange rates (/api/payment/fx-rates?base=USD) must be fetched on initial page load.",
+  "evidence": {
+    "url": "https://goodnstay.com/en-US",
+    "datetime": "2026-10-29 15:10:00 +07:00",
+    "console": "No uncaught JS error (silent fallback in useFormattedPrice when exchangeRates['KRW'] is undefined).",
+    "network": "GET /api/traveler/request-bids?requestStatus=open -> 200 OK; GET /api/payment/fx-rates?base=USD -> NOT FIRED on initial page load.",
+    "reference_url": "https://optibide-org.atlassian.net/wiki/spaces/O/pages/165937257"
+  },
+  "classification": "Confirmed Bug",
+  "severity": "S2 – Major",
+  "priority_label": "P1",
+  "reproducibility": "Always",
+  "labels": ["goodNstay", "marketplace-accommodation", "currency"],
+  "attachments": [
+    "../../../../accommodation_offers_currency_bug.png",
+    "../../../../devtools_f12_evidence.png"
+  ]
+}

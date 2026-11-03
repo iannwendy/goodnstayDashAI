@@ -1,0 +1,27 @@
+{
+  "title": "[Global Home - Header & Drawer Links] \"Đăng ký làm Đối Tác\" Points to Staging URL (partners.stag.goodnstay.com/en-US) & Support/About Links Hardcode en-US on /vi-VN/home",
+  "environment": "Production · Desktop (1440x900), Tablet (768x1024) & Mobile (390x844) · Chrome 156.0.0.0 · vi-VN (/vi-VN/home)",
+  "test_account": "Guest Session & TEST_BAOMINH (baominh.internship@gmail.com)",
+  "steps_to_reproduce": [
+    "Truy cập https://goodnstay.com/vi-VN/home (ngôn ngữ Tiếng Việt vi-VN).",
+    "Nhấn vào nút 'Đăng ký làm Đối Tác' trên Header (.gns-home-header-join) hoặc trong Drawer (.gns-home-drawer-join), và so sánh với link 'Đăng ký làm Đối Tác' ở dưới Footer.",
+    "Mở Hamburger Drawer và nhấn lần lượt vào 'Hỗ trợ' (.gns-home-drawer-account-support), 'Hỗ trợ khách hàng' (.gns-home-drawer-legal-link), và 'Giới thiệu goodNstay' (.gns-home-drawer-legal-about)."
+  ],
+  "actual_result": "- Nút 'Đăng ký làm Đối Tác' ở cả Header và Drawer đều mở sang môi trường Staging (STAG) bằng tiếng Anh: https://partners.stag.goodnstay.com/en-US (trong khi link ở Footer trên cùng trang dẫn đúng tới Production tiếng Việt https://goodnstay.com/vi-VN/partner-portal).\n- Toàn bộ các nút hỗ trợ/giới thiệu trong Drawer đều bị hardcode locale /en-US bất chấp người dùng đang ở /vi-VN/home:\n  + 'Hỗ trợ' -> https://goodnstay.com/en-US/support/travel-support-assistant\n  + 'Hỗ trợ khách hàng' -> https://goodnstay.com/en-US/support/faqs\n  + 'Giới thiệu goodNstay' -> https://optibide.co.kr/en-US/our-product (trong khi dưới Footer dẫn đúng tới https://optibide.co.kr/vi-VN/our-product).",
+  "expected_result": "- Trên môi trường Production (goodnstay.com), nút 'Đăng ký làm Đối Tác' ở Header & Drawer phải trỏ về URL Production đúng theo ngôn ngữ hiện tại (/vi-VN/partner-portal), đồng nhất với Footer.\n- Các link 'Hỗ trợ', 'Hỗ trợ khách hàng', và 'Giới thiệu goodNstay' trong Drawer phải sử dụng biến locale động (/${locale}/...) thay vì hardcode /en-US/.",
+  "evidence": {
+    "url": "https://goodnstay.com/vi-VN/home",
+    "datetime": "03/11/2026 11:33 ICT",
+    "console": "Hardcoded staging URL and en-US routes verified in client bundle function t6(e, t, r) (owningIssue: OP-1626).",
+    "network": "Navigation/anchor targets resolve to https://partners.stag.goodnstay.com/en-US and /en-US/support/* from Production /vi-VN/home.",
+    "notes": "JS Bundle (_next/static/chunks/0y6prjzi0mbdc.js — hàm t6(e, t, r)): case 'join-partner': href='https://partners.stag.goodnstay.com/en-US' (owningIssue: 'OP-1626'); case 'support': href='/en-US/support/travel-support-assistant'; case 'help-center': href='/en-US/support/faqs'; case 'about': href='https://optibide.co.kr/en-US/our-product'.",
+    "reference_url": "https://optibide-org.atlassian.net/browse/OP-1626"
+  },
+  "classification": "Confirmed Bug / Needs Verification (check OP-1626 handoff contract) — Routing / Environment Configuration & i18n",
+  "severity": "S2 – Major",
+  "priority_label": "P1",
+  "reproducibility": "Always (100% — 5/5 lần thử)",
+  "attachments": [
+    "../bug03_staging_url_and_locale_mismatch_1440x900.png"
+  ]
+}

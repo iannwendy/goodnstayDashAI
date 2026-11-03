@@ -1,0 +1,29 @@
+{
+  "title": "[Marketplace][FE Web] Inconsistent currency display across accommodation offers (USD $ and KRW ₩ mixed despite USD $ selected)",
+  "environment": "Production · Desktop (macOS) · Chrome 156 · Locale: en-US · Selected Currency: USD $",
+  "test_account": "TEST_BAOMINH (baominh.internship@gmail.com)",
+  "steps_to_reproduce": [
+    "Sign in at https://goodnstay.com/en-US using the test account (baominh.internship@gmail.com).",
+    "Verify that the top navigation bar currency selector is set to USD $.",
+    "Open the Accommodation Request page (Request 1 / CRQ-QM2HO1BE: 서울특별시 Seoul, 3 nights 10/29/2026 – 11/01/2026, 1 guest, 1 room).",
+    "Navigate to the 'HOTELS ARE MAKING OFFERS' section on the right panel.",
+    "Observe and compare the Total price and currency symbols across all 5 accommodation offers, and inspect Chrome DevTools (F12 -> Console & Network)."
+  ],
+  "actual_result": "The accommodation offers display inconsistent currencies on the same page. Even though the header currency selector is explicitly set to USD ($), only 1 offer displays in USD ($) while the remaining 4 offers display unconverted prices in KRW (₩), without any currency conversion or explanation.\nObserved offers under Request 1 (CRQ-QM2HO1BE):\n- Offer 1 — Unit Hotel H23 (Suitie 2, Bid #6393): Total price: $212.52 (VAT included) [USD]\n- Offer 2 — Central Hotel H14 (Sunset Wave 1, Bid #6392): Total price: ₩19,430 (VAT included) [KRW]\n- Offer 3 — Urban Hotel H13 (Santafe 3, Bid #6391): Total price: ₩8,349 (VAT included) [KRW]\n- Offer 4 — Prime Hotel H12 (Padont Room, Bid #6390): Total price: ₩12,903 (VAT included) [KRW]\n- Offer 5 — Stay Hotel H11 (Luxe Room 3, Bid #6389): Total price: ₩7,590 (VAT included) [KRW]",
+  "expected_result": "- All accommodation offers on the page should display prices converted consistently into the user's selected currency (USD $) or platform default currency.\n- Exchange rates (/api/payment/fx-rates?base=USD) must be fetched automatically on initial page load (CurrencyProvider mount) so non-USD offers do not silently fall back to their raw source currency (KRW ₩).\n- If multiple currencies are supported, the system should clearly indicate the source currency and provide accurate conversion information.",
+  "evidence": {
+    "url": "https://goodnstay.com/en-US",
+    "datetime": "29/10/2026, 14:50 – 15:00 (GMT+7)",
+    "console": "No uncaught JS error or warning logged during currency formatting. Silent fallback in useFormattedPrice(amount, inputCurrency): exchangeRates is initialized to { USD: 1 } and exchangeRates['KRW'] is undefined on initial load, so it silently formats the unconverted raw number in KRW (ko-KR -> ₩19,430).",
+    "network": "1) GET https://services.goodnstay.com/api/traveler/request-bids?requestStatus=open -> 200 OK (Bid #6393 returns currency: 'USD', Bids #6392/#6391/#6390/#6389 return currency: 'KRW'). 2) GET https://services.goodnstay.com/api/payment/fx-rates?base=USD -> NOT FIRED on initial page load (ensureRates() in CurrencyProvider is only called on navbar currency dropdown click, not in useEffect on mount).",
+    "reference_url": "Observed Runtime & BUG_Report_01.docx"
+  },
+  "classification": "Confirmed Bug / Needs Verification — Frontend CurrencyProvider fails to fetch /api/payment/fx-rates on initial mount (causing silent fallback to raw KRW ₩), combined with mixed USD/KRW bid currencies from /api/traveler/request-bids.",
+  "severity": "S2 – Major",
+  "priority_label": "P1",
+  "reproducibility": "Always (100% reproducible on initial page load prior to clicking the currency selector)",
+  "attachments": [
+    "../accommodation_offers_currency_bug.png",
+    "../devtools_f12_evidence.png"
+  ]
+}

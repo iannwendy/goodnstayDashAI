@@ -1,0 +1,29 @@
+{
+  "title": "[Global Home - Currency & Language Selector] Dropdown Clipped Off-Screen in Mobile Drawer (470px Overflow / 118px Crushed Height) & Require Double-Click Due to State Desync",
+  "environment": "Production · Desktop (1440x900) & Mobile (390x844 iPhone 14, 375x667 iPhone SE) · Chrome 156.0.0.0 · vi-VN (/vi-VN/home)",
+  "test_account": "Guest Session & TEST_BAOMINH (baominh.internship@gmail.com)",
+  "steps_to_reproduce": [
+    "[Phần A - Desktop & Mobile] Mở https://goodnstay.com/vi-VN/home và nhấn vào nút 'USD $' (.gns-home-header-currency) trên Header để mở menu tiền tệ.",
+    "Nhấn ra ngoài vùng trống (hoặc chọn 1 loại tiền tệ) để đóng menu, sau đó nhấn lại vào nút 'USD $' một lần nữa.",
+    "[Phần B - Mobile 390x844] Mở Hamburger Drawer và nhấn vào nút 'USD $' (.gns-home-drawer-pref-currency) ở cuối Drawer.",
+    "[Phần B - Mobile 375x667] Mở Hamburger Drawer, cuộn xuống và nhấn vào nút 'Tiếng Việt' (.gns-home-drawer-pref-language)."
+  ],
+  "actual_result": "- Phần A: Khi nhấn lại nút 'USD $', menu tiền tệ không mở ra ở lần nhấn đầu tiên. Người dùng buộc phải nhấn đúp (2 lần liên tiếp) mới mở lại được menu tiền tệ.\n- Phần B (Currency Menu trên 390x844): Danh sách tiền tệ cao 530px mở xuống phía dưới tại top: 785px, kéo dài tới bottom: 1315px trên màn hình chỉ cao 844px (khi body đang overflow: hidden). Kết quả là 470px (11/13 loại tiền tệ) bị tràn khuất hoàn toàn bên dưới đáy màn hình và không thể cuộn tới để chọn.\n- Phần B (Language Menu trên 375x667): Khi chưa cuộn Drawer, nút 'Tiếng Việt' ở bottom: 715px nên menu ngôn ngữ mở ở top: 723px (khuất 100% dưới màn hình 667px). Khi cuộn Drawer xuống đáy, menu luôn mở hướng xuống ở top: 532.5px và bị ép max-height: 118.5px, đè lên nút 'Đăng ký làm Đối Tác' và cắt khuất danh sách ngôn ngữ.",
+  "expected_result": "- Đóng menu tiền tệ bằng cách click ra ngoài hoặc chọn item phải đồng bộ state D = null để lần click tiếp theo mở lại menu ngay ở lần nhấn đầu tiên.\n- Khi nút trigger nằm gần đáy màn hình (như trong Drawer), menu Tiền tệ và Ngôn ngữ phải tự động lật ngược lên trên (flip upward) hoặc kẹp toạ độ top trong khung nhìn kèm max-height và thanh cuộn nội bộ.",
+  "evidence": {
+    "url": "https://goodnstay.com/vi-VN/home",
+    "datetime": "03/11/2026 11:29–11:30 ICT",
+    "console": "State desync between GlobalHomePageClient state D ('currency') and inner <CurrencySelector /> outside-click close handler (no onClose callback propagated).",
+    "network": "200 OK chunk 0y6prjzi0mbdc.js; FX rates loaded when currency dropdown opens.",
+    "notes": "Root Cause 1 (State Desync — 0y6prjzi0mbdc.js): Khi người dùng click ra ngoài, <CurrencySelector /> tự đóng state nội bộ nhưng không gọi callback báo về GlobalHomePageClient khiến D vẫn là 'currency'; lần click sau chỉ đổi 'currency' -> null. Root Cause 2 (Viewport Overflow — rb() trong 0y6prjzi0mbdc.js): điều kiện if ('start' !== e && l + r.height > s.height - o) bỏ qua hoàn toàn việc kẹp toạ độ dọc l khi align === 'start', đồng thời e.offsetHeight của .gns-home-host-preference-currency bằng 0 nên truyền cứng height: 160 thay vì 530px.",
+    "reference_url": "https://goodnstay.com/vi-VN/home"
+  },
+  "classification": "Confirmed Bug — Functional / Responsive / State Management",
+  "severity": "S2 – Major",
+  "priority_label": "P1",
+  "reproducibility": "Always (100% — 5/5 lần thử)",
+  "attachments": [
+    "../bug02a_drawer_currency_overflow_390x844.png",
+    "../bug02b_drawer_language_offscreen_375x667.png"
+  ]
+}

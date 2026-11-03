@@ -1,0 +1,21 @@
+# Bảo vệ thông tin xác thực Jira / môi trường & cấu hình AI cục bộ
+.env
+.env.local
+.env.jira
+.env.*
+!.env.example
+!.env.jira.example
+AGENTS.md
+CLAUDE.md
+
+# Bộ nhớ đệm công cụ trình duyệt & kỹ năng hệ thống tự sinh ở local
+.playwright-mcp/
+skills/system/
+
+# Tệp tạm thời hệ điều hành, Office & Python
+.DS_Store
+._*
+~$*.docx
+__pycache__/
+*.py[cod]
+.pytest_cache/
