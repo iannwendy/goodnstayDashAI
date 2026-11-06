@@ -1,0 +1,72 @@
+[
+  {
+    "id": "sup",
+    "name": "Superior Double",
+    "category": "Superior",
+    "roomRange": "#101–#110",
+    "totalRooms": 10,
+    "rackRate": 1150000,
+    "baseFloorPrice": 750000,
+    "bedAndCapacity": "1 Giường đôi Queen • 2 người lớn",
+    "hasBathtub": false,
+    "includedAmenities": [
+      "Wifi",
+      "Tiện ích phòng",
+      "Thang máy"
+    ]
+  },
+  {
+    "id": "dlx",
+    "name": "Deluxe Twin City View",
+    "category": "Deluxe",
+    "roomRange": "#111–#120",
+    "totalRooms": 10,
+    "rackRate": 1450000,
+    "baseFloorPrice": 920000,
+    "bedAndCapacity": "2 Giường đơn Twin • 2 người lớn",
+    "hasBathtub": false,
+    "includedAmenities": [
+      "Bữa sáng",
+      "Wifi",
+      "Hồ bơi",
+      "Bãi đậu xe"
+    ]
+  },
+  {
+    "id": "fsuite",
+    "name": "Family Connecting Suite",
+    "category": "Suite",
+    "roomRange": "#121–#126",
+    "totalRooms": 6,
+    "rackRate": 2250000,
+    "baseFloorPrice": 1550000,
+    "bedAndCapacity": "2 Giường lớn thông phòng • 4 người lớn",
+    "hasBathtub": true,
+    "includedAmenities": [
+      "Bữa sáng",
+      "Wifi",
+      "Hồ bơi",
+      "Bồn tắm",
+      "Bãi đậu xe"
+    ]
+  },
+  {
+    "id": "osuite",
+    "name": "Executive Ocean Suite",
+    "category": "Executive",
+    "roomRange": "#127–#130",
+    "totalRooms": 4,
+    "rackRate": 2650000,
+    "baseFloorPrice": 1850000,
+    "bedAndCapacity": "1 Giường King trực diện biển • 2 người lớn",
+    "hasBathtub": true,
+    "includedAmenities": [
+      "Bữa sáng",
+      "Wifi",
+      "Hồ bơi",
+      "Bồn tắm",
+      "Trả phòng trễ",
+      "Truyền hình (OTT)"
+    ]
+  }
+]

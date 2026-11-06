@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "2.5.0",
+  "architecture": "goodNstay Pay-to-Lock • 0% Hotel Commission • 1.265x Guest Total",
+  "generatedAt": "2026-11-06T19:45:00+07:00",
+  "primaryReferenceDate": "2026-11-06",
+  "tables": {
+    "hotelProfile": {
+      "file": "hotel_profile.json",
+      "pk": "hotelId",
+      "description": "Cấu hình khách sạn, tỷ lệ phí 15% + VAT 10%, ELO & điểm đánh giá 5 sao"
+    },
+    "usersRoles": {
+      "file": "users_roles.json",
+      "pk": "userId",
+      "description": "Phân quyền RBAC Quản lý vs. Lễ tân"
+    },
+    "perksCatalog": {
+      "file": "perks_catalog.json",
+      "pk": "id",
+      "description": "Danh mục đặc quyền mềm bù đắp điểm khớp"
+    },
+    "roomClasses": {
+      "file": "room_classes.json",
+      "pk": "id",
+      "description": "4 hạng phòng gốc (Tổng 30 phòng vật lý)"
+    },
+    "roomsPms": {
+      "file": "rooms_pms.json",
+      "pk": "roomNumber",
+      "fk": "roomClassId -> roomClasses.id",
+      "description": "Trạng thái khóa thực tế của 30 mã phòng #101-#130 đêm 06/11/2026"
+    },
+    "calendar14dPms": {
+      "file": "calendar_14d_pms.json",
+      "pk": "dayOffset",
+      "description": "Lịch tồn kho 14 ngày vàng (06/11 - 19/11/2026)"
+    },
+    "systemBenchmarks": {
+      "file": "system_benchmarks.json",
+      "pk": "regionName",
+      "description": "Dữ liệu chuẩn so sánh toàn sàn Đà Nẵng theo kỳ Today / 7D / 30D"
+    },
+    "auctionSessions": {
+      "file": "auction_sessions.json",
+      "pk": "id",
+      "fk": "matchedRoomClassId -> roomClasses.id",
+      "description": "Bảng giao dịch gốc gồm 4 phiên Live + 68 phiên lịch sử trong 30 ngày"
+    },
+    "matchBreakdowns": {
+      "file": "match_breakdowns.json",
+      "pk": "reqId",
+      "description": "Chi tiết chấm điểm Hard Rules & Soft Rules AI Match %"
+    },
+    "lossAutopsies": {
+      "file": "loss_autopsies.json",
+      "pk": "id",
+      "description": "Hồ sơ đối chiếu mổ xẻ phiên trượt"
+    },
+    "botRules": {
+      "file": "bot_rules.json",
+      "pk": "ruleId",
+      "description": "Các quy tắc Auto-Bid đang kích hoạt"
+    }
+  }
+}
