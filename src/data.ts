@@ -20,6 +20,17 @@ export type LossReasonId =
   | "missing_perk"
   | "payment_abandoned";
 
+export type BranchFilter = "all" | string;
+
+export interface HotelBranchMaster {
+  id: string;
+  shortName: string;
+  name: string;
+  district: string;
+  totalRooms: number;
+  previousPeriodRevenue: Record<DateRangeKey, number>;
+}
+
 export interface HotelProfileMaster {
   hotelId: string;
   brandName: string;
@@ -60,12 +71,7 @@ export interface HotelProfileMaster {
     amenitiesExpectation: number;
     valueForMoney: number;
   };
-  payoutInfo: {
-    gateway: string;
-    settlementCycle: string;
-    nextPayoutDate: string;
-    beneficiaryBank: string;
-  };
+  branches: HotelBranchMaster[];
   eveningForecast: {
     expectedRequestsMin: number;
     expectedRequestsMax: number;
@@ -112,6 +118,8 @@ export interface RoomClassMaster {
 export interface PmsRoomRecord {
   roomNumber: number;
   floor: number;
+  branchId: string;
+  branchName: string;
   roomClassId: string;
   roomClass: string;
   category: string;
@@ -133,6 +141,7 @@ export interface Calendar14DayPmsRecord {
   vacantRooms: number;
   policyShort: string;
   linkedReqId?: string | null;
+  manualOverrides?: Record<string, "vacant_unlocked" | "booked_other">;
 }
 
 export interface PeriodBaselineMeta {
@@ -171,6 +180,8 @@ export interface SystemBenchmarksMaster {
 export interface AuctionSessionMasterRecord {
   id: string;
   status: SessionRecordStatus;
+  branchId?: string;
+  branchName?: string;
   sessionDate: string;
   timeLabel: string;
   dateTimeLabel?: string;
@@ -205,8 +216,6 @@ export interface AuctionSessionMasterRecord {
   offeredBasePrice?: number;
   hotelEarnedBase?: number;
   guestPaidTotal?: number;
-  medicalRefund?: number;
-  medicalRefundNote?: string | null;
   matchScore: number;
   bidMode?: "auto" | "manual";
   responseMinutes?: number;
@@ -226,6 +235,8 @@ export interface AuctionSessionMasterRecord {
 
 export interface LiveSession {
   id: string;
+  branchId: string;
+  branchName: string;
   remainingSeconds: number;
   checkInDateRange: string;
   checkInUrgent?: boolean;
@@ -241,7 +252,12 @@ export interface LiveSession {
   matchedRoomClassId: string;
   matchScore: number;
   aiSuggestedBasePrice: number;
+  standardSuggestedBasePrice: number;
   effectiveFloorPrice: number;
+  isTonightCheckIn: boolean;
+  flashDiscountApplied: boolean;
+  vacantForStay: number;
+  concurrentForStay: number;
   isAutoBidEligible: boolean;
   bidSubmitted?: {
     basePrice: number;
@@ -253,6 +269,8 @@ export interface LiveSession {
 
 export interface HistorySession {
   id: string;
+  branchId: string;
+  branchName: string;
   sessionDate: string;
   dateTimeLabel: string;
   stayDatesLabel: string;
@@ -271,13 +289,16 @@ export interface HistorySession {
   status: HistoryStatus;
   hotelEarnedBase?: number;
   guestPaidTotal?: number;
-  medicalRefund?: number;
   resultNote: string;
   autopsyId?: string;
 }
 
 export interface TodayOrder {
   reqId: string;
+  branchId: string;
+  branchName: string;
+  sessionDate: string;
+  timeLabel: string;
   roomCategory: string;
   roomSummary: string;
   nights: number;
@@ -305,6 +326,8 @@ export interface RoomClassInventory {
 export interface RoomCell {
   roomNumber: number;
   floor: number;
+  branchId: string;
+  branchName: string;
   roomClassId: string;
   roomClass: string;
   category: string;
@@ -318,6 +341,8 @@ export interface RoomCell {
 export interface DailyRoomCell {
   roomNumber: number;
   floor: number;
+  branchId: string;
+  branchName: string;
   roomClassId: string;
   roomClass: string;
   category: string;

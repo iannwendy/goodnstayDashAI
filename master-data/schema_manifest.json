@@ -1,13 +1,13 @@
 {
-  "schemaVersion": "2.5.0",
-  "architecture": "goodNstay Pay-to-Lock • 0% Hotel Commission • 1.265x Guest Total",
+  "schemaVersion": "2.6.0",
+  "architecture": "goodNstay 10-Min Movie-Seat Payment Hold • 0% Hotel Commission • 1.265x Guest Total • Full Lifecycle",
   "generatedAt": "2026-11-06T19:45:00+07:00",
   "primaryReferenceDate": "2026-11-06",
   "tables": {
     "hotelProfile": {
       "file": "hotel_profile.json",
       "pk": "hotelId",
-      "description": "Cấu hình khách sạn, tỷ lệ phí 15% + VAT 10%, ELO & điểm đánh giá 5 sao"
+      "description": "Cấu hình khách sạn, TTL 60p báo giá + TTL 10p giữ phòng TT, phí 15% + VAT 10%, ELO & Review"
     },
     "usersRoles": {
       "file": "users_roles.json",
@@ -28,23 +28,23 @@
       "file": "rooms_pms.json",
       "pk": "roomNumber",
       "fk": "roomClassId -> roomClasses.id",
-      "description": "Trạng thái khóa thực tế của 30 mã phòng #101-#130 đêm 06/11/2026"
+      "description": "4 trạng thái thực tế (vacant_unlocked, payment_hold 10p, booked_auction, booked_other) của 30 phòng #101-#130"
     },
     "calendar14dPms": {
       "file": "calendar_14d_pms.json",
       "pk": "dayOffset",
-      "description": "Lịch tồn kho 14 ngày vàng (06/11 - 19/11/2026)"
+      "description": "Lịch tồn kho 14 ngày vàng 4 lớp trạng thái (06/11 - 19/11/2026)"
     },
     "systemBenchmarks": {
       "file": "system_benchmarks.json",
       "pk": "regionName",
-      "description": "Dữ liệu chuẩn so sánh toàn sàn Đà Nẵng theo kỳ Today / 7D / 30D"
+      "description": "Dữ liệu chuẩn so sánh toàn sàn Đà Nẵng & 5 nhóm nguyên nhân Pareto"
     },
     "auctionSessions": {
       "file": "auction_sessions.json",
       "pk": "id",
       "fk": "matchedRoomClassId -> roomClasses.id",
-      "description": "Bảng giao dịch gốc gồm 4 phiên Live + 68 phiên lịch sử trong 30 ngày"
+      "description": "Bảng giao dịch đa trạng thái (Request / Bid / Payment / Reject) gồm 5 phiên Live + 72 phiên lịch sử"
     },
     "matchBreakdowns": {
       "file": "match_breakdowns.json",
@@ -54,12 +54,17 @@
     "lossAutopsies": {
       "file": "loss_autopsies.json",
       "pk": "id",
-      "description": "Hồ sơ đối chiếu mổ xẻ phiên trượt"
+      "description": "Hồ sơ đối chiếu mổ xẻ phiên trượt & quá hạn giữ phòng 10p"
     },
     "botRules": {
       "file": "bot_rules.json",
       "pk": "ruleId",
       "description": "Các quy tắc Auto-Bid đang kích hoạt"
+    },
+    "lifecycleCatalog": {
+      "file": "lifecycle_catalog.json",
+      "pk": "version",
+      "description": "Đặc tả 9 giai đoạn vòng đời, từ điển 4 trạng thái phòng, 11 mã Reject & 18 kịch bản nghiệp vụ"
     }
   }
 }

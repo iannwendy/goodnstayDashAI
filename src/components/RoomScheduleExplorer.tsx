@@ -2,15 +2,26 @@ import { useMemo, useState } from "react";
 import { CalendarDays, LayoutGrid, Lock, LockOpen } from "lucide-react";
 import type { DailyRoomCell, DailyRoomSchedule } from "@/data";
 
-type StatusFilter = "all" | "vacant" | "auction" | "other";
-type ExplorerView = "day" | "timeline";
+export type ExplorerStatusFilter = "all" | "vacant" | "auction" | "other";
+export type ExplorerViewMode = "day" | "timeline";
 
 interface RoomScheduleExplorerProps {
   schedules: DailyRoomSchedule[];
-  initialView?: ExplorerView;
+  initialView?: ExplorerViewMode;
   initialDayOffset?: number;
-  initialStatusFilter?: StatusFilter;
+  initialStatusFilter?: ExplorerStatusFilter;
+  selectedDayOffset?: number;
+  onSelectDayOffset?: (dayOffset: number) => void;
+  viewMode?: ExplorerViewMode;
+  onChangeViewMode?: (mode: ExplorerViewMode) => void;
+  statusFilter?: ExplorerStatusFilter;
+  onChangeStatusFilter?: (filter: ExplorerStatusFilter) => void;
+  classFilter?: string;
+  onChangeClassFilter?: (classId: string) => void;
+  selectedRoomNum?: number;
+  onSelectRoomNum?: (roomNumber: number) => void;
   compact?: boolean;
+  onToggleRoomLock?: (dayOffset: number, cell: DailyRoomCell) => void;
 }
 
 const SHORT_CHANNEL: Record<string, string> = {
@@ -38,15 +49,57 @@ export function RoomScheduleExplorer({
   initialView = "day",
   initialDayOffset = 0,
   initialStatusFilter = "all",
+  selectedDayOffset: controlledDayOffset,
+  onSelectDayOffset,
+  viewMode: controlledViewMode,
+  onChangeViewMode,
+  statusFilter: controlledStatusFilter,
+  onChangeStatusFilter,
+  classFilter: controlledClassFilter,
+  onChangeClassFilter,
+  selectedRoomNum: controlledRoomNum,
+  onSelectRoomNum,
   compact = false,
+  onToggleRoomLock,
 }: RoomScheduleExplorerProps) {
-  const [viewMode, setViewMode] = useState<ExplorerView>(initialView);
-  const [selectedDayOffset, setSelectedDayOffset] =
+  const [internalViewMode, setInternalViewMode] =
+    useState<ExplorerViewMode>(initialView);
+  const [internalDayOffset, setInternalDayOffset] =
     useState<number>(initialDayOffset);
-  const [statusFilter, setStatusFilter] =
-    useState<StatusFilter>(initialStatusFilter);
-  const [classFilter, setClassFilter] = useState<string>("all");
-  const [selectedRoomNum, setSelectedRoomNum] = useState<number>(106);
+  const [internalStatusFilter, setInternalStatusFilter] =
+    useState<ExplorerStatusFilter>(initialStatusFilter);
+  const [internalClassFilter, setInternalClassFilter] = useState<string>("all");
+  const [internalRoomNum, setInternalRoomNum] = useState<number>(108);
+
+  const viewMode = controlledViewMode ?? internalViewMode;
+  const setViewMode = (mode: ExplorerViewMode) => {
+    setInternalViewMode(mode);
+    onChangeViewMode?.(mode);
+  };
+
+  const selectedDayOffset = controlledDayOffset ?? internalDayOffset;
+  const setSelectedDayOffset = (offset: number) => {
+    setInternalDayOffset(offset);
+    onSelectDayOffset?.(offset);
+  };
+
+  const statusFilter = controlledStatusFilter ?? internalStatusFilter;
+  const setStatusFilter = (filter: ExplorerStatusFilter) => {
+    setInternalStatusFilter(filter);
+    onChangeStatusFilter?.(filter);
+  };
+
+  const classFilter = controlledClassFilter ?? internalClassFilter;
+  const setClassFilter = (cls: string) => {
+    setInternalClassFilter(cls);
+    onChangeClassFilter?.(cls);
+  };
+
+  const selectedRoomNum = controlledRoomNum ?? internalRoomNum;
+  const setSelectedRoomNum = (roomNum: number) => {
+    setInternalRoomNum(roomNum);
+    onSelectRoomNum?.(roomNum);
+  };
 
   const activeSchedule =
     schedules.find((s) => s.dayOffset === selectedDayOffset) ?? schedules[0];
@@ -278,6 +331,21 @@ export function RoomScheduleExplorer({
 
           {/* 30 Rooms Grouped by Room Class (5 per row in modal = exact hotel floor layout!) */}
           <div className="space-y-2.5">
+            {roomGroups.every((grp) => grp.filteredRooms.length === 0) && (
+              <div className="p-6 rounded-xl bg-white border border-zinc-200/80 text-center text-xs text-zinc-500 space-y-2">
+                <div>
+                  Không có phòng nào thuộc bộ lọc hiện tại trong ngày{" "}
+                  <strong>{activeSchedule.fullDate}</strong>.
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setStatusFilter("all")}
+                  className="px-3 py-1 rounded-lg bg-zinc-900 text-white font-medium cursor-pointer"
+                >
+                  Xem tất cả {activeSchedule.totalRooms} phòng
+                </button>
+              </div>
+            )}
             {roomGroups.map((grp) => {
               if (grp.filteredRooms.length === 0) return null;
               const vacantInGrp = grp.allRooms.filter(
@@ -323,29 +391,59 @@ export function RoomScheduleExplorer({
                       const isSelected =
                         cell.roomNumber === focusedCell?.roomNumber;
                       const shortSource =
-                        SHORT_CHANNEL[cell.sourceChannel] ?? cell.sourceChannel;
+                        SHORT_CHANNEL[cell.sourceChannel] ??
+                        (cell.sourceChannel.includes("Khóa tay")
+                          ? "Khóa tay"
+                          : cell.sourceChannel);
 
                       return (
                         <button
                           key={cell.roomNumber}
                           type="button"
-                          onClick={() => setSelectedRoomNum(cell.roomNumber)}
+                          onClick={() => {
+                            setSelectedRoomNum(cell.roomNumber);
+                            onToggleRoomLock?.(activeSchedule.dayOffset, cell);
+                          }}
                           onMouseEnter={() => setSelectedRoomNum(cell.roomNumber)}
-                          className={`px-2.5 py-2 rounded-xl border text-left transition-all cursor-pointer min-w-0 ${
+                          title={
+                            isAuction
+                              ? `Phòng #${cell.roomNumber} (${cell.branchName}): Đã khóa đơn goodNstay (${cell.linkedReqId})`
+                              : isVacant
+                                ? `Bấm để KHÓA thủ công phòng #${cell.roomNumber} ngày ${activeSchedule.dateStr}`
+                                : `Bấm để MỞ KHÓA phòng #${cell.roomNumber} nhận đấu giá ngày ${activeSchedule.dateStr}`
+                          }
+                          className={`group px-2.5 py-2 rounded-xl border text-left transition-all cursor-pointer min-w-0 ${
                             isAuction
                               ? "bg-emerald-50/70 border-emerald-300 text-emerald-950"
                               : isVacant
                                 ? cell.activeAuctionCount > 0
-                                  ? "bg-sky-50/80 border-sky-400 text-zinc-900"
-                                  : "bg-white border-sky-200 text-zinc-900"
-                                : "bg-zinc-100/70 border-zinc-200 text-zinc-600"
+                                  ? "bg-sky-50/80 border-sky-400 hover:border-sky-600 text-zinc-900"
+                                  : "bg-white border-sky-200 hover:border-sky-500 text-zinc-900"
+                                : "bg-zinc-100/70 border-zinc-200 hover:border-zinc-400 text-zinc-600"
                           } ${isSelected ? "ring-2 ring-zinc-900/80" : ""}`}
                         >
                           <div className="flex items-center justify-between gap-1">
                             <span className="font-mono font-bold text-xs">
                               #{cell.roomNumber}
                             </span>
-                            {isVacant ? (
+                            {onToggleRoomLock ? (
+                              isAuction ? (
+                                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[9.5px] font-semibold shrink-0">
+                                  <Lock className="w-2.5 h-2.5" />
+                                  Đã TT
+                                </span>
+                              ) : isVacant ? (
+                                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-sky-100 group-hover:bg-zinc-900 text-sky-800 group-hover:text-white text-[9.5px] font-semibold transition-colors shrink-0">
+                                  <LockOpen className="w-2.5 h-2.5" />
+                                  Khóa
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-white group-hover:bg-sky-600 text-zinc-700 group-hover:text-white border border-zinc-200/80 text-[9.5px] font-semibold transition-colors shrink-0">
+                                  <Lock className="w-2.5 h-2.5" />
+                                  Mở khóa
+                                </span>
+                              )
+                            ) : isVacant ? (
                               <LockOpen className="w-3 h-3 text-sky-600 shrink-0" />
                             ) : (
                               <Lock
@@ -385,7 +483,7 @@ export function RoomScheduleExplorer({
       )}
 
       {/* ===================================================================== */}
-      {/* VIEW 2: ZERO-OVERFLOW 14-DAY × 30-ROOM PMS TIMELINE                   */}
+      {/* VIEW 2: ZERO-OVERFLOW 14-DAY × ROOM PMS TIMELINE                      */}
       {/* ===================================================================== */}
       {viewMode === "timeline" && (
         <div className="space-y-3 min-w-0">
@@ -393,11 +491,23 @@ export function RoomScheduleExplorer({
             <div className="flex flex-wrap items-center gap-1.5">
               {(
                 [
-                  ["all", "Tất cả (30)"],
-                  ["sup", "Superior (10)"],
-                  ["dlx", "Deluxe (10)"],
-                  ["fsuite", "Suite (6)"],
-                  ["osuite", "Executive (4)"],
+                  ["all", `Tất cả (${schedules[0]?.rooms.length ?? 0})`],
+                  [
+                    "sup",
+                    `Superior (${schedules[0]?.rooms.filter((r) => r.roomClassId === "sup").length ?? 0})`,
+                  ],
+                  [
+                    "dlx",
+                    `Deluxe (${schedules[0]?.rooms.filter((r) => r.roomClassId === "dlx").length ?? 0})`,
+                  ],
+                  [
+                    "fsuite",
+                    `Suite (${schedules[0]?.rooms.filter((r) => r.roomClassId === "fsuite").length ?? 0})`,
+                  ],
+                  [
+                    "osuite",
+                    `Executive (${schedules[0]?.rooms.filter((r) => r.roomClassId === "osuite").length ?? 0})`,
+                  ],
                 ] as const
               ).map(([id, label]) => (
                 <button
@@ -415,7 +525,7 @@ export function RoomScheduleExplorer({
               ))}
             </div>
             <span className="text-[11px] text-zinc-400">
-              Bấm vào ô bất kỳ để kiểm tra chi tiết đơn khóa phòng
+              Chọn ô bất kỳ để xem đơn hoặc bấm nút Khóa / Mở khóa bên dưới
             </span>
           </div>
 
@@ -480,6 +590,9 @@ export function RoomScheduleExplorer({
                                 setSelectedDayOffset(day.dayOffset);
                                 setSelectedRoomNum(roomMeta.roomNumber);
                               }}
+                              onDoubleClick={() => {
+                                onToggleRoomLock?.(day.dayOffset, cell);
+                              }}
                               className={`w-full py-1 px-0.5 rounded text-[9.5px] font-mono truncate transition-all cursor-pointer ${
                                 isAuction
                                   ? "bg-emerald-100/90 text-emerald-900 font-semibold"
@@ -489,7 +602,7 @@ export function RoomScheduleExplorer({
                                       : "bg-sky-50/50 text-sky-700 hover:bg-sky-100/60"
                                     : "bg-zinc-100 text-zinc-500"
                               } ${isFocused ? "ring-2 ring-zinc-900" : ""}`}
-                              title={`Ngày ${day.fullDate} • Phòng #${cell.roomNumber}: ${cell.sourceChannel} (${cell.staySpanText})`}
+                              title={`Ngày ${day.fullDate} • Phòng #${cell.roomNumber}: ${cell.sourceChannel} (${cell.staySpanText}) — Nháy đúp để Khóa/Mở khóa`}
                             >
                               {isAuction
                                 ? `#${cell.linkedReqId?.slice(-4) ?? "TT"}`
@@ -497,7 +610,9 @@ export function RoomScheduleExplorer({
                                   ? cell.activeAuctionCount > 0
                                     ? `Đấu ${cell.activeAuctionCount}`
                                     : "Trống"
-                                  : "OTA"}
+                                  : cell.sourceChannel.includes("Khóa tay")
+                                    ? "Khóa"
+                                    : "OTA"}
                             </button>
                           </td>
                         );
@@ -511,10 +626,10 @@ export function RoomScheduleExplorer({
         </div>
       )}
 
-      {/* Selected Room × Selected Date Inspection Bar */}
+      {/* Selected Room × Selected Date Inspection & Action Bar */}
       {focusedCell && (
-        <div className="px-3.5 py-2.5 rounded-xl bg-zinc-900 text-white text-xs flex flex-wrap items-center justify-between gap-2 min-w-0">
-          <div className="flex flex-wrap items-center gap-2">
+        <div className="px-3.5 py-2.5 rounded-xl bg-zinc-900 text-white text-xs flex flex-wrap items-center justify-between gap-2.5 min-w-0">
+          <div className="flex flex-wrap items-center gap-2 min-w-0">
             <span className="px-2 py-0.5 rounded bg-white/15 font-mono font-semibold">
               {activeSchedule.fullDate}
             </span>
@@ -522,32 +637,64 @@ export function RoomScheduleExplorer({
               Phòng #{focusedCell.roomNumber}
             </span>
             <span className="text-zinc-300">
-              (Tầng {focusedCell.floor} · {focusedCell.roomClass})
+              ({focusedCell.branchName} · Tầng {focusedCell.floor} · {focusedCell.roomClass})
+            </span>
+            <span className="text-zinc-500 hidden sm:inline">·</span>
+            <span className="font-mono text-xs">
+              {focusedCell.status === "booked_auction" ? (
+                <span className="text-emerald-300 font-semibold">
+                  Đã khóa goodNstay TT 100% ({focusedCell.linkedReqId}) ·{" "}
+                  {focusedCell.staySpanText}
+                </span>
+              ) : focusedCell.status === "booked_other" ? (
+                <span className="text-zinc-200">
+                  Đã khóa {focusedCell.sourceChannel} · {focusedCell.staySpanText}
+                </span>
+              ) : focusedCell.activeAuctionCount > 0 ? (
+                <span className="text-sky-300 font-semibold">
+                  Trống mở khóa · Đang đấu {focusedCell.activeAuctionCount} phiên (
+                  {focusedCell.activeAuctionIds.map((id) => `#${id}`).join(", ")})
+                </span>
+              ) : (
+                <span className="text-sky-300">
+                  Trống mở khóa · Sẵn sàng đấu giá
+                </span>
+              )}
             </span>
           </div>
 
-          <div className="font-mono text-xs">
-            {focusedCell.status === "booked_auction" ? (
-              <span className="text-emerald-300 font-semibold">
-                Đã khóa goodNstay TT 100% ({focusedCell.linkedReqId}) ·{" "}
-                {focusedCell.staySpanText}
-              </span>
-            ) : focusedCell.status === "booked_other" ? (
-              <span className="text-zinc-200">
-                Đã khóa {focusedCell.sourceChannel} · {focusedCell.staySpanText}
-              </span>
-            ) : focusedCell.activeAuctionCount > 0 ? (
-              <span className="text-sky-300 font-semibold">
-                Trống mở khóa · Đang đấu {focusedCell.activeAuctionCount} phiên (
-                {focusedCell.activeAuctionIds.map((id) => `#${id}`).join(", ")})
-              </span>
-            ) : (
-              <span className="text-sky-300">
-                Trống mở khóa · Sẵn sàng nhận đấu giá ngày{" "}
-                {activeSchedule.dateStr}
-              </span>
-            )}
-          </div>
+          {onToggleRoomLock && (
+            <div className="shrink-0">
+              {focusedCell.status === "booked_auction" ? (
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 text-[11px] font-medium">
+                  <Lock className="w-3 h-3" />
+                  Đã khóa đơn TT 100%
+                </span>
+              ) : focusedCell.status === "vacant_unlocked" ? (
+                <button
+                  type="button"
+                  onClick={() =>
+                    onToggleRoomLock(activeSchedule.dayOffset, focusedCell)
+                  }
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-zinc-100 text-zinc-950 font-semibold text-xs cursor-pointer transition-colors"
+                >
+                  <Lock className="w-3.5 h-3.5" />
+                  Khóa phòng #{focusedCell.roomNumber} ({activeSchedule.dateStr})
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() =>
+                    onToggleRoomLock(activeSchedule.dayOffset, focusedCell)
+                  }
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-zinc-950 font-semibold text-xs cursor-pointer transition-colors"
+                >
+                  <LockOpen className="w-3.5 h-3.5" />
+                  Mở khóa #{focusedCell.roomNumber} nhận Đấu giá
+                </button>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

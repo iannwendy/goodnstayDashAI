@@ -22,7 +22,7 @@ const STATIC_TABLE_PATHS: Record<MasterTableKey, string> = {
   botRules: "/master-data/bot_rules.json",
 };
 
-const LOCAL_FALLBACK_PREFIX = "gns_master_v25_";
+const LOCAL_FALLBACK_PREFIX = "gns_master_v26_";
 
 export async function loadMasterDataBundle(): Promise<LoadedMasterDataResult> {
   // 1. Direct live Master Data REST API (/api/master-data)

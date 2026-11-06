@@ -1,9 +1,9 @@
 {
   "CRQ-8924": {
     "id": "CRQ-8924",
-    "tabLabel": "#CRQ-8924 • Cao hơn 250k (Suite)",
-    "dateLabel": "05/11 • 21:15 (Executive • 2 đêm)",
-    "guestRejectTag": "Chọn KS tương đương có giá trọn gói tốt hơn",
+    "tabLabel": "#CRQ-8924 • REJ_PRICE_HIGH (+250k)",
+    "dateLabel": "05/11 • 21:15 (Executive • 2 đêm • Khách từ chối giá)",
+    "guestRejectTag": "REJ_PRICE_HIGH: Chọn KS tương đương có tổng giá ×1.265 tốt hơn",
     "metrics": [
       {
         "label": "Giá gốc chào / đêm",
@@ -45,9 +45,9 @@
   },
   "CRQ-8918": {
     "id": "CRQ-8918",
-    "tabLabel": "#CRQ-8918 • Thiếu Buffet sáng",
-    "dateLabel": "05/11 • 13:05 (Superior • 2 đêm)",
-    "guestRejectTag": "Ưu tiên khách sạn đã gồm sẵn bữa sáng cho gia đình",
+    "tabLabel": "#CRQ-8918 • REJ_MISSING_PERK",
+    "dateLabel": "05/11 • 13:05 (Superior • 2 đêm • Thiếu Buffet sáng)",
+    "guestRejectTag": "REJ_MISSING_PERK: Ưu tiên khách sạn đã gồm sẵn bữa sáng cho gia đình",
     "metrics": [
       {
         "label": "Giá gốc chào / đêm",
@@ -89,9 +89,9 @@
   },
   "CRQ-8909": {
     "id": "CRQ-8909",
-    "tabLabel": "#CRQ-8909 • Phản hồi trễ 31p",
+    "tabLabel": "#CRQ-8909 • EXP_TTL_60M (Trễ 31p)",
     "dateLabel": "05/11 • 23:18 (Deluxe • Nhận phòng đêm)",
-    "guestRejectTag": "Khách đáp sân bay cần chốt phòng ngay trong 5 phút đầu",
+    "guestRejectTag": "EXP_TTL_60M: Khách đáp sân bay đã khóa tạm 10p với đối thủ Auto-Bid trong 5p đầu",
     "metrics": [
       {
         "label": "Tốc độ gửi báo giá",
@@ -103,7 +103,7 @@
       {
         "label": "Trạng thái xem của khách",
         "yours": "Chưa mở xem (Đã rời phiên)",
-        "winner": "Thanh toán lúc phút 03:10",
+        "winner": "Khóa tạm 10p lúc 01:40 → TT xong 03:10",
         "deltaBadge": "Mất lượt hiển thị",
         "tone": "bad"
       },
@@ -128,6 +128,49 @@
       "costNote": "Trần an toàn ≤4 phòng, ≤8 khách",
       "estimatedWinProb": 82,
       "ruleTitle": "Sau 22h00 đêm → Bật Auto-Bid phản hồi <60s ở mức sàn +5% cho đơn ≤4 phòng, ≤8 khách"
+    }
+  },
+  "CRQ-8932": {
+    "id": "CRQ-8932",
+    "tabLabel": "#CRQ-8932 • REJ_HOLD_EXPIRED_10M",
+    "dateLabel": "06/11 • 07:55 (Deluxe • Quá hạn 10p giữ phòng KCP)",
+    "guestRejectTag": "REJ_HOLD_EXPIRED_10M: Khách đã bấm giữ phòng #119 (10p) nhưng treo OTP quá 600s",
+    "metrics": [
+      {
+        "label": "Bước chuyển đổi đạt tới",
+        "yours": "Bước 7/8 (Đã khóa tạm #119 · 10:00)",
+        "winner": "Tự nhả khóa về Trống mở đúng phút 10:00",
+        "deltaBadge": "Bảo toàn tồn kho",
+        "tone": "warn"
+      },
+      {
+        "label": "Trạng thái cổng NHN KCP",
+        "yours": "PAY_TIMEOUT_10M (Chưa trừ tiền)",
+        "winner": "Tự động hủy Token thanh toán cũ",
+        "deltaBadge": "0% rủi ro thu đúp",
+        "tone": "good"
+      },
+      {
+        "label": "Ảnh hưởng tới phiên cạnh tranh",
+        "yours": "Chỉ tạm chặn #119 đúng 10 phút",
+        "winner": "Phòng #119 mở bán lại ngay lúc 08:05",
+        "deltaBadge": "Không chết phòng",
+        "tone": "good"
+      },
+      {
+        "label": "Tổng giá Khách thấy bước cuối",
+        "yours": "1.239.700đ (Gốc 980k × 1.265)",
+        "winner": "Gợi ý giảm nhẹ gốc còn 940k kèm Late C/O",
+        "deltaBadge": "Giảm do dự OTP",
+        "tone": "neutral"
+      }
+    ],
+    "recommendedFormula": {
+      "suggestedBasePrice": 940000,
+      "perkSummary": "Giảm nhẹ gốc -40k + Miễn phí Trả phòng trễ 14:00",
+      "costNote": "Tổng khách trả dưới ngưỡng tâm lý 1.200k",
+      "estimatedWinProb": 85,
+      "ruleTitle": "Khách lẻ Deluxe đặt sáng sớm → Chào gốc 940k (Khách TT 1.189k < 1.2M) để chốt OTP ngay trong 3 phút đầu"
     }
   }
 }

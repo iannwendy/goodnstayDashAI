@@ -8,7 +8,7 @@
       {
         "name": "Điều kiện Cứng (Hard Rule): Địa bàn & Hạng phòng",
         "guest": "Sơn Trà, Đà Nẵng • Hạng Superior",
-        "hotel": "Phước Mỹ, Sơn Trà • Superior Double (#108–#110 trống)",
+        "hotel": "Phước Mỹ, Sơn Trà • Superior Double (#108–#110 trống mở)",
         "status": "match",
         "label": "Đạt chuẩn cứng"
       },
@@ -34,21 +34,21 @@
         "label": "Khớp 100%"
       }
     ],
-    "tip": "Gợi ý AI: Tặng kèm 'Miễn phí Buffet sáng 2 khách' (chi phí bếp ~90k) sẽ nâng độ khớp lên 100% và tăng +22% xác suất khách TT ngay tối nay.",
+    "tip": "Gợi ý AI: Tặng kèm 'Miễn phí Buffet sáng 2 khách' (chi phí bếp ~90k) sẽ nâng độ khớp lên 100% và tăng +22% xác suất khách bấm giữ phòng 10p ngay tối nay.",
     "suggestedPerkId": "perk_bf"
   },
   "CRQ-8942": {
     "reqId": "CRQ-8942",
     "score": 96,
-    "sub": "Phiên Live #CRQ-8942 • Hạng bắt buộc: Executive • Khách Hàn Quốc (2 đêm)",
-    "title": "Độ khớp Rất Cao (96%) • Cạnh tranh căn Ocean Suite trống cuối (#130)",
+    "sub": "Phiên Live #CRQ-8942 • Hạng bắt buộc: Executive • Đang chờ nhả khóa tạm #130",
+    "title": "Độ khớp 96% • Đang bị chặn chọn thanh toán do #130 khóa tạm 10p (#CRQ-8944)",
     "items": [
       {
         "name": "Điều kiện Cứng (Hard Rule): Hạng phòng Executive",
         "guest": "Executive • Khu vực biển Mỹ Khê",
-        "hotel": "Executive Ocean Suite (#130 đang mở)",
-        "status": "match",
-        "label": "Đạt chuẩn cứng"
+        "hotel": "Executive Ocean Suite (#130 đang giữ 10p cho #CRQ-8944)",
+        "status": "warn",
+        "label": "Đang tạm khóa 10p"
       },
       {
         "name": "Giường & Tầm nhìn biển",
@@ -72,19 +72,19 @@
         "label": "-4% Soft Rule"
       }
     ],
-    "tip": "Lưu ý Pay-to-Lock: Phòng #130 đang tham gia đồng thời #CRQ-8942 và #CRQ-8944. Ai hoàn tất thanh toán 100% qua NHN KCP trước sẽ khóa phòng #130 và tự động rút phiên còn lại!",
+    "tip": "Cơ chế Khóa ghế 10p (Movie-Seat Hold): Phòng #130 đang khóa tạm chờ #CRQ-8944 thanh toán. Trong 10 phút này #CRQ-8942 không thể click tranh phòng. Nếu #CRQ-8944 hết hạn 10p hoặc lỗi thẻ, #130 tự mở khóa lại ngay cho #CRQ-8942!",
     "suggestedPerkId": "perk_tea"
   },
   "CRQ-8943": {
     "reqId": "CRQ-8943",
     "score": 95,
     "sub": "Phiên Live #CRQ-8943 • Hạng bắt buộc: Deluxe • Khách công tác 2 đêm",
-    "title": "Khớp 95% tiêu chí công tác • Sẵn 2 phòng trống (#119, #120)",
+    "title": "Khớp 95% tiêu chí công tác • Sẵn 5 phòng trống mở ngày 09/11",
     "items": [
       {
         "name": "Điều kiện Cứng (Hard Rule): Hạng Deluxe",
         "guest": "Deluxe • Đà Nẵng",
-        "hotel": "Deluxe Twin City View (2 phòng trống mở)",
+        "hotel": "Deluxe Twin City View (5 phòng trống mở ngày 09/11)",
         "status": "match",
         "label": "Đạt chuẩn cứng"
       },
@@ -109,15 +109,15 @@
   "CRQ-8944": {
     "reqId": "CRQ-8944",
     "score": 94,
-    "sub": "Phiên Live #CRQ-8944 • Đã gửi báo giá 1 lần • Chờ khách thanh toán 100%",
-    "title": "Khớp 94% • Đang chờ khách TT để khóa phòng #130",
+    "sub": "Phiên Live #CRQ-8944 • Đang TẠM KHÓA PHÒNG #130 (10 phút) chờ thanh toán KCP",
+    "title": "Khớp 94% • Ghế/Phòng #130 đang khóa độc quyền 10p cho khách thanh toán",
     "items": [
       {
-        "name": "Điều kiện Cứng (Hard Rule): Hạng Executive",
-        "guest": "Executive • Nhận phòng tối nay 06/11",
-        "hotel": "Executive Ocean Suite (#130 chưa khóa)",
+        "name": "Điều kiện Cứng (Hard Rule) & Khóa tạm 10p",
+        "guest": "Executive • Đã bấm Chọn chào giá lúc 19:43",
+        "hotel": "Phòng #130 đang TEMP_LOCKED_PAYMENT (10:00 TTL)",
         "status": "match",
-        "label": "Đạt chuẩn cứng"
+        "label": "Giữ độc quyền 10p"
       },
       {
         "name": "Truyền hình OTT (Netflix/YouTube) & Hồ bơi",
@@ -127,12 +127,35 @@
         "label": "Khớp 100%"
       }
     ],
-    "tip": "Bạn đã gửi báo giá 1 lần (1.950.000đ/đêm + Buffet sáng). Theo quy tắc One-Shot Bid, giá đã khóa cố định 60 phút nhưng phòng #130 vẫn mở cho #CRQ-8942 tới khi có người thanh toán."
+    "tip": "Khách đang ở cổng NHN KCP (còn ~8 phút giữ chỗ). Tuyệt đối không giục khách bấm tạo lại giao dịch mới khi cổng đang xử lý để chống trừ tiền đúp!"
+  },
+  "CRQ-8945": {
+    "reqId": "CRQ-8945",
+    "score": 95,
+    "sub": "Phiên Live #CRQ-8945 • Auto-Bid đã gửi 810.000đ + Buffet sáng • Chờ khách chọn",
+    "title": "Khớp 95% • Còn 3 phòng trống mở (#108–#110) sẵn sàng giữ khóa 10p",
+    "items": [
+      {
+        "name": "Điều kiện Cứng (Hard Rule): Superior Double",
+        "guest": "Superior • Cặp đôi nghỉ 2 đêm (06/11–08/11)",
+        "hotel": "Superior Double (#108, #109, #110 đang trống mở)",
+        "status": "match",
+        "label": "Đạt chuẩn cứng"
+      },
+      {
+        "name": "Buffet sáng đính kèm từ Auto-Bid",
+        "guest": "Ưu tiên có ăn sáng",
+        "hotel": "Đã tặng kèm Buffet sáng 2 khách (+8% bù điểm khớp)",
+        "status": "match",
+        "label": "Đã bù đặc quyền"
+      }
+    ],
+    "tip": "Khi khách bấm 'Chọn chào giá & Thanh toán', hệ thống sẽ lập tức khóa tạm phòng #108 trong 10 phút (600s) để bảo vệ khách nhập OTP."
   },
   "CRQ-8924": {
     "reqId": "CRQ-8924",
     "score": 88,
-    "sub": "Phiên trượt #CRQ-8924 (05/11) • Khách chọn đối thủ cùng phân khúc 4 sao",
+    "sub": "Phiên trượt #CRQ-8924 (05/11) • Mã từ chối: REJ_PRICE_HIGH",
     "title": "Đạt Hard Rules nhưng kém điểm mềm Trả phòng trễ & Giá cao hơn 250k",
     "items": [
       {

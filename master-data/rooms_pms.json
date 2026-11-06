@@ -8,6 +8,8 @@
     "status": "booked_other",
     "sourceChannel": "Booking.com",
     "linkedReqId": null,
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": true
   },
   {
@@ -19,6 +21,8 @@
     "status": "booked_other",
     "sourceChannel": "Agoda",
     "linkedReqId": null,
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": false
   },
   {
@@ -30,6 +34,8 @@
     "status": "booked_other",
     "sourceChannel": "Walk-in / Doanh nghiệp",
     "linkedReqId": null,
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": true
   },
   {
@@ -41,6 +47,8 @@
     "status": "booked_other",
     "sourceChannel": "Traveloka",
     "linkedReqId": null,
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": false
   },
   {
@@ -52,6 +60,8 @@
     "status": "booked_other",
     "sourceChannel": "Booking.com",
     "linkedReqId": null,
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": false
   },
   {
@@ -63,6 +73,8 @@
     "status": "booked_auction",
     "sourceChannel": "goodNstay (Đã TT 100%)",
     "linkedReqId": "CRQ-8939",
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": false
   },
   {
@@ -74,6 +86,8 @@
     "status": "booked_auction",
     "sourceChannel": "goodNstay (Đã TT 100%)",
     "linkedReqId": "CRQ-8921",
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": true
   },
   {
@@ -85,6 +99,8 @@
     "status": "vacant_unlocked",
     "sourceChannel": "Trống • Mở đấu giá",
     "linkedReqId": null,
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": false
   },
   {
@@ -96,6 +112,8 @@
     "status": "vacant_unlocked",
     "sourceChannel": "Trống • Mở đấu giá",
     "linkedReqId": null,
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": false
   },
   {
@@ -107,6 +125,8 @@
     "status": "vacant_unlocked",
     "sourceChannel": "Trống • Mở đấu giá",
     "linkedReqId": null,
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": false
   },
   {
@@ -118,6 +138,8 @@
     "status": "booked_other",
     "sourceChannel": "Agoda",
     "linkedReqId": null,
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": false
   },
   {
@@ -129,6 +151,8 @@
     "status": "booked_other",
     "sourceChannel": "Walk-in / Doanh nghiệp",
     "linkedReqId": null,
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": true
   },
   {
@@ -140,6 +164,8 @@
     "status": "booked_other",
     "sourceChannel": "Traveloka",
     "linkedReqId": null,
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": false
   },
   {
@@ -151,6 +177,8 @@
     "status": "booked_other",
     "sourceChannel": "Booking.com",
     "linkedReqId": null,
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": false
   },
   {
@@ -162,6 +190,8 @@
     "status": "booked_other",
     "sourceChannel": "Agoda",
     "linkedReqId": null,
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": true
   },
   {
@@ -173,6 +203,8 @@
     "status": "booked_auction",
     "sourceChannel": "goodNstay (Đã TT 100%)",
     "linkedReqId": "CRQ-8940",
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": false
   },
   {
@@ -184,6 +216,8 @@
     "status": "booked_auction",
     "sourceChannel": "goodNstay (Đã TT 100%)",
     "linkedReqId": "CRQ-8936",
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": false
   },
   {
@@ -195,6 +229,8 @@
     "status": "booked_auction",
     "sourceChannel": "goodNstay (Đã TT 100%)",
     "linkedReqId": "CRQ-8915",
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": true
   },
   {
@@ -206,6 +242,8 @@
     "status": "vacant_unlocked",
     "sourceChannel": "Trống • Mở đấu giá",
     "linkedReqId": null,
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": false
   },
   {
@@ -217,6 +255,8 @@
     "status": "vacant_unlocked",
     "sourceChannel": "Trống • Mở đấu giá",
     "linkedReqId": null,
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": false
   },
   {
@@ -228,6 +268,8 @@
     "status": "booked_other",
     "sourceChannel": "Booking.com",
     "linkedReqId": null,
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": true
   },
   {
@@ -239,6 +281,8 @@
     "status": "booked_other",
     "sourceChannel": "Agoda",
     "linkedReqId": null,
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": false
   },
   {
@@ -250,6 +294,8 @@
     "status": "booked_other",
     "sourceChannel": "Walk-in / Doanh nghiệp",
     "linkedReqId": null,
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": false
   },
   {
@@ -261,6 +307,8 @@
     "status": "booked_other",
     "sourceChannel": "Traveloka",
     "linkedReqId": null,
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": false
   },
   {
@@ -272,6 +320,8 @@
     "status": "booked_auction",
     "sourceChannel": "goodNstay (Đã TT 100%)",
     "linkedReqId": "CRQ-8938",
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": false
   },
   {
@@ -283,6 +333,8 @@
     "status": "booked_auction",
     "sourceChannel": "goodNstay (Đã TT 100%)",
     "linkedReqId": "CRQ-8904",
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": true
   },
   {
@@ -294,7 +346,9 @@
     "status": "booked_other",
     "sourceChannel": "Booking.com",
     "linkedReqId": null,
-    "checkOutTomorrow": true
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
+    "checkOutTomorrow": false
   },
   {
     "roomNumber": 128,
@@ -305,6 +359,8 @@
     "status": "booked_other",
     "sourceChannel": "Agoda",
     "linkedReqId": null,
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
     "checkOutTomorrow": false
   },
   {
@@ -316,7 +372,9 @@
     "status": "booked_auction",
     "sourceChannel": "goodNstay (Đã TT 100%)",
     "linkedReqId": "CRQ-8934",
-    "checkOutTomorrow": false
+    "holdRemainingSeconds": null,
+    "holdTotalSeconds": null,
+    "checkOutTomorrow": true
   },
   {
     "roomNumber": 130,
@@ -324,9 +382,11 @@
     "roomClassId": "osuite",
     "roomClass": "Executive Ocean Suite",
     "category": "Executive",
-    "status": "vacant_unlocked",
-    "sourceChannel": "Trống • Mở đấu giá",
-    "linkedReqId": null,
+    "status": "payment_hold",
+    "sourceChannel": "Tạm khóa chờ TT (10p)",
+    "linkedReqId": "CRQ-8944",
+    "holdRemainingSeconds": 495,
+    "holdTotalSeconds": 600,
     "checkOutTomorrow": false
   }
 ]

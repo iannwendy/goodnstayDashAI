@@ -200,6 +200,9 @@ export default defineConfig({
     port: 5182,
     strictPort: true,
     allowedHosts: [".trycloudflare.com"],
+    watch: {
+      ignored: ["**/master-data/**"],
+    },
   },
   preview: {
     host: "0.0.0.0",

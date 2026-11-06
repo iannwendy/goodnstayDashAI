@@ -13,6 +13,9 @@ import {
   SlidersHorizontal,
   ShieldCheck,
   ChevronUp,
+  Trash2,
+  XCircle,
+  Building2,
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -39,6 +42,8 @@ import {
   formatFullVnd,
   parseStayDayOffsets,
   type AuctionSessionMasterRecord,
+  type BranchFilter,
+  type DailyRoomCell,
   type DateRangeKey,
   type HistoryStatus,
   type KpiType,
@@ -57,23 +62,134 @@ import { computeDashboardAnalytics } from "@/services/analyticsEngine";
 import { KpiDrilldownModal } from "@/components/KpiDrilldownModal";
 import { MatchBreakdownModal } from "@/components/MatchBreakdownModal";
 import { CustomBidModal } from "@/components/CustomBidModal";
-import { RoomScheduleExplorer } from "@/components/RoomScheduleExplorer";
+import {
+  RoomScheduleExplorer,
+  type ExplorerStatusFilter,
+  type ExplorerViewMode,
+} from "@/components/RoomScheduleExplorer";
+import { PaymentConversionFunnelPanel } from "@/components/PaymentConversionFunnelPanel";
+import { SelectionBenchmarkLinePanel } from "@/components/SelectionBenchmarkLinePanel";
+
+interface PersistedUiPrefs {
+  activeTab: MainTab;
+  dateRange: DateRangeKey;
+  branchFilter: BranchFilter;
+  userRole: UserRole;
+  showFormulas: boolean;
+  historyFilter: "all" | HistoryStatus;
+  selectedAutopsyId: string;
+  selectedScheduleDayOffset: number;
+  explorerViewMode: ExplorerViewMode;
+  explorerStatusFilter: ExplorerStatusFilter;
+  explorerClassFilter: string;
+  selectedRoomNum: number;
+}
+
+const DEFAULT_UI_STATE: PersistedUiPrefs = {
+  activeTab: "workspace",
+  dateRange: "30d",
+  branchFilter: "all",
+  userRole: "manager",
+  showFormulas: false,
+  historyFilter: "all",
+  selectedAutopsyId: "CRQ-8924",
+  selectedScheduleDayOffset: 0,
+  explorerViewMode: "day",
+  explorerStatusFilter: "all",
+  explorerClassFilter: "all",
+  selectedRoomNum: 108,
+};
+
+const UI_PREFS_STORAGE_KEY = "gns_ui_state_v26";
+
+function readInitialUiPrefs(): Partial<PersistedUiPrefs> {
+  try {
+    const raw = localStorage.getItem(UI_PREFS_STORAGE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw) as Partial<PersistedUiPrefs>;
+  } catch {
+    return {};
+  }
+}
 
 export function App() {
+  const initialUi = useMemo(() => readInitialUiPrefs(), []);
+
   const [bundle, setBundle] = useState<MasterDataBundle | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [activeTab, setActiveTab] = useState<MainTab>("workspace");
-  const [dateRange, setDateRange] = useState<DateRangeKey>("30d");
-  const [userRole, setUserRole] = useState<UserRole>("manager");
-  const [showFormulas, setShowFormulas] = useState<boolean>(false);
-  const [historyFilter, setHistoryFilter] = useState<"all" | HistoryStatus>(
-    "all",
+  const [activeTab, setActiveTab] = useState<MainTab>(
+    initialUi.activeTab ?? "workspace",
   );
-  const [selectedAutopsyId, setSelectedAutopsyId] =
-    useState<string>("CRQ-8924");
+  const [dateRange, setDateRange] = useState<DateRangeKey>(
+    initialUi.dateRange ?? "30d",
+  );
+  const [branchFilter, setBranchFilter] = useState<BranchFilter>(
+    initialUi.branchFilter ?? "all",
+  );
+  const [userRole, setUserRole] = useState<UserRole>(
+    initialUi.userRole ?? "manager",
+  );
+  const [showFormulas, setShowFormulas] = useState<boolean>(
+    initialUi.showFormulas ?? false,
+  );
+  const [historyFilter, setHistoryFilter] = useState<"all" | HistoryStatus>(
+    initialUi.historyFilter ?? "all",
+  );
+  const [selectedAutopsyId, setSelectedAutopsyId] = useState<string>(
+    initialUi.selectedAutopsyId ?? "CRQ-8924",
+  );
+  const [selectedScheduleDayOffset, setSelectedScheduleDayOffset] =
+    useState<number>(initialUi.selectedScheduleDayOffset ?? 0);
+  const [explorerViewMode, setExplorerViewMode] = useState<ExplorerViewMode>(
+    initialUi.explorerViewMode ?? "day",
+  );
+  const [explorerStatusFilter, setExplorerStatusFilter] =
+    useState<ExplorerStatusFilter>(initialUi.explorerStatusFilter ?? "all");
+  const [explorerClassFilter, setExplorerClassFilter] = useState<string>(
+    initialUi.explorerClassFilter ?? "all",
+  );
+  const [selectedRoomNum, setSelectedRoomNum] = useState<number>(
+    initialUi.selectedRoomNum ?? 108,
+  );
   const [liveCountdowns, setLiveCountdowns] = useState<Record<string, number>>(
     {},
   );
+
+  // Persist UI preferences across modal close, tab switches, and page reloads
+  useEffect(() => {
+    try {
+      const prefs: PersistedUiPrefs = {
+        activeTab,
+        dateRange,
+        branchFilter,
+        userRole,
+        showFormulas,
+        historyFilter,
+        selectedAutopsyId,
+        selectedScheduleDayOffset,
+        explorerViewMode,
+        explorerStatusFilter,
+        explorerClassFilter,
+        selectedRoomNum,
+      };
+      localStorage.setItem(UI_PREFS_STORAGE_KEY, JSON.stringify(prefs));
+    } catch {
+      // Ignore quota errors
+    }
+  }, [
+    activeTab,
+    dateRange,
+    branchFilter,
+    userRole,
+    showFormulas,
+    historyFilter,
+    selectedAutopsyId,
+    selectedScheduleDayOffset,
+    explorerViewMode,
+    explorerStatusFilter,
+    explorerClassFilter,
+    selectedRoomNum,
+  ]);
 
   // Modals
   const [activeKpiModal, setActiveKpiModal] = useState<KpiType | null>(null);
@@ -144,8 +260,13 @@ export function App() {
 
   const analytics = useMemo(() => {
     if (!bundle) return null;
-    return computeDashboardAnalytics(bundle, dateRange, liveCountdowns);
-  }, [bundle, dateRange, liveCountdowns]);
+    return computeDashboardAnalytics(
+      bundle,
+      dateRange,
+      liveCountdowns,
+      branchFilter,
+    );
+  }, [bundle, dateRange, liveCountdowns, branchFilter]);
 
   const currentUser = useMemo(() => {
     if (!bundle) return null;
@@ -234,10 +355,15 @@ export function App() {
     const effectiveOffsets = stayOffsets.length > 0 ? stayOffsets : [0];
     const includesTonight = effectiveOffsets.includes(0);
 
-    // Find a room in this class that is vacant across ALL nights of the stay
+    // Find a room in this class that is vacant across ALL nights of the stay (preferring session's branch)
     const classRooms = bundle.roomsPms
       .filter((r) => r.roomClassId === session.matchedRoomClassId)
-      .sort((a, b) => a.roomNumber - b.roomNumber);
+      .sort(
+        (a, b) =>
+          Number(b.branchId === session.branchId) -
+            Number(a.branchId === session.branchId) ||
+          a.roomNumber - b.roomNumber,
+      );
 
     const candidateAcrossAllNights = classRooms.find((r) =>
       effectiveOffsets.every((off) => {
@@ -335,6 +461,8 @@ export function App() {
         if (s.id === session.id) {
           return {
             ...s,
+            branchId: lockedRoom.branchId,
+            branchName: lockedRoom.branchName,
             status: "won",
             sessionDate: bundle.hotelProfile.referenceDate,
             dateTimeLabel: "06/11 • Vừa TT 100%",
@@ -346,7 +474,6 @@ export function App() {
             offeredBasePrice,
             hotelEarnedBase: baseAmt,
             guestPaidTotal: guestPaidAmt,
-            medicalRefund: 0,
             bidMode: session.bidSubmitted?.mode === "auto" ? "auto" : "manual",
             responseMinutes: 1.5,
             guestOpenedDetail: true,
@@ -396,13 +523,232 @@ export function App() {
 
     if (autoClosedSiblingIds.length > 0) {
       showToast(
-        `Khách #${session.id} đã TT 100% (${formatFullVnd(guestPaidAmt)}) → Khóa phòng #${lockedRoom.roomNumber} & tự đóng phiên trùng #${autoClosedSiblingIds.join(", #")}.`,
+        `Khách #${session.id} đã TT 100% → Khóa phòng #${lockedRoom.roomNumber} (${lockedRoom.branchName}) & tự đóng phiên trùng #${autoClosedSiblingIds.join(", #")}.`,
       );
     } else {
       showToast(
-        `Khách #${session.id} đã TT 100% (${formatFullVnd(guestPaidAmt)}) → Đã khóa phòng #${lockedRoom.roomNumber} (KS nhận 100%: ${formatFullVnd(baseAmt)}).`,
+        `Khách #${session.id} đã TT 100% → Đã khóa phòng #${lockedRoom.roomNumber} (${lockedRoom.branchName} · Doanh thu +${formatFullVnd(baseAmt)}).`,
       );
     }
+  };
+
+  // Toggle Manual Lock / Unlock on any physical room #101-#130 (Today Day 0 or Future Days 1..13)
+  const handleToggleRoomLock = async (
+    dayOffset: number,
+    cell: DailyRoomCell,
+  ) => {
+    if (!bundle || !analytics) return;
+
+    if (cell.status === "booked_auction") {
+      showToast(
+        `Phòng #${cell.roomNumber} đã được khách #${cell.linkedReqId ?? "goodNstay"} thanh toán 100% — hệ thống khóa cứng bảo vệ khách (không thể mở khóa thủ công).`,
+      );
+      return;
+    }
+
+    const willLock = cell.status === "vacant_unlocked";
+
+    if (dayOffset === 0) {
+      const nextRoomsPms: PmsRoomRecord[] = bundle.roomsPms.map((r) =>
+        r.roomNumber === cell.roomNumber
+          ? willLock
+            ? {
+                ...r,
+                status: "booked_other",
+                sourceChannel: "Lễ tân / Khóa tay",
+                linkedReqId: null,
+                checkOutTomorrow: false,
+              }
+            : {
+                ...r,
+                status: "vacant_unlocked",
+                sourceChannel: "Trống · Mở đấu giá",
+                linkedReqId: null,
+                checkOutTomorrow: false,
+              }
+          : r,
+      );
+
+      const nextOther = nextRoomsPms.filter(
+        (r) => r.status === "booked_other",
+      ).length;
+      const nextAuction = nextRoomsPms.filter(
+        (r) => r.status === "booked_auction",
+      ).length;
+      const nextVacant = Math.max(
+        0,
+        bundle.hotelProfile.totalRooms - (nextOther + nextAuction),
+      );
+
+      const nextCalendar14d = bundle.calendar14dPms.map((d) =>
+        d.dayOffset === 0
+          ? {
+              ...d,
+              otherBooked: nextOther,
+              auctionBooked: nextAuction,
+              vacantRooms: nextVacant,
+            }
+          : d,
+      );
+
+      setBundle({
+        ...bundle,
+        roomsPms: nextRoomsPms,
+        calendar14dPms: nextCalendar14d,
+      });
+
+      await Promise.all([
+        persistMasterTable("roomsPms", nextRoomsPms),
+        persistMasterTable("calendar14dPms", nextCalendar14d),
+      ]);
+
+      showToast(
+        willLock
+          ? `Đã KHÓA thủ công phòng #${cell.roomNumber} (${cell.roomClass}) hôm nay · Quỹ phòng đấu giá còn ${nextVacant} phòng trống.`
+          : `Đã MỞ KHÓA phòng #${cell.roomNumber} (${cell.roomClass}) vào quỹ đấu giá hôm nay · Hiện có ${nextVacant} phòng trống.`,
+      );
+      return;
+    }
+
+    // Future Day (dayOffset = 1..13)
+    const targetSched = analytics.dailyRoomSchedules[dayOffset];
+    const dateStr = targetSched?.dateStr ?? `Ngày +${dayOffset}`;
+    const nextCalendar14d = bundle.calendar14dPms.map((d) => {
+      if (d.dayOffset !== dayOffset) return d;
+      const prevOverrides = d.manualOverrides ?? {};
+      const nextOverrides: Record<string, "vacant_unlocked" | "booked_other"> =
+        {
+          ...prevOverrides,
+          [String(cell.roomNumber)]: willLock
+            ? "booked_other"
+            : "vacant_unlocked",
+        };
+      return {
+        ...d,
+        manualOverrides: nextOverrides,
+      };
+    });
+
+    setBundle({
+      ...bundle,
+      calendar14dPms: nextCalendar14d,
+    });
+    await persistMasterTable("calendar14dPms", nextCalendar14d);
+
+    showToast(
+      willLock
+        ? `Đã KHÓA thủ công phòng #${cell.roomNumber} ngày ${dateStr}.`
+        : `Đã MỞ KHÓA phòng #${cell.roomNumber} nhận đấu giá ngày ${dateStr}.`,
+    );
+  };
+
+  // Quick Lock / Unlock 1 room in a Room Class (operates on currently selected schedule date!)
+  const handleQuickClassLockToggle = async (
+    roomClassId: string,
+    action: "lock" | "unlock",
+  ) => {
+    if (!analytics) return;
+    const activeSched =
+      analytics.dailyRoomSchedules.find(
+        (d) => d.dayOffset === selectedScheduleDayOffset,
+      ) ?? analytics.dailyRoomSchedules[0];
+    const dayRooms = activeSched?.rooms ?? [];
+    const targetCell =
+      action === "lock"
+        ? dayRooms
+            .filter(
+              (r) =>
+                r.roomClassId === roomClassId && r.status === "vacant_unlocked",
+            )
+            .at(-1)
+        : dayRooms.find(
+            (r) => r.roomClassId === roomClassId && r.status === "booked_other",
+          );
+    if (!targetCell) {
+      showToast(
+        action === "lock"
+          ? `Hạng phòng này không còn phòng trống để khóa thêm trong ngày ${activeSched?.dateStr ?? "06/11"}.`
+          : `Các phòng đã khóa còn lại ngày ${activeSched?.dateStr ?? "06/11"} đều là đơn goodNstay TT 100% (đã khóa bảo vệ khách).`,
+      );
+      return;
+    }
+    setSelectedRoomNum(targetCell.roomNumber);
+    await handleToggleRoomLock(activeSched.dayOffset, targetCell);
+  };
+
+  // Run Auto-Bid on all eligible open Live Sessions
+  const handleRunAutoBidNow = async () => {
+    if (!bundle || !analytics) return;
+    const eligibleOpen = analytics.liveSessions.filter(
+      (ls) =>
+        ls.remainingSeconds > 0 &&
+        !ls.bidSubmitted &&
+        ls.isAutoBidEligible &&
+        ls.vacantForStay > 0,
+    );
+    if (eligibleOpen.length === 0) {
+      showToast("Hiện không có phiên Live nào cần chạy Auto-Bid thêm.");
+      return;
+    }
+    const eligibleMap = new Map(eligibleOpen.map((ls) => [ls.id, ls]));
+    const nextSessions: AuctionSessionMasterRecord[] =
+      bundle.auctionSessions.map((s) => {
+        const ls = eligibleMap.get(s.id);
+        if (!ls) return s;
+        return {
+          ...s,
+          bidSubmitted: {
+            basePrice: ls.aiSuggestedBasePrice,
+            perks: ["Miễn phí Buffet sáng 2 khách"],
+            submittedAtText: "Auto-Bid gửi tự động · Chờ khách TT 100%",
+            mode: "auto",
+          },
+        };
+      });
+
+    setBundle({ ...bundle, auctionSessions: nextSessions });
+    await persistMasterTable("auctionSessions", nextSessions);
+    showToast(
+      `Auto-Bid đã tự động gửi báo giá 1 lần cho ${eligibleOpen.length} phiên hợp lệ (${eligibleOpen.map((x) => `#${x.id}`).join(", ")}).`,
+    );
+  };
+
+  // Simulate Guest Rejecting a Submitted Bid (tests Loss Rate & Pareto chart)
+  const handleSimulateGuestReject = async (session: LiveSession) => {
+    if (!bundle) return;
+    const offeredBasePrice =
+      session.bidSubmitted?.basePrice ?? session.aiSuggestedBasePrice;
+    const staySpanClean = session.checkInDateRange.split(" (")[0];
+
+    const nextSessions: AuctionSessionMasterRecord[] =
+      bundle.auctionSessions.map((s) => {
+        if (s.id !== session.id) return s;
+        return {
+          ...s,
+          status: "rejected",
+          sessionDate: bundle.hotelProfile.referenceDate,
+          dateTimeLabel: "06/11 • Khách từ chối",
+          stayDatesLabel: staySpanClean,
+          guestRequestTitle: session.guestSummary,
+          amenitiesTags: session.amenities,
+          roomCategory: session.mandatoryRoomCategory,
+          offeredRoom: session.matchedRoomName,
+          offeredBasePrice,
+          bidMode: session.bidSubmitted?.mode === "auto" ? "auto" : "manual",
+          responseMinutes: 1.8,
+          guestOpenedDetail: true,
+          lossReasonId: "price_high",
+          resultNote: "Khách chọn đối thủ cùng khu vực có giá mềm hơn",
+          autopsyId: "CRQ-8924",
+          showInHistory: true,
+        };
+      });
+
+    setBundle({ ...bundle, auctionSessions: nextSessions });
+    await persistMasterTable("auctionSessions", nextSessions);
+    showToast(
+      `Đã mô phỏng khách từ chối #${session.id} → Tỷ lệ được chọn & biểu đồ Pareto nguyên nhân trượt đã cập nhật.`,
+    );
   };
 
   // Save Auto-Bid Rule from Loss Autopsy
@@ -410,26 +756,53 @@ export function App() {
     if (!bundle) return;
     const exists = bundle.botRules.some((r) => r.sourceCaseId === caseId);
     if (exists) {
-      showToast("Quy tắc Auto-Bid này đã được kích hoạt.");
+      showToast("Quy tắc Auto-Bid này đã có trong danh sách bên dưới.");
       return;
     }
     const nextRules = [
       ...bundle.botRules,
       {
-        ruleId: `RULE-00${bundle.botRules.length + 1}`,
+        ruleId: `RULE-0${bundle.botRules.length + 1}`,
         title: ruleTitle,
         active: true,
-        createdAt: new Date().toISOString(),
+        createdAt: bundle.hotelProfile.referenceDate,
         sourceCaseId: caseId,
       },
     ];
     setBundle({ ...bundle, botRules: nextRules });
     await persistMasterTable("botRules", nextRules);
-    showToast(`Đã kích hoạt quy tắc Auto-Bid: "${ruleTitle}"`);
+    showToast(`Đã thêm & kích hoạt quy tắc Auto-Bid: "${ruleTitle}"`);
   };
 
-  // Reset Master Data to Seed
+  const handleToggleBotRule = async (ruleId: string, checked: boolean) => {
+    if (!bundle) return;
+    const nextRules = bundle.botRules.map((r) =>
+      r.ruleId === ruleId ? { ...r, active: checked } : r,
+    );
+    setBundle({ ...bundle, botRules: nextRules });
+    await persistMasterTable("botRules", nextRules);
+    showToast(
+      checked
+        ? `Đã bật quy tắc ${ruleId}.`
+        : `Đã tạm tắt quy tắc ${ruleId}.`,
+    );
+  };
+
+  const handleDeleteBotRule = async (ruleId: string) => {
+    if (!bundle) return;
+    const nextRules = bundle.botRules.filter((r) => r.ruleId !== ruleId);
+    setBundle({ ...bundle, botRules: nextRules });
+    await persistMasterTable("botRules", nextRules);
+    showToast(`Đã xóa quy tắc ${ruleId} khỏi cấu hình Auto-Bid.`);
+  };
+
+  // Reset Master Data & UI State to Clean Seed
   const handleResetDemo = async () => {
+    try {
+      localStorage.removeItem(UI_PREFS_STORAGE_KEY);
+    } catch {
+      // ignore
+    }
     const fresh = await resetMasterDataToSeed();
     setBundle(fresh.bundle);
     const freshCountdowns: Record<string, number> = {};
@@ -440,7 +813,19 @@ export function App() {
       }
     });
     setLiveCountdowns(freshCountdowns);
-    showToast("Đã khôi phục dữ liệu mẫu ngày 06/11/2026.");
+    setActiveTab(DEFAULT_UI_STATE.activeTab);
+    setDateRange(DEFAULT_UI_STATE.dateRange);
+    setBranchFilter(DEFAULT_UI_STATE.branchFilter);
+    setUserRole(DEFAULT_UI_STATE.userRole);
+    setShowFormulas(DEFAULT_UI_STATE.showFormulas);
+    setSelectedScheduleDayOffset(DEFAULT_UI_STATE.selectedScheduleDayOffset);
+    setExplorerViewMode(DEFAULT_UI_STATE.explorerViewMode);
+    setExplorerStatusFilter(DEFAULT_UI_STATE.explorerStatusFilter);
+    setExplorerClassFilter(DEFAULT_UI_STATE.explorerClassFilter);
+    setSelectedRoomNum(DEFAULT_UI_STATE.selectedRoomNum);
+    setHistoryFilter(DEFAULT_UI_STATE.historyFilter);
+    setSelectedAutopsyId(DEFAULT_UI_STATE.selectedAutopsyId);
+    showToast("Đã khôi phục dữ liệu mẫu & lịch phòng về ngày 06/11/2026.");
   };
 
   if (loading || !bundle || !analytics) {
@@ -453,11 +838,55 @@ export function App() {
 
   const { hotelProfile, systemBenchmarks } = bundle;
   const { periodMetrics } = analytics;
+  const selectedDaySchedule =
+    analytics.dailyRoomSchedules.find(
+      (d) => d.dayOffset === selectedScheduleDayOffset,
+    ) ?? analytics.dailyRoomSchedules[0];
+  const selectedDayOccupied =
+    selectedDaySchedule.otherBooked + selectedDaySchedule.auctionBooked;
+
+  const openRoomScheduleForSession = (
+    session: LiveSession,
+    modalType: "rooms_vacant" | "rooms_occupied" = "rooms_vacant",
+  ) => {
+    const offsets = parseStayDayOffsets(
+      session.checkInDateRange,
+      hotelProfile.referenceDate,
+      session.nights,
+    );
+    const blockedOff = offsets.find((off) => {
+      const sched = analytics.dailyRoomSchedules[off];
+      const vac =
+        sched?.rooms.filter(
+          (r) =>
+            r.roomClassId === session.matchedRoomClassId &&
+            r.status === "vacant_unlocked",
+        ).length ?? 0;
+      return vac <= 0;
+    });
+    const targetOffset = blockedOff ?? offsets[0] ?? 0;
+    setSelectedScheduleDayOffset(targetOffset);
+    setExplorerStatusFilter("all");
+    setExplorerClassFilter("all");
+    setActiveKpiModal(modalType);
+  };
+
   const activeCustomBidSession =
     analytics.liveSessions.find((s) => s.id === customBidSessionId) ?? null;
   const filteredHistory = analytics.historySessions.filter((h) =>
     historyFilter === "all" ? true : h.status === historyFilter,
   );
+  const historyCounts: Record<"all" | HistoryStatus, number> = {
+    all: analytics.historySessions.length,
+    won: analytics.historySessions.filter((h) => h.status === "won").length,
+    rejected: analytics.historySessions.filter((h) => h.status === "rejected")
+      .length,
+    expired: analytics.historySessions.filter((h) => h.status === "expired")
+      .length,
+    auto_closed: analytics.historySessions.filter(
+      (h) => h.status === "auto_closed",
+    ).length,
+  };
   const activeAutopsy =
     bundle.lossAutopsies[selectedAutopsyId] ??
     Object.values(bundle.lossAutopsies)[0];
@@ -502,12 +931,12 @@ export function App() {
               <span className="text-zinc-300 hidden sm:inline">/</span>
               <span className="text-xs text-zinc-500 truncate hidden sm:inline">
                 {hotelProfile.hotelName} · {hotelProfile.starRating}★ ·{" "}
-                {hotelProfile.totalRooms} phòng
+                {analytics.scopedTotalRooms} phòng
               </span>
             </div>
           </div>
 
-          {/* Center: Clean Period Tabs + Single Date Badge */}
+          {/* Center: Clean Period Tabs + Branch Selector + Date Badge */}
           <div className="hidden lg:flex items-center gap-2 shrink-0">
             <div className="flex items-center bg-zinc-100 p-0.5 rounded-lg border border-zinc-200/70">
               {(["today", "7d", "30d"] as DateRangeKey[]).map((key) => {
@@ -529,7 +958,30 @@ export function App() {
                 );
               })}
             </div>
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-50 border border-zinc-200/80 text-xs font-mono text-zinc-600 whitespace-nowrap">
+
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-50 border border-zinc-200/80 text-xs text-zinc-700 whitespace-nowrap">
+              <Building2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+              <select
+                aria-label="Chọn chi nhánh"
+                data-testid="topbar-branch-select"
+                value={branchFilter}
+                onChange={(e) =>
+                  setBranchFilter(e.target.value as BranchFilter)
+                }
+                className="bg-transparent font-medium text-xs text-zinc-800 focus:outline-none cursor-pointer"
+              >
+                <option value="all">
+                  Tất cả chi nhánh ({hotelProfile.totalRooms})
+                </option>
+                {hotelProfile.branches.map((br) => (
+                  <option key={br.id} value={br.id}>
+                    {br.shortName} ({br.totalRooms})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <span className="hidden xl:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-50 border border-zinc-200/80 text-xs font-mono text-zinc-600 whitespace-nowrap">
               <Calendar className="w-3.5 h-3.5 text-zinc-400" />
               {periodMetrics.rangeText}
             </span>
@@ -601,8 +1053,8 @@ export function App() {
           </div>
         </div>
 
-        {/* Mobile Period Selector */}
-        <div className="lg:hidden px-4 py-2 border-t border-zinc-100 flex items-center justify-between gap-2 bg-zinc-50/60">
+        {/* Mobile Period & Branch Selector */}
+        <div className="lg:hidden px-4 py-2 border-t border-zinc-100 flex flex-wrap items-center justify-between gap-2 bg-zinc-50/60">
           <div className="flex items-center gap-1">
             {(["today", "7d", "30d"] as DateRangeKey[]).map((key) => {
               const p = systemBenchmarks.periodsMeta[key];
@@ -623,9 +1075,21 @@ export function App() {
               );
             })}
           </div>
-          <span className="text-[11px] font-mono text-zinc-500">
-            {periodMetrics.rangeText}
-          </span>
+
+          <select
+            aria-label="Chọn chi nhánh trên di động"
+            data-testid="mobile-branch-select"
+            value={branchFilter}
+            onChange={(e) => setBranchFilter(e.target.value as BranchFilter)}
+            className="h-7 px-2 rounded-md bg-white border border-zinc-200 text-xs font-medium text-zinc-800 cursor-pointer"
+          >
+            <option value="all">Tất cả CN ({hotelProfile.totalRooms})</option>
+            {hotelProfile.branches.map((br) => (
+              <option key={br.id} value={br.id}>
+                {br.shortName} ({br.totalRooms})
+              </option>
+            ))}
+          </select>
         </div>
       </header>
 
@@ -656,7 +1120,7 @@ export function App() {
           <section className="p-4 rounded-2xl bg-white border border-zinc-200/90 shadow-2xs space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-zinc-900">
-                Công thức & Quy tắc Nghiệp vụ Chuẩn goodNstay
+                Công thức &amp; Quy tắc Nghiệp vụ Chuẩn goodNstay
               </span>
               <button
                 type="button"
@@ -669,13 +1133,13 @@ export function App() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
               <div className="p-3 rounded-xl bg-zinc-50/80 space-y-1">
                 <div className="font-semibold text-zinc-900">
-                  1. Thực nhận ròng KS (0% hoa hồng)
+                  1. Doanh thu &amp; Giá bình quân đêm (ADR)
                 </div>
                 <div className="font-mono text-[11px] text-emerald-700">
-                  = 100% Giá gốc KS − Hoàn tiền y tế
+                  Doanh thu = 100% Giá gốc đơn TT · ADR = Doanh thu ÷ Đêm
                 </div>
                 <div className="text-zinc-500 text-[11px]">
-                  Khách sạn nhận đủ 100% giá gốc đã báo.
+                  Theo dõi theo ngày, tuần, tháng cho từng phòng &amp; chi nhánh.
                 </div>
               </div>
               <div className="p-3 rounded-xl bg-zinc-50/80 space-y-1">
@@ -691,7 +1155,7 @@ export function App() {
               </div>
               <div className="p-3 rounded-xl bg-zinc-50/80 space-y-1">
                 <div className="font-semibold text-zinc-900">
-                  3. Tỷ lệ chọn & Thị phần
+                  3. Tỷ lệ chọn &amp; Thị phần
                 </div>
                 <div className="font-mono text-[11px] text-zinc-800">
                   Tỷ lệ = Đơn TT 100% ÷ Phiên báo giá
@@ -719,18 +1183,21 @@ export function App() {
         {/* 4 SPACIOUS, CALM KPI CARDS (CLICKABLE FOR DRILLDOWN)                */}
         {/* =================================================================== */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Card 1: Net Revenue */}
+          {/* Card 1: Simple Hotel Revenue */}
           <button
             type="button"
+            data-testid="kpi-card-revenue"
             onClick={() => setActiveKpiModal("revenue_total")}
             className="text-left p-5 rounded-2xl bg-white border border-zinc-200/80 hover:border-zinc-300 shadow-2xs transition-all cursor-pointer flex flex-col justify-between gap-3"
           >
             <div className="flex items-center justify-between gap-2">
               <span className="text-xs font-medium text-zinc-500">
-                Thực nhận ròng ({periodMetrics.shortLabel})
+                Doanh thu ({periodMetrics.shortLabel})
               </span>
-              <span className="text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">
-                0% phí KS
+              <span className="text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md truncate max-w-[110px]">
+                {analytics.branchFilter === "all"
+                  ? "3 chi nhánh"
+                  : analytics.activeBranchLabel}
               </span>
             </div>
             <div className="flex items-baseline gap-2">
@@ -754,7 +1221,7 @@ export function App() {
             </div>
           </button>
 
-          {/* Card 2: Today ADR & Revenue */}
+          {/* Card 2: Period ADR & Base Revenue */}
           <button
             type="button"
             onClick={() => setActiveKpiModal("revenue_today")}
@@ -762,26 +1229,28 @@ export function App() {
           >
             <div className="flex items-center justify-between gap-2">
               <span className="text-xs font-medium text-zinc-500">
-                ADR hôm nay
+                ADR bình quân ({periodMetrics.shortLabel})
               </span>
               <span className="text-[11px] font-mono text-zinc-400">
-                06/11/2026
+                {periodMetrics.rangeText}
               </span>
             </div>
             <div className="flex items-baseline gap-1">
               <span className="text-2xl font-bold font-mono tracking-tight text-zinc-950">
-                {formatCompactVnd(analytics.todayBaseAdr)}
+                {formatFullVnd(periodMetrics.periodBaseAdr)}
               </span>
               <span className="text-xs text-zinc-400">/đêm</span>
             </div>
             <div className="flex items-center justify-between text-xs text-zinc-500">
               <span>
-                Doanh thu gốc:{" "}
+                Giá gốc:{" "}
                 <strong className="font-medium text-zinc-700">
-                  {formatCompactVnd(analytics.todayBaseRevenue)}đ
+                  {formatCompactVnd(periodMetrics.baseRevenue)}đ
                 </strong>
               </span>
-              <span>{analytics.todayTotalNights} đêm</span>
+              <span>
+                {periodMetrics.roomNightsSold} đêm ({periodMetrics.paidWonCount} đơn)
+              </span>
             </div>
           </button>
 
@@ -835,14 +1304,21 @@ export function App() {
                   e.stopPropagation();
                   setActiveKpiModal("sessions_total");
                 }}
-                className="font-mono text-[11px] text-zinc-500 hover:text-zinc-950 underline underline-offset-2 cursor-pointer"
+                className="font-mono text-[11px] text-zinc-500 hover:text-zinc-950 underline underline-offset-2 cursor-pointer inline-flex items-center gap-1"
               >
-                {periodMetrics.paidWonCount}/{periodMetrics.bidsSent} phiên
+                <span>
+                  {periodMetrics.paidWonCount}/{periodMetrics.bidsSent} phiên
+                </span>
+                {analytics.pendingLiveBidsCount > 0 && (
+                  <span className="no-underline px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[10px] font-medium">
+                    +{analytics.pendingLiveBidsCount} chờ TT
+                  </span>
+                )}
               </button>
             </div>
           </div>
 
-          {/* Card 4: Tonight Room Inventory (Vacant Unlocked vs Locked) */}
+          {/* Card 4: Active Selected Date Room Inventory (Vacant Unlocked vs Locked) */}
           <div
             role="button"
             tabIndex={0}
@@ -852,20 +1328,40 @@ export function App() {
                 setActiveKpiModal("rooms_vacant");
               }
             }}
-            className="text-left p-5 rounded-2xl bg-white border border-zinc-200/80 hover:border-zinc-300 shadow-2xs transition-all cursor-pointer flex flex-col justify-between gap-3"
+            className={`text-left p-5 rounded-2xl bg-white border transition-all cursor-pointer flex flex-col justify-between gap-3 shadow-2xs ${
+              selectedScheduleDayOffset > 0
+                ? "border-sky-300 hover:border-sky-400"
+                : "border-zinc-200/80 hover:border-zinc-300"
+            }`}
           >
             <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-medium text-zinc-500">
-                Quỹ phòng hôm nay
+              <span className="text-xs font-medium text-zinc-600 truncate">
+                {selectedScheduleDayOffset === 0
+                  ? `Quỹ phòng hôm nay (${selectedDaySchedule.dateStr})`
+                  : `Quỹ phòng ${selectedDaySchedule.dateStr} (${selectedDaySchedule.dayLabel})`}
               </span>
-              <span className="text-[11px] font-medium text-sky-700 bg-sky-50 px-2 py-0.5 rounded-md">
-                Mở khóa đấu giá
-              </span>
+              {selectedScheduleDayOffset > 0 ? (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedScheduleDayOffset(0);
+                  }}
+                  className="text-[11px] font-medium text-zinc-700 bg-zinc-100 hover:bg-zinc-900 hover:text-white px-2 py-0.5 rounded-md transition-colors cursor-pointer shrink-0"
+                  title="Quay về quỹ phòng hôm nay (06/11/2026)"
+                >
+                  Về 06/11
+                </button>
+              ) : (
+                <span className="text-[11px] font-medium text-sky-700 bg-sky-50 px-2 py-0.5 rounded-md shrink-0">
+                  Click Mở/Khóa
+                </span>
+              )}
             </div>
             <div className="flex items-baseline justify-between gap-2">
               <div className="flex items-baseline gap-1.5">
                 <span className="text-2xl font-bold font-mono tracking-tight text-zinc-950">
-                  {analytics.vacantCount}
+                  {selectedDaySchedule.vacantRooms}
                 </span>
                 <span className="text-xs text-zinc-500">phòng trống</span>
               </div>
@@ -877,27 +1373,27 @@ export function App() {
                 }}
                 className="text-xs font-mono text-zinc-500 hover:text-zinc-950 underline underline-offset-2 cursor-pointer"
               >
-                {analytics.occupiedCount}/{hotelProfile.totalRooms} đã khóa
+                {selectedDayOccupied}/{selectedDaySchedule.totalRooms} đã khóa
               </button>
             </div>
             <div className="space-y-1.5">
               <div className="w-full h-1.5 rounded-full bg-sky-100 overflow-hidden flex">
                 <div
-                  className="h-full bg-zinc-700"
+                  className="h-full bg-zinc-700 transition-all"
                   style={{
-                    width: `${(analytics.otherBookedTotal / hotelProfile.totalRooms) * 100}%`,
+                    width: `${(selectedDaySchedule.otherBooked / selectedDaySchedule.totalRooms) * 100}%`,
                   }}
                 />
                 <div
-                  className="h-full bg-emerald-500"
+                  className="h-full bg-emerald-500 transition-all"
                   style={{
-                    width: `${(analytics.auctionBookedTotal / hotelProfile.totalRooms) * 100}%`,
+                    width: `${(selectedDaySchedule.auctionBooked / selectedDaySchedule.totalRooms) * 100}%`,
                   }}
                 />
               </div>
               <div className="flex items-center justify-between text-[11px] text-zinc-500">
-                <span>TT 100%: {analytics.auctionBookedTotal}</span>
-                <span>OTA/Lễ tân: {analytics.otherBookedTotal}</span>
+                <span>TT 100%: {selectedDaySchedule.auctionBooked}</span>
+                <span>OTA/Lễ tân: {selectedDaySchedule.otherBooked}</span>
               </div>
             </div>
           </div>
@@ -912,10 +1408,10 @@ export function App() {
           className="space-y-5"
         >
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-zinc-200/90 pb-3">
-            <TabsList className="bg-zinc-200/60 p-1 rounded-xl">
+            <TabsList className="bg-zinc-200/60 p-1 rounded-xl max-w-full overflow-x-auto justify-start">
               <TabsTrigger
                 value="workspace"
-                className="gap-1.5 px-3.5 rounded-lg text-xs"
+                className="gap-1.5 px-2.5 sm:px-3.5 rounded-lg text-xs shrink-0"
               >
                 <span>Đấu giá Live</span>
                 {analytics.activeLiveCount > 0 && (
@@ -926,15 +1422,19 @@ export function App() {
               </TabsTrigger>
               <TabsTrigger
                 value="ai-analytics"
-                className="px-3.5 rounded-lg text-xs"
+                className="px-2.5 sm:px-3.5 rounded-lg text-xs shrink-0"
               >
                 Hiệu suất & Thị phần
               </TabsTrigger>
               <TabsTrigger
                 value="inventory"
-                className="px-3.5 rounded-lg text-xs"
+                className="px-2.5 sm:px-3.5 rounded-lg text-xs shrink-0"
               >
-                Quỹ phòng ({analytics.vacantCount} trống)
+                Quỹ phòng ({selectedDaySchedule.vacantRooms} trống
+                {selectedScheduleDayOffset > 0
+                  ? ` · ${selectedDaySchedule.dateStr}`
+                  : ""}
+                )
               </TabsTrigger>
             </TabsList>
 
@@ -971,7 +1471,7 @@ export function App() {
           <TabsContent value="workspace" className="space-y-6">
             {/* 1. Minimalist Live Auction Cards (Zero Nested Colored Boxes) */}
             <div className="space-y-3">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-emerald-500" />
                   <h2 className="text-sm font-semibold text-zinc-900">
@@ -981,9 +1481,40 @@ export function App() {
                     · {hotelProfile.currentDateLabel}
                   </span>
                 </div>
-                <span className="hidden sm:inline text-xs text-zinc-400">
-                  Báo giá 1 lần (60 phút) · 1 phòng trống có thể đấu nhiều phiên
-                </span>
+                <div className="flex items-center gap-2.5">
+                  {hotelProfile.autoBidEnabled &&
+                    analytics.liveSessions.some(
+                      (ls) =>
+                        ls.remainingSeconds > 0 &&
+                        !ls.bidSubmitted &&
+                        ls.isAutoBidEligible &&
+                        ls.vacantForStay > 0,
+                    ) && (
+                      <Button
+                        variant="outline"
+                        size="xs"
+                        onClick={handleRunAutoBidNow}
+                        className="border-emerald-300 text-emerald-700 hover:bg-emerald-50"
+                      >
+                        <Zap className="w-3.5 h-3.5 text-emerald-600" />
+                        Chạy Auto-Bid ngay (
+                        {
+                          analytics.liveSessions.filter(
+                            (ls) =>
+                              ls.remainingSeconds > 0 &&
+                              !ls.bidSubmitted &&
+                              ls.isAutoBidEligible &&
+                              ls.vacantForStay > 0,
+                          ).length
+                        }{" "}
+                        phiên)
+                      </Button>
+                    )}
+                  <span className="hidden sm:inline text-xs text-zinc-400">
+                    Báo giá 1 lần (60 phút) · 1 phòng trống có thể đấu nhiều
+                    phiên
+                  </span>
+                </div>
               </div>
 
               {analytics.liveSessions.length === 0 ? (
@@ -1004,30 +1535,20 @@ export function App() {
                       activeBase,
                       hotelProfile.guestPriceMultiplier,
                     );
-                    const inv = analytics.roomInventory.find(
-                      (r) => r.id === session.matchedRoomClassId,
-                    );
-                    const vacantInClass = inv
-                      ? Math.max(
-                          0,
-                          inv.totalRooms -
-                            inv.otherChannelBooked -
-                            inv.auctionPaidBooked,
-                        )
-                      : 1;
-                    const concurrentInClass =
-                      analytics.activeAuctionCountByClass[
-                        session.matchedRoomClassId
-                      ] ?? 1;
+                    const vacantInClass = session.vacantForStay;
+                    const concurrentInClass = session.concurrentForStay;
                     const isMultiContest = concurrentInClass > 1;
+                    const noRoomsAvailable = vacantInClass <= 0;
 
                     return (
                       <div
                         key={session.id}
                         className={`rounded-2xl bg-white border p-5 flex flex-col justify-between gap-4 shadow-2xs transition-all ${
-                          session.bidSubmitted
-                            ? "border-emerald-300/90"
-                            : "border-zinc-200/90 hover:border-zinc-300"
+                          noRoomsAvailable
+                            ? "border-amber-200 bg-amber-50/20"
+                            : session.bidSubmitted
+                              ? "border-emerald-300/90"
+                              : "border-zinc-200/90 hover:border-zinc-300"
                         }`}
                       >
                         <div className="space-y-2.5">
@@ -1043,6 +1564,13 @@ export function App() {
                             </div>
 
                             <div className="flex items-center gap-1.5 shrink-0">
+                              {session.flashDiscountApplied &&
+                                !session.bidSubmitted && (
+                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 text-[11px] font-medium">
+                                    <Flame className="w-3 h-3 text-amber-500" />
+                                    Xả đêm -{hotelProfile.nightFlashDiscountPct}%
+                                  </span>
+                                )}
                               <button
                                 type="button"
                                 onClick={() => setActiveMatchReqId(session.id)}
@@ -1083,40 +1611,77 @@ export function App() {
                             {session.amenities.join("  ·  ")}
                           </div>
 
-                          {/* Row 4: Calm Inline Room Lock Status */}
-                          <div className="pt-0.5 flex items-center gap-1.5 text-xs">
-                            <LockOpen
-                              className={`w-3.5 h-3.5 shrink-0 ${
-                                isMultiContest
-                                  ? "text-amber-600"
-                                  : "text-sky-600"
-                              }`}
-                            />
-                            <span
-                              className={
-                                isMultiContest
-                                  ? "text-amber-700 font-medium"
-                                  : "text-zinc-600"
-                              }
-                            >
-                              Còn {vacantInClass} phòng trống mở khóa
-                              {isMultiContest
-                                ? ` · đang tham gia ${concurrentInClass} phiên`
-                                : ""}
-                            </span>
-                            <span className="text-zinc-400">
-                              · TT 100% mới khóa
-                            </span>
-                          </div>
+                          {/* Row 4: Calm Inline Room Lock Status (Clickable -> Opens Schedule on Session Stay Date) */}
+                          {noRoomsAvailable ? (
+                            <div className="pt-0.5 flex flex-wrap items-center justify-between gap-2 text-xs">
+                              <span className="inline-flex items-center gap-1.5 text-rose-600 font-medium">
+                                <Lock className="w-3.5 h-3.5 shrink-0" />
+                                Hết phòng trống mở khóa trong kỳ lưu trú này
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  openRoomScheduleForSession(
+                                    session,
+                                    "rooms_occupied",
+                                  )
+                                }
+                                className="text-sky-700 hover:text-sky-900 font-semibold underline underline-offset-2 cursor-pointer"
+                              >
+                                Mở khóa phòng để đấu giá →
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="pt-0.5 flex items-center gap-1.5 text-xs">
+                              <LockOpen
+                                className={`w-3.5 h-3.5 shrink-0 ${
+                                  isMultiContest
+                                    ? "text-amber-600"
+                                    : "text-sky-600"
+                                }`}
+                              />
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  openRoomScheduleForSession(
+                                    session,
+                                    "rooms_vacant",
+                                  )
+                                }
+                                className={`text-left hover:underline underline-offset-2 cursor-pointer ${
+                                  isMultiContest
+                                    ? "text-amber-700 font-medium"
+                                    : "text-zinc-600 hover:text-zinc-900"
+                                }`}
+                                title="Xem lịch phòng chi tiết đúng ngày lưu trú của phiên này"
+                              >
+                                Còn {vacantInClass} phòng trống mở khóa
+                                {isMultiContest
+                                  ? ` · đang tham gia ${concurrentInClass} phiên`
+                                  : ""}
+                              </button>
+                              <span className="text-zinc-400">
+                                · TT 100% mới khóa
+                              </span>
+                            </div>
+                          )}
                         </div>
 
                         {/* Footer: Price on Left + Compact Buttons on Right */}
                         <div className="pt-3.5 border-t border-zinc-100 flex flex-wrap items-center justify-between gap-3">
                           <div>
-                            <div className="flex items-baseline gap-1">
+                            <div className="flex items-baseline gap-1.5">
                               <span className="text-lg font-bold font-mono text-zinc-950">
                                 {formatFullVnd(activeBase)}
                               </span>
+                              {session.flashDiscountApplied &&
+                                !session.bidSubmitted && (
+                                  <span className="text-xs font-mono text-zinc-400 line-through">
+                                    {formatButtonVnd(
+                                      session.standardSuggestedBasePrice,
+                                    )}
+                                  </span>
+                                )}
                               <span className="text-xs text-zinc-400">
                                 /đêm
                               </span>
@@ -1132,13 +1697,28 @@ export function App() {
                               Đã hết hạn 60 phút
                             </span>
                           ) : session.bidSubmitted ? (
-                            <div className="flex items-center gap-2">
-                              <span className="text-xs text-emerald-700 font-medium hidden sm:inline">
-                                Đã báo giá
+                            <div className="flex flex-wrap items-center gap-1.5">
+                              <span className="text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded font-medium">
+                                {session.bidSubmitted.mode === "auto"
+                                  ? "Auto-Bid đã gửi"
+                                  : "Đã báo giá"}
                               </span>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() =>
+                                  handleSimulateGuestReject(session)
+                                }
+                                title="Mô phỏng khách chọn khách sạn khác để kiểm thử Tỷ lệ trượt & Pareto"
+                                className="text-zinc-600 hover:text-rose-600 hover:border-rose-200"
+                              >
+                                <XCircle className="w-3.5 h-3.5" />
+                                Từ chối
+                              </Button>
                               <Button
                                 variant="emerald"
                                 size="sm"
+                                disabled={noRoomsAvailable}
                                 onClick={() =>
                                   handleSimulateGuestFullPayment(session)
                                 }
@@ -1152,6 +1732,7 @@ export function App() {
                               <Button
                                 variant="outline"
                                 size="sm"
+                                disabled={noRoomsAvailable}
                                 onClick={() => {
                                   setSuggestedPerkForBid(undefined);
                                   setCustomBidSessionId(session.id);
@@ -1163,6 +1744,7 @@ export function App() {
                               <Button
                                 variant="default"
                                 size="sm"
+                                disabled={noRoomsAvailable}
                                 onClick={() =>
                                   handleSubmitBid(
                                     session.id,
@@ -1185,95 +1767,24 @@ export function App() {
               )}
             </div>
 
-            {/* 2. Clean Charts Grid */}
+            {/* 2A. Interactive Visual Payment Conversion Funnel (Direct on Main Page) */}
+            <PaymentConversionFunnelPanel
+              analytics={analytics}
+              mode="embedded"
+            />
+
+            {/* 2B. Clean Charts Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-              {/* Chart A: Hotel Selection Rate vs System Average */}
-              <div className="p-5 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs space-y-4">
-                <div className="flex items-start justify-between gap-2">
-                  <div>
-                    <h3 className="text-sm font-semibold text-zinc-900">
-                      Tỷ lệ được chọn theo hạng phòng vs. Hệ thống
-                    </h3>
-                    <p className="text-xs text-zinc-400 mt-0.5">
-                      Kỳ {periodMetrics.rangeText} · Đơn TT 100% ÷ Phiên báo giá
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab("ai-analytics")}
-                    className="text-xs font-medium text-zinc-500 hover:text-zinc-900 cursor-pointer whitespace-nowrap"
-                  >
-                    Chi tiết thị phần →
-                  </button>
-                </div>
+              {/* Chart A: Interactive Dual-Line Benchmark (Hotel vs Platform + Multi-Filters) */}
+              <SelectionBenchmarkLinePanel
+                bundle={bundle}
+                dateRange={dateRange}
+                branchFilter={branchFilter}
+                rangeText={periodMetrics.rangeText}
+                onOpenMarketShare={() => setActiveTab("ai-analytics")}
+              />
 
-                <div className="h-52 w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      layout="vertical"
-                      data={analytics.benchmarkChartData}
-                      margin={{ left: 4, right: 16, top: 4, bottom: 4 }}
-                    >
-                      <CartesianGrid
-                        strokeDasharray="3 3"
-                        stroke="#f4f4f5"
-                        horizontal={false}
-                      />
-                      <XAxis
-                        type="number"
-                        domain={[0, 100]}
-                        unit="%"
-                        tick={{ fontSize: 11, fill: "#71717a" }}
-                        axisLine={false}
-                        tickLine={false}
-                      />
-                      <YAxis
-                        type="category"
-                        dataKey="category"
-                        width={72}
-                        tick={{ fontSize: 12, fill: "#18181b" }}
-                        axisLine={false}
-                        tickLine={false}
-                      />
-                      <Tooltip formatter={(val) => `${val ?? 0}%`} />
-                      <Legend wrapperStyle={{ fontSize: 11 }} />
-                      <Bar
-                        dataKey="hotelWinPct"
-                        name="KS của bạn (%)"
-                        fill="#10b981"
-                        radius={[0, 4, 4, 0]}
-                        barSize={11}
-                      />
-                      <Bar
-                        dataKey="sysAvgPct"
-                        name="TB toàn sàn (%)"
-                        fill="#d4d4d8"
-                        radius={[0, 4, 4, 0]}
-                        barSize={11}
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-
-                {/* Clean 1-line Regional Share Summary */}
-                <div className="pt-3 border-t border-zinc-100 grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {analytics.benchmarkChartData.map((b) => (
-                    <div key={b.roomClassId} className="space-y-0.5">
-                      <div className="text-[11px] text-zinc-400">
-                        Thị phần {b.category}
-                      </div>
-                      <div className="text-xs font-mono font-semibold text-zinc-800">
-                        {b.regionSharePct}%{" "}
-                        <span className="font-normal text-zinc-400">
-                          ({b.wins}/{b.sysTotalWins})
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Chart B: 14-Day Daily Base Revenue & Paid Orders */}
+              {/* Chart B: Period Revenue & Paid Orders Trend */}
               <div className="p-5 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs space-y-4">
                 <div className="flex items-start justify-between gap-2">
                   <div>
@@ -1281,10 +1792,10 @@ export function App() {
                       Doanh thu giá gốc & Đơn thanh toán 100%
                     </h3>
                     <p className="text-xs text-zinc-400 mt-0.5">
-                      14 ngày gần nhất (24/10 – 06/11/2026)
+                      {analytics.revenueTrendSubtitle}
                     </p>
                   </div>
-                  <span className="text-xs font-mono text-zinc-500 bg-zinc-100 px-2.5 py-1 rounded-md">
+                  <span className="text-xs font-mono text-zinc-500 bg-zinc-100 px-2.5 py-1 rounded-md shrink-0">
                     ADR kỳ: {formatCompactVnd(periodMetrics.periodBaseAdr)}/đêm
                   </span>
                 </div>
@@ -1331,7 +1842,7 @@ export function App() {
                         name="Doanh thu Giá gốc (Triệu đ)"
                         fill="#18181b"
                         radius={[4, 4, 0, 0]}
-                        barSize={18}
+                        barSize={dateRange === "30d" ? 8 : 22}
                       />
                       <Line
                         yAxisId="right"
@@ -1340,7 +1851,7 @@ export function App() {
                         name="Đơn TT 100%"
                         stroke="#10b981"
                         strokeWidth={2}
-                        dot={{ r: 2.5 }}
+                        dot={{ r: dateRange === "30d" ? 2 : 3 }}
                       />
                     </ComposedChart>
                   </ResponsiveContainer>
@@ -1348,25 +1859,27 @@ export function App() {
               </div>
             </div>
 
-            {/* 3. Clean Session Log Table */}
+            {/* 3. Clean Session Log Table (Synced with Period Filter) */}
             <div className="rounded-2xl bg-white border border-zinc-200/80 shadow-2xs overflow-hidden">
               <div className="p-5 border-b border-zinc-100 flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <h3 className="text-sm font-semibold text-zinc-900">
-                    Nhật ký phiên đấu giá gần đây
+                    Nhật ký phiên đấu giá ({periodMetrics.shortLabel}:{" "}
+                    {periodMetrics.rangeText})
                   </h3>
                   <p className="text-xs text-zinc-400 mt-0.5">
                     Khách hoàn tất thanh toán 100% sẽ khóa phòng ngay · Không có
                     trạng thái đặt cọc
                   </p>
                 </div>
-                <div className="flex items-center gap-1 bg-zinc-100 p-1 rounded-lg">
+                <div className="flex flex-wrap items-center gap-1 bg-zinc-100 p-1 rounded-lg">
                   {(
                     [
                       ["all", "Tất cả"],
                       ["won", "Đã TT 100%"],
                       ["rejected", "Từ chối"],
                       ["expired", "Hết hạn"],
+                      ["auto_closed", "Tự đóng"],
                     ] as const
                   ).map(([val, label]) => (
                     <button
@@ -1379,7 +1892,7 @@ export function App() {
                           : "text-zinc-500 hover:text-zinc-900"
                       }`}
                     >
-                      {label}
+                      {label} ({historyCounts[val]})
                     </button>
                   ))}
                 </div>
@@ -1400,98 +1913,119 @@ export function App() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-100">
-                    {filteredHistory.map((h) => (
-                      <tr key={h.id} className="hover:bg-zinc-50/50">
-                        <td className="py-3.5 px-5">
-                          <div className="font-mono font-semibold text-zinc-900">
-                            #{h.id}
-                          </div>
-                          <div className="text-[11px] text-zinc-400">
-                            {h.dateTimeLabel}
-                          </div>
-                        </td>
-                        <td className="py-3.5 px-5">
-                          <div className="font-medium text-zinc-800">
-                            {h.guestRequestTitle}
-                          </div>
-                          <div className="text-[11px] text-zinc-400">
-                            Lưu trú: {h.stayDatesLabel}
-                          </div>
-                        </td>
-                        <td className="py-3.5 px-5">
-                          <span className="text-zinc-400 mr-1.5">
-                            [{h.roomCategory}]
-                          </span>
-                          <span className="font-medium text-zinc-800">
-                            {h.offeredRoom}
-                          </span>
-                        </td>
-                        <td className="py-3.5 px-5 text-right font-mono">
-                          <div className="font-semibold text-zinc-900">
-                            {formatFullVnd(h.offeredBasePrice)}
-                          </div>
-                          {h.status === "won" && h.hotelEarnedBase && (
-                            <div className="text-[11px] text-emerald-600">
-                              Tổng: {formatFullVnd(h.hotelEarnedBase)}
-                            </div>
-                          )}
-                        </td>
-                        <td className="py-3.5 px-5 text-center">
-                          <button
-                            type="button"
-                            onClick={() => setActiveMatchReqId(h.id)}
-                            className="px-2 py-0.5 rounded-md bg-zinc-100 hover:bg-zinc-200 font-mono text-xs text-zinc-700 cursor-pointer"
-                          >
-                            {h.matchScore}%
-                          </button>
-                        </td>
-                        <td className="py-3.5 px-5 text-right">
-                          {h.status === "won" ? (
-                            <div>
-                              <Badge variant="success">Đã TT 100%</Badge>
-                              <div className="text-[11px] text-zinc-500 mt-0.5">
-                                {h.resultNote}
-                              </div>
-                            </div>
-                          ) : h.status === "auto_closed" ? (
-                            <div>
-                              <Badge variant="neutral">Tự đóng</Badge>
-                              <div className="text-[11px] text-zinc-400 mt-0.5">
-                                {h.resultNote}
-                              </div>
-                            </div>
-                          ) : (
-                            <div>
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  if (h.autopsyId) {
-                                    setSelectedAutopsyId(h.autopsyId);
-                                  }
-                                  setActiveTab("ai-analytics");
-                                }}
-                                className="cursor-pointer"
-                              >
-                                <Badge
-                                  variant={
-                                    h.status === "rejected"
-                                      ? "danger"
-                                      : "warning"
-                                  }
-                                >
-                                  {h.status === "rejected"
-                                    ? "Khách từ chối"
-                                    : "Hết hạn 60p"}
-                                </Badge>
-                              </button>
-                              <div className="text-[11px] text-zinc-400 mt-0.5">
-                                {h.resultNote}
-                              </div>
-                            </div>
+                    {filteredHistory.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan={6}
+                          className="py-10 px-5 text-center text-xs text-zinc-500"
+                        >
+                          Không có phiên nào thuộc trạng thái này trong kỳ{" "}
+                          <strong>{periodMetrics.rangeText}</strong>.
+                          {historyFilter !== "all" && (
+                            <button
+                              type="button"
+                              onClick={() => setHistoryFilter("all")}
+                              className="ml-2 font-semibold text-zinc-900 underline underline-offset-2 cursor-pointer"
+                            >
+                              Xem tất cả ({historyCounts.all})
+                            </button>
                           )}
                         </td>
                       </tr>
-                    ))}
+                    ) : (
+                      filteredHistory.map((h) => (
+                        <tr key={h.id} className="hover:bg-zinc-50/50">
+                          <td className="py-3.5 px-5">
+                            <div className="font-mono font-semibold text-zinc-900">
+                              #{h.id}
+                            </div>
+                            <div className="text-[11px] text-zinc-400">
+                              {h.dateTimeLabel}
+                            </div>
+                          </td>
+                          <td className="py-3.5 px-5">
+                            <div className="font-medium text-zinc-800">
+                              {h.guestRequestTitle}
+                            </div>
+                            <div className="text-[11px] text-zinc-400">
+                              Lưu trú: {h.stayDatesLabel}
+                            </div>
+                          </td>
+                          <td className="py-3.5 px-5">
+                            <span className="text-zinc-400 mr-1.5">
+                              [{h.roomCategory}]
+                            </span>
+                            <span className="font-medium text-zinc-800">
+                              {h.offeredRoom}
+                            </span>
+                          </td>
+                          <td className="py-3.5 px-5 text-right font-mono">
+                            <div className="font-semibold text-zinc-900">
+                              {formatFullVnd(h.offeredBasePrice)}
+                            </div>
+                            {h.status === "won" && h.hotelEarnedBase && (
+                              <div className="text-[11px] text-emerald-600">
+                                Tổng: {formatFullVnd(h.hotelEarnedBase)}
+                              </div>
+                            )}
+                          </td>
+                          <td className="py-3.5 px-5 text-center">
+                            <button
+                              type="button"
+                              onClick={() => setActiveMatchReqId(h.id)}
+                              className="px-2 py-0.5 rounded-md bg-zinc-100 hover:bg-zinc-200 font-mono text-xs text-zinc-700 cursor-pointer"
+                            >
+                              {h.matchScore}%
+                            </button>
+                          </td>
+                          <td className="py-3.5 px-5 text-right">
+                            {h.status === "won" ? (
+                              <div>
+                                <Badge variant="success">Đã TT 100%</Badge>
+                                <div className="text-[11px] text-zinc-500 mt-0.5">
+                                  {h.resultNote}
+                                </div>
+                              </div>
+                            ) : h.status === "auto_closed" ? (
+                              <div>
+                                <Badge variant="neutral">Tự đóng</Badge>
+                                <div className="text-[11px] text-zinc-400 mt-0.5">
+                                  {h.resultNote}
+                                </div>
+                              </div>
+                            ) : (
+                              <div>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    if (h.autopsyId) {
+                                      setSelectedAutopsyId(h.autopsyId);
+                                    }
+                                    setActiveTab("ai-analytics");
+                                  }}
+                                  className="cursor-pointer"
+                                >
+                                  <Badge
+                                    variant={
+                                      h.status === "rejected"
+                                        ? "danger"
+                                        : "warning"
+                                    }
+                                  >
+                                    {h.status === "rejected"
+                                      ? "Khách từ chối"
+                                      : "Hết hạn 60p"}
+                                  </Badge>
+                                </button>
+                                <div className="text-[11px] text-zinc-400 mt-0.5">
+                                  {h.resultNote}
+                                </div>
+                              </div>
+                            )}
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -1563,7 +2097,7 @@ export function App() {
                             <div
                               className="h-full rounded-full bg-emerald-500"
                               style={{
-                                width: `${Math.min(100, b.hotelWinPct * 1.5)}%`,
+                                width: `${Math.min(100, b.hotelWinPct)}%`,
                               }}
                             />
                           </div>
@@ -1580,7 +2114,7 @@ export function App() {
                             <div
                               className="h-full rounded-full bg-zinc-400"
                               style={{
-                                width: `${Math.min(100, b.sysAvgPct * 1.5)}%`,
+                                width: `${Math.min(100, b.sysAvgPct)}%`,
                               }}
                             />
                           </div>
@@ -1620,22 +2154,31 @@ export function App() {
             {/* 2. Pareto Loss Reasons + ELO Reputation */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
               <div className="lg:col-span-2 p-5 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs space-y-3">
-                <div>
-                  <h3 className="text-sm font-semibold text-zinc-900">
-                    Nguyên nhân không chốt được phiên (30 ngày: 08/10 –
-                    06/11/2026)
-                  </h3>
-                  <p className="text-xs text-zinc-400 mt-0.5">
-                    Tổng {analytics.totalLosses30d} phiên trượt · Xếp giảm dần
-                    theo tỷ trọng Pareto
-                  </p>
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <div>
+                    <h3 className="text-sm font-semibold text-zinc-900">
+                      Nguyên nhân không chốt được phiên (
+                      {periodMetrics.shortLabel}: {periodMetrics.rangeText})
+                    </h3>
+                    <p className="text-xs text-zinc-400 mt-0.5">
+                      Tổng {analytics.periodTotalLosses} phiên trượt · Xếp giảm
+                      dần theo tỷ trọng Pareto
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setActiveKpiModal("win_rate")}
+                    className="text-xs font-medium text-emerald-700 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100/80 px-2.5 py-1 rounded-lg transition-colors cursor-pointer whitespace-nowrap"
+                  >
+                    Phễu chuyển đổi 8 bước ({periodMetrics.winRatePct}%) →
+                  </button>
                 </div>
 
                 <div className="h-52 w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart
                       layout="vertical"
-                      data={analytics.lossReasons30d}
+                      data={analytics.periodLossReasons}
                       margin={{ left: 8, right: 24 }}
                     >
                       <CartesianGrid
@@ -1645,7 +2188,7 @@ export function App() {
                       />
                       <XAxis
                         type="number"
-                        domain={[0, 60]}
+                        domain={[0, 100]}
                         unit="%"
                         tick={{ fontSize: 11, fill: "#71717a" }}
                         axisLine={false}
@@ -1668,7 +2211,7 @@ export function App() {
                         radius={[0, 4, 4, 0]}
                         barSize={16}
                       >
-                        {analytics.lossReasons30d.map((entry) => (
+                        {analytics.periodLossReasons.map((entry) => (
                           <Cell key={entry.id} fill={entry.color} />
                         ))}
                       </Bar>
@@ -1692,7 +2235,8 @@ export function App() {
                     <span className="text-xs text-zinc-400">điểm ELO</span>
                   </div>
                   <p className="text-xs text-zinc-400 mt-1">
-                    Chu kỳ đối soát: {hotelProfile.payoutInfo.settlementCycle}
+                    Hệ thống {hotelProfile.branches.length} chi nhánh •{" "}
+                    {hotelProfile.totalRooms} phòng
                   </p>
                 </div>
 
@@ -1711,9 +2255,9 @@ export function App() {
                     </strong>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-zinc-500">Giải ngân kế tiếp</span>
+                    <span className="text-zinc-500">Chiết khấu hoa hồng KS</span>
                     <strong className="font-mono text-zinc-900">
-                      {hotelProfile.payoutInfo.nextPayoutDate}
+                      0% (Giữ 100% giá gốc)
                     </strong>
                   </div>
                 </div>
@@ -1750,7 +2294,7 @@ export function App() {
                   </div>
                 </div>
 
-                <div className="border border-zinc-100 rounded-xl overflow-hidden">
+                <div className="border border-zinc-100 rounded-xl overflow-x-auto">
                   <table className="w-full text-left border-collapse text-xs">
                     <thead className="bg-zinc-50/70 border-b border-zinc-100 text-[11px] font-medium text-zinc-400">
                       <tr>
@@ -1841,13 +2385,89 @@ export function App() {
                 </div>
               </div>
             )}
+
+            {/* 4. Configured Auto-Bid Rules List */}
+            <div className="p-5 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs space-y-3.5">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <h3 className="text-sm font-semibold text-zinc-900">
+                    Quy tắc Auto-Bid đang cấu hình ({bundle.botRules.length})
+                  </h3>
+                  <p className="text-xs text-zinc-400 mt-0.5">
+                    {currentUser?.canConfigureBotRules
+                      ? "Vai trò Quản lý có thể bật/tắt hoặc xóa quy tắc tự động"
+                      : "Chuyển sang vai trò Quản lý (góc trên bên phải) để bật/tắt hoặc thêm quy tắc Auto-Bid"}
+                  </p>
+                </div>
+                <span className="text-xs font-mono text-zinc-500 bg-zinc-100 px-2.5 py-1 rounded-md">
+                  Đang kích hoạt:{" "}
+                  {bundle.botRules.filter((r) => r.active).length}/
+                  {bundle.botRules.length}
+                </span>
+              </div>
+
+              {bundle.botRules.length === 0 ? (
+                <div className="p-4 rounded-xl bg-zinc-50 text-xs text-zinc-500 text-center">
+                  Chưa có quy tắc Auto-Bid nào. Bấm{" "}
+                  <strong>Lưu quy tắc Auto-Bid</strong> ở bảng phân tích phiên
+                  trượt phía trên để thêm mới.
+                </div>
+              ) : (
+                <div className="divide-y divide-zinc-100 border border-zinc-100 rounded-xl overflow-hidden">
+                  {bundle.botRules.map((rule) => (
+                    <div
+                      key={rule.ruleId}
+                      className="p-3.5 bg-white flex flex-wrap items-center justify-between gap-3 text-xs"
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <span className="px-2 py-0.5 rounded bg-zinc-100 font-mono text-[11px] text-zinc-600 shrink-0">
+                          {rule.ruleId}
+                        </span>
+                        <span
+                          className={`font-medium ${
+                            rule.active
+                              ? "text-zinc-900"
+                              : "text-zinc-400 line-through"
+                          }`}
+                        >
+                          {rule.title}
+                        </span>
+                        {rule.sourceCaseId && (
+                          <span className="text-[11px] font-mono text-zinc-400">
+                            (từ #{rule.sourceCaseId})
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2.5 shrink-0">
+                        <Switch
+                          checked={rule.active}
+                          disabled={!currentUser?.canConfigureBotRules}
+                          onCheckedChange={(checked) =>
+                            handleToggleBotRule(rule.ruleId, checked)
+                          }
+                        />
+                        <button
+                          type="button"
+                          disabled={!currentUser?.canConfigureBotRules}
+                          onClick={() => handleDeleteBotRule(rule.ruleId)}
+                          className="p-1.5 rounded-md text-zinc-400 hover:text-rose-600 hover:bg-rose-50 disabled:opacity-40 disabled:pointer-events-none cursor-pointer transition-colors"
+                          title="Xóa quy tắc Auto-Bid"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </TabsContent>
 
           {/* ================================================================= */}
           {/* TAB 3: INVENTORY, 14-DAY CHART & 30-ROOM MATRIX                   */}
           {/* ================================================================= */}
           <TabsContent value="inventory" className="space-y-6">
-            {/* 1. 14-Day Stacked Column Chart */}
+            {/* 1. 14-Day Stacked Column Chart (Click Any Date Column to Select) */}
             <div className="p-5 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
@@ -1856,15 +2476,46 @@ export function App() {
                     {hotelProfile.goldenWindowRange})
                   </h2>
                   <p className="text-xs text-zinc-400 mt-0.5">
-                    Tổng 30 phòng/ngày = Đã đặt kênh khác + Đã đặt goodNstay (TT
-                    100%) + Phòng trống mở khóa
+                    Click trực tiếp vào cột ngày bất kỳ để chuyển ngày xem chi
+                    tiết · Tổng 30 phòng/ngày = OTA/Lễ tân + goodNstay (TT 100%)
+                    + Trống mở khóa
                   </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-1 rounded-lg bg-sky-50 border border-sky-200/80 text-xs font-medium text-sky-800">
+                    Đang xem: Ngày {selectedDaySchedule.fullDate} (
+                    {selectedDaySchedule.dayLabel}) ·{" "}
+                    <strong>{selectedDaySchedule.vacantRooms} trống</strong>
+                  </span>
+                  {selectedScheduleDayOffset > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setSelectedScheduleDayOffset(0)}
+                      className="px-2.5 py-1 rounded-lg border border-zinc-200 bg-white hover:bg-zinc-100 text-xs font-medium text-zinc-700 cursor-pointer transition-colors"
+                    >
+                      Về 06/11
+                    </button>
+                  )}
                 </div>
               </div>
 
               <div className="h-60 w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={analytics.golden14ChartData}>
+                  <BarChart
+                    data={analytics.golden14ChartData}
+                    className="cursor-pointer"
+                    onClick={(state) => {
+                      const label = state?.activeLabel;
+                      if (typeof label === "string") {
+                        const found = analytics.dailyRoomSchedules.find(
+                          (d) => d.dateStr === label,
+                        );
+                        if (found) {
+                          setSelectedScheduleDayOffset(found.dayOffset);
+                        }
+                      }
+                    }}
+                  >
                     <CartesianGrid
                       strokeDasharray="3 3"
                       stroke="#f4f4f5"
@@ -1884,7 +2535,7 @@ export function App() {
                     />
                     <Tooltip
                       labelFormatter={(label, payload) =>
-                        `Ngày ${payload?.[0]?.payload?.fullDate ?? label}`
+                        `Ngày ${payload?.[0]?.payload?.fullDate ?? label} (Click để xem 30 phòng)`
                       }
                     />
                     <Legend wrapperStyle={{ fontSize: 11 }} />
@@ -1894,6 +2545,7 @@ export function App() {
                       name="Đã đặt OTA / Lễ tân"
                       fill="#52525b"
                       barSize={24}
+                      className="cursor-pointer"
                     />
                     <Bar
                       dataKey="auctionBooked"
@@ -1901,6 +2553,7 @@ export function App() {
                       name="Đã đặt goodNstay (TT 100%)"
                       fill="#10b981"
                       barSize={24}
+                      className="cursor-pointer"
                     />
                     <Bar
                       dataKey="vacantRooms"
@@ -1909,98 +2562,175 @@ export function App() {
                       fill="#38bdf8"
                       radius={[4, 4, 0, 0]}
                       barSize={24}
+                      className="cursor-pointer"
                     />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
-            {/* 2. 4 Clean Room Class Cards */}
+            {/* 2. 4 Clean Room Class Cards Synced with Selected Schedule Day */}
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
               {analytics.roomInventory.map((rc) => {
-                const occ = rc.otherChannelBooked + rc.auctionPaidBooked;
+                const classRooms = selectedDaySchedule.rooms.filter(
+                  (r) => r.roomClassId === rc.id,
+                );
+                const otherBooked = classRooms.filter(
+                  (r) => r.status === "booked_other",
+                ).length;
+                const auctionBooked = classRooms.filter(
+                  (r) => r.status === "booked_auction",
+                ).length;
+                const occ = otherBooked + auctionBooked;
                 const vac = Math.max(0, rc.totalRooms - occ);
-                const liveJoining =
-                  analytics.activeAuctionCountByClass[rc.id] ?? 0;
+                const liveJoining = analytics.liveSessions.filter(
+                  (s) =>
+                    s.remainingSeconds > 0 &&
+                    s.matchedRoomClassId === rc.id &&
+                    parseStayDayOffsets(
+                      s.checkInDateRange,
+                      hotelProfile.referenceDate,
+                      s.nights,
+                    ).includes(selectedScheduleDayOffset),
+                ).length;
+                const effectiveClassFloor = hotelProfile.nightFlashSaleActive
+                  ? Math.round(
+                      (rc.baseFloorPrice *
+                        (1 - hotelProfile.nightFlashDiscountPct / 100)) /
+                        1000,
+                    ) * 1000
+                  : rc.baseFloorPrice;
 
                 return (
                   <div
                     key={rc.id}
-                    className="p-4 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs space-y-3"
+                    className="p-4 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs space-y-3 flex flex-col justify-between"
                   >
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <span className="text-[11px] text-zinc-400">
-                          {rc.category} · #{rc.roomRange}
-                        </span>
-                        <h3 className="font-semibold text-sm text-zinc-900 mt-0.5">
-                          {rc.name}
-                        </h3>
+                    <div className="space-y-2.5">
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <span className="text-[11px] text-zinc-400">
+                            {rc.category} · {rc.roomRange} ·{" "}
+                            <strong className="font-medium text-zinc-600">
+                              {selectedDaySchedule.dateStr}
+                            </strong>
+                          </span>
+                          <h3 className="font-semibold text-sm text-zinc-900 mt-0.5">
+                            {rc.name}
+                          </h3>
+                        </div>
+                        <div className="text-right font-mono">
+                          <span className="text-base font-bold text-zinc-950">
+                            {vac}
+                          </span>
+                          <span className="text-xs text-zinc-400">
+                            /{rc.totalRooms} trống
+                          </span>
+                        </div>
                       </div>
-                      <div className="text-right font-mono">
-                        <span className="text-base font-bold text-zinc-950">
-                          {vac}
+
+                      <div className="flex items-center justify-between text-xs text-zinc-500">
+                        <span className="truncate">{rc.bedAndCapacity}</span>
+                        <span className="font-mono text-[11px] text-zinc-600 shrink-0 ml-2">
+                          Sàn {formatButtonVnd(effectiveClassFloor)}
                         </span>
-                        <span className="text-xs text-zinc-400">
-                          /{rc.totalRooms} trống
+                      </div>
+
+                      <div className="w-full h-1.5 rounded-full bg-sky-100 overflow-hidden flex">
+                        <div
+                          className="h-full bg-zinc-700"
+                          style={{
+                            width: `${(otherBooked / rc.totalRooms) * 100}%`,
+                          }}
+                        />
+                        <div
+                          className="h-full bg-emerald-500"
+                          style={{
+                            width: `${(auctionBooked / rc.totalRooms) * 100}%`,
+                          }}
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between text-xs pt-0.5">
+                        <span className="text-zinc-400">
+                          Đã khóa: {occ}/{rc.totalRooms}
                         </span>
+                        {vac === 0 ? (
+                          <span className="text-rose-600 font-medium">
+                            Hết phòng
+                          </span>
+                        ) : liveJoining > 0 ? (
+                          <span className="text-sky-700 font-medium">
+                            Đang đấu {liveJoining} phiên
+                          </span>
+                        ) : (
+                          <span className="text-zinc-500">
+                            Mở khóa sẵn sàng
+                          </span>
+                        )}
                       </div>
                     </div>
 
-                    <div className="text-xs text-zinc-500 truncate">
-                      {rc.bedAndCapacity}
-                    </div>
-
-                    <div className="w-full h-1.5 rounded-full bg-sky-100 overflow-hidden flex">
-                      <div
-                        className="h-full bg-zinc-700"
-                        style={{
-                          width: `${(rc.otherChannelBooked / rc.totalRooms) * 100}%`,
-                        }}
-                      />
-                      <div
-                        className="h-full bg-emerald-500"
-                        style={{
-                          width: `${(rc.auctionPaidBooked / rc.totalRooms) * 100}%`,
-                        }}
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-between text-xs pt-0.5">
-                      <span className="text-zinc-400">
-                        Đã khóa: {occ}/{rc.totalRooms}
-                      </span>
-                      {vac === 0 ? (
-                        <span className="text-rose-600 font-medium">
-                          Hết phòng
-                        </span>
-                      ) : liveJoining > 0 ? (
-                        <span className="text-sky-700 font-medium">
-                          Đang đấu {liveJoining} phiên
-                        </span>
-                      ) : (
-                        <span className="text-zinc-500">Mở khóa sẵn sàng</span>
-                      )}
+                    {/* Quick 1-click Lock / Unlock buttons per Room Class on Selected Date */}
+                    <div className="pt-2.5 border-t border-zinc-100 grid grid-cols-2 gap-1.5">
+                      <button
+                        type="button"
+                        disabled={vac <= 0}
+                        onClick={() =>
+                          handleQuickClassLockToggle(rc.id, "lock")
+                        }
+                        className="inline-flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg border border-zinc-200 bg-zinc-50 hover:bg-zinc-900 hover:text-white hover:border-zinc-900 disabled:opacity-40 disabled:pointer-events-none text-[11px] font-medium text-zinc-700 cursor-pointer transition-colors"
+                        title={`Khóa nhanh 1 phòng trống của hạng này ngày ${selectedDaySchedule.fullDate}`}
+                      >
+                        <Lock className="w-3 h-3" />
+                        Khóa 1 phòng
+                      </button>
+                      <button
+                        type="button"
+                        disabled={otherBooked <= 0}
+                        onClick={() =>
+                          handleQuickClassLockToggle(rc.id, "unlock")
+                        }
+                        className="inline-flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg border border-sky-200 bg-sky-50/70 hover:bg-sky-600 hover:text-white hover:border-sky-600 disabled:opacity-40 disabled:pointer-events-none text-[11px] font-medium text-sky-700 cursor-pointer transition-colors"
+                        title={`Mở khóa nhanh 1 phòng OTA/Lễ tân sang trống ngày ${selectedDaySchedule.fullDate}`}
+                      >
+                        <LockOpen className="w-3 h-3" />
+                        Mở khóa 1
+                      </button>
                     </div>
                   </div>
                 );
               })}
             </div>
 
-            {/* 3. Multi-Date 30-Room Explorer & 14-Day PMS Timeline */}
+            {/* 3. Multi-Date Room Explorer & 14-Day PMS Timeline */}
             <div className="p-5 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs space-y-4">
               <div>
                 <h3 className="text-sm font-semibold text-zinc-900">
-                  Lịch chi tiết 30 phòng theo từng ngày ({hotelProfile.goldenWindowRange})
+                  Lịch chi tiết {analytics.scopedTotalRooms} phòng ({analytics.activeBranchLabel}) theo từng ngày ({hotelProfile.goldenWindowRange})
                 </h3>
                 <p className="text-xs text-zinc-400 mt-0.5">
-                  Chọn ngày bất kỳ hoặc chuyển sang <strong>Bảng lịch 14 ngày</strong>{" "}
-                  để xem chính xác từng buồng (#101–#130) đang trống mở khóa hay
-                  đã khóa theo đơn.
+                  <strong>Click trực tiếp vào bất kỳ ô phòng nào</strong>{" "}
+                  để <strong>Khóa / Mở khóa</strong> ngay lập tức (hoặc chuyển sang{" "}
+                  <strong>Bảng lịch 14 ngày</strong> và click đúp / dùng nút góc dưới).
+                  Các phòng đã thanh toán 100% được tự động khóa bảo vệ chống bán trùng.
                 </p>
               </div>
 
-              <RoomScheduleExplorer schedules={analytics.dailyRoomSchedules} />
+              <RoomScheduleExplorer
+                schedules={analytics.dailyRoomSchedules}
+                onToggleRoomLock={handleToggleRoomLock}
+                selectedDayOffset={selectedScheduleDayOffset}
+                onSelectDayOffset={setSelectedScheduleDayOffset}
+                viewMode={explorerViewMode}
+                onChangeViewMode={setExplorerViewMode}
+                statusFilter={explorerStatusFilter}
+                onChangeStatusFilter={setExplorerStatusFilter}
+                classFilter={explorerClassFilter}
+                onChangeClassFilter={setExplorerClassFilter}
+                selectedRoomNum={selectedRoomNum}
+                onSelectRoomNum={setSelectedRoomNum}
+              />
             </div>
           </TabsContent>
         </Tabs>
@@ -2012,11 +2742,26 @@ export function App() {
         onClose={() => setActiveKpiModal(null)}
         hotelProfile={hotelProfile}
         analytics={analytics}
+        dateRange={dateRange}
+        onChangeDateRange={setDateRange}
+        branchFilter={branchFilter}
+        onChangeBranchFilter={setBranchFilter}
         nightFlashSaleActive={hotelProfile.nightFlashSaleActive}
         onActivateNightFlashSale={() =>
           handleToggleFlashSale(!hotelProfile.nightFlashSaleActive)
         }
         onSwitchToAiTab={() => setActiveTab("ai-analytics")}
+        onToggleRoomLock={handleToggleRoomLock}
+        selectedDayOffset={selectedScheduleDayOffset}
+        onSelectDayOffset={setSelectedScheduleDayOffset}
+        explorerViewMode={explorerViewMode}
+        onChangeExplorerViewMode={setExplorerViewMode}
+        explorerStatusFilter={explorerStatusFilter}
+        onChangeExplorerStatusFilter={setExplorerStatusFilter}
+        explorerClassFilter={explorerClassFilter}
+        onChangeExplorerClassFilter={setExplorerClassFilter}
+        selectedRoomNum={selectedRoomNum}
+        onSelectRoomNum={setSelectedRoomNum}
       />
 
       <MatchBreakdownModal
@@ -2044,6 +2789,7 @@ export function App() {
         autoBidEnabled={hotelProfile.autoBidEnabled}
         userRole={userRole}
         canOverrideFloor={Boolean(currentUser?.canOverrideFloor)}
+        onDisableAutoBid={() => handleToggleAutoBid(false)}
         onClose={() => {
           setCustomBidSessionId(null);
           setSuggestedPerkForBid(undefined);

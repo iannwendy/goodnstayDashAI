@@ -28,6 +28,7 @@ interface CustomBidModalProps {
   autoBidEnabled: boolean;
   userRole: UserRole;
   canOverrideFloor: boolean;
+  onDisableAutoBid?: () => void;
   onClose: () => void;
   onSubmitBid: (
     sessionId: string,
@@ -45,6 +46,7 @@ export function CustomBidModal({
   autoBidEnabled,
   userRole,
   canOverrideFloor,
+  onDisableAutoBid,
   onClose,
   onSubmitBid,
 }: CustomBidModalProps) {
@@ -70,12 +72,13 @@ export function CustomBidModal({
       setSelectedPerks(defaults);
       setManagerOverrideConfirmed(false);
     }
-  }, [session, initialSuggestedPerkId, perksCatalog]);
+  }, [session?.id, session?.aiSuggestedBasePrice, initialSuggestedPerkId, perksCatalog]);
 
   if (!session) return null;
 
   const effectiveFloor = session.effectiveFloorPrice || activeFloorPrice;
   const isExpiredTtl = session.remainingSeconds <= 0;
+  const isNoVacancy = session.vacantForStay <= 0;
   const numericBase = Number(priceInput) || 0;
   const isBelowFloor = numericBase < effectiveFloor;
   const isBlockedByAutoBidFloor = isBelowFloor && autoBidEnabled;
@@ -83,6 +86,7 @@ export function CustomBidModal({
     isBelowFloor && !autoBidEnabled && canOverrideFloor;
   const canSubmit =
     !isExpiredTtl &&
+    !isNoVacancy &&
     numericBase > 0 &&
     (!isBelowFloor || (canManagerOverride && managerOverrideConfirmed));
 
@@ -116,6 +120,13 @@ export function CustomBidModal({
         </DialogHeader>
 
         <div className="space-y-4 text-xs">
+          {isNoVacancy && (
+            <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-950 text-[11px]">
+              <strong>Tạm hết phòng trống ngày lưu trú:</strong> Vui lòng mở khóa
+              ít nhất 1 buồng hạng {session.matchedRoomName} trước khi gửi báo giá.
+            </div>
+          )}
+
           <div>
             <label
               htmlFor="customPriceInput"
@@ -141,7 +152,11 @@ export function CustomBidModal({
             />
             <div className="flex items-center justify-between mt-1.5 text-[11px]">
               <span className="text-zinc-500">
-                Sàn hạng {session.mandatoryRoomCategory}:{" "}
+                Sàn hạng {session.mandatoryRoomCategory}
+                {session.flashDiscountApplied
+                  ? ` (Xả đêm -${hotelProfile.nightFlashDiscountPct}%)`
+                  : ""}
+                :{" "}
                 <strong className="font-mono text-zinc-900">
                   {formatFullVnd(effectiveFloor)}
                 </strong>
@@ -151,7 +166,7 @@ export function CustomBidModal({
                 onClick={() =>
                   setPriceInput(String(session.aiSuggestedBasePrice))
                 }
-                className="text-zinc-900 hover:underline font-medium"
+                className="text-zinc-900 hover:underline font-medium cursor-pointer"
               >
                 Đặt theo AI ({formatFullVnd(session.aiSuggestedBasePrice)})
               </button>
@@ -175,14 +190,23 @@ export function CustomBidModal({
                   {isBlockedByAutoBidFloor && (
                     <span className="block mt-1 font-medium text-rose-700">
                       Khi đang BẬT Auto-Bid, hệ thống khóa cứng không cho phép
-                      báo dưới sàn.
+                      báo dưới sàn.{" "}
+                      {canOverrideFloor && onDisableAutoBid && (
+                        <button
+                          type="button"
+                          onClick={onDisableAutoBid}
+                          className="underline font-semibold text-zinc-950 hover:text-rose-900 cursor-pointer"
+                        >
+                          Tắt Auto-Bid ngay để Quản lý duyệt
+                        </button>
+                      )}
                     </span>
                   )}
                   {!autoBidEnabled && userRole === "receptionist" && (
                     <span className="block mt-1 font-medium text-rose-700">
                       Tài khoản Lễ tân không có quyền duyệt dưới sàn. Vui lòng
                       nhập &ge; {formatFullVnd(effectiveFloor)} hoặc chuyển
-                      quyền Quản lý.
+                      quyền Quản lý ở góc trên bên phải.
                     </span>
                   )}
                 </div>
