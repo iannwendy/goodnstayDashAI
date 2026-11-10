@@ -111,6 +111,14 @@ function otaRateShoppingApiPlugin(): Plugin {
         const priceBasis = (url.searchParams.get("priceBasis") || "GROSS") as
           | "GROSS"
           | "NET";
+        const requestedPage = Math.max(
+          1,
+          parseInt(url.searchParams.get("page") || "1", 10) || 1
+        );
+        const pageSize = Math.max(
+          1,
+          Math.min(20, parseInt(url.searchParams.get("pageSize") || "5", 10) || 5)
+        );
 
         const filteredGroups = buildMatchedRoomComparisonGroups(
           report.allNormalizedRooms,
@@ -132,6 +140,32 @@ function otaRateShoppingApiPlugin(): Plugin {
           }
         }
 
+        // Tính tổng quan trên toàn tập kết quả đã lọc
+        let bothLiveMatchedCount = 0;
+        let agodaVsBookingDiffSum = 0;
+        for (const g of filteredGroups) {
+          const agoda = g.otaOffers.AGODA;
+          const booking = g.otaOffers.BOOKING;
+          if (agoda && booking) {
+            bothLiveMatchedCount++;
+            const pA =
+              priceBasis === "GROSS" ? agoda.grossPrice : agoda.netPrice;
+            const pB =
+              priceBasis === "GROSS" ? booking.grossPrice : booking.netPrice;
+            agodaVsBookingDiffSum += ((pA - pB) / pB) * 100;
+          }
+        }
+        const avgAgodaVsBookingPct = bothLiveMatchedCount
+          ? Number((agodaVsBookingDiffSum / bothLiveMatchedCount).toFixed(2))
+          : 0;
+
+        // Phân trang Lazy Load: mỗi trang chỉ trả về đúng Top 5 theo thứ tự khớp chuẩn với Form
+        const totalItems = filteredGroups.length;
+        const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+        const safePage = Math.min(requestedPage, totalPages);
+        const startIdx = (safePage - 1) * pageSize;
+        const pagedGroups = filteredGroups.slice(startIdx, startIdx + pageSize);
+
         res.setHeader("Content-Type", "application/json; charset=utf-8");
         res.statusCode = 200;
         res.end(
@@ -144,8 +178,20 @@ function otaRateShoppingApiPlugin(): Plugin {
               viewCategory,
               priceBasis,
             },
-            matchedCanonicalGroupsCount: filteredGroups.length,
-            comparisonGroups: filteredGroups,
+            pagination: {
+              page: safePage,
+              pageSize,
+              totalItems,
+              totalPages,
+              startRank: totalItems === 0 ? 0 : startIdx + 1,
+              endRank: Math.min(totalItems, startIdx + pagedGroups.length),
+            },
+            overallSummary: {
+              bothLiveMatchedCount,
+              avgAgodaVsBookingPct,
+            },
+            matchedCanonicalGroupsCount: totalItems,
+            comparisonGroups: pagedGroups,
           })
         );
       });

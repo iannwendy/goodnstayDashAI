@@ -468,3 +468,110 @@ test("E2E-4: Khi bấm 'Cào Trực Tiếp Ngay', toàn bộ số tiền, KPI v�
     await browser.close();
   }
 });
+
+test("E2E-5: Phân trang Lazy Top-5 (bấm tiếp mới load tiếp) & Deep Link RoomID chính xác tuyệt đối nhảy tới đúng phòng + giá hiển thị trên UI web", async () => {
+  const browser = await launchBrowser();
+  try {
+    const page = await browser.newPage({
+      viewport: { width: 1440, height: 900 },
+    });
+
+    await page.goto(BASE_URL, { waitUntil: "networkidle" });
+
+    // 1. Trang 1 chỉ hiển thị đúng Top 5 hạng phòng khớp chuẩn nhất (Match 100%)
+    const page1Rows = await page.getByTestId("comparison-row").count();
+    assert.equal(
+      page1Rows,
+      5,
+      `Trang 1 chỉ được phép hiển thị đúng Top 5 hạng phòng, thực tế: ${page1Rows}`
+    );
+    await page.getByText(/Hiển thị Top 1–5/).waitFor({ timeout: 3000 });
+
+    // 2. Kiểm tra RoomID đầy đủ (không bị cắt ngắn, không còn bbasic_0) & Deep Link #:~:text= + Giá UI Web
+    const deepLinkAudit = await page.evaluate(() => {
+      const agodaLinks = Array.from(
+        document.querySelectorAll("[data-testid='room-proof-link-AGODA']")
+      );
+      const bookingLinks = Array.from(
+        document.querySelectorAll("[data-testid='room-proof-link-BOOKING']")
+      );
+      const uiWebPrices = Array.from(
+        document.querySelectorAll("[data-testid^='ui-web-price-']")
+      );
+      return {
+        agodaIds: agodaLinks.map((a) => a.textContent?.trim()),
+        agodaHrefs: agodaLinks.map((a) => a.getAttribute("href")),
+        bookingIds: bookingLinks.map((a) => a.textContent?.trim()),
+        bookingHrefs: bookingLinks.map((a) => a.getAttribute("href")),
+        uiWebPriceCount: uiWebPrices.length,
+      };
+    });
+
+    assert.equal(
+      deepLinkAudit.agodaIds.length,
+      5,
+      "Cả 5 phòng Top 1–5 trên Trang 1 đều phải có mã phòng Agoda đầy đủ"
+    );
+    assert.equal(
+      deepLinkAudit.bookingIds.length,
+      5,
+      "Cả 5 phòng Top 1–5 trên Trang 1 đều phải có mã phòng Booking.com đầy đủ"
+    );
+    // Đảm bảo mã phòng là số đầy đủ >= 8 chữ số (ví dụ #1188793531, #1439989410, #1439989401), không trùng nhau và không có bbasic_0
+    for (const id of [
+      ...deepLinkAudit.agodaIds,
+      ...deepLinkAudit.bookingIds,
+    ]) {
+      assert.match(
+        id || "",
+        /^#\d{8,12}$/,
+        `RoomID phải là mã số gốc đầy đủ, phát hiện ID lỗi: ${id}`
+      );
+    }
+    assert.equal(
+      new Set(deepLinkAudit.bookingIds).size,
+      5,
+      `5 hạng phòng trên Booking.com phải có 5 RoomID riêng biệt, thực tế: ${JSON.stringify(deepLinkAudit.bookingIds)}`
+    );
+    for (const href of [
+      ...deepLinkAudit.agodaHrefs,
+      ...deepLinkAudit.bookingHrefs,
+    ]) {
+      assert.match(
+        href || "",
+        /#:~:text=/,
+        `Link bằng chứng phải chứa neo nhảy thẳng tới phòng (#:~:text=): ${href}`
+      );
+    }
+    assert.equal(
+      deepLinkAudit.uiWebPriceCount,
+      10,
+      "Mỗi ô Agoda và Booking trong Top 5 đều phải hiển thị rõ 'UI Web: ...đ'"
+    );
+
+    // 3. Bấm nút "Tiếp Top 5 →" để tải Trang 2 (Top 6–10)
+    await page.getByTestId("btn-next-page").click();
+    await page.getByText(/Hiển thị Top 6–10/).waitFor({ timeout: 3000 });
+    await page.getByText("Champa Deluxe Twin").first().waitFor({ timeout: 3000 });
+
+    // 4. Bấm sang Trang 3 (Top 11–12) rồi quay về Trang 1 (Top 1–5)
+    await page.getByTestId("btn-page-3").click();
+    await page.getByText(/Hiển thị Top 11–/).waitFor({ timeout: 3000 });
+    await page.getByTestId("btn-page-1").click();
+    await page.getByText(/Hiển thị Top 1–5/).waitFor({ timeout: 3000 });
+
+    // 5. Kiểm tra khung "Đối chiếu Nhanh Phòng Đang Chọn" trong tab Bằng chứng Live
+    await page.getByRole("tab", { name: "Bằng chứng Live" }).click();
+    await page.getByTestId("selected-room-proof-panel").waitFor({ timeout: 3000 });
+    const agodaJumpHref = await page
+      .getByTestId("inspector-deep-jump-AGODA")
+      .getAttribute("href");
+    const bookingJumpHref = await page
+      .getByTestId("inspector-deep-jump-BOOKING")
+      .getAttribute("href");
+    assert.match(agodaJumpHref || "", /#:~:text=/);
+    assert.match(bookingJumpHref || "", /#:~:text=/);
+  } finally {
+    await browser.close();
+  }
+});

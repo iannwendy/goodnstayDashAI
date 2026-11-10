@@ -75,7 +75,13 @@ interface RoomFilterMeta {
 
 interface LiveProofMeta {
   isLiveScraped: boolean;
+  roomId?: string | null;
+  offerId?: string | null;
+  blockId?: string | null;
   externalNativeId: string | null;
+  deepLinkUrl?: string | null;
+  uiDisplayedPriceVnd?: number;
+  uiDisplayedPriceLabel?: string | null;
   scrapedAt: string | null;
   sourceUrl: string | null;
 }
@@ -110,6 +116,9 @@ interface PlatformMetric {
 
 interface ComparisonGroup {
   groupKey: string;
+  matchRank?: number;
+  matchConfidenceScore?: number;
+  matchedBothLiveOtas?: boolean;
   hotelId: string;
   hotelName: string;
   canonicalRoomKey: string;
@@ -167,6 +176,18 @@ interface ReportResponse {
   checkIn?: string;
   checkOut?: string;
   liveScrapeProof?: LiveScrapeProofBundle | null;
+  pagination?: {
+    page: number;
+    pageSize: number;
+    totalItems: number;
+    totalPages: number;
+    startRank: number;
+    endRank: number;
+  };
+  overallSummary?: {
+    bothLiveMatchedCount: number;
+    avgAgodaVsBookingPct: number;
+  };
   liveAgodaScrapeStatus: {
     success: boolean;
     scrapedAt: string | null;
@@ -231,7 +252,7 @@ export function App() {
   );
   const [selectedCheckIn, setSelectedCheckIn] = useState<string>("2026-11-20");
 
-  // Bộ lọc 6 tầng
+  // Bộ lọc 6 tầng + Phân trang Lazy Top-5
   const [multiBedMode, setMultiBedMode] = useState<
     "ALL" | "SINGLE_BED_ONLY" | "MULTI_BED_ONLY"
   >("ALL");
@@ -239,6 +260,8 @@ export function App() {
   const [detailedBedCategory, setDetailedBedCategory] = useState<string>("ALL");
   const [viewCategory, setViewCategory] = useState<string>("ALL");
   const [priceBasis, setPriceBasis] = useState<"GROSS" | "NET">("GROSS");
+  const [page, setPage] = useState<number>(1);
+  const pageSize = 5;
 
   // Dòng hạng phòng đang chọn để hiển thị ở Inspector bên phải
   const [selectedGroupKey, setSelectedGroupKey] = useState<string | null>(null);
@@ -264,6 +287,8 @@ export function App() {
         multiBedMode,
         viewCategory,
         priceBasis,
+        page: String(page),
+        pageSize: String(pageSize),
       });
       const res = await fetch(`/api/report?${qs.toString()}`);
       const data: ReportResponse = await res.json();
@@ -292,6 +317,7 @@ export function App() {
     multiBedMode,
     viewCategory,
     priceBasis,
+    page,
   ]);
 
   useEffect(() => {
@@ -332,6 +358,7 @@ export function App() {
     setDetailedBedCategory("ALL");
     setViewCategory("ALL");
     setPriceBasis("GROSS");
+    setPage(1);
   };
 
   const selectedGroup = useMemo(() => {
@@ -355,6 +382,9 @@ export function App() {
   }, [selectedGroup, selectedOtaForForm]);
 
   const summaryStats = useMemo(() => {
+    if (report?.overallSummary) {
+      return report.overallSummary;
+    }
     const groups = report?.comparisonGroups ?? [];
     let bothLiveMatchedCount = 0;
     let agodaVsBookingDiffSum = 0;
@@ -395,10 +425,7 @@ export function App() {
 
   const proof = report?.liveScrapeProof;
   const isBusy = loading || scraping;
-  const skeletonRows =
-    report && report.comparisonGroups.length > 0
-      ? report.comparisonGroups.map((g) => g.groupKey)
-      : ["sk-1", "sk-2", "sk-3", "sk-4", "sk-5", "sk-6", "sk-7"];
+  const skeletonRows = ["sk-1", "sk-2", "sk-3", "sk-4", "sk-5"];
 
   return (
     <div className="min-h-screen bg-[#f6f7f8] text-zinc-900 pb-14 overflow-x-clip">
@@ -427,6 +454,7 @@ export function App() {
                 value={selectedHotelKey}
                 onChange={(e) => {
                   setSelectedHotelKey(e.target.value);
+                  setPage(1);
                 }}
                 className="bg-transparent font-medium text-xs text-zinc-900 pr-1 focus:outline-none cursor-pointer"
               >
@@ -447,6 +475,7 @@ export function App() {
                 value={selectedCheckIn}
                 onChange={(e) => {
                   setSelectedCheckIn(e.target.value);
+                  setPage(1);
                 }}
                 className="bg-transparent font-mono text-xs text-zinc-800 pr-1 focus:outline-none cursor-pointer"
               >
@@ -856,7 +885,10 @@ export function App() {
                       key={item.key}
                       type="button"
                       data-testid={`bed-mode-${item.key}`}
-                      onClick={() => setMultiBedMode(item.key)}
+                      onClick={() => {
+                        setMultiBedMode(item.key);
+                        setPage(1);
+                      }}
                       className={`px-2.5 py-1 rounded-md text-[11px] whitespace-nowrap transition-all cursor-pointer ${
                         active
                           ? "bg-white text-zinc-950 font-semibold shadow-2xs"
@@ -879,7 +911,10 @@ export function App() {
                   data-testid="filter-room-type"
                   aria-label="Lọc theo Room Type"
                   value={roomType}
-                  onChange={(e) => setRoomType(e.target.value)}
+                  onChange={(e) => {
+                    setRoomType(e.target.value);
+                    setPage(1);
+                  }}
                   className={getSelectClass(roomType !== "ALL")}
                 >
                   <option value="ALL">Hạng: Tất cả</option>
@@ -894,7 +929,10 @@ export function App() {
                   data-testid="filter-bed-category"
                   aria-label="Lọc theo Cấu hình Giường"
                   value={detailedBedCategory}
-                  onChange={(e) => setDetailedBedCategory(e.target.value)}
+                  onChange={(e) => {
+                    setDetailedBedCategory(e.target.value);
+                    setPage(1);
+                  }}
                   className={getSelectClass(detailedBedCategory !== "ALL")}
                 >
                   <option value="ALL">Giường: Tất cả</option>
@@ -915,7 +953,10 @@ export function App() {
                   data-testid="filter-view-category"
                   aria-label="Lọc theo Hướng nhìn"
                   value={viewCategory}
-                  onChange={(e) => setViewCategory(e.target.value)}
+                  onChange={(e) => {
+                    setViewCategory(e.target.value);
+                    setPage(1);
+                  }}
                   className={getSelectClass(viewCategory !== "ALL")}
                 >
                   <option value="ALL">View: Tất cả</option>
@@ -1052,29 +1093,33 @@ export function App() {
                               }
                               const isPositive = m.diffVsRefPct > 0.05;
                               const isNegative = m.diffVsRefPct < -0.05;
-                              const nativeId =
+                              const fullRoomId =
+                                off.liveProof?.roomId ||
                                 off.liveProof?.externalNativeId
-                                  ?.replace("masterRoomId:", "#")
-                                  .replace("blockId:", "#")
-                                  .slice(0, 9) || "";
+                                  ?.replace(/^masterRoomId:/, "")
+                                  .replace(/^roomId:/, "")
+                                  .replace(/^blockId:/, "") ||
+                                "";
+                              const deepLinkUrl =
+                                off.liveProof?.deepLinkUrl ||
+                                off.liveProof?.sourceUrl ||
+                                "#";
+                              const uiWebPrice =
+                                off.liveProof?.uiDisplayedPriceVnd ??
+                                (ota === "AGODA"
+                                  ? off.netPrice
+                                  : off.grossPrice);
 
                               return (
                                 <div className="flex flex-col items-end gap-0.5">
-                                  <span
-                                    data-testid={`price-value-${ota}`}
-                                    className="font-mono text-xs font-semibold text-zinc-900"
-                                  >
-                                    {formatFullVnd(m.price)}
-                                  </span>
-                                  {ota === "GOODNSTAY" ? (
-                                    <span className="text-[10px] font-mono text-zinc-400">
-                                      Mốc 0%
+                                  <div className="flex items-center gap-1">
+                                    <span
+                                      data-testid={`price-value-${ota}`}
+                                      className="font-mono text-xs font-semibold text-zinc-900"
+                                    >
+                                      {formatFullVnd(m.price)}
                                     </span>
-                                  ) : (
-                                    <div className="flex items-center gap-1">
-                                      <span className="text-[9.5px] font-mono text-zinc-400">
-                                        {nativeId}
-                                      </span>
+                                    {ota !== "GOODNSTAY" && (
                                       <span
                                         className={`inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-mono font-medium ${
                                           isNegative
@@ -1088,7 +1133,43 @@ export function App() {
                                           ? `+${m.diffVsRefPct}%`
                                           : `${m.diffVsRefPct}%`}
                                       </span>
-                                    </div>
+                                    )}
+                                  </div>
+                                  {ota === "GOODNSTAY" ? (
+                                    <span className="text-[10px] font-mono text-zinc-400">
+                                      Mốc 0%
+                                    </span>
+                                  ) : (
+                                    <>
+                                      <span
+                                        data-testid={`ui-web-price-${ota}`}
+                                        className="text-[10px] font-mono text-zinc-500"
+                                        title={
+                                          ota === "AGODA"
+                                            ? "Giá hiển thị ngoài mặt web Agoda (chưa thuế)"
+                                            : "Giá hiển thị ngoài mặt web Booking.com (đã gồm thuế)"
+                                        }
+                                      >
+                                        UI Web: {formatFullVnd(uiWebPrice)}
+                                      </span>
+                                      <a
+                                        href={deepLinkUrl}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        data-testid={`room-proof-link-${ota}`}
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setSelectedGroupKey(grp.groupKey);
+                                          setSelectedOtaForForm(ota);
+                                          setInspectorTab("proof");
+                                        }}
+                                        className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-zinc-100 hover:bg-emerald-50 text-zinc-700 hover:text-emerald-800 border border-zinc-200/80 hover:border-emerald-300 text-[9.5px] font-mono font-medium transition-colors"
+                                        title={`Bấm để nhảy thẳng tới phòng "${off.roomName}" (ID: ${fullRoomId}) trên ${OTA_LABELS[ota]}`}
+                                      >
+                                        <span>#{fullRoomId}</span>
+                                        <ExternalLink className="w-2.5 h-2.5 shrink-0" />
+                                      </a>
+                                    </>
                                   )}
                                 </div>
                               );
@@ -1097,6 +1178,7 @@ export function App() {
                             return (
                               <TableRow
                                 key={grp.groupKey}
+                                data-testid="comparison-row"
                                 onClick={() => setSelectedGroupKey(grp.groupKey)}
                                 className={`cursor-pointer transition-colors ${
                                   isSelected
@@ -1105,15 +1187,23 @@ export function App() {
                                 }`}
                               >
                                 <TableCell className="py-3 pl-3 pr-2 align-top whitespace-normal">
-                                  <div className="flex items-center gap-2">
+                                  <div className="flex flex-wrap items-center gap-1.5">
+                                    <span className="px-1.5 py-0.5 rounded bg-zinc-900 text-white text-[10px] font-mono font-semibold">
+                                      #{grp.matchRank ?? 1}
+                                    </span>
                                     <span className="px-1.5 py-0.5 rounded bg-zinc-200/70 text-zinc-800 text-[10px] font-semibold">
                                       {grp.roomType}
                                     </span>
-                                    <span className="font-semibold text-xs text-zinc-950">
-                                      {grp.sampleGoodNStayForm.roomName}
-                                    </span>
+                                    {grp.matchConfidenceScore && (
+                                      <span className="px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200/70 text-[10px] font-mono font-medium">
+                                        Match {grp.matchConfidenceScore}%
+                                      </span>
+                                    )}
                                   </div>
-                                  <div className="text-[11px] text-zinc-500 mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
+                                  <div className="font-semibold text-xs text-zinc-950 mt-1">
+                                    {grp.sampleGoodNStayForm.roomName}
+                                  </div>
+                                  <div className="text-[11px] text-zinc-500 mt-0.5 flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
                                     <span>{grp.areaSqm ?? "--"}m²</span>
                                     <span className="text-zinc-300">·</span>
                                     <span>
@@ -1143,6 +1233,92 @@ export function App() {
                     </TableBody>
                   </Table>
                 </div>
+
+                {/* TOP-5 LAZY PAGINATION BAR */}
+                {report?.pagination && (
+                  <div
+                    data-testid="pagination-bar"
+                    className="flex flex-wrap items-center justify-between gap-2 pt-2 px-1"
+                  >
+                    <div className="text-xs text-zinc-500">
+                      Hiển thị{" "}
+                      <span className="font-mono font-semibold text-zinc-900">
+                        Top {report.pagination.startRank}–
+                        {report.pagination.endRank}
+                      </span>{" "}
+                      /{" "}
+                      <span className="font-mono font-semibold text-zinc-900">
+                        {report.pagination.totalItems}
+                      </span>{" "}
+                      hạng phòng (Tải theo từng cụm 5 phòng chuẩn nhất)
+                    </div>
+
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        type="button"
+                        data-testid="btn-prev-page"
+                        disabled={
+                          isBusy || (report.pagination.page || 1) <= 1
+                        }
+                        onClick={() =>
+                          setPage((p) => Math.max(1, p - 1))
+                        }
+                        className="h-7 px-2.5 rounded-lg border border-zinc-200 bg-white hover:bg-zinc-50 text-xs font-medium text-zinc-700 disabled:opacity-40 cursor-pointer"
+                      >
+                        ← Trước
+                      </button>
+
+                      {Array.from(
+                        { length: report.pagination.totalPages },
+                        (_, idx) => idx + 1
+                      ).map((pg) => {
+                        const isCurr = pg === report.pagination?.page;
+                        const sRank = (pg - 1) * pageSize + 1;
+                        const eRank = Math.min(
+                          report.pagination?.totalItems || 0,
+                          pg * pageSize
+                        );
+                        return (
+                          <button
+                            key={pg}
+                            type="button"
+                            data-testid={`btn-page-${pg}`}
+                            disabled={isBusy}
+                            onClick={() => setPage(pg)}
+                            className={`h-7 px-2.5 rounded-lg border text-xs font-mono transition-colors cursor-pointer ${
+                              isCurr
+                                ? "border-zinc-900 bg-zinc-900 text-white font-semibold"
+                                : "border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-600"
+                            }`}
+                          >
+                            Top {sRank}–{eRank}
+                          </button>
+                        );
+                      })}
+
+                      <button
+                        type="button"
+                        data-testid="btn-next-page"
+                        disabled={
+                          isBusy ||
+                          (report.pagination.page || 1) >=
+                            (report.pagination.totalPages || 1)
+                        }
+                        onClick={() =>
+                          setPage((p) =>
+                            Math.min(
+                              report.pagination?.totalPages || 1,
+                              p + 1
+                            )
+                          )
+                        }
+                        className="h-7 px-2.5 rounded-lg border border-zinc-200 bg-white hover:bg-zinc-50 text-xs font-medium text-zinc-700 disabled:opacity-40 cursor-pointer"
+                      >
+                        Tiếp Top 5 →
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -1628,8 +1804,86 @@ export function App() {
                     </div>
                   </TabsContent>
 
-                  {/* TAB 3: UNDENIABLE LIVE PROOF (SCREENSHOTS + LINKS + SHA256) */}
+                  {/* TAB 3: UNDENIABLE LIVE PROOF (ROOM-SPECIFIC DEEP LINKS + SCREENSHOTS + SHA256) */}
                   <TabsContent value="proof" className="pt-3 space-y-3">
+                    {/* BẰNG CHỨNG TRỰC TIẾP CỦA RIÊNG PHÒNG ĐANG CHỌN */}
+                    <div
+                      data-testid="selected-room-proof-panel"
+                      className="p-3 rounded-xl bg-zinc-50 border border-zinc-200/90 space-y-2.5 text-xs"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="font-semibold text-zinc-950">
+                          Đối chiếu Nhanh Phòng Đang Chọn (
+                          {selectedGroup.sampleGoodNStayForm.roomName})
+                        </span>
+                        <span className="font-mono text-[10.5px] px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200">
+                          1-Click Deep Link
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-1 gap-2">
+                        {(["AGODA", "BOOKING"] as OtaCode[]).map((ota) => {
+                          const off = selectedGroup.otaOffers[ota];
+                          if (!off) return null;
+                          const fullId =
+                            off.liveProof?.roomId ||
+                            off.liveProof?.externalNativeId ||
+                            "--";
+                          const deepUrl =
+                            off.liveProof?.deepLinkUrl ||
+                            off.liveProof?.sourceUrl ||
+                            "#";
+                          const uiPrice =
+                            off.liveProof?.uiDisplayedPriceVnd ??
+                            (ota === "AGODA" ? off.netPrice : off.grossPrice);
+                          return (
+                            <div
+                              key={ota}
+                              className="p-2.5 rounded-lg bg-white border border-zinc-200/80 flex items-center justify-between gap-2"
+                            >
+                              <div className="min-w-0 space-y-0.5">
+                                <div className="flex items-center gap-1.5">
+                                  <span className="font-semibold text-zinc-900">
+                                    {OTA_LABELS[ota]}
+                                  </span>
+                                  <code className="text-[10.5px] font-mono px-1.5 py-0.2 rounded bg-zinc-100 text-zinc-800">
+                                    ID: {fullId}
+                                  </code>
+                                </div>
+                                <div className="text-[11px] text-zinc-600 truncate">
+                                  Tên trên sàn:{" "}
+                                  <span className="font-medium text-zinc-900">
+                                    &ldquo;{off.roomName}&rdquo;
+                                  </span>
+                                </div>
+                                <div className="text-[11px] font-mono text-zinc-600">
+                                  Giá hiển thị trên UI web:{" "}
+                                  <span className="font-bold text-emerald-700">
+                                    {formatFullVnd(uiPrice)}
+                                  </span>{" "}
+                                  <span className="text-zinc-400">
+                                    (Net: {formatFullVnd(off.netPrice)} · Gross:{" "}
+                                    {formatFullVnd(off.grossPrice)})
+                                  </span>
+                                </div>
+                              </div>
+
+                              <a
+                                href={deepUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                data-testid={`inspector-deep-jump-${ota}`}
+                                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white text-[11px] font-medium whitespace-nowrap shrink-0"
+                              >
+                                <span>Nhảy tới phòng</span>
+                                <ExternalLink className="w-3 h-3" />
+                              </a>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
                     <div className="p-3 rounded-xl bg-emerald-50/60 border border-emerald-200/80 space-y-1.5 text-xs">
                       <div className="flex items-center justify-between font-semibold text-emerald-950">
                         <span className="inline-flex items-center gap-1.5">

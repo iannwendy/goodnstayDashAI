@@ -708,19 +708,50 @@ export function buildMatchedRoomComparisonGroups(normalizedRooms = [], filters =
         grossPrice: item.filterMeta.grossPrice,
         formFields: item.formFields,
         filterMeta: item.filterMeta,
+        liveProof: item.liveProof || null,
       };
     }
   }
 
-  // Tính toán % Chênh lệch giá cho từng nhóm phòng đã khớp
+  // Tính toán % Chênh lệch giá và Điểm Khớp Chuẩn (Match Confidence Score) cho từng nhóm phòng
   const results = [];
   for (const group of groupsMap.values()) {
     const spreadAnalysis = calculatePlatformPriceSpread(group.otaOffers, priceBasis);
+    const hasAgoda = Boolean(group.otaOffers.AGODA);
+    const hasBooking = Boolean(group.otaOffers.BOOKING);
+    let matchConfidenceScore = hasAgoda && hasBooking ? 55 : 25;
+    if (group.areaSqm && group.areaSqm > 0) matchConfidenceScore += 18;
+    if (group.viewCategory && group.viewCategory !== "STANDARD_VIEW") {
+      matchConfidenceScore += 12;
+    }
+    if (group.goodNStayBedType && group.goodNStayBedType !== "Any Bed") {
+      matchConfidenceScore += 10;
+    }
+    if ((group.sampleGoodNStayForm?.amenityTypes?.length || 0) >= 3) {
+      matchConfidenceScore += 5;
+    }
+
     results.push({
       ...group,
+      matchConfidenceScore: Math.min(100, matchConfidenceScore),
+      matchedBothLiveOtas: hasAgoda && hasBooking,
       spreadAnalysis,
     });
   }
 
-  return results;
+  // Sắp xếp ưu tiên Top 5 khớp chuẩn nhất với Form (khớp cả 2 sàn Agoda + Booking, đủ m² + View + Giường) lên đầu
+  results.sort((a, b) => {
+    if (b.matchConfidenceScore !== a.matchConfidenceScore) {
+      return b.matchConfidenceScore - a.matchConfidenceScore;
+    }
+    return (
+      (a.spreadAnalysis?.referencePrice || 0) -
+      (b.spreadAnalysis?.referencePrice || 0)
+    );
+  });
+
+  return results.map((item, idx) => ({
+    ...item,
+    matchRank: idx + 1,
+  }));
 }

@@ -199,6 +199,7 @@ export async function scrapeAgodaAndBookingLive({
         document.querySelectorAll("#hprt-table tbody tr, tr[data-block-id]")
       );
       let curRoom = "";
+      let curRoomId = "";
       let curBed = "";
       let curFacs = [];
       const blocks = [];
@@ -209,6 +210,12 @@ export async function scrapeAgodaAndBookingLive({
         );
         if (rLink) {
           curRoom = rLink.textContent.trim();
+          const idFromAttr =
+            rLink.getAttribute("data-room-id") ||
+            (rLink.id || "").replace(/^room_type_id_/, "") ||
+            ((rLink.getAttribute("href") || "").match(/(\d{6,})/) || [])[1] ||
+            "";
+          if (idFromAttr) curRoomId = idFromAttr;
           curBed =
             tr
               .querySelector(".hprt-roomtype-bed, .rt-bed-type")
@@ -219,6 +226,10 @@ export async function scrapeAgodaAndBookingLive({
           ).map((f) => f.textContent.trim());
         }
         const blockId = tr.getAttribute("data-block-id") || "";
+        const roomIdFromBlock = (blockId.match(/^(\d{6,})_/) || [])[1] || "";
+        if (roomIdFromBlock) {
+          curRoomId = roomIdFromBlock;
+        }
         const rawPriceAttr = tr.getAttribute("data-hotel-rounded-price") || "";
         const priceText =
           tr
@@ -243,6 +254,7 @@ export async function scrapeAgodaAndBookingLive({
 
         if (curRoom && numericPrice > 0) {
           blocks.push({
+            roomId: curRoomId || roomIdFromBlock || blockId,
             blockId,
             roomName: curRoom,
             bedText: curBed,
@@ -256,7 +268,7 @@ export async function scrapeAgodaAndBookingLive({
         }
       }
 
-      // Gom theo từng tên phòng trên Booking (ưu tiên dòng có đầy đủ bedText hoặc gộp bedText từ dòng cùng phòng)
+      // Gom theo từng tên phòng trên Booking (ưu tiên lấy đủ roomId số thực, bedText và facilities)
       const uniqueRoomsMap = new Map();
       for (const b of blocks) {
         if (!uniqueRoomsMap.has(b.roomName)) {
@@ -266,8 +278,22 @@ export async function scrapeAgodaAndBookingLive({
           if (!existing.bedText && b.bedText) {
             existing.bedText = b.bedText;
           }
-          if ((!existing.facilities || existing.facilities.length === 0) && b.facilities?.length) {
+          if (
+            (!existing.facilities || existing.facilities.length === 0) &&
+            b.facilities?.length
+          ) {
             existing.facilities = b.facilities;
+          }
+          if (
+            (!/^\d{6,}$/.test(String(existing.roomId || "")) ||
+              existing.blockId === "bbasic_0") &&
+            /^\d{6,}/.test(String(b.roomId || b.blockId || ""))
+          ) {
+            existing.roomId =
+              b.roomId || (b.blockId.match(/^(\d{6,})/) || [])[1] || existing.roomId;
+            if (existing.blockId === "bbasic_0" && b.blockId !== "bbasic_0") {
+              existing.blockId = b.blockId;
+            }
           }
         }
       }
@@ -320,11 +346,21 @@ export function buildDatasetFromLiveScrape(liveData) {
   const allRawOffers = [];
 
   // 1. Đưa toàn bộ phòng cào THẬT từ Agoda vào danh sách
+  const agodaBaseUrl = (liveData?.agoda?.finalUrl || "").split("#")[0];
   for (const ar of agodaLiveRooms) {
     if (!ar.grossPrice) continue;
+    const cleanRoomId = String(ar.masterRoomId || "").trim();
+    const deepLinkUrl = agodaBaseUrl
+      ? `${agodaBaseUrl}#:~:text=${encodeURIComponent(ar.roomName)}`
+      : "";
     allRawOffers.push({
-      id: `AGODA_LIVE_${ar.masterRoomId}`,
-      externalNativeId: `masterRoomId:${ar.masterRoomId}`,
+      id: `AGODA_LIVE_${cleanRoomId}`,
+      roomId: cleanRoomId,
+      offerId: String(ar.offerId || ""),
+      externalNativeId: `masterRoomId:${cleanRoomId}`,
+      deepLinkUrl,
+      uiDisplayedPriceVnd: ar.netPrice,
+      uiDisplayedPriceLabel: "Giá mặt web Agoda (Net)",
       hotelId,
       hotelName,
       otaSource: "AGODA",
@@ -345,11 +381,27 @@ export function buildDatasetFromLiveScrape(liveData) {
   }
 
   // 2. Đưa toàn bộ phòng cào THẬT từ Booking.com vào danh sách
+  const bookingBaseUrl = (liveData?.booking?.finalUrl || "").split("#")[0];
   for (const br of bookingLiveRooms) {
     if (!br.grossPrice) continue;
+    const numericIdFromBlock = (String(br.blockId || "").match(/^(\d{6,})/) ||
+      [])[1];
+    const cleanRoomId = String(
+      br.roomId && /^\d{6,}$/.test(String(br.roomId))
+        ? br.roomId
+        : numericIdFromBlock || br.roomId || br.blockId
+    );
+    const deepLinkUrl = bookingBaseUrl
+      ? `${bookingBaseUrl}#:~:text=${encodeURIComponent(br.roomName)}`
+      : "";
     allRawOffers.push({
-      id: `BOOKING_LIVE_${br.blockId}`,
-      externalNativeId: `blockId:${br.blockId}`,
+      id: `BOOKING_LIVE_${cleanRoomId}`,
+      roomId: cleanRoomId,
+      blockId: String(br.blockId || ""),
+      externalNativeId: `roomId:${cleanRoomId}`,
+      deepLinkUrl,
+      uiDisplayedPriceVnd: br.grossPrice,
+      uiDisplayedPriceLabel: "Giá mặt web Booking (Gross)",
       hotelId,
       hotelName,
       otaSource: "BOOKING",
@@ -419,10 +471,16 @@ export function buildDatasetFromLiveScrape(liveData) {
     if (adjustedRaw.customSubTier) {
       norm.filterMeta.canonicalRoomKey = `${norm.filterMeta.canonicalRoomKey}::${adjustedRaw.customSubTier}`;
     }
-    // Gắn thông tin Bằng chứng Live (Native ID, Timestamp, Source URL)
+    // Gắn thông tin Bằng chứng Live (Full RoomID, Deep Link nhảy thẳng tới phòng, Giá hiển thị trên mặt UI)
     norm.liveProof = {
       isLiveScraped: Boolean(raw.isLiveScraped),
+      roomId: raw.roomId || null,
+      offerId: raw.offerId || null,
+      blockId: raw.blockId || null,
       externalNativeId: raw.externalNativeId || null,
+      deepLinkUrl: raw.deepLinkUrl || raw.sourceUrl || null,
+      uiDisplayedPriceVnd: raw.uiDisplayedPriceVnd || raw.grossPrice || 0,
+      uiDisplayedPriceLabel: raw.uiDisplayedPriceLabel || null,
       scrapedAt: raw.scrapedAt || null,
       sourceUrl: raw.sourceUrl || null,
     };

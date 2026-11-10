@@ -395,7 +395,8 @@
           "conditions": [
             "Non-refundable",
             "• Pay in advance"
-          ]
+          ],
+          "roomId": "365483700"
         },
         {
           "blockId": "365483701_bbasic_0",
@@ -417,7 +418,8 @@
             "Breakfast included",
             "Free cancellation before 13 November 2026",
             "• Pay in advance"
-          ]
+          ],
+          "roomId": "365483701"
         },
         {
           "blockId": "365483709_441137962_2_1_0",
@@ -440,7 +442,8 @@
             "Free cancellation before 13 November 2026",
             "• Pay the property before arrival",
             "Fully refundable during free cancellation"
-          ]
+          ],
+          "roomId": "365483709"
         },
         {
           "blockId": "365483702_441137962_2_1_0",
@@ -465,7 +468,8 @@
             "Free cancellation before 13 November 2026",
             "• Pay the property before arrival",
             "Fully refundable during free cancellation"
-          ]
+          ],
+          "roomId": "365483702"
         },
         {
           "blockId": "365483707_441137962_2_1_0",
@@ -493,7 +497,8 @@
             "Free cancellation before 13 November 2026",
             "• Pay the property before arrival",
             "Fully refundable during free cancellation"
-          ]
+          ],
+          "roomId": "365483707"
         },
         {
           "blockId": "365483706_441137962_2_1_0",
@@ -519,7 +524,8 @@
             "Free cancellation before 13 November 2026",
             "• Pay the property before arrival",
             "Fully refundable during free cancellation"
-          ]
+          ],
+          "roomId": "365483706"
         },
         {
           "blockId": "365483726_441137962_2_1_0",
@@ -543,7 +549,8 @@
             "Free cancellation before 13 November 2026",
             "• Pay the property before arrival",
             "Fully refundable during free cancellation"
-          ]
+          ],
+          "roomId": "365483726"
         }
       ]
     }
@@ -678,13 +685,19 @@
           },
           "liveProof": {
             "isLiveScraped": true,
+            "roomId": "39364820",
+            "offerId": "39364820",
+            "blockId": null,
             "externalNativeId": "masterRoomId:39364820",
+            "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Standard%20Double%20Room%20without%20Window",
+            "uiDisplayedPriceVnd": 603575,
+            "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
             "scrapedAt": "2026-11-10T04:58:34.435Z",
             "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
           }
         },
         "BOOKING": {
-          "id": "BOOKING_LIVE_bbasic_0",
+          "id": "BOOKING_LIVE_365483700",
           "roomName": "Standard Double Room with no Window",
           "netPrice": 588901,
           "taxesAndFees": 91280,
@@ -760,7 +773,13 @@
           },
           "liveProof": {
             "isLiveScraped": true,
-            "externalNativeId": "blockId:bbasic_0",
+            "roomId": "365483700",
+            "offerId": null,
+            "blockId": "bbasic_0",
+            "externalNativeId": "roomId:365483700",
+            "deepLinkUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND#:~:text=Standard%20Double%20Room%20with%20no%20Window",
+            "uiDisplayedPriceVnd": 680181,
+            "uiDisplayedPriceLabel": "Giá mặt web Booking (Gross)",
             "scrapedAt": "2026-11-10T04:58:34.435Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
@@ -918,13 +937,19 @@
           },
           "liveProof": {
             "isLiveScraped": true,
+            "roomId": "39364820",
+            "offerId": "39364820",
+            "blockId": null,
             "externalNativeId": "masterRoomId:39364820",
+            "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Standard%20Double%20Room%20without%20Window",
+            "uiDisplayedPriceVnd": 603575,
+            "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
             "scrapedAt": "2026-11-10T04:58:34.435Z",
             "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
           }
         },
         {
-          "id": "BOOKING_LIVE_bbasic_0",
+          "id": "BOOKING_LIVE_365483700",
           "hotelId": "libra-nha-trang",
           "hotelName": "Libra Hotel Nha Trang",
           "otaSource": "BOOKING",
@@ -999,7 +1024,13 @@
           },
           "liveProof": {
             "isLiveScraped": true,
-            "externalNativeId": "blockId:bbasic_0",
+            "roomId": "365483700",
+            "offerId": null,
+            "blockId": "bbasic_0",
+            "externalNativeId": "roomId:365483700",
+            "deepLinkUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND#:~:text=Standard%20Double%20Room%20with%20no%20Window",
+            "uiDisplayedPriceVnd": 680181,
+            "uiDisplayedPriceLabel": "Giá mặt web Booking (Gross)",
             "scrapedAt": "2026-11-10T04:58:34.435Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
@@ -1079,6 +1110,8 @@
           }
         }
       ],
+      "matchConfidenceScore": 100,
+      "matchedBothLiveOtas": true,
       "spreadAnalysis": {
         "priceBasis": "GROSS",
         "minPrice": 680000,
@@ -1142,7 +1175,553 @@
             "parityStatus": "REFERENCE"
           }
         }
-      }
+      },
+      "matchRank": 1
+    },
+    {
+      "groupKey": "libra-nha-trang::DELUXE::TWIN_2_SINGLE::OCEAN_SEA_VIEW::BB_NON_REFUNDABLE",
+      "hotelId": "libra-nha-trang",
+      "hotelName": "Libra Hotel Nha Trang",
+      "canonicalRoomKey": "libra-nha-trang::DELUXE::TWIN_2_SINGLE::OCEAN_SEA_VIEW",
+      "roomType": "Deluxe",
+      "goodNStayBedType": "Twin",
+      "detailedBedCategory": "TWIN_2_SINGLE",
+      "bedFilterLabelVi": "Twin Room (2 Giường đơn · 2 Khách)",
+      "totalBeds": 2,
+      "isMultiBed": true,
+      "maxGuests": 2,
+      "viewCategory": "OCEAN_SEA_VIEW",
+      "areaSqm": 27,
+      "mealPlan": "BB",
+      "mealPlanLabelVi": "Có ăn sáng (BB)",
+      "cancelPolicy": "NON_REFUNDABLE",
+      "cancelPolicyLabelVi": "Không hoàn tiền",
+      "rateBucket": "BB_NON_REFUNDABLE",
+      "sampleGoodNStayForm": {
+        "uploadPhotos": [
+          "//pix8.agoda.net/hotelImages/5059416/1616493025/df4bf2d888b0b47adb8d03035635c34b.png?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/5059416/1616493025/4ad4463231c040445cb99c6d80c7b53d.jpg?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/5059416/1616493025/cab4ed4e98f290f9a3017b6dd286448d.png?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/5059416/1616493025/7e53ff0caaaf251ca58eab131e3c6b4b.png?ce=3&s=1024x768"
+        ],
+        "roomName": "Deluxe Ocean 2 Twin",
+        "description": "[Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 2 single beds] — Phòng Deluxe Ocean 2 Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
+        "pricePerNightVnd": 1048070,
+        "pricePerNightKrw": 58692,
+        "maximumGuests": 2,
+        "amenityTypes": [
+          "Free Wi-Fi",
+          "Air Conditioner",
+          "Television"
+        ],
+        "roomType": "Deluxe",
+        "bedType": "Twin",
+        "totalInventory": 5
+      },
+      "otaOffers": {
+        "AGODA": {
+          "id": "AGODA_LIVE_1616493025",
+          "roomName": "Deluxe Ocean 2 Twin",
+          "netPrice": 924224,
+          "taxesAndFees": 123846,
+          "grossPrice": 1048070,
+          "formFields": {
+            "uploadPhotos": [
+              "//pix8.agoda.net/hotelImages/5059416/1616493025/df4bf2d888b0b47adb8d03035635c34b.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/1616493025/4ad4463231c040445cb99c6d80c7b53d.jpg?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/1616493025/cab4ed4e98f290f9a3017b6dd286448d.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/1616493025/7e53ff0caaaf251ca58eab131e3c6b4b.png?ce=3&s=1024x768"
+            ],
+            "roomName": "Deluxe Ocean 2 Twin",
+            "description": "[Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 2 single beds] — Phòng Deluxe Ocean 2 Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
+            "pricePerNightVnd": 1048070,
+            "pricePerNightKrw": 58692,
+            "maximumGuests": 2,
+            "amenityTypes": [
+              "Free Wi-Fi",
+              "Air Conditioner",
+              "Television"
+            ],
+            "roomType": "Deluxe",
+            "bedType": "Twin",
+            "totalInventory": 5
+          },
+          "filterMeta": {
+            "canonicalRoomKey": "libra-nha-trang::DELUXE::TWIN_2_SINGLE::OCEAN_SEA_VIEW",
+            "roomType": "Deluxe",
+            "roomTypeMethod": "KEYWORD_DIRECT",
+            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Deluxe Ocean 2 Twin')",
+            "goodNStayBedType": "Twin",
+            "detailedBedCategory": "TWIN_2_SINGLE",
+            "bedFilterLabelVi": "Twin Room (2 Giường đơn · 2 Khách)",
+            "bedReason": "2 giường đơn (Twin beds) cho 2 khách",
+            "totalBeds": 2,
+            "isMultiBed": true,
+            "maxGuests": 2,
+            "viewCategory": "OCEAN_SEA_VIEW",
+            "areaSqm": 27,
+            "areaBucket": "28SQM",
+            "mealPlan": "BB",
+            "mealPlanLabelVi": "Có ăn sáng (BB)",
+            "cancelPolicy": "NON_REFUNDABLE",
+            "cancelPolicyLabelVi": "Không hoàn tiền",
+            "rateBucket": "BB_NON_REFUNDABLE",
+            "netPrice": 924224,
+            "taxesAndFees": 123846,
+            "grossPrice": 1048070,
+            "rawBedText": "2 single beds",
+            "rawFeatures": [
+              "27 m²",
+              "Ocean view",
+              "2 single beds"
+            ],
+            "rawBenefits": [
+              "Breakfast",
+              "Complimentary Breakfast",
+              "Parking",
+              "Welcome drink",
+              "Coffee & tea",
+              "Free WiFi",
+              "Drinking water",
+              "Free fitness center access"
+            ]
+          },
+          "liveProof": {
+            "isLiveScraped": true,
+            "roomId": "1616493025",
+            "offerId": "1616493025",
+            "blockId": null,
+            "externalNativeId": "masterRoomId:1616493025",
+            "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Ocean%202%20Twin",
+            "uiDisplayedPriceVnd": 924224,
+            "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
+            "scrapedAt": "2026-11-10T04:58:34.435Z",
+            "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
+          }
+        },
+        "BOOKING": {
+          "id": "BOOKING_LIVE_365483726",
+          "roomName": "Deluxe Twin Room with Sea View",
+          "netPrice": 954545,
+          "taxesAndFees": 147955,
+          "grossPrice": 1102500,
+          "formFields": {
+            "uploadPhotos": [],
+            "roomName": "Deluxe Twin Room with Sea View",
+            "description": "[Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 2 single beds] — Twin Room with Sea View — 27 m², Sea view, Air conditioning, Ensuite bathroom, Flat-screen TV, Minibar, Free WiFi",
+            "pricePerNightVnd": 1102500,
+            "pricePerNightKrw": 61740,
+            "maximumGuests": 2,
+            "amenityTypes": [
+              "Free Wi-Fi",
+              "Air Conditioner",
+              "Television"
+            ],
+            "roomType": "Deluxe",
+            "bedType": "Twin",
+            "totalInventory": 4
+          },
+          "filterMeta": {
+            "canonicalRoomKey": "libra-nha-trang::DELUXE::TWIN_2_SINGLE::OCEAN_SEA_VIEW",
+            "roomType": "Deluxe",
+            "roomTypeMethod": "KEYWORD_DIRECT",
+            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Deluxe Twin Room with Sea View')",
+            "goodNStayBedType": "Twin",
+            "detailedBedCategory": "TWIN_2_SINGLE",
+            "bedFilterLabelVi": "Twin Room (2 Giường đơn · 2 Khách)",
+            "bedReason": "2 giường đơn (Twin beds) cho 2 khách",
+            "totalBeds": 2,
+            "isMultiBed": true,
+            "maxGuests": 2,
+            "viewCategory": "OCEAN_SEA_VIEW",
+            "areaSqm": 27,
+            "areaBucket": "28SQM",
+            "mealPlan": "BB",
+            "mealPlanLabelVi": "Có ăn sáng (BB)",
+            "cancelPolicy": "FREE_CANCEL",
+            "cancelPolicyLabelVi": "Hủy miễn phí",
+            "rateBucket": "BB_NON_REFUNDABLE",
+            "netPrice": 954545,
+            "taxesAndFees": 147955,
+            "grossPrice": 1102500,
+            "rawBedText": "2 single beds",
+            "rawFeatures": [
+              "27 m²",
+              "Ocean view",
+              "2 single beds"
+            ],
+            "rawBenefits": [
+              "Buffet breakfast included",
+              "Free cancellation before 13 November 2026",
+              "• Pay the property before arrival",
+              "Fully refundable during free cancellation"
+            ]
+          },
+          "liveProof": {
+            "isLiveScraped": true,
+            "roomId": "365483726",
+            "offerId": null,
+            "blockId": "365483726_441137962_2_1_0",
+            "externalNativeId": "roomId:365483726",
+            "deepLinkUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND#:~:text=Twin%20Room%20with%20Sea%20View",
+            "uiDisplayedPriceVnd": 1102500,
+            "uiDisplayedPriceLabel": "Giá mặt web Booking (Gross)",
+            "scrapedAt": "2026-11-10T04:58:34.435Z",
+            "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
+          }
+        },
+        "GOODNSTAY": {
+          "id": "GNS_REF_libra-nha-trang::DELUXE::TWIN_2_SINGLE::OCEAN_SEA_VIEW",
+          "roomName": "Deluxe Ocean 2 Twin",
+          "netPrice": 1048000,
+          "taxesAndFees": 0,
+          "grossPrice": 1048000,
+          "formFields": {
+            "uploadPhotos": [
+              "//pix8.agoda.net/hotelImages/5059416/1616493025/df4bf2d888b0b47adb8d03035635c34b.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/1616493025/4ad4463231c040445cb99c6d80c7b53d.jpg?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/1616493025/cab4ed4e98f290f9a3017b6dd286448d.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/1616493025/7e53ff0caaaf251ca58eab131e3c6b4b.png?ce=3&s=1024x768"
+            ],
+            "roomName": "Deluxe Ocean 2 Twin",
+            "description": "[Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 2 single beds] — [Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 2 single beds] — Phòng Deluxe Ocean 2 Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
+            "pricePerNightVnd": 1048000,
+            "pricePerNightKrw": 58688,
+            "maximumGuests": 2,
+            "amenityTypes": [
+              "Free Wi-Fi",
+              "Air Conditioner",
+              "Television"
+            ],
+            "roomType": "Deluxe",
+            "bedType": "Twin",
+            "totalInventory": 5
+          },
+          "filterMeta": {
+            "canonicalRoomKey": "libra-nha-trang::DELUXE::TWIN_2_SINGLE::OCEAN_SEA_VIEW",
+            "roomType": "Deluxe",
+            "roomTypeMethod": "KEYWORD_DIRECT",
+            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Deluxe Ocean 2 Twin')",
+            "goodNStayBedType": "Twin",
+            "detailedBedCategory": "TWIN_2_SINGLE",
+            "bedFilterLabelVi": "Twin Room (2 Giường đơn · 2 Khách)",
+            "bedReason": "2 giường đơn (Twin beds) cho 2 khách",
+            "totalBeds": 2,
+            "isMultiBed": true,
+            "maxGuests": 2,
+            "viewCategory": "OCEAN_SEA_VIEW",
+            "areaSqm": 27,
+            "areaBucket": "28SQM",
+            "mealPlan": "BB",
+            "mealPlanLabelVi": "Có ăn sáng (BB)",
+            "cancelPolicy": "NON_REFUNDABLE",
+            "cancelPolicyLabelVi": "Không hoàn tiền",
+            "rateBucket": "BB_NON_REFUNDABLE",
+            "netPrice": 1048000,
+            "taxesAndFees": 0,
+            "grossPrice": 1048000,
+            "rawBedText": "2 single beds",
+            "rawFeatures": [
+              "27 m²",
+              "Ocean view",
+              "2 single beds"
+            ],
+            "rawBenefits": [
+              "Breakfast included"
+            ]
+          },
+          "liveProof": {
+            "isLiveScraped": false,
+            "externalNativeId": "goodNstay Reference BAR",
+            "scrapedAt": "2026-11-10T04:58:34.435Z",
+            "sourceUrl": "https://goodnstay.com/en-US"
+          }
+        }
+      },
+      "rawItems": [
+        {
+          "id": "AGODA_LIVE_1616493025",
+          "hotelId": "libra-nha-trang",
+          "hotelName": "Libra Hotel Nha Trang",
+          "otaSource": "AGODA",
+          "formFields": {
+            "uploadPhotos": [
+              "//pix8.agoda.net/hotelImages/5059416/1616493025/df4bf2d888b0b47adb8d03035635c34b.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/1616493025/4ad4463231c040445cb99c6d80c7b53d.jpg?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/1616493025/cab4ed4e98f290f9a3017b6dd286448d.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/1616493025/7e53ff0caaaf251ca58eab131e3c6b4b.png?ce=3&s=1024x768"
+            ],
+            "roomName": "Deluxe Ocean 2 Twin",
+            "description": "[Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 2 single beds] — Phòng Deluxe Ocean 2 Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
+            "pricePerNightVnd": 1048070,
+            "pricePerNightKrw": 58692,
+            "maximumGuests": 2,
+            "amenityTypes": [
+              "Free Wi-Fi",
+              "Air Conditioner",
+              "Television"
+            ],
+            "roomType": "Deluxe",
+            "bedType": "Twin",
+            "totalInventory": 5
+          },
+          "filterMeta": {
+            "canonicalRoomKey": "libra-nha-trang::DELUXE::TWIN_2_SINGLE::OCEAN_SEA_VIEW",
+            "roomType": "Deluxe",
+            "roomTypeMethod": "KEYWORD_DIRECT",
+            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Deluxe Ocean 2 Twin')",
+            "goodNStayBedType": "Twin",
+            "detailedBedCategory": "TWIN_2_SINGLE",
+            "bedFilterLabelVi": "Twin Room (2 Giường đơn · 2 Khách)",
+            "bedReason": "2 giường đơn (Twin beds) cho 2 khách",
+            "totalBeds": 2,
+            "isMultiBed": true,
+            "maxGuests": 2,
+            "viewCategory": "OCEAN_SEA_VIEW",
+            "areaSqm": 27,
+            "areaBucket": "28SQM",
+            "mealPlan": "BB",
+            "mealPlanLabelVi": "Có ăn sáng (BB)",
+            "cancelPolicy": "NON_REFUNDABLE",
+            "cancelPolicyLabelVi": "Không hoàn tiền",
+            "rateBucket": "BB_NON_REFUNDABLE",
+            "netPrice": 924224,
+            "taxesAndFees": 123846,
+            "grossPrice": 1048070,
+            "rawBedText": "2 single beds",
+            "rawFeatures": [
+              "27 m²",
+              "Ocean view",
+              "2 single beds"
+            ],
+            "rawBenefits": [
+              "Breakfast",
+              "Complimentary Breakfast",
+              "Parking",
+              "Welcome drink",
+              "Coffee & tea",
+              "Free WiFi",
+              "Drinking water",
+              "Free fitness center access"
+            ]
+          },
+          "liveProof": {
+            "isLiveScraped": true,
+            "roomId": "1616493025",
+            "offerId": "1616493025",
+            "blockId": null,
+            "externalNativeId": "masterRoomId:1616493025",
+            "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Ocean%202%20Twin",
+            "uiDisplayedPriceVnd": 924224,
+            "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
+            "scrapedAt": "2026-11-10T04:58:34.435Z",
+            "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
+          }
+        },
+        {
+          "id": "BOOKING_LIVE_365483726",
+          "hotelId": "libra-nha-trang",
+          "hotelName": "Libra Hotel Nha Trang",
+          "otaSource": "BOOKING",
+          "formFields": {
+            "uploadPhotos": [],
+            "roomName": "Deluxe Twin Room with Sea View",
+            "description": "[Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 2 single beds] — Twin Room with Sea View — 27 m², Sea view, Air conditioning, Ensuite bathroom, Flat-screen TV, Minibar, Free WiFi",
+            "pricePerNightVnd": 1102500,
+            "pricePerNightKrw": 61740,
+            "maximumGuests": 2,
+            "amenityTypes": [
+              "Free Wi-Fi",
+              "Air Conditioner",
+              "Television"
+            ],
+            "roomType": "Deluxe",
+            "bedType": "Twin",
+            "totalInventory": 4
+          },
+          "filterMeta": {
+            "canonicalRoomKey": "libra-nha-trang::DELUXE::TWIN_2_SINGLE::OCEAN_SEA_VIEW",
+            "roomType": "Deluxe",
+            "roomTypeMethod": "KEYWORD_DIRECT",
+            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Deluxe Twin Room with Sea View')",
+            "goodNStayBedType": "Twin",
+            "detailedBedCategory": "TWIN_2_SINGLE",
+            "bedFilterLabelVi": "Twin Room (2 Giường đơn · 2 Khách)",
+            "bedReason": "2 giường đơn (Twin beds) cho 2 khách",
+            "totalBeds": 2,
+            "isMultiBed": true,
+            "maxGuests": 2,
+            "viewCategory": "OCEAN_SEA_VIEW",
+            "areaSqm": 27,
+            "areaBucket": "28SQM",
+            "mealPlan": "BB",
+            "mealPlanLabelVi": "Có ăn sáng (BB)",
+            "cancelPolicy": "FREE_CANCEL",
+            "cancelPolicyLabelVi": "Hủy miễn phí",
+            "rateBucket": "BB_NON_REFUNDABLE",
+            "netPrice": 954545,
+            "taxesAndFees": 147955,
+            "grossPrice": 1102500,
+            "rawBedText": "2 single beds",
+            "rawFeatures": [
+              "27 m²",
+              "Ocean view",
+              "2 single beds"
+            ],
+            "rawBenefits": [
+              "Buffet breakfast included",
+              "Free cancellation before 13 November 2026",
+              "• Pay the property before arrival",
+              "Fully refundable during free cancellation"
+            ]
+          },
+          "liveProof": {
+            "isLiveScraped": true,
+            "roomId": "365483726",
+            "offerId": null,
+            "blockId": "365483726_441137962_2_1_0",
+            "externalNativeId": "roomId:365483726",
+            "deepLinkUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND#:~:text=Twin%20Room%20with%20Sea%20View",
+            "uiDisplayedPriceVnd": 1102500,
+            "uiDisplayedPriceLabel": "Giá mặt web Booking (Gross)",
+            "scrapedAt": "2026-11-10T04:58:34.435Z",
+            "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
+          }
+        },
+        {
+          "id": "GNS_REF_libra-nha-trang::DELUXE::TWIN_2_SINGLE::OCEAN_SEA_VIEW",
+          "hotelId": "libra-nha-trang",
+          "hotelName": "Libra Hotel Nha Trang",
+          "otaSource": "GOODNSTAY",
+          "formFields": {
+            "uploadPhotos": [
+              "//pix8.agoda.net/hotelImages/5059416/1616493025/df4bf2d888b0b47adb8d03035635c34b.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/1616493025/4ad4463231c040445cb99c6d80c7b53d.jpg?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/1616493025/cab4ed4e98f290f9a3017b6dd286448d.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/1616493025/7e53ff0caaaf251ca58eab131e3c6b4b.png?ce=3&s=1024x768"
+            ],
+            "roomName": "Deluxe Ocean 2 Twin",
+            "description": "[Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 2 single beds] — [Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 2 single beds] — Phòng Deluxe Ocean 2 Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
+            "pricePerNightVnd": 1048000,
+            "pricePerNightKrw": 58688,
+            "maximumGuests": 2,
+            "amenityTypes": [
+              "Free Wi-Fi",
+              "Air Conditioner",
+              "Television"
+            ],
+            "roomType": "Deluxe",
+            "bedType": "Twin",
+            "totalInventory": 5
+          },
+          "filterMeta": {
+            "canonicalRoomKey": "libra-nha-trang::DELUXE::TWIN_2_SINGLE::OCEAN_SEA_VIEW",
+            "roomType": "Deluxe",
+            "roomTypeMethod": "KEYWORD_DIRECT",
+            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Deluxe Ocean 2 Twin')",
+            "goodNStayBedType": "Twin",
+            "detailedBedCategory": "TWIN_2_SINGLE",
+            "bedFilterLabelVi": "Twin Room (2 Giường đơn · 2 Khách)",
+            "bedReason": "2 giường đơn (Twin beds) cho 2 khách",
+            "totalBeds": 2,
+            "isMultiBed": true,
+            "maxGuests": 2,
+            "viewCategory": "OCEAN_SEA_VIEW",
+            "areaSqm": 27,
+            "areaBucket": "28SQM",
+            "mealPlan": "BB",
+            "mealPlanLabelVi": "Có ăn sáng (BB)",
+            "cancelPolicy": "NON_REFUNDABLE",
+            "cancelPolicyLabelVi": "Không hoàn tiền",
+            "rateBucket": "BB_NON_REFUNDABLE",
+            "netPrice": 1048000,
+            "taxesAndFees": 0,
+            "grossPrice": 1048000,
+            "rawBedText": "2 single beds",
+            "rawFeatures": [
+              "27 m²",
+              "Ocean view",
+              "2 single beds"
+            ],
+            "rawBenefits": [
+              "Breakfast included"
+            ]
+          },
+          "liveProof": {
+            "isLiveScraped": false,
+            "externalNativeId": "goodNstay Reference BAR",
+            "scrapedAt": "2026-11-10T04:58:34.435Z",
+            "sourceUrl": "https://goodnstay.com/en-US"
+          }
+        }
+      ],
+      "matchConfidenceScore": 100,
+      "matchedBothLiveOtas": true,
+      "spreadAnalysis": {
+        "priceBasis": "GROSS",
+        "minPrice": 1048000,
+        "maxPrice": 1102500,
+        "medianPrice": 1048070,
+        "referencePrice": 1048000,
+        "marketSpreadPct": 5.2,
+        "cheapestPlatforms": [
+          "GOODNSTAY"
+        ],
+        "mostExpensivePlatforms": [
+          "BOOKING"
+        ],
+        "platforms": {
+          "AGODA": {
+            "ota": "AGODA",
+            "price": 1048070,
+            "netPrice": 924224,
+            "grossPrice": 1048070,
+            "taxesAndFees": 123846,
+            "roomName": "Deluxe Ocean 2 Twin",
+            "diffVsRefPct": 0.01,
+            "diffVsRefAmount": 70,
+            "customerSavingsVsOtaPct": 0.01,
+            "spreadToMinPct": 0.01,
+            "spreadToMedianPct": 0,
+            "isCheapest": false,
+            "isMostExpensive": false,
+            "parityStatus": "IN_PARITY"
+          },
+          "BOOKING": {
+            "ota": "BOOKING",
+            "price": 1102500,
+            "netPrice": 954545,
+            "grossPrice": 1102500,
+            "taxesAndFees": 147955,
+            "roomName": "Deluxe Twin Room with Sea View",
+            "diffVsRefPct": 5.2,
+            "diffVsRefAmount": 54500,
+            "customerSavingsVsOtaPct": 4.94,
+            "spreadToMinPct": 5.2,
+            "spreadToMedianPct": 5.19,
+            "isCheapest": false,
+            "isMostExpensive": true,
+            "parityStatus": "HIGHER_THAN_REF"
+          },
+          "GOODNSTAY": {
+            "ota": "GOODNSTAY",
+            "price": 1048000,
+            "netPrice": 1048000,
+            "grossPrice": 1048000,
+            "taxesAndFees": 0,
+            "roomName": "Deluxe Ocean 2 Twin",
+            "diffVsRefPct": 0,
+            "diffVsRefAmount": 0,
+            "customerSavingsVsOtaPct": 0,
+            "spreadToMinPct": 0,
+            "spreadToMedianPct": -0.01,
+            "isCheapest": true,
+            "isMostExpensive": false,
+            "parityStatus": "REFERENCE"
+          }
+        }
+      },
+      "matchRank": 2
     },
     {
       "groupKey": "libra-nha-trang::SUPERIOR::FLEX_DOUBLE_OR_TWIN::NO_WINDOW::BB_NON_REFUNDABLE",
@@ -1263,13 +1842,19 @@
           },
           "liveProof": {
             "isLiveScraped": true,
-            "externalNativeId": "masterRoomId:286515631",
+            "roomId": "39364641",
+            "offerId": "39364641",
+            "blockId": null,
+            "externalNativeId": "masterRoomId:39364641",
+            "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Superior%20Room%20without%20Window",
+            "uiDisplayedPriceVnd": 622436,
+            "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
             "scrapedAt": "2026-11-10T04:58:34.435Z",
             "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
           }
         },
         "BOOKING": {
-          "id": "BOOKING_LIVE_365483701_bbasic_0",
+          "id": "BOOKING_LIVE_365483701",
           "roomName": "Superior Double or Twin Room with No Window",
           "netPrice": 608119,
           "taxesAndFees": 94259,
@@ -1331,7 +1916,13 @@
           },
           "liveProof": {
             "isLiveScraped": true,
-            "externalNativeId": "blockId:365483701_bbasic_0",
+            "roomId": "365483701",
+            "offerId": null,
+            "blockId": "365483701_bbasic_0",
+            "externalNativeId": "roomId:365483701",
+            "deepLinkUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND#:~:text=Superior%20Double%20or%20Twin%20Room%20with%20No%20Window",
+            "uiDisplayedPriceVnd": 702378,
+            "uiDisplayedPriceLabel": "Giá mặt web Booking (Gross)",
             "scrapedAt": "2026-11-10T04:58:34.435Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
@@ -1489,7 +2080,13 @@
           },
           "liveProof": {
             "isLiveScraped": true,
+            "roomId": "39364641",
+            "offerId": "39364641",
+            "blockId": null,
             "externalNativeId": "masterRoomId:39364641",
+            "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Superior%20Room%20without%20Window",
+            "uiDisplayedPriceVnd": 622436,
+            "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
             "scrapedAt": "2026-11-10T04:58:34.435Z",
             "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
           }
@@ -1558,13 +2155,19 @@
           },
           "liveProof": {
             "isLiveScraped": true,
+            "roomId": "286515631",
+            "offerId": "636109484",
+            "blockId": null,
             "externalNativeId": "masterRoomId:286515631",
+            "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Double%20or%20Twin%20Room%20no%20window",
+            "uiDisplayedPriceVnd": 734766,
+            "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
             "scrapedAt": "2026-11-10T04:58:34.435Z",
             "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
           }
         },
         {
-          "id": "BOOKING_LIVE_365483701_bbasic_0",
+          "id": "BOOKING_LIVE_365483701",
           "hotelId": "libra-nha-trang",
           "hotelName": "Libra Hotel Nha Trang",
           "otaSource": "BOOKING",
@@ -1625,7 +2228,13 @@
           },
           "liveProof": {
             "isLiveScraped": true,
-            "externalNativeId": "blockId:365483701_bbasic_0",
+            "roomId": "365483701",
+            "offerId": null,
+            "blockId": "365483701_bbasic_0",
+            "externalNativeId": "roomId:365483701",
+            "deepLinkUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND#:~:text=Superior%20Double%20or%20Twin%20Room%20with%20No%20Window",
+            "uiDisplayedPriceVnd": 702378,
+            "uiDisplayedPriceLabel": "Giá mặt web Booking (Gross)",
             "scrapedAt": "2026-11-10T04:58:34.435Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
@@ -1705,6 +2314,8 @@
           }
         }
       ],
+      "matchConfidenceScore": 90,
+      "matchedBothLiveOtas": true,
       "spreadAnalysis": {
         "priceBasis": "GROSS",
         "minPrice": 702000,
@@ -1768,7 +2379,8 @@
             "parityStatus": "REFERENCE"
           }
         }
-      }
+      },
+      "matchRank": 3
     },
     {
       "groupKey": "libra-nha-trang::DELUXE::FLEX_DOUBLE_OR_TWIN::NO_WINDOW::BB_NON_REFUNDABLE",
@@ -1889,13 +2501,19 @@
           },
           "liveProof": {
             "isLiveScraped": true,
+            "roomId": "1199240914",
+            "offerId": "1199240914",
+            "blockId": null,
             "externalNativeId": "masterRoomId:1199240914",
+            "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Deluxe%20Room%20without%20Window",
+            "uiDisplayedPriceVnd": 641298,
+            "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
             "scrapedAt": "2026-11-10T04:58:34.435Z",
             "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
           }
         },
         "BOOKING": {
-          "id": "BOOKING_LIVE_365483709_441137962_2_1_0",
+          "id": "BOOKING_LIVE_365483709",
           "roomName": "Deluxe Double or Twin Room with No Window",
           "netPrice": 662338,
           "taxesAndFees": 102662,
@@ -1958,7 +2576,13 @@
           },
           "liveProof": {
             "isLiveScraped": true,
-            "externalNativeId": "blockId:365483709_441137962_2_1_0",
+            "roomId": "365483709",
+            "offerId": null,
+            "blockId": "365483709_441137962_2_1_0",
+            "externalNativeId": "roomId:365483709",
+            "deepLinkUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND#:~:text=Deluxe%20Double%20or%20Twin%20Room%20with%20No%20Window",
+            "uiDisplayedPriceVnd": 765000,
+            "uiDisplayedPriceLabel": "Giá mặt web Booking (Gross)",
             "scrapedAt": "2026-11-10T04:58:34.435Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
@@ -2116,13 +2740,19 @@
           },
           "liveProof": {
             "isLiveScraped": true,
+            "roomId": "1199240914",
+            "offerId": "1199240914",
+            "blockId": null,
             "externalNativeId": "masterRoomId:1199240914",
+            "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Deluxe%20Room%20without%20Window",
+            "uiDisplayedPriceVnd": 641298,
+            "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
             "scrapedAt": "2026-11-10T04:58:34.435Z",
             "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
           }
         },
         {
-          "id": "BOOKING_LIVE_365483709_441137962_2_1_0",
+          "id": "BOOKING_LIVE_365483709",
           "hotelId": "libra-nha-trang",
           "hotelName": "Libra Hotel Nha Trang",
           "otaSource": "BOOKING",
@@ -2184,7 +2814,13 @@
           },
           "liveProof": {
             "isLiveScraped": true,
-            "externalNativeId": "blockId:365483709_441137962_2_1_0",
+            "roomId": "365483709",
+            "offerId": null,
+            "blockId": "365483709_441137962_2_1_0",
+            "externalNativeId": "roomId:365483709",
+            "deepLinkUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND#:~:text=Deluxe%20Double%20or%20Twin%20Room%20with%20No%20Window",
+            "uiDisplayedPriceVnd": 765000,
+            "uiDisplayedPriceLabel": "Giá mặt web Booking (Gross)",
             "scrapedAt": "2026-11-10T04:58:34.435Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
@@ -2264,6 +2900,8 @@
           }
         }
       ],
+      "matchConfidenceScore": 90,
+      "matchedBothLiveOtas": true,
       "spreadAnalysis": {
         "priceBasis": "GROSS",
         "minPrice": 727000,
@@ -2327,7 +2965,8 @@
             "parityStatus": "REFERENCE"
           }
         }
-      }
+      },
+      "matchRank": 4
     },
     {
       "groupKey": "libra-nha-trang::DELUXE::FLEX_DOUBLE_OR_TWIN::CITY_VIEW::BB_NON_REFUNDABLE",
@@ -2448,13 +3087,19 @@
           },
           "liveProof": {
             "isLiveScraped": true,
+            "roomId": "39364751",
+            "offerId": "39364751",
+            "blockId": null,
             "externalNativeId": "masterRoomId:39364751",
+            "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Deluxe%20City%20View%20Room",
+            "uiDisplayedPriceVnd": 754468,
+            "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
             "scrapedAt": "2026-11-10T04:58:34.435Z",
             "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
           }
         },
         "BOOKING": {
-          "id": "BOOKING_LIVE_365483702_441137962_2_1_0",
+          "id": "BOOKING_LIVE_365483702",
           "roomName": "Deluxe Double or Twin Room with City View",
           "netPrice": 779221,
           "taxesAndFees": 120779,
@@ -2519,7 +3164,13 @@
           },
           "liveProof": {
             "isLiveScraped": true,
-            "externalNativeId": "blockId:365483702_441137962_2_1_0",
+            "roomId": "365483702",
+            "offerId": null,
+            "blockId": "365483702_441137962_2_1_0",
+            "externalNativeId": "roomId:365483702",
+            "deepLinkUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND#:~:text=Deluxe%20Double%20or%20Twin%20Room%20with%20City%20View",
+            "uiDisplayedPriceVnd": 900000,
+            "uiDisplayedPriceLabel": "Giá mặt web Booking (Gross)",
             "scrapedAt": "2026-11-10T04:58:34.435Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
@@ -2677,13 +3328,19 @@
           },
           "liveProof": {
             "isLiveScraped": true,
+            "roomId": "39364751",
+            "offerId": "39364751",
+            "blockId": null,
             "externalNativeId": "masterRoomId:39364751",
+            "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Deluxe%20City%20View%20Room",
+            "uiDisplayedPriceVnd": 754468,
+            "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
             "scrapedAt": "2026-11-10T04:58:34.435Z",
             "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
           }
         },
         {
-          "id": "BOOKING_LIVE_365483702_441137962_2_1_0",
+          "id": "BOOKING_LIVE_365483702",
           "hotelId": "libra-nha-trang",
           "hotelName": "Libra Hotel Nha Trang",
           "otaSource": "BOOKING",
@@ -2747,7 +3404,13 @@
           },
           "liveProof": {
             "isLiveScraped": true,
-            "externalNativeId": "blockId:365483702_441137962_2_1_0",
+            "roomId": "365483702",
+            "offerId": null,
+            "blockId": "365483702_441137962_2_1_0",
+            "externalNativeId": "roomId:365483702",
+            "deepLinkUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND#:~:text=Deluxe%20Double%20or%20Twin%20Room%20with%20City%20View",
+            "uiDisplayedPriceVnd": 900000,
+            "uiDisplayedPriceLabel": "Giá mặt web Booking (Gross)",
             "scrapedAt": "2026-11-10T04:58:34.435Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
@@ -2827,6 +3490,8 @@
           }
         }
       ],
+      "matchConfidenceScore": 90,
+      "matchedBothLiveOtas": true,
       "spreadAnalysis": {
         "priceBasis": "GROSS",
         "minPrice": 855567,
@@ -2890,7 +3555,784 @@
             "parityStatus": "REFERENCE"
           }
         }
-      }
+      },
+      "matchRank": 5
+    },
+    {
+      "groupKey": "libra-nha-trang::DELUXE::KING_1_BED::OCEAN_SEA_VIEW::BB_NON_REFUNDABLE",
+      "hotelId": "libra-nha-trang",
+      "hotelName": "Libra Hotel Nha Trang",
+      "canonicalRoomKey": "libra-nha-trang::DELUXE::KING_1_BED::OCEAN_SEA_VIEW",
+      "roomType": "Deluxe",
+      "goodNStayBedType": "Double (Queen, King)",
+      "detailedBedCategory": "KING_1_BED",
+      "bedFilterLabelVi": "King Bed (1 Giường King lớn · 2 Khách)",
+      "totalBeds": 1,
+      "isMultiBed": false,
+      "maxGuests": 2,
+      "viewCategory": "OCEAN_SEA_VIEW",
+      "areaSqm": 25,
+      "mealPlan": "BB",
+      "mealPlanLabelVi": "Có ăn sáng (BB)",
+      "cancelPolicy": "NON_REFUNDABLE",
+      "cancelPolicyLabelVi": "Không hoàn tiền",
+      "rateBucket": "BB_NON_REFUNDABLE",
+      "sampleGoodNStayForm": {
+        "uploadPhotos": [
+          "//pix8.agoda.net/hotelImages/5059416/0/2c2d02820b4f49f208bcc642e1e66a91.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/hotelImages/5059416/39376081/ce07ea1fb2395f6aa0e39a60cb1f66a7.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/hotelImages/5059416/39376081/3470998ed95f26e94a813b2da9b806df.jpeg?s=1024x768",
+          "//pix8.agoda.net/hotelImages/5059416/0/0f19d70653f77361c5c09425a86e13ac.jpeg?ce=2&s=1024x768"
+        ],
+        "roomName": "Ocean Luxury",
+        "description": "[Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Phòng Ocean Luxury dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
+        "pricePerNightVnd": 1048070,
+        "pricePerNightKrw": 58692,
+        "maximumGuests": 2,
+        "amenityTypes": [
+          "Minibar",
+          "Free Wi-Fi",
+          "Air Conditioner",
+          "Television"
+        ],
+        "roomType": "Deluxe",
+        "bedType": "Double (Queen, King)",
+        "totalInventory": 5
+      },
+      "otaOffers": {
+        "AGODA": {
+          "id": "AGODA_LIVE_39376081",
+          "roomName": "Ocean Luxury",
+          "netPrice": 924224,
+          "taxesAndFees": 123846,
+          "grossPrice": 1048070,
+          "formFields": {
+            "uploadPhotos": [
+              "//pix8.agoda.net/hotelImages/5059416/0/2c2d02820b4f49f208bcc642e1e66a91.jpeg?ce=2&s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/39376081/ce07ea1fb2395f6aa0e39a60cb1f66a7.jpeg?ce=2&s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/39376081/3470998ed95f26e94a813b2da9b806df.jpeg?s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/0/0f19d70653f77361c5c09425a86e13ac.jpeg?ce=2&s=1024x768"
+            ],
+            "roomName": "Ocean Luxury",
+            "description": "[Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Phòng Ocean Luxury dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
+            "pricePerNightVnd": 1048070,
+            "pricePerNightKrw": 58692,
+            "maximumGuests": 2,
+            "amenityTypes": [
+              "Minibar",
+              "Free Wi-Fi",
+              "Air Conditioner",
+              "Television"
+            ],
+            "roomType": "Deluxe",
+            "bedType": "Double (Queen, King)",
+            "totalInventory": 5
+          },
+          "filterMeta": {
+            "canonicalRoomKey": "libra-nha-trang::DELUXE::KING_1_BED::OCEAN_SEA_VIEW",
+            "roomType": "Deluxe",
+            "roomTypeMethod": "KEYWORD_DIRECT",
+            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Ocean Luxury')",
+            "goodNStayBedType": "Double (Queen, King)",
+            "detailedBedCategory": "KING_1_BED",
+            "bedFilterLabelVi": "King Bed (1 Giường King lớn · 2 Khách)",
+            "bedReason": "1 giường King cỡ lớn → điền 'Double (Queen, King)' vào Form goodNstay",
+            "totalBeds": 1,
+            "isMultiBed": false,
+            "maxGuests": 2,
+            "viewCategory": "OCEAN_SEA_VIEW",
+            "areaSqm": 25,
+            "areaBucket": "24SQM",
+            "mealPlan": "BB",
+            "mealPlanLabelVi": "Có ăn sáng (BB)",
+            "cancelPolicy": "NON_REFUNDABLE",
+            "cancelPolicyLabelVi": "Không hoàn tiền",
+            "rateBucket": "BB_NON_REFUNDABLE",
+            "netPrice": 924224,
+            "taxesAndFees": 123846,
+            "grossPrice": 1048070,
+            "rawBedText": "1 king bed",
+            "rawFeatures": [
+              "Room size: 25 m²/269 ft²",
+              "Ocean view",
+              "1 king bed",
+              "Free welcome drink",
+              "Window",
+              "Blackout curtains",
+              "Mini bar",
+              "Wi-Fi [free]",
+              "Closet",
+              "Air conditioning"
+            ],
+            "rawBenefits": [
+              "Breakfast",
+              "Complimentary Breakfast",
+              "Parking",
+              "Welcome drink",
+              "Coffee & tea",
+              "Free WiFi",
+              "Drinking water",
+              "Free fitness center access"
+            ]
+          },
+          "liveProof": {
+            "isLiveScraped": true,
+            "roomId": "39376081",
+            "offerId": "39376081",
+            "blockId": null,
+            "externalNativeId": "masterRoomId:39376081",
+            "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Ocean%20Luxury",
+            "uiDisplayedPriceVnd": 924224,
+            "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
+            "scrapedAt": "2026-11-10T04:58:34.435Z",
+            "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
+          }
+        },
+        "GOODNSTAY": {
+          "id": "GNS_REF_libra-nha-trang::DELUXE::KING_1_BED::OCEAN_SEA_VIEW",
+          "roomName": "Ocean Luxury",
+          "netPrice": 1048000,
+          "taxesAndFees": 0,
+          "grossPrice": 1048000,
+          "formFields": {
+            "uploadPhotos": [
+              "//pix8.agoda.net/hotelImages/5059416/0/2c2d02820b4f49f208bcc642e1e66a91.jpeg?ce=2&s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/39376081/ce07ea1fb2395f6aa0e39a60cb1f66a7.jpeg?ce=2&s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/39376081/3470998ed95f26e94a813b2da9b806df.jpeg?s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/0/0f19d70653f77361c5c09425a86e13ac.jpeg?ce=2&s=1024x768"
+            ],
+            "roomName": "Ocean Luxury",
+            "description": "[Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — [Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Phòng Ocean Luxury dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
+            "pricePerNightVnd": 1048000,
+            "pricePerNightKrw": 58688,
+            "maximumGuests": 2,
+            "amenityTypes": [
+              "Minibar",
+              "Free Wi-Fi",
+              "Air Conditioner",
+              "Television"
+            ],
+            "roomType": "Deluxe",
+            "bedType": "Double (Queen, King)",
+            "totalInventory": 5
+          },
+          "filterMeta": {
+            "canonicalRoomKey": "libra-nha-trang::DELUXE::KING_1_BED::OCEAN_SEA_VIEW",
+            "roomType": "Deluxe",
+            "roomTypeMethod": "KEYWORD_DIRECT",
+            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Ocean Luxury')",
+            "goodNStayBedType": "Double (Queen, King)",
+            "detailedBedCategory": "KING_1_BED",
+            "bedFilterLabelVi": "King Bed (1 Giường King lớn · 2 Khách)",
+            "bedReason": "1 giường King cỡ lớn → điền 'Double (Queen, King)' vào Form goodNstay",
+            "totalBeds": 1,
+            "isMultiBed": false,
+            "maxGuests": 2,
+            "viewCategory": "OCEAN_SEA_VIEW",
+            "areaSqm": 25,
+            "areaBucket": "24SQM",
+            "mealPlan": "BB",
+            "mealPlanLabelVi": "Có ăn sáng (BB)",
+            "cancelPolicy": "NON_REFUNDABLE",
+            "cancelPolicyLabelVi": "Không hoàn tiền",
+            "rateBucket": "BB_NON_REFUNDABLE",
+            "netPrice": 1048000,
+            "taxesAndFees": 0,
+            "grossPrice": 1048000,
+            "rawBedText": "1 king bed",
+            "rawFeatures": [
+              "Room size: 25 m²/269 ft²",
+              "Ocean view",
+              "1 king bed",
+              "Free welcome drink",
+              "Window",
+              "Blackout curtains",
+              "Mini bar",
+              "Wi-Fi [free]",
+              "Closet",
+              "Air conditioning"
+            ],
+            "rawBenefits": [
+              "Breakfast included"
+            ]
+          },
+          "liveProof": {
+            "isLiveScraped": false,
+            "externalNativeId": "goodNstay Reference BAR",
+            "scrapedAt": "2026-11-10T04:58:34.435Z",
+            "sourceUrl": "https://goodnstay.com/en-US"
+          }
+        }
+      },
+      "rawItems": [
+        {
+          "id": "AGODA_LIVE_39376081",
+          "hotelId": "libra-nha-trang",
+          "hotelName": "Libra Hotel Nha Trang",
+          "otaSource": "AGODA",
+          "formFields": {
+            "uploadPhotos": [
+              "//pix8.agoda.net/hotelImages/5059416/0/2c2d02820b4f49f208bcc642e1e66a91.jpeg?ce=2&s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/39376081/ce07ea1fb2395f6aa0e39a60cb1f66a7.jpeg?ce=2&s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/39376081/3470998ed95f26e94a813b2da9b806df.jpeg?s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/0/0f19d70653f77361c5c09425a86e13ac.jpeg?ce=2&s=1024x768"
+            ],
+            "roomName": "Ocean Luxury",
+            "description": "[Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Phòng Ocean Luxury dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
+            "pricePerNightVnd": 1048070,
+            "pricePerNightKrw": 58692,
+            "maximumGuests": 2,
+            "amenityTypes": [
+              "Minibar",
+              "Free Wi-Fi",
+              "Air Conditioner",
+              "Television"
+            ],
+            "roomType": "Deluxe",
+            "bedType": "Double (Queen, King)",
+            "totalInventory": 5
+          },
+          "filterMeta": {
+            "canonicalRoomKey": "libra-nha-trang::DELUXE::KING_1_BED::OCEAN_SEA_VIEW",
+            "roomType": "Deluxe",
+            "roomTypeMethod": "KEYWORD_DIRECT",
+            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Ocean Luxury')",
+            "goodNStayBedType": "Double (Queen, King)",
+            "detailedBedCategory": "KING_1_BED",
+            "bedFilterLabelVi": "King Bed (1 Giường King lớn · 2 Khách)",
+            "bedReason": "1 giường King cỡ lớn → điền 'Double (Queen, King)' vào Form goodNstay",
+            "totalBeds": 1,
+            "isMultiBed": false,
+            "maxGuests": 2,
+            "viewCategory": "OCEAN_SEA_VIEW",
+            "areaSqm": 25,
+            "areaBucket": "24SQM",
+            "mealPlan": "BB",
+            "mealPlanLabelVi": "Có ăn sáng (BB)",
+            "cancelPolicy": "NON_REFUNDABLE",
+            "cancelPolicyLabelVi": "Không hoàn tiền",
+            "rateBucket": "BB_NON_REFUNDABLE",
+            "netPrice": 924224,
+            "taxesAndFees": 123846,
+            "grossPrice": 1048070,
+            "rawBedText": "1 king bed",
+            "rawFeatures": [
+              "Room size: 25 m²/269 ft²",
+              "Ocean view",
+              "1 king bed",
+              "Free welcome drink",
+              "Window",
+              "Blackout curtains",
+              "Mini bar",
+              "Wi-Fi [free]",
+              "Closet",
+              "Air conditioning"
+            ],
+            "rawBenefits": [
+              "Breakfast",
+              "Complimentary Breakfast",
+              "Parking",
+              "Welcome drink",
+              "Coffee & tea",
+              "Free WiFi",
+              "Drinking water",
+              "Free fitness center access"
+            ]
+          },
+          "liveProof": {
+            "isLiveScraped": true,
+            "roomId": "39376081",
+            "offerId": "39376081",
+            "blockId": null,
+            "externalNativeId": "masterRoomId:39376081",
+            "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Ocean%20Luxury",
+            "uiDisplayedPriceVnd": 924224,
+            "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
+            "scrapedAt": "2026-11-10T04:58:34.435Z",
+            "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
+          }
+        },
+        {
+          "id": "GNS_REF_libra-nha-trang::DELUXE::KING_1_BED::OCEAN_SEA_VIEW",
+          "hotelId": "libra-nha-trang",
+          "hotelName": "Libra Hotel Nha Trang",
+          "otaSource": "GOODNSTAY",
+          "formFields": {
+            "uploadPhotos": [
+              "//pix8.agoda.net/hotelImages/5059416/0/2c2d02820b4f49f208bcc642e1e66a91.jpeg?ce=2&s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/39376081/ce07ea1fb2395f6aa0e39a60cb1f66a7.jpeg?ce=2&s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/39376081/3470998ed95f26e94a813b2da9b806df.jpeg?s=1024x768",
+              "//pix8.agoda.net/hotelImages/5059416/0/0f19d70653f77361c5c09425a86e13ac.jpeg?ce=2&s=1024x768"
+            ],
+            "roomName": "Ocean Luxury",
+            "description": "[Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — [Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Phòng Ocean Luxury dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
+            "pricePerNightVnd": 1048000,
+            "pricePerNightKrw": 58688,
+            "maximumGuests": 2,
+            "amenityTypes": [
+              "Minibar",
+              "Free Wi-Fi",
+              "Air Conditioner",
+              "Television"
+            ],
+            "roomType": "Deluxe",
+            "bedType": "Double (Queen, King)",
+            "totalInventory": 5
+          },
+          "filterMeta": {
+            "canonicalRoomKey": "libra-nha-trang::DELUXE::KING_1_BED::OCEAN_SEA_VIEW",
+            "roomType": "Deluxe",
+            "roomTypeMethod": "KEYWORD_DIRECT",
+            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Ocean Luxury')",
+            "goodNStayBedType": "Double (Queen, King)",
+            "detailedBedCategory": "KING_1_BED",
+            "bedFilterLabelVi": "King Bed (1 Giường King lớn · 2 Khách)",
+            "bedReason": "1 giường King cỡ lớn → điền 'Double (Queen, King)' vào Form goodNstay",
+            "totalBeds": 1,
+            "isMultiBed": false,
+            "maxGuests": 2,
+            "viewCategory": "OCEAN_SEA_VIEW",
+            "areaSqm": 25,
+            "areaBucket": "24SQM",
+            "mealPlan": "BB",
+            "mealPlanLabelVi": "Có ăn sáng (BB)",
+            "cancelPolicy": "NON_REFUNDABLE",
+            "cancelPolicyLabelVi": "Không hoàn tiền",
+            "rateBucket": "BB_NON_REFUNDABLE",
+            "netPrice": 1048000,
+            "taxesAndFees": 0,
+            "grossPrice": 1048000,
+            "rawBedText": "1 king bed",
+            "rawFeatures": [
+              "Room size: 25 m²/269 ft²",
+              "Ocean view",
+              "1 king bed",
+              "Free welcome drink",
+              "Window",
+              "Blackout curtains",
+              "Mini bar",
+              "Wi-Fi [free]",
+              "Closet",
+              "Air conditioning"
+            ],
+            "rawBenefits": [
+              "Breakfast included"
+            ]
+          },
+          "liveProof": {
+            "isLiveScraped": false,
+            "externalNativeId": "goodNstay Reference BAR",
+            "scrapedAt": "2026-11-10T04:58:34.435Z",
+            "sourceUrl": "https://goodnstay.com/en-US"
+          }
+        }
+      ],
+      "matchConfidenceScore": 70,
+      "matchedBothLiveOtas": false,
+      "spreadAnalysis": {
+        "priceBasis": "GROSS",
+        "minPrice": 1048000,
+        "maxPrice": 1048070,
+        "medianPrice": 1048035,
+        "referencePrice": 1048000,
+        "marketSpreadPct": 0.01,
+        "cheapestPlatforms": [
+          "GOODNSTAY"
+        ],
+        "mostExpensivePlatforms": [
+          "AGODA"
+        ],
+        "platforms": {
+          "AGODA": {
+            "ota": "AGODA",
+            "price": 1048070,
+            "netPrice": 924224,
+            "grossPrice": 1048070,
+            "taxesAndFees": 123846,
+            "roomName": "Ocean Luxury",
+            "diffVsRefPct": 0.01,
+            "diffVsRefAmount": 70,
+            "customerSavingsVsOtaPct": 0.01,
+            "spreadToMinPct": 0.01,
+            "spreadToMedianPct": 0,
+            "isCheapest": false,
+            "isMostExpensive": true,
+            "parityStatus": "IN_PARITY"
+          },
+          "GOODNSTAY": {
+            "ota": "GOODNSTAY",
+            "price": 1048000,
+            "netPrice": 1048000,
+            "grossPrice": 1048000,
+            "taxesAndFees": 0,
+            "roomName": "Ocean Luxury",
+            "diffVsRefPct": 0,
+            "diffVsRefAmount": 0,
+            "customerSavingsVsOtaPct": 0,
+            "spreadToMinPct": 0,
+            "spreadToMedianPct": 0,
+            "isCheapest": true,
+            "isMostExpensive": false,
+            "parityStatus": "REFERENCE"
+          }
+        }
+      },
+      "matchRank": 6
+    },
+    {
+      "groupKey": "libra-nha-trang::DELUXE::DOUBLE_QUEEN_1_BED::OCEAN_SEA_VIEW::SENIOR_OCEAN_27M2::BB_NON_REFUNDABLE",
+      "hotelId": "libra-nha-trang",
+      "hotelName": "Libra Hotel Nha Trang",
+      "canonicalRoomKey": "libra-nha-trang::DELUXE::DOUBLE_QUEEN_1_BED::OCEAN_SEA_VIEW::SENIOR_OCEAN_27M2",
+      "roomType": "Deluxe",
+      "goodNStayBedType": "Double (Queen, King)",
+      "detailedBedCategory": "DOUBLE_QUEEN_1_BED",
+      "bedFilterLabelVi": "Double / Queen (1 Giường đôi · 2 Khách)",
+      "totalBeds": 1,
+      "isMultiBed": false,
+      "maxGuests": 2,
+      "viewCategory": "OCEAN_SEA_VIEW",
+      "areaSqm": 27,
+      "mealPlan": "BB",
+      "mealPlanLabelVi": "Có ăn sáng (BB)",
+      "cancelPolicy": "FREE_CANCEL",
+      "cancelPolicyLabelVi": "Hủy miễn phí",
+      "rateBucket": "BB_NON_REFUNDABLE",
+      "sampleGoodNStayForm": {
+        "uploadPhotos": [],
+        "roomName": "Senior Ocean View Room",
+        "description": "[Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 large double bed] — Senior Ocean View Room — 27 m², Sea view, Mountain view, City view, Air conditioning, Ensuite bathroom, Flat-screen TV, Minibar, Free WiFi",
+        "pricePerNightVnd": 1102500,
+        "pricePerNightKrw": 61740,
+        "maximumGuests": 2,
+        "amenityTypes": [
+          "Free Wi-Fi",
+          "Air Conditioner",
+          "Television"
+        ],
+        "roomType": "Deluxe",
+        "bedType": "Double (Queen, King)",
+        "totalInventory": 4
+      },
+      "otaOffers": {
+        "BOOKING": {
+          "id": "BOOKING_LIVE_365483706",
+          "roomName": "Senior Ocean View Room",
+          "netPrice": 954545,
+          "taxesAndFees": 147955,
+          "grossPrice": 1102500,
+          "formFields": {
+            "uploadPhotos": [],
+            "roomName": "Senior Ocean View Room",
+            "description": "[Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 large double bed] — Senior Ocean View Room — 27 m², Sea view, Mountain view, City view, Air conditioning, Ensuite bathroom, Flat-screen TV, Minibar, Free WiFi",
+            "pricePerNightVnd": 1102500,
+            "pricePerNightKrw": 61740,
+            "maximumGuests": 2,
+            "amenityTypes": [
+              "Free Wi-Fi",
+              "Air Conditioner",
+              "Television"
+            ],
+            "roomType": "Deluxe",
+            "bedType": "Double (Queen, King)",
+            "totalInventory": 4
+          },
+          "filterMeta": {
+            "canonicalRoomKey": "libra-nha-trang::DELUXE::DOUBLE_QUEEN_1_BED::OCEAN_SEA_VIEW::SENIOR_OCEAN_27M2",
+            "roomType": "Deluxe",
+            "roomTypeMethod": "INTRA_HOTEL_RANKING",
+            "roomTypeReason": "Tên 'Senior Ocean View Room' không chứa từ khóa chuẩn → Xếp hạng phân vị nội bộ (73%, 27m²) thuộc nhóm trung-cao cấp → Deluxe",
+            "goodNStayBedType": "Double (Queen, King)",
+            "detailedBedCategory": "DOUBLE_QUEEN_1_BED",
+            "bedFilterLabelVi": "Double / Queen (1 Giường đôi · 2 Khách)",
+            "bedReason": "1 giường đôi / Queen tiêu chuẩn → điền 'Double (Queen, King)' vào Form goodNstay",
+            "totalBeds": 1,
+            "isMultiBed": false,
+            "maxGuests": 2,
+            "viewCategory": "OCEAN_SEA_VIEW",
+            "areaSqm": 27,
+            "areaBucket": "28SQM",
+            "mealPlan": "BB",
+            "mealPlanLabelVi": "Có ăn sáng (BB)",
+            "cancelPolicy": "FREE_CANCEL",
+            "cancelPolicyLabelVi": "Hủy miễn phí",
+            "rateBucket": "BB_NON_REFUNDABLE",
+            "netPrice": 954545,
+            "taxesAndFees": 147955,
+            "grossPrice": 1102500,
+            "rawBedText": "1 large double bed",
+            "rawFeatures": [
+              "27 m²",
+              "Ocean view",
+              "1 king bed"
+            ],
+            "rawBenefits": [
+              "Buffet breakfast included",
+              "Free cancellation before 13 November 2026",
+              "• Pay the property before arrival",
+              "Fully refundable during free cancellation"
+            ]
+          },
+          "liveProof": {
+            "isLiveScraped": true,
+            "roomId": "365483706",
+            "offerId": null,
+            "blockId": "365483706_441137962_2_1_0",
+            "externalNativeId": "roomId:365483706",
+            "deepLinkUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND#:~:text=Senior%20Ocean%20View%20Room",
+            "uiDisplayedPriceVnd": 1102500,
+            "uiDisplayedPriceLabel": "Giá mặt web Booking (Gross)",
+            "scrapedAt": "2026-11-10T04:58:34.435Z",
+            "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
+          }
+        },
+        "GOODNSTAY": {
+          "id": "GNS_REF_libra-nha-trang::DELUXE::DOUBLE_QUEEN_1_BED::OCEAN_SEA_VIEW::SENIOR_OCEAN_27M2",
+          "roomName": "Senior Ocean View Room",
+          "netPrice": 1103000,
+          "taxesAndFees": 0,
+          "grossPrice": 1103000,
+          "formFields": {
+            "uploadPhotos": [],
+            "roomName": "Senior Ocean View Room",
+            "description": "[Hạng phòng: Executive | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 large double bed] — [Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 large double bed] — Senior Ocean View Room — 27 m², Sea view, Mountain view, City view, Air conditioning, Ensuite bathroom, Flat-screen TV, Minibar, Free WiFi",
+            "pricePerNightVnd": 1103000,
+            "pricePerNightKrw": 61768,
+            "maximumGuests": 2,
+            "amenityTypes": [
+              "Free Wi-Fi",
+              "Air Conditioner",
+              "Television"
+            ],
+            "roomType": "Executive",
+            "bedType": "Double (Queen, King)",
+            "totalInventory": 5
+          },
+          "filterMeta": {
+            "canonicalRoomKey": "libra-nha-trang::DELUXE::DOUBLE_QUEEN_1_BED::OCEAN_SEA_VIEW::SENIOR_OCEAN_27M2",
+            "roomType": "Executive",
+            "roomTypeMethod": "INTRA_HOTEL_RANKING",
+            "roomTypeReason": "Tên 'Senior Ocean View Room' thuộc phân vị cao (87%, 27m²) → Executive",
+            "goodNStayBedType": "Double (Queen, King)",
+            "detailedBedCategory": "DOUBLE_QUEEN_1_BED",
+            "bedFilterLabelVi": "Double / Queen (1 Giường đôi · 2 Khách)",
+            "bedReason": "1 giường đôi / Queen tiêu chuẩn → điền 'Double (Queen, King)' vào Form goodNstay",
+            "totalBeds": 1,
+            "isMultiBed": false,
+            "maxGuests": 2,
+            "viewCategory": "OCEAN_SEA_VIEW",
+            "areaSqm": 27,
+            "areaBucket": "28SQM",
+            "mealPlan": "BB",
+            "mealPlanLabelVi": "Có ăn sáng (BB)",
+            "cancelPolicy": "NON_REFUNDABLE",
+            "cancelPolicyLabelVi": "Không hoàn tiền",
+            "rateBucket": "BB_NON_REFUNDABLE",
+            "netPrice": 1103000,
+            "taxesAndFees": 0,
+            "grossPrice": 1103000,
+            "rawBedText": "1 large double bed",
+            "rawFeatures": [
+              "27 m²",
+              "Ocean view",
+              "1 king bed"
+            ],
+            "rawBenefits": [
+              "Breakfast included"
+            ]
+          },
+          "liveProof": {
+            "isLiveScraped": false,
+            "externalNativeId": "goodNstay Reference BAR",
+            "scrapedAt": "2026-11-10T04:58:34.435Z",
+            "sourceUrl": "https://goodnstay.com/en-US"
+          }
+        }
+      },
+      "rawItems": [
+        {
+          "id": "BOOKING_LIVE_365483706",
+          "hotelId": "libra-nha-trang",
+          "hotelName": "Libra Hotel Nha Trang",
+          "otaSource": "BOOKING",
+          "formFields": {
+            "uploadPhotos": [],
+            "roomName": "Senior Ocean View Room",
+            "description": "[Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 large double bed] — Senior Ocean View Room — 27 m², Sea view, Mountain view, City view, Air conditioning, Ensuite bathroom, Flat-screen TV, Minibar, Free WiFi",
+            "pricePerNightVnd": 1102500,
+            "pricePerNightKrw": 61740,
+            "maximumGuests": 2,
+            "amenityTypes": [
+              "Free Wi-Fi",
+              "Air Conditioner",
+              "Television"
+            ],
+            "roomType": "Deluxe",
+            "bedType": "Double (Queen, King)",
+            "totalInventory": 4
+          },
+          "filterMeta": {
+            "canonicalRoomKey": "libra-nha-trang::DELUXE::DOUBLE_QUEEN_1_BED::OCEAN_SEA_VIEW::SENIOR_OCEAN_27M2",
+            "roomType": "Deluxe",
+            "roomTypeMethod": "INTRA_HOTEL_RANKING",
+            "roomTypeReason": "Tên 'Senior Ocean View Room' không chứa từ khóa chuẩn → Xếp hạng phân vị nội bộ (73%, 27m²) thuộc nhóm trung-cao cấp → Deluxe",
+            "goodNStayBedType": "Double (Queen, King)",
+            "detailedBedCategory": "DOUBLE_QUEEN_1_BED",
+            "bedFilterLabelVi": "Double / Queen (1 Giường đôi · 2 Khách)",
+            "bedReason": "1 giường đôi / Queen tiêu chuẩn → điền 'Double (Queen, King)' vào Form goodNstay",
+            "totalBeds": 1,
+            "isMultiBed": false,
+            "maxGuests": 2,
+            "viewCategory": "OCEAN_SEA_VIEW",
+            "areaSqm": 27,
+            "areaBucket": "28SQM",
+            "mealPlan": "BB",
+            "mealPlanLabelVi": "Có ăn sáng (BB)",
+            "cancelPolicy": "FREE_CANCEL",
+            "cancelPolicyLabelVi": "Hủy miễn phí",
+            "rateBucket": "BB_NON_REFUNDABLE",
+            "netPrice": 954545,
+            "taxesAndFees": 147955,
+            "grossPrice": 1102500,
+            "rawBedText": "1 large double bed",
+            "rawFeatures": [
+              "27 m²",
+              "Ocean view",
+              "1 king bed"
+            ],
+            "rawBenefits": [
+              "Buffet breakfast included",
+              "Free cancellation before 13 November 2026",
+              "• Pay the property before arrival",
+              "Fully refundable during free cancellation"
+            ]
+          },
+          "liveProof": {
+            "isLiveScraped": true,
+            "roomId": "365483706",
+            "offerId": null,
+            "blockId": "365483706_441137962_2_1_0",
+            "externalNativeId": "roomId:365483706",
+            "deepLinkUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND#:~:text=Senior%20Ocean%20View%20Room",
+            "uiDisplayedPriceVnd": 1102500,
+            "uiDisplayedPriceLabel": "Giá mặt web Booking (Gross)",
+            "scrapedAt": "2026-11-10T04:58:34.435Z",
+            "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
+          }
+        },
+        {
+          "id": "GNS_REF_libra-nha-trang::DELUXE::DOUBLE_QUEEN_1_BED::OCEAN_SEA_VIEW::SENIOR_OCEAN_27M2",
+          "hotelId": "libra-nha-trang",
+          "hotelName": "Libra Hotel Nha Trang",
+          "otaSource": "GOODNSTAY",
+          "formFields": {
+            "uploadPhotos": [],
+            "roomName": "Senior Ocean View Room",
+            "description": "[Hạng phòng: Executive | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 large double bed] — [Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 large double bed] — Senior Ocean View Room — 27 m², Sea view, Mountain view, City view, Air conditioning, Ensuite bathroom, Flat-screen TV, Minibar, Free WiFi",
+            "pricePerNightVnd": 1103000,
+            "pricePerNightKrw": 61768,
+            "maximumGuests": 2,
+            "amenityTypes": [
+              "Free Wi-Fi",
+              "Air Conditioner",
+              "Television"
+            ],
+            "roomType": "Executive",
+            "bedType": "Double (Queen, King)",
+            "totalInventory": 5
+          },
+          "filterMeta": {
+            "canonicalRoomKey": "libra-nha-trang::DELUXE::DOUBLE_QUEEN_1_BED::OCEAN_SEA_VIEW::SENIOR_OCEAN_27M2",
+            "roomType": "Executive",
+            "roomTypeMethod": "INTRA_HOTEL_RANKING",
+            "roomTypeReason": "Tên 'Senior Ocean View Room' thuộc phân vị cao (87%, 27m²) → Executive",
+            "goodNStayBedType": "Double (Queen, King)",
+            "detailedBedCategory": "DOUBLE_QUEEN_1_BED",
+            "bedFilterLabelVi": "Double / Queen (1 Giường đôi · 2 Khách)",
+            "bedReason": "1 giường đôi / Queen tiêu chuẩn → điền 'Double (Queen, King)' vào Form goodNstay",
+            "totalBeds": 1,
+            "isMultiBed": false,
+            "maxGuests": 2,
+            "viewCategory": "OCEAN_SEA_VIEW",
+            "areaSqm": 27,
+            "areaBucket": "28SQM",
+            "mealPlan": "BB",
+            "mealPlanLabelVi": "Có ăn sáng (BB)",
+            "cancelPolicy": "NON_REFUNDABLE",
+            "cancelPolicyLabelVi": "Không hoàn tiền",
+            "rateBucket": "BB_NON_REFUNDABLE",
+            "netPrice": 1103000,
+            "taxesAndFees": 0,
+            "grossPrice": 1103000,
+            "rawBedText": "1 large double bed",
+            "rawFeatures": [
+              "27 m²",
+              "Ocean view",
+              "1 king bed"
+            ],
+            "rawBenefits": [
+              "Breakfast included"
+            ]
+          },
+          "liveProof": {
+            "isLiveScraped": false,
+            "externalNativeId": "goodNstay Reference BAR",
+            "scrapedAt": "2026-11-10T04:58:34.435Z",
+            "sourceUrl": "https://goodnstay.com/en-US"
+          }
+        }
+      ],
+      "matchConfidenceScore": 70,
+      "matchedBothLiveOtas": false,
+      "spreadAnalysis": {
+        "priceBasis": "GROSS",
+        "minPrice": 1102500,
+        "maxPrice": 1103000,
+        "medianPrice": 1102750,
+        "referencePrice": 1103000,
+        "marketSpreadPct": 0.05,
+        "cheapestPlatforms": [
+          "BOOKING"
+        ],
+        "mostExpensivePlatforms": [
+          "GOODNSTAY"
+        ],
+        "platforms": {
+          "BOOKING": {
+            "ota": "BOOKING",
+            "price": 1102500,
+            "netPrice": 954545,
+            "grossPrice": 1102500,
+            "taxesAndFees": 147955,
+            "roomName": "Senior Ocean View Room",
+            "diffVsRefPct": -0.05,
+            "diffVsRefAmount": -500,
+            "customerSavingsVsOtaPct": -0.05,
+            "spreadToMinPct": 0,
+            "spreadToMedianPct": -0.02,
+            "isCheapest": true,
+            "isMostExpensive": false,
+            "parityStatus": "IN_PARITY"
+          },
+          "GOODNSTAY": {
+            "ota": "GOODNSTAY",
+            "price": 1103000,
+            "netPrice": 1103000,
+            "grossPrice": 1103000,
+            "taxesAndFees": 0,
+            "roomName": "Senior Ocean View Room",
+            "diffVsRefPct": 0,
+            "diffVsRefAmount": 0,
+            "customerSavingsVsOtaPct": 0,
+            "spreadToMinPct": 0.05,
+            "spreadToMedianPct": 0.02,
+            "isCheapest": false,
+            "isMostExpensive": true,
+            "parityStatus": "REFERENCE"
+          }
+        }
+      },
+      "matchRank": 7
     },
     {
       "groupKey": "libra-nha-trang::DELUXE::FLEX_DOUBLE_OR_TWIN::OCEAN_SEA_VIEW::BB_NON_REFUNDABLE",
@@ -3011,7 +4453,13 @@
           },
           "liveProof": {
             "isLiveScraped": true,
+            "roomId": "39364831",
+            "offerId": "39364831",
+            "blockId": null,
             "externalNativeId": "masterRoomId:39364831",
+            "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Deluxe%20Sea%20View%20Room",
+            "uiDisplayedPriceVnd": 811053,
+            "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
             "scrapedAt": "2026-11-10T04:58:34.435Z",
             "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
           }
@@ -3169,7 +4617,13 @@
           },
           "liveProof": {
             "isLiveScraped": true,
+            "roomId": "39364831",
+            "offerId": "39364831",
+            "blockId": null,
             "externalNativeId": "masterRoomId:39364831",
+            "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Deluxe%20Sea%20View%20Room",
+            "uiDisplayedPriceVnd": 811053,
+            "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
             "scrapedAt": "2026-11-10T04:58:34.435Z",
             "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
           }
@@ -3249,6 +4703,8 @@
           }
         }
       ],
+      "matchConfidenceScore": 60,
+      "matchedBothLiveOtas": false,
       "spreadAnalysis": {
         "priceBasis": "GROSS",
         "minPrice": 919735,
@@ -3296,7 +4752,400 @@
             "parityStatus": "REFERENCE"
           }
         }
-      }
+      },
+      "matchRank": 8
+    },
+    {
+      "groupKey": "libra-nha-trang::DELUXE::FLEX_DOUBLE_OR_TWIN::PARTIAL_SEA_VIEW::BB_NON_REFUNDABLE",
+      "hotelId": "libra-nha-trang",
+      "hotelName": "Libra Hotel Nha Trang",
+      "canonicalRoomKey": "libra-nha-trang::DELUXE::FLEX_DOUBLE_OR_TWIN::PARTIAL_SEA_VIEW",
+      "roomType": "Deluxe",
+      "goodNStayBedType": "Any Bed",
+      "detailedBedCategory": "FLEX_DOUBLE_OR_TWIN",
+      "bedFilterLabelVi": "Linh hoạt (1 Đôi hoặc 2 Đơn · 2 Khách)",
+      "totalBeds": 1,
+      "isMultiBed": false,
+      "maxGuests": 2,
+      "viewCategory": "PARTIAL_SEA_VIEW",
+      "areaSqm": 25,
+      "mealPlan": "BB",
+      "mealPlanLabelVi": "Có ăn sáng (BB)",
+      "cancelPolicy": "FREE_CANCEL",
+      "cancelPolicyLabelVi": "Hủy miễn phí",
+      "rateBucket": "BB_NON_REFUNDABLE",
+      "sampleGoodNStayForm": {
+        "uploadPhotos": [],
+        "roomName": "Deluxe Double or Twin Room with Partial Sea View",
+        "description": "[Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Deluxe Double or Twin Room with Partial Sea View — 25 m², Sea view, Lake view, Mountain view, City view, Air conditioning, Ensuite bathroom, Flat-screen TV, Coffee machine, Minibar, Free WiFi",
+        "pricePerNightVnd": 967500,
+        "pricePerNightKrw": 54180,
+        "maximumGuests": 2,
+        "amenityTypes": [
+          "Minibar",
+          "Television",
+          "Free Wi-Fi",
+          "Air Conditioner"
+        ],
+        "roomType": "Deluxe",
+        "bedType": "Any Bed",
+        "totalInventory": 4
+      },
+      "otaOffers": {
+        "BOOKING": {
+          "id": "BOOKING_LIVE_365483707",
+          "roomName": "Deluxe Double or Twin Room with Partial Sea View",
+          "netPrice": 837662,
+          "taxesAndFees": 129838,
+          "grossPrice": 967500,
+          "formFields": {
+            "uploadPhotos": [],
+            "roomName": "Deluxe Double or Twin Room with Partial Sea View",
+            "description": "[Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Deluxe Double or Twin Room with Partial Sea View — 25 m², Sea view, Lake view, Mountain view, City view, Air conditioning, Ensuite bathroom, Flat-screen TV, Coffee machine, Minibar, Free WiFi",
+            "pricePerNightVnd": 967500,
+            "pricePerNightKrw": 54180,
+            "maximumGuests": 2,
+            "amenityTypes": [
+              "Minibar",
+              "Television",
+              "Free Wi-Fi",
+              "Air Conditioner"
+            ],
+            "roomType": "Deluxe",
+            "bedType": "Any Bed",
+            "totalInventory": 4
+          },
+          "filterMeta": {
+            "canonicalRoomKey": "libra-nha-trang::DELUXE::FLEX_DOUBLE_OR_TWIN::PARTIAL_SEA_VIEW",
+            "roomType": "Deluxe",
+            "roomTypeMethod": "KEYWORD_DIRECT",
+            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Deluxe Double or Twin Room with Partial Sea View')",
+            "goodNStayBedType": "Any Bed",
+            "detailedBedCategory": "FLEX_DOUBLE_OR_TWIN",
+            "bedFilterLabelVi": "Linh hoạt (1 Đôi hoặc 2 Đơn · 2 Khách)",
+            "bedReason": "OTA khai báo linh hoạt 1 giường đôi hoặc 2 giường đơn",
+            "totalBeds": 1,
+            "isMultiBed": false,
+            "maxGuests": 2,
+            "viewCategory": "PARTIAL_SEA_VIEW",
+            "areaSqm": 25,
+            "areaBucket": "24SQM",
+            "mealPlan": "BB",
+            "mealPlanLabelVi": "Có ăn sáng (BB)",
+            "cancelPolicy": "FREE_CANCEL",
+            "cancelPolicyLabelVi": "Hủy miễn phí",
+            "rateBucket": "BB_NON_REFUNDABLE",
+            "netPrice": 837662,
+            "taxesAndFees": 129838,
+            "grossPrice": 967500,
+            "rawBedText": "2 single beds",
+            "rawFeatures": [
+              "25 m²",
+              "Sea view",
+              "Lake view",
+              "Mountain view",
+              "City view",
+              "Air conditioning",
+              "Ensuite bathroom",
+              "Flat-screen TV",
+              "Coffee machine",
+              "Minibar",
+              "Free WiFi"
+            ],
+            "rawBenefits": [
+              "Buffet breakfast included",
+              "Free cancellation before 13 November 2026",
+              "• Pay the property before arrival",
+              "Fully refundable during free cancellation"
+            ]
+          },
+          "liveProof": {
+            "isLiveScraped": true,
+            "roomId": "365483707",
+            "offerId": null,
+            "blockId": "365483707_441137962_2_1_0",
+            "externalNativeId": "roomId:365483707",
+            "deepLinkUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND#:~:text=Deluxe%20Double%20or%20Twin%20Room%20with%20Partial%20Sea%20View",
+            "uiDisplayedPriceVnd": 967500,
+            "uiDisplayedPriceLabel": "Giá mặt web Booking (Gross)",
+            "scrapedAt": "2026-11-10T04:58:34.435Z",
+            "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
+          }
+        },
+        "GOODNSTAY": {
+          "id": "GNS_REF_libra-nha-trang::DELUXE::FLEX_DOUBLE_OR_TWIN::PARTIAL_SEA_VIEW",
+          "roomName": "Deluxe Double or Twin Room with Partial Sea View",
+          "netPrice": 968000,
+          "taxesAndFees": 0,
+          "grossPrice": 968000,
+          "formFields": {
+            "uploadPhotos": [],
+            "roomName": "Deluxe Double or Twin Room with Partial Sea View",
+            "description": "[Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — [Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Deluxe Double or Twin Room with Partial Sea View — 25 m², Sea view, Lake view, Mountain view, City view, Air conditioning, Ensuite bathroom, Flat-screen TV, Coffee machine, Minibar, Free WiFi",
+            "pricePerNightVnd": 968000,
+            "pricePerNightKrw": 54208,
+            "maximumGuests": 2,
+            "amenityTypes": [
+              "Minibar",
+              "Television",
+              "Free Wi-Fi",
+              "Air Conditioner"
+            ],
+            "roomType": "Deluxe",
+            "bedType": "Any Bed",
+            "totalInventory": 5
+          },
+          "filterMeta": {
+            "canonicalRoomKey": "libra-nha-trang::DELUXE::FLEX_DOUBLE_OR_TWIN::PARTIAL_SEA_VIEW",
+            "roomType": "Deluxe",
+            "roomTypeMethod": "KEYWORD_DIRECT",
+            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Deluxe Double or Twin Room with Partial Sea View')",
+            "goodNStayBedType": "Any Bed",
+            "detailedBedCategory": "FLEX_DOUBLE_OR_TWIN",
+            "bedFilterLabelVi": "Linh hoạt (1 Đôi hoặc 2 Đơn · 2 Khách)",
+            "bedReason": "OTA khai báo linh hoạt 1 giường đôi hoặc 2 giường đơn",
+            "totalBeds": 1,
+            "isMultiBed": false,
+            "maxGuests": 2,
+            "viewCategory": "PARTIAL_SEA_VIEW",
+            "areaSqm": 25,
+            "areaBucket": "24SQM",
+            "mealPlan": "BB",
+            "mealPlanLabelVi": "Có ăn sáng (BB)",
+            "cancelPolicy": "NON_REFUNDABLE",
+            "cancelPolicyLabelVi": "Không hoàn tiền",
+            "rateBucket": "BB_NON_REFUNDABLE",
+            "netPrice": 968000,
+            "taxesAndFees": 0,
+            "grossPrice": 968000,
+            "rawBedText": "2 single beds",
+            "rawFeatures": [
+              "25 m²",
+              "Sea view",
+              "Lake view",
+              "Mountain view",
+              "City view",
+              "Air conditioning",
+              "Ensuite bathroom",
+              "Flat-screen TV",
+              "Coffee machine",
+              "Minibar",
+              "Free WiFi"
+            ],
+            "rawBenefits": [
+              "Breakfast included"
+            ]
+          },
+          "liveProof": {
+            "isLiveScraped": false,
+            "externalNativeId": "goodNstay Reference BAR",
+            "scrapedAt": "2026-11-10T04:58:34.435Z",
+            "sourceUrl": "https://goodnstay.com/en-US"
+          }
+        }
+      },
+      "rawItems": [
+        {
+          "id": "BOOKING_LIVE_365483707",
+          "hotelId": "libra-nha-trang",
+          "hotelName": "Libra Hotel Nha Trang",
+          "otaSource": "BOOKING",
+          "formFields": {
+            "uploadPhotos": [],
+            "roomName": "Deluxe Double or Twin Room with Partial Sea View",
+            "description": "[Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Deluxe Double or Twin Room with Partial Sea View — 25 m², Sea view, Lake view, Mountain view, City view, Air conditioning, Ensuite bathroom, Flat-screen TV, Coffee machine, Minibar, Free WiFi",
+            "pricePerNightVnd": 967500,
+            "pricePerNightKrw": 54180,
+            "maximumGuests": 2,
+            "amenityTypes": [
+              "Minibar",
+              "Television",
+              "Free Wi-Fi",
+              "Air Conditioner"
+            ],
+            "roomType": "Deluxe",
+            "bedType": "Any Bed",
+            "totalInventory": 4
+          },
+          "filterMeta": {
+            "canonicalRoomKey": "libra-nha-trang::DELUXE::FLEX_DOUBLE_OR_TWIN::PARTIAL_SEA_VIEW",
+            "roomType": "Deluxe",
+            "roomTypeMethod": "KEYWORD_DIRECT",
+            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Deluxe Double or Twin Room with Partial Sea View')",
+            "goodNStayBedType": "Any Bed",
+            "detailedBedCategory": "FLEX_DOUBLE_OR_TWIN",
+            "bedFilterLabelVi": "Linh hoạt (1 Đôi hoặc 2 Đơn · 2 Khách)",
+            "bedReason": "OTA khai báo linh hoạt 1 giường đôi hoặc 2 giường đơn",
+            "totalBeds": 1,
+            "isMultiBed": false,
+            "maxGuests": 2,
+            "viewCategory": "PARTIAL_SEA_VIEW",
+            "areaSqm": 25,
+            "areaBucket": "24SQM",
+            "mealPlan": "BB",
+            "mealPlanLabelVi": "Có ăn sáng (BB)",
+            "cancelPolicy": "FREE_CANCEL",
+            "cancelPolicyLabelVi": "Hủy miễn phí",
+            "rateBucket": "BB_NON_REFUNDABLE",
+            "netPrice": 837662,
+            "taxesAndFees": 129838,
+            "grossPrice": 967500,
+            "rawBedText": "2 single beds",
+            "rawFeatures": [
+              "25 m²",
+              "Sea view",
+              "Lake view",
+              "Mountain view",
+              "City view",
+              "Air conditioning",
+              "Ensuite bathroom",
+              "Flat-screen TV",
+              "Coffee machine",
+              "Minibar",
+              "Free WiFi"
+            ],
+            "rawBenefits": [
+              "Buffet breakfast included",
+              "Free cancellation before 13 November 2026",
+              "• Pay the property before arrival",
+              "Fully refundable during free cancellation"
+            ]
+          },
+          "liveProof": {
+            "isLiveScraped": true,
+            "roomId": "365483707",
+            "offerId": null,
+            "blockId": "365483707_441137962_2_1_0",
+            "externalNativeId": "roomId:365483707",
+            "deepLinkUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND#:~:text=Deluxe%20Double%20or%20Twin%20Room%20with%20Partial%20Sea%20View",
+            "uiDisplayedPriceVnd": 967500,
+            "uiDisplayedPriceLabel": "Giá mặt web Booking (Gross)",
+            "scrapedAt": "2026-11-10T04:58:34.435Z",
+            "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
+          }
+        },
+        {
+          "id": "GNS_REF_libra-nha-trang::DELUXE::FLEX_DOUBLE_OR_TWIN::PARTIAL_SEA_VIEW",
+          "hotelId": "libra-nha-trang",
+          "hotelName": "Libra Hotel Nha Trang",
+          "otaSource": "GOODNSTAY",
+          "formFields": {
+            "uploadPhotos": [],
+            "roomName": "Deluxe Double or Twin Room with Partial Sea View",
+            "description": "[Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — [Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Deluxe Double or Twin Room with Partial Sea View — 25 m², Sea view, Lake view, Mountain view, City view, Air conditioning, Ensuite bathroom, Flat-screen TV, Coffee machine, Minibar, Free WiFi",
+            "pricePerNightVnd": 968000,
+            "pricePerNightKrw": 54208,
+            "maximumGuests": 2,
+            "amenityTypes": [
+              "Minibar",
+              "Television",
+              "Free Wi-Fi",
+              "Air Conditioner"
+            ],
+            "roomType": "Deluxe",
+            "bedType": "Any Bed",
+            "totalInventory": 5
+          },
+          "filterMeta": {
+            "canonicalRoomKey": "libra-nha-trang::DELUXE::FLEX_DOUBLE_OR_TWIN::PARTIAL_SEA_VIEW",
+            "roomType": "Deluxe",
+            "roomTypeMethod": "KEYWORD_DIRECT",
+            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Deluxe Double or Twin Room with Partial Sea View')",
+            "goodNStayBedType": "Any Bed",
+            "detailedBedCategory": "FLEX_DOUBLE_OR_TWIN",
+            "bedFilterLabelVi": "Linh hoạt (1 Đôi hoặc 2 Đơn · 2 Khách)",
+            "bedReason": "OTA khai báo linh hoạt 1 giường đôi hoặc 2 giường đơn",
+            "totalBeds": 1,
+            "isMultiBed": false,
+            "maxGuests": 2,
+            "viewCategory": "PARTIAL_SEA_VIEW",
+            "areaSqm": 25,
+            "areaBucket": "24SQM",
+            "mealPlan": "BB",
+            "mealPlanLabelVi": "Có ăn sáng (BB)",
+            "cancelPolicy": "NON_REFUNDABLE",
+            "cancelPolicyLabelVi": "Không hoàn tiền",
+            "rateBucket": "BB_NON_REFUNDABLE",
+            "netPrice": 968000,
+            "taxesAndFees": 0,
+            "grossPrice": 968000,
+            "rawBedText": "2 single beds",
+            "rawFeatures": [
+              "25 m²",
+              "Sea view",
+              "Lake view",
+              "Mountain view",
+              "City view",
+              "Air conditioning",
+              "Ensuite bathroom",
+              "Flat-screen TV",
+              "Coffee machine",
+              "Minibar",
+              "Free WiFi"
+            ],
+            "rawBenefits": [
+              "Breakfast included"
+            ]
+          },
+          "liveProof": {
+            "isLiveScraped": false,
+            "externalNativeId": "goodNstay Reference BAR",
+            "scrapedAt": "2026-11-10T04:58:34.435Z",
+            "sourceUrl": "https://goodnstay.com/en-US"
+          }
+        }
+      ],
+      "matchConfidenceScore": 60,
+      "matchedBothLiveOtas": false,
+      "spreadAnalysis": {
+        "priceBasis": "GROSS",
+        "minPrice": 967500,
+        "maxPrice": 968000,
+        "medianPrice": 967750,
+        "referencePrice": 968000,
+        "marketSpreadPct": 0.05,
+        "cheapestPlatforms": [
+          "BOOKING"
+        ],
+        "mostExpensivePlatforms": [
+          "GOODNSTAY"
+        ],
+        "platforms": {
+          "BOOKING": {
+            "ota": "BOOKING",
+            "price": 967500,
+            "netPrice": 837662,
+            "grossPrice": 967500,
+            "taxesAndFees": 129838,
+            "roomName": "Deluxe Double or Twin Room with Partial Sea View",
+            "diffVsRefPct": -0.05,
+            "diffVsRefAmount": -500,
+            "customerSavingsVsOtaPct": -0.05,
+            "spreadToMinPct": 0,
+            "spreadToMedianPct": -0.03,
+            "isCheapest": true,
+            "isMostExpensive": false,
+            "parityStatus": "IN_PARITY"
+          },
+          "GOODNSTAY": {
+            "ota": "GOODNSTAY",
+            "price": 968000,
+            "netPrice": 968000,
+            "grossPrice": 968000,
+            "taxesAndFees": 0,
+            "roomName": "Deluxe Double or Twin Room with Partial Sea View",
+            "diffVsRefPct": 0,
+            "diffVsRefAmount": 0,
+            "customerSavingsVsOtaPct": 0,
+            "spreadToMinPct": 0.05,
+            "spreadToMedianPct": 0.03,
+            "isCheapest": false,
+            "isMostExpensive": true,
+            "parityStatus": "REFERENCE"
+          }
+        }
+      },
+      "matchRank": 9
     },
     {
       "groupKey": "libra-nha-trang::DELUXE::MULTI_BED_QUAD_FAMILY::OCEAN_SEA_VIEW::SENIOR_OCEAN_27M2::BB_NON_REFUNDABLE",
@@ -3404,7 +5253,13 @@
           },
           "liveProof": {
             "isLiveScraped": true,
+            "roomId": "60274373",
+            "offerId": "472042779",
+            "blockId": null,
             "externalNativeId": "masterRoomId:60274373",
+            "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Senior%20Ocean%20View%20Room",
+            "uiDisplayedPriceVnd": 891939,
+            "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
             "scrapedAt": "2026-11-10T04:58:34.435Z",
             "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
           }
@@ -3542,7 +5397,13 @@
           },
           "liveProof": {
             "isLiveScraped": true,
+            "roomId": "60274373",
+            "offerId": "472042779",
+            "blockId": null,
             "externalNativeId": "masterRoomId:60274373",
+            "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Senior%20Ocean%20View%20Room",
+            "uiDisplayedPriceVnd": 891939,
+            "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
             "scrapedAt": "2026-11-10T04:58:34.435Z",
             "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
           }
@@ -3614,6 +5475,8 @@
           }
         }
       ],
+      "matchConfidenceScore": 60,
+      "matchedBothLiveOtas": false,
       "spreadAnalysis": {
         "priceBasis": "GROSS",
         "minPrice": 1011000,
@@ -3661,1648 +5524,8 @@
             "parityStatus": "REFERENCE"
           }
         }
-      }
-    },
-    {
-      "groupKey": "libra-nha-trang::DELUXE::TWIN_2_SINGLE::OCEAN_SEA_VIEW::BB_NON_REFUNDABLE",
-      "hotelId": "libra-nha-trang",
-      "hotelName": "Libra Hotel Nha Trang",
-      "canonicalRoomKey": "libra-nha-trang::DELUXE::TWIN_2_SINGLE::OCEAN_SEA_VIEW",
-      "roomType": "Deluxe",
-      "goodNStayBedType": "Twin",
-      "detailedBedCategory": "TWIN_2_SINGLE",
-      "bedFilterLabelVi": "Twin Room (2 Giường đơn · 2 Khách)",
-      "totalBeds": 2,
-      "isMultiBed": true,
-      "maxGuests": 2,
-      "viewCategory": "OCEAN_SEA_VIEW",
-      "areaSqm": 27,
-      "mealPlan": "BB",
-      "mealPlanLabelVi": "Có ăn sáng (BB)",
-      "cancelPolicy": "NON_REFUNDABLE",
-      "cancelPolicyLabelVi": "Không hoàn tiền",
-      "rateBucket": "BB_NON_REFUNDABLE",
-      "sampleGoodNStayForm": {
-        "uploadPhotos": [
-          "//pix8.agoda.net/hotelImages/5059416/1616493025/df4bf2d888b0b47adb8d03035635c34b.png?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/5059416/1616493025/4ad4463231c040445cb99c6d80c7b53d.jpg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/5059416/1616493025/cab4ed4e98f290f9a3017b6dd286448d.png?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/5059416/1616493025/7e53ff0caaaf251ca58eab131e3c6b4b.png?ce=3&s=1024x768"
-        ],
-        "roomName": "Deluxe Ocean 2 Twin",
-        "description": "[Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 2 single beds] — Phòng Deluxe Ocean 2 Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
-        "pricePerNightVnd": 1048070,
-        "pricePerNightKrw": 58692,
-        "maximumGuests": 2,
-        "amenityTypes": [
-          "Free Wi-Fi",
-          "Air Conditioner",
-          "Television"
-        ],
-        "roomType": "Deluxe",
-        "bedType": "Twin",
-        "totalInventory": 5
       },
-      "otaOffers": {
-        "AGODA": {
-          "id": "AGODA_LIVE_1616493025",
-          "roomName": "Deluxe Ocean 2 Twin",
-          "netPrice": 924224,
-          "taxesAndFees": 123846,
-          "grossPrice": 1048070,
-          "formFields": {
-            "uploadPhotos": [
-              "//pix8.agoda.net/hotelImages/5059416/1616493025/df4bf2d888b0b47adb8d03035635c34b.png?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/1616493025/4ad4463231c040445cb99c6d80c7b53d.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/1616493025/cab4ed4e98f290f9a3017b6dd286448d.png?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/1616493025/7e53ff0caaaf251ca58eab131e3c6b4b.png?ce=3&s=1024x768"
-            ],
-            "roomName": "Deluxe Ocean 2 Twin",
-            "description": "[Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 2 single beds] — Phòng Deluxe Ocean 2 Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
-            "pricePerNightVnd": 1048070,
-            "pricePerNightKrw": 58692,
-            "maximumGuests": 2,
-            "amenityTypes": [
-              "Free Wi-Fi",
-              "Air Conditioner",
-              "Television"
-            ],
-            "roomType": "Deluxe",
-            "bedType": "Twin",
-            "totalInventory": 5
-          },
-          "filterMeta": {
-            "canonicalRoomKey": "libra-nha-trang::DELUXE::TWIN_2_SINGLE::OCEAN_SEA_VIEW",
-            "roomType": "Deluxe",
-            "roomTypeMethod": "KEYWORD_DIRECT",
-            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Deluxe Ocean 2 Twin')",
-            "goodNStayBedType": "Twin",
-            "detailedBedCategory": "TWIN_2_SINGLE",
-            "bedFilterLabelVi": "Twin Room (2 Giường đơn · 2 Khách)",
-            "bedReason": "2 giường đơn (Twin beds) cho 2 khách",
-            "totalBeds": 2,
-            "isMultiBed": true,
-            "maxGuests": 2,
-            "viewCategory": "OCEAN_SEA_VIEW",
-            "areaSqm": 27,
-            "areaBucket": "28SQM",
-            "mealPlan": "BB",
-            "mealPlanLabelVi": "Có ăn sáng (BB)",
-            "cancelPolicy": "NON_REFUNDABLE",
-            "cancelPolicyLabelVi": "Không hoàn tiền",
-            "rateBucket": "BB_NON_REFUNDABLE",
-            "netPrice": 924224,
-            "taxesAndFees": 123846,
-            "grossPrice": 1048070,
-            "rawBedText": "2 single beds",
-            "rawFeatures": [
-              "27 m²",
-              "Ocean view",
-              "2 single beds"
-            ],
-            "rawBenefits": [
-              "Breakfast",
-              "Complimentary Breakfast",
-              "Parking",
-              "Welcome drink",
-              "Coffee & tea",
-              "Free WiFi",
-              "Drinking water",
-              "Free fitness center access"
-            ]
-          },
-          "liveProof": {
-            "isLiveScraped": true,
-            "externalNativeId": "masterRoomId:1616493025",
-            "scrapedAt": "2026-11-10T04:58:34.435Z",
-            "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
-          }
-        },
-        "BOOKING": {
-          "id": "BOOKING_LIVE_365483726_441137962_2_1_0",
-          "roomName": "Deluxe Twin Room with Sea View",
-          "netPrice": 954545,
-          "taxesAndFees": 147955,
-          "grossPrice": 1102500,
-          "formFields": {
-            "uploadPhotos": [],
-            "roomName": "Deluxe Twin Room with Sea View",
-            "description": "[Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 2 single beds] — Twin Room with Sea View — 27 m², Sea view, Air conditioning, Ensuite bathroom, Flat-screen TV, Minibar, Free WiFi",
-            "pricePerNightVnd": 1102500,
-            "pricePerNightKrw": 61740,
-            "maximumGuests": 2,
-            "amenityTypes": [
-              "Free Wi-Fi",
-              "Air Conditioner",
-              "Television"
-            ],
-            "roomType": "Deluxe",
-            "bedType": "Twin",
-            "totalInventory": 4
-          },
-          "filterMeta": {
-            "canonicalRoomKey": "libra-nha-trang::DELUXE::TWIN_2_SINGLE::OCEAN_SEA_VIEW",
-            "roomType": "Deluxe",
-            "roomTypeMethod": "KEYWORD_DIRECT",
-            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Deluxe Twin Room with Sea View')",
-            "goodNStayBedType": "Twin",
-            "detailedBedCategory": "TWIN_2_SINGLE",
-            "bedFilterLabelVi": "Twin Room (2 Giường đơn · 2 Khách)",
-            "bedReason": "2 giường đơn (Twin beds) cho 2 khách",
-            "totalBeds": 2,
-            "isMultiBed": true,
-            "maxGuests": 2,
-            "viewCategory": "OCEAN_SEA_VIEW",
-            "areaSqm": 27,
-            "areaBucket": "28SQM",
-            "mealPlan": "BB",
-            "mealPlanLabelVi": "Có ăn sáng (BB)",
-            "cancelPolicy": "FREE_CANCEL",
-            "cancelPolicyLabelVi": "Hủy miễn phí",
-            "rateBucket": "BB_NON_REFUNDABLE",
-            "netPrice": 954545,
-            "taxesAndFees": 147955,
-            "grossPrice": 1102500,
-            "rawBedText": "2 single beds",
-            "rawFeatures": [
-              "27 m²",
-              "Ocean view",
-              "2 single beds"
-            ],
-            "rawBenefits": [
-              "Buffet breakfast included",
-              "Free cancellation before 13 November 2026",
-              "• Pay the property before arrival",
-              "Fully refundable during free cancellation"
-            ]
-          },
-          "liveProof": {
-            "isLiveScraped": true,
-            "externalNativeId": "blockId:365483726_441137962_2_1_0",
-            "scrapedAt": "2026-11-10T04:58:34.435Z",
-            "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
-          }
-        },
-        "GOODNSTAY": {
-          "id": "GNS_REF_libra-nha-trang::DELUXE::TWIN_2_SINGLE::OCEAN_SEA_VIEW",
-          "roomName": "Deluxe Ocean 2 Twin",
-          "netPrice": 1048000,
-          "taxesAndFees": 0,
-          "grossPrice": 1048000,
-          "formFields": {
-            "uploadPhotos": [
-              "//pix8.agoda.net/hotelImages/5059416/1616493025/df4bf2d888b0b47adb8d03035635c34b.png?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/1616493025/4ad4463231c040445cb99c6d80c7b53d.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/1616493025/cab4ed4e98f290f9a3017b6dd286448d.png?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/1616493025/7e53ff0caaaf251ca58eab131e3c6b4b.png?ce=3&s=1024x768"
-            ],
-            "roomName": "Deluxe Ocean 2 Twin",
-            "description": "[Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 2 single beds] — [Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 2 single beds] — Phòng Deluxe Ocean 2 Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
-            "pricePerNightVnd": 1048000,
-            "pricePerNightKrw": 58688,
-            "maximumGuests": 2,
-            "amenityTypes": [
-              "Free Wi-Fi",
-              "Air Conditioner",
-              "Television"
-            ],
-            "roomType": "Deluxe",
-            "bedType": "Twin",
-            "totalInventory": 5
-          },
-          "filterMeta": {
-            "canonicalRoomKey": "libra-nha-trang::DELUXE::TWIN_2_SINGLE::OCEAN_SEA_VIEW",
-            "roomType": "Deluxe",
-            "roomTypeMethod": "KEYWORD_DIRECT",
-            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Deluxe Ocean 2 Twin')",
-            "goodNStayBedType": "Twin",
-            "detailedBedCategory": "TWIN_2_SINGLE",
-            "bedFilterLabelVi": "Twin Room (2 Giường đơn · 2 Khách)",
-            "bedReason": "2 giường đơn (Twin beds) cho 2 khách",
-            "totalBeds": 2,
-            "isMultiBed": true,
-            "maxGuests": 2,
-            "viewCategory": "OCEAN_SEA_VIEW",
-            "areaSqm": 27,
-            "areaBucket": "28SQM",
-            "mealPlan": "BB",
-            "mealPlanLabelVi": "Có ăn sáng (BB)",
-            "cancelPolicy": "NON_REFUNDABLE",
-            "cancelPolicyLabelVi": "Không hoàn tiền",
-            "rateBucket": "BB_NON_REFUNDABLE",
-            "netPrice": 1048000,
-            "taxesAndFees": 0,
-            "grossPrice": 1048000,
-            "rawBedText": "2 single beds",
-            "rawFeatures": [
-              "27 m²",
-              "Ocean view",
-              "2 single beds"
-            ],
-            "rawBenefits": [
-              "Breakfast included"
-            ]
-          },
-          "liveProof": {
-            "isLiveScraped": false,
-            "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T04:58:34.435Z",
-            "sourceUrl": "https://goodnstay.com/en-US"
-          }
-        }
-      },
-      "rawItems": [
-        {
-          "id": "AGODA_LIVE_1616493025",
-          "hotelId": "libra-nha-trang",
-          "hotelName": "Libra Hotel Nha Trang",
-          "otaSource": "AGODA",
-          "formFields": {
-            "uploadPhotos": [
-              "//pix8.agoda.net/hotelImages/5059416/1616493025/df4bf2d888b0b47adb8d03035635c34b.png?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/1616493025/4ad4463231c040445cb99c6d80c7b53d.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/1616493025/cab4ed4e98f290f9a3017b6dd286448d.png?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/1616493025/7e53ff0caaaf251ca58eab131e3c6b4b.png?ce=3&s=1024x768"
-            ],
-            "roomName": "Deluxe Ocean 2 Twin",
-            "description": "[Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 2 single beds] — Phòng Deluxe Ocean 2 Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
-            "pricePerNightVnd": 1048070,
-            "pricePerNightKrw": 58692,
-            "maximumGuests": 2,
-            "amenityTypes": [
-              "Free Wi-Fi",
-              "Air Conditioner",
-              "Television"
-            ],
-            "roomType": "Deluxe",
-            "bedType": "Twin",
-            "totalInventory": 5
-          },
-          "filterMeta": {
-            "canonicalRoomKey": "libra-nha-trang::DELUXE::TWIN_2_SINGLE::OCEAN_SEA_VIEW",
-            "roomType": "Deluxe",
-            "roomTypeMethod": "KEYWORD_DIRECT",
-            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Deluxe Ocean 2 Twin')",
-            "goodNStayBedType": "Twin",
-            "detailedBedCategory": "TWIN_2_SINGLE",
-            "bedFilterLabelVi": "Twin Room (2 Giường đơn · 2 Khách)",
-            "bedReason": "2 giường đơn (Twin beds) cho 2 khách",
-            "totalBeds": 2,
-            "isMultiBed": true,
-            "maxGuests": 2,
-            "viewCategory": "OCEAN_SEA_VIEW",
-            "areaSqm": 27,
-            "areaBucket": "28SQM",
-            "mealPlan": "BB",
-            "mealPlanLabelVi": "Có ăn sáng (BB)",
-            "cancelPolicy": "NON_REFUNDABLE",
-            "cancelPolicyLabelVi": "Không hoàn tiền",
-            "rateBucket": "BB_NON_REFUNDABLE",
-            "netPrice": 924224,
-            "taxesAndFees": 123846,
-            "grossPrice": 1048070,
-            "rawBedText": "2 single beds",
-            "rawFeatures": [
-              "27 m²",
-              "Ocean view",
-              "2 single beds"
-            ],
-            "rawBenefits": [
-              "Breakfast",
-              "Complimentary Breakfast",
-              "Parking",
-              "Welcome drink",
-              "Coffee & tea",
-              "Free WiFi",
-              "Drinking water",
-              "Free fitness center access"
-            ]
-          },
-          "liveProof": {
-            "isLiveScraped": true,
-            "externalNativeId": "masterRoomId:1616493025",
-            "scrapedAt": "2026-11-10T04:58:34.435Z",
-            "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
-          }
-        },
-        {
-          "id": "BOOKING_LIVE_365483726_441137962_2_1_0",
-          "hotelId": "libra-nha-trang",
-          "hotelName": "Libra Hotel Nha Trang",
-          "otaSource": "BOOKING",
-          "formFields": {
-            "uploadPhotos": [],
-            "roomName": "Deluxe Twin Room with Sea View",
-            "description": "[Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 2 single beds] — Twin Room with Sea View — 27 m², Sea view, Air conditioning, Ensuite bathroom, Flat-screen TV, Minibar, Free WiFi",
-            "pricePerNightVnd": 1102500,
-            "pricePerNightKrw": 61740,
-            "maximumGuests": 2,
-            "amenityTypes": [
-              "Free Wi-Fi",
-              "Air Conditioner",
-              "Television"
-            ],
-            "roomType": "Deluxe",
-            "bedType": "Twin",
-            "totalInventory": 4
-          },
-          "filterMeta": {
-            "canonicalRoomKey": "libra-nha-trang::DELUXE::TWIN_2_SINGLE::OCEAN_SEA_VIEW",
-            "roomType": "Deluxe",
-            "roomTypeMethod": "KEYWORD_DIRECT",
-            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Deluxe Twin Room with Sea View')",
-            "goodNStayBedType": "Twin",
-            "detailedBedCategory": "TWIN_2_SINGLE",
-            "bedFilterLabelVi": "Twin Room (2 Giường đơn · 2 Khách)",
-            "bedReason": "2 giường đơn (Twin beds) cho 2 khách",
-            "totalBeds": 2,
-            "isMultiBed": true,
-            "maxGuests": 2,
-            "viewCategory": "OCEAN_SEA_VIEW",
-            "areaSqm": 27,
-            "areaBucket": "28SQM",
-            "mealPlan": "BB",
-            "mealPlanLabelVi": "Có ăn sáng (BB)",
-            "cancelPolicy": "FREE_CANCEL",
-            "cancelPolicyLabelVi": "Hủy miễn phí",
-            "rateBucket": "BB_NON_REFUNDABLE",
-            "netPrice": 954545,
-            "taxesAndFees": 147955,
-            "grossPrice": 1102500,
-            "rawBedText": "2 single beds",
-            "rawFeatures": [
-              "27 m²",
-              "Ocean view",
-              "2 single beds"
-            ],
-            "rawBenefits": [
-              "Buffet breakfast included",
-              "Free cancellation before 13 November 2026",
-              "• Pay the property before arrival",
-              "Fully refundable during free cancellation"
-            ]
-          },
-          "liveProof": {
-            "isLiveScraped": true,
-            "externalNativeId": "blockId:365483726_441137962_2_1_0",
-            "scrapedAt": "2026-11-10T04:58:34.435Z",
-            "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
-          }
-        },
-        {
-          "id": "GNS_REF_libra-nha-trang::DELUXE::TWIN_2_SINGLE::OCEAN_SEA_VIEW",
-          "hotelId": "libra-nha-trang",
-          "hotelName": "Libra Hotel Nha Trang",
-          "otaSource": "GOODNSTAY",
-          "formFields": {
-            "uploadPhotos": [
-              "//pix8.agoda.net/hotelImages/5059416/1616493025/df4bf2d888b0b47adb8d03035635c34b.png?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/1616493025/4ad4463231c040445cb99c6d80c7b53d.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/1616493025/cab4ed4e98f290f9a3017b6dd286448d.png?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/1616493025/7e53ff0caaaf251ca58eab131e3c6b4b.png?ce=3&s=1024x768"
-            ],
-            "roomName": "Deluxe Ocean 2 Twin",
-            "description": "[Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 2 single beds] — [Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 2 single beds] — Phòng Deluxe Ocean 2 Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
-            "pricePerNightVnd": 1048000,
-            "pricePerNightKrw": 58688,
-            "maximumGuests": 2,
-            "amenityTypes": [
-              "Free Wi-Fi",
-              "Air Conditioner",
-              "Television"
-            ],
-            "roomType": "Deluxe",
-            "bedType": "Twin",
-            "totalInventory": 5
-          },
-          "filterMeta": {
-            "canonicalRoomKey": "libra-nha-trang::DELUXE::TWIN_2_SINGLE::OCEAN_SEA_VIEW",
-            "roomType": "Deluxe",
-            "roomTypeMethod": "KEYWORD_DIRECT",
-            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Deluxe Ocean 2 Twin')",
-            "goodNStayBedType": "Twin",
-            "detailedBedCategory": "TWIN_2_SINGLE",
-            "bedFilterLabelVi": "Twin Room (2 Giường đơn · 2 Khách)",
-            "bedReason": "2 giường đơn (Twin beds) cho 2 khách",
-            "totalBeds": 2,
-            "isMultiBed": true,
-            "maxGuests": 2,
-            "viewCategory": "OCEAN_SEA_VIEW",
-            "areaSqm": 27,
-            "areaBucket": "28SQM",
-            "mealPlan": "BB",
-            "mealPlanLabelVi": "Có ăn sáng (BB)",
-            "cancelPolicy": "NON_REFUNDABLE",
-            "cancelPolicyLabelVi": "Không hoàn tiền",
-            "rateBucket": "BB_NON_REFUNDABLE",
-            "netPrice": 1048000,
-            "taxesAndFees": 0,
-            "grossPrice": 1048000,
-            "rawBedText": "2 single beds",
-            "rawFeatures": [
-              "27 m²",
-              "Ocean view",
-              "2 single beds"
-            ],
-            "rawBenefits": [
-              "Breakfast included"
-            ]
-          },
-          "liveProof": {
-            "isLiveScraped": false,
-            "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T04:58:34.435Z",
-            "sourceUrl": "https://goodnstay.com/en-US"
-          }
-        }
-      ],
-      "spreadAnalysis": {
-        "priceBasis": "GROSS",
-        "minPrice": 1048000,
-        "maxPrice": 1102500,
-        "medianPrice": 1048070,
-        "referencePrice": 1048000,
-        "marketSpreadPct": 5.2,
-        "cheapestPlatforms": [
-          "GOODNSTAY"
-        ],
-        "mostExpensivePlatforms": [
-          "BOOKING"
-        ],
-        "platforms": {
-          "AGODA": {
-            "ota": "AGODA",
-            "price": 1048070,
-            "netPrice": 924224,
-            "grossPrice": 1048070,
-            "taxesAndFees": 123846,
-            "roomName": "Deluxe Ocean 2 Twin",
-            "diffVsRefPct": 0.01,
-            "diffVsRefAmount": 70,
-            "customerSavingsVsOtaPct": 0.01,
-            "spreadToMinPct": 0.01,
-            "spreadToMedianPct": 0,
-            "isCheapest": false,
-            "isMostExpensive": false,
-            "parityStatus": "IN_PARITY"
-          },
-          "BOOKING": {
-            "ota": "BOOKING",
-            "price": 1102500,
-            "netPrice": 954545,
-            "grossPrice": 1102500,
-            "taxesAndFees": 147955,
-            "roomName": "Deluxe Twin Room with Sea View",
-            "diffVsRefPct": 5.2,
-            "diffVsRefAmount": 54500,
-            "customerSavingsVsOtaPct": 4.94,
-            "spreadToMinPct": 5.2,
-            "spreadToMedianPct": 5.19,
-            "isCheapest": false,
-            "isMostExpensive": true,
-            "parityStatus": "HIGHER_THAN_REF"
-          },
-          "GOODNSTAY": {
-            "ota": "GOODNSTAY",
-            "price": 1048000,
-            "netPrice": 1048000,
-            "grossPrice": 1048000,
-            "taxesAndFees": 0,
-            "roomName": "Deluxe Ocean 2 Twin",
-            "diffVsRefPct": 0,
-            "diffVsRefAmount": 0,
-            "customerSavingsVsOtaPct": 0,
-            "spreadToMinPct": 0,
-            "spreadToMedianPct": -0.01,
-            "isCheapest": true,
-            "isMostExpensive": false,
-            "parityStatus": "REFERENCE"
-          }
-        }
-      }
-    },
-    {
-      "groupKey": "libra-nha-trang::DELUXE::KING_1_BED::OCEAN_SEA_VIEW::BB_NON_REFUNDABLE",
-      "hotelId": "libra-nha-trang",
-      "hotelName": "Libra Hotel Nha Trang",
-      "canonicalRoomKey": "libra-nha-trang::DELUXE::KING_1_BED::OCEAN_SEA_VIEW",
-      "roomType": "Deluxe",
-      "goodNStayBedType": "Double (Queen, King)",
-      "detailedBedCategory": "KING_1_BED",
-      "bedFilterLabelVi": "King Bed (1 Giường King lớn · 2 Khách)",
-      "totalBeds": 1,
-      "isMultiBed": false,
-      "maxGuests": 2,
-      "viewCategory": "OCEAN_SEA_VIEW",
-      "areaSqm": 25,
-      "mealPlan": "BB",
-      "mealPlanLabelVi": "Có ăn sáng (BB)",
-      "cancelPolicy": "NON_REFUNDABLE",
-      "cancelPolicyLabelVi": "Không hoàn tiền",
-      "rateBucket": "BB_NON_REFUNDABLE",
-      "sampleGoodNStayForm": {
-        "uploadPhotos": [
-          "//pix8.agoda.net/hotelImages/5059416/0/2c2d02820b4f49f208bcc642e1e66a91.jpeg?ce=2&s=1024x768",
-          "//pix8.agoda.net/hotelImages/5059416/39376081/ce07ea1fb2395f6aa0e39a60cb1f66a7.jpeg?ce=2&s=1024x768",
-          "//pix8.agoda.net/hotelImages/5059416/39376081/3470998ed95f26e94a813b2da9b806df.jpeg?s=1024x768",
-          "//pix8.agoda.net/hotelImages/5059416/0/0f19d70653f77361c5c09425a86e13ac.jpeg?ce=2&s=1024x768"
-        ],
-        "roomName": "Ocean Luxury",
-        "description": "[Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Phòng Ocean Luxury dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
-        "pricePerNightVnd": 1048070,
-        "pricePerNightKrw": 58692,
-        "maximumGuests": 2,
-        "amenityTypes": [
-          "Minibar",
-          "Free Wi-Fi",
-          "Air Conditioner",
-          "Television"
-        ],
-        "roomType": "Deluxe",
-        "bedType": "Double (Queen, King)",
-        "totalInventory": 5
-      },
-      "otaOffers": {
-        "AGODA": {
-          "id": "AGODA_LIVE_39376081",
-          "roomName": "Ocean Luxury",
-          "netPrice": 924224,
-          "taxesAndFees": 123846,
-          "grossPrice": 1048070,
-          "formFields": {
-            "uploadPhotos": [
-              "//pix8.agoda.net/hotelImages/5059416/0/2c2d02820b4f49f208bcc642e1e66a91.jpeg?ce=2&s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/39376081/ce07ea1fb2395f6aa0e39a60cb1f66a7.jpeg?ce=2&s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/39376081/3470998ed95f26e94a813b2da9b806df.jpeg?s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/0/0f19d70653f77361c5c09425a86e13ac.jpeg?ce=2&s=1024x768"
-            ],
-            "roomName": "Ocean Luxury",
-            "description": "[Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Phòng Ocean Luxury dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
-            "pricePerNightVnd": 1048070,
-            "pricePerNightKrw": 58692,
-            "maximumGuests": 2,
-            "amenityTypes": [
-              "Minibar",
-              "Free Wi-Fi",
-              "Air Conditioner",
-              "Television"
-            ],
-            "roomType": "Deluxe",
-            "bedType": "Double (Queen, King)",
-            "totalInventory": 5
-          },
-          "filterMeta": {
-            "canonicalRoomKey": "libra-nha-trang::DELUXE::KING_1_BED::OCEAN_SEA_VIEW",
-            "roomType": "Deluxe",
-            "roomTypeMethod": "KEYWORD_DIRECT",
-            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Ocean Luxury')",
-            "goodNStayBedType": "Double (Queen, King)",
-            "detailedBedCategory": "KING_1_BED",
-            "bedFilterLabelVi": "King Bed (1 Giường King lớn · 2 Khách)",
-            "bedReason": "1 giường King cỡ lớn → điền 'Double (Queen, King)' vào Form goodNstay",
-            "totalBeds": 1,
-            "isMultiBed": false,
-            "maxGuests": 2,
-            "viewCategory": "OCEAN_SEA_VIEW",
-            "areaSqm": 25,
-            "areaBucket": "24SQM",
-            "mealPlan": "BB",
-            "mealPlanLabelVi": "Có ăn sáng (BB)",
-            "cancelPolicy": "NON_REFUNDABLE",
-            "cancelPolicyLabelVi": "Không hoàn tiền",
-            "rateBucket": "BB_NON_REFUNDABLE",
-            "netPrice": 924224,
-            "taxesAndFees": 123846,
-            "grossPrice": 1048070,
-            "rawBedText": "1 king bed",
-            "rawFeatures": [
-              "Room size: 25 m²/269 ft²",
-              "Ocean view",
-              "1 king bed",
-              "Free welcome drink",
-              "Window",
-              "Blackout curtains",
-              "Mini bar",
-              "Wi-Fi [free]",
-              "Closet",
-              "Air conditioning"
-            ],
-            "rawBenefits": [
-              "Breakfast",
-              "Complimentary Breakfast",
-              "Parking",
-              "Welcome drink",
-              "Coffee & tea",
-              "Free WiFi",
-              "Drinking water",
-              "Free fitness center access"
-            ]
-          },
-          "liveProof": {
-            "isLiveScraped": true,
-            "externalNativeId": "masterRoomId:39376081",
-            "scrapedAt": "2026-11-10T04:58:34.435Z",
-            "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
-          }
-        },
-        "GOODNSTAY": {
-          "id": "GNS_REF_libra-nha-trang::DELUXE::KING_1_BED::OCEAN_SEA_VIEW",
-          "roomName": "Ocean Luxury",
-          "netPrice": 1048000,
-          "taxesAndFees": 0,
-          "grossPrice": 1048000,
-          "formFields": {
-            "uploadPhotos": [
-              "//pix8.agoda.net/hotelImages/5059416/0/2c2d02820b4f49f208bcc642e1e66a91.jpeg?ce=2&s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/39376081/ce07ea1fb2395f6aa0e39a60cb1f66a7.jpeg?ce=2&s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/39376081/3470998ed95f26e94a813b2da9b806df.jpeg?s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/0/0f19d70653f77361c5c09425a86e13ac.jpeg?ce=2&s=1024x768"
-            ],
-            "roomName": "Ocean Luxury",
-            "description": "[Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — [Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Phòng Ocean Luxury dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
-            "pricePerNightVnd": 1048000,
-            "pricePerNightKrw": 58688,
-            "maximumGuests": 2,
-            "amenityTypes": [
-              "Minibar",
-              "Free Wi-Fi",
-              "Air Conditioner",
-              "Television"
-            ],
-            "roomType": "Deluxe",
-            "bedType": "Double (Queen, King)",
-            "totalInventory": 5
-          },
-          "filterMeta": {
-            "canonicalRoomKey": "libra-nha-trang::DELUXE::KING_1_BED::OCEAN_SEA_VIEW",
-            "roomType": "Deluxe",
-            "roomTypeMethod": "KEYWORD_DIRECT",
-            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Ocean Luxury')",
-            "goodNStayBedType": "Double (Queen, King)",
-            "detailedBedCategory": "KING_1_BED",
-            "bedFilterLabelVi": "King Bed (1 Giường King lớn · 2 Khách)",
-            "bedReason": "1 giường King cỡ lớn → điền 'Double (Queen, King)' vào Form goodNstay",
-            "totalBeds": 1,
-            "isMultiBed": false,
-            "maxGuests": 2,
-            "viewCategory": "OCEAN_SEA_VIEW",
-            "areaSqm": 25,
-            "areaBucket": "24SQM",
-            "mealPlan": "BB",
-            "mealPlanLabelVi": "Có ăn sáng (BB)",
-            "cancelPolicy": "NON_REFUNDABLE",
-            "cancelPolicyLabelVi": "Không hoàn tiền",
-            "rateBucket": "BB_NON_REFUNDABLE",
-            "netPrice": 1048000,
-            "taxesAndFees": 0,
-            "grossPrice": 1048000,
-            "rawBedText": "1 king bed",
-            "rawFeatures": [
-              "Room size: 25 m²/269 ft²",
-              "Ocean view",
-              "1 king bed",
-              "Free welcome drink",
-              "Window",
-              "Blackout curtains",
-              "Mini bar",
-              "Wi-Fi [free]",
-              "Closet",
-              "Air conditioning"
-            ],
-            "rawBenefits": [
-              "Breakfast included"
-            ]
-          },
-          "liveProof": {
-            "isLiveScraped": false,
-            "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T04:58:34.435Z",
-            "sourceUrl": "https://goodnstay.com/en-US"
-          }
-        }
-      },
-      "rawItems": [
-        {
-          "id": "AGODA_LIVE_39376081",
-          "hotelId": "libra-nha-trang",
-          "hotelName": "Libra Hotel Nha Trang",
-          "otaSource": "AGODA",
-          "formFields": {
-            "uploadPhotos": [
-              "//pix8.agoda.net/hotelImages/5059416/0/2c2d02820b4f49f208bcc642e1e66a91.jpeg?ce=2&s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/39376081/ce07ea1fb2395f6aa0e39a60cb1f66a7.jpeg?ce=2&s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/39376081/3470998ed95f26e94a813b2da9b806df.jpeg?s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/0/0f19d70653f77361c5c09425a86e13ac.jpeg?ce=2&s=1024x768"
-            ],
-            "roomName": "Ocean Luxury",
-            "description": "[Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Phòng Ocean Luxury dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
-            "pricePerNightVnd": 1048070,
-            "pricePerNightKrw": 58692,
-            "maximumGuests": 2,
-            "amenityTypes": [
-              "Minibar",
-              "Free Wi-Fi",
-              "Air Conditioner",
-              "Television"
-            ],
-            "roomType": "Deluxe",
-            "bedType": "Double (Queen, King)",
-            "totalInventory": 5
-          },
-          "filterMeta": {
-            "canonicalRoomKey": "libra-nha-trang::DELUXE::KING_1_BED::OCEAN_SEA_VIEW",
-            "roomType": "Deluxe",
-            "roomTypeMethod": "KEYWORD_DIRECT",
-            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Ocean Luxury')",
-            "goodNStayBedType": "Double (Queen, King)",
-            "detailedBedCategory": "KING_1_BED",
-            "bedFilterLabelVi": "King Bed (1 Giường King lớn · 2 Khách)",
-            "bedReason": "1 giường King cỡ lớn → điền 'Double (Queen, King)' vào Form goodNstay",
-            "totalBeds": 1,
-            "isMultiBed": false,
-            "maxGuests": 2,
-            "viewCategory": "OCEAN_SEA_VIEW",
-            "areaSqm": 25,
-            "areaBucket": "24SQM",
-            "mealPlan": "BB",
-            "mealPlanLabelVi": "Có ăn sáng (BB)",
-            "cancelPolicy": "NON_REFUNDABLE",
-            "cancelPolicyLabelVi": "Không hoàn tiền",
-            "rateBucket": "BB_NON_REFUNDABLE",
-            "netPrice": 924224,
-            "taxesAndFees": 123846,
-            "grossPrice": 1048070,
-            "rawBedText": "1 king bed",
-            "rawFeatures": [
-              "Room size: 25 m²/269 ft²",
-              "Ocean view",
-              "1 king bed",
-              "Free welcome drink",
-              "Window",
-              "Blackout curtains",
-              "Mini bar",
-              "Wi-Fi [free]",
-              "Closet",
-              "Air conditioning"
-            ],
-            "rawBenefits": [
-              "Breakfast",
-              "Complimentary Breakfast",
-              "Parking",
-              "Welcome drink",
-              "Coffee & tea",
-              "Free WiFi",
-              "Drinking water",
-              "Free fitness center access"
-            ]
-          },
-          "liveProof": {
-            "isLiveScraped": true,
-            "externalNativeId": "masterRoomId:39376081",
-            "scrapedAt": "2026-11-10T04:58:34.435Z",
-            "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
-          }
-        },
-        {
-          "id": "GNS_REF_libra-nha-trang::DELUXE::KING_1_BED::OCEAN_SEA_VIEW",
-          "hotelId": "libra-nha-trang",
-          "hotelName": "Libra Hotel Nha Trang",
-          "otaSource": "GOODNSTAY",
-          "formFields": {
-            "uploadPhotos": [
-              "//pix8.agoda.net/hotelImages/5059416/0/2c2d02820b4f49f208bcc642e1e66a91.jpeg?ce=2&s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/39376081/ce07ea1fb2395f6aa0e39a60cb1f66a7.jpeg?ce=2&s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/39376081/3470998ed95f26e94a813b2da9b806df.jpeg?s=1024x768",
-              "//pix8.agoda.net/hotelImages/5059416/0/0f19d70653f77361c5c09425a86e13ac.jpeg?ce=2&s=1024x768"
-            ],
-            "roomName": "Ocean Luxury",
-            "description": "[Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — [Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Phòng Ocean Luxury dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
-            "pricePerNightVnd": 1048000,
-            "pricePerNightKrw": 58688,
-            "maximumGuests": 2,
-            "amenityTypes": [
-              "Minibar",
-              "Free Wi-Fi",
-              "Air Conditioner",
-              "Television"
-            ],
-            "roomType": "Deluxe",
-            "bedType": "Double (Queen, King)",
-            "totalInventory": 5
-          },
-          "filterMeta": {
-            "canonicalRoomKey": "libra-nha-trang::DELUXE::KING_1_BED::OCEAN_SEA_VIEW",
-            "roomType": "Deluxe",
-            "roomTypeMethod": "KEYWORD_DIRECT",
-            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Ocean Luxury')",
-            "goodNStayBedType": "Double (Queen, King)",
-            "detailedBedCategory": "KING_1_BED",
-            "bedFilterLabelVi": "King Bed (1 Giường King lớn · 2 Khách)",
-            "bedReason": "1 giường King cỡ lớn → điền 'Double (Queen, King)' vào Form goodNstay",
-            "totalBeds": 1,
-            "isMultiBed": false,
-            "maxGuests": 2,
-            "viewCategory": "OCEAN_SEA_VIEW",
-            "areaSqm": 25,
-            "areaBucket": "24SQM",
-            "mealPlan": "BB",
-            "mealPlanLabelVi": "Có ăn sáng (BB)",
-            "cancelPolicy": "NON_REFUNDABLE",
-            "cancelPolicyLabelVi": "Không hoàn tiền",
-            "rateBucket": "BB_NON_REFUNDABLE",
-            "netPrice": 1048000,
-            "taxesAndFees": 0,
-            "grossPrice": 1048000,
-            "rawBedText": "1 king bed",
-            "rawFeatures": [
-              "Room size: 25 m²/269 ft²",
-              "Ocean view",
-              "1 king bed",
-              "Free welcome drink",
-              "Window",
-              "Blackout curtains",
-              "Mini bar",
-              "Wi-Fi [free]",
-              "Closet",
-              "Air conditioning"
-            ],
-            "rawBenefits": [
-              "Breakfast included"
-            ]
-          },
-          "liveProof": {
-            "isLiveScraped": false,
-            "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T04:58:34.435Z",
-            "sourceUrl": "https://goodnstay.com/en-US"
-          }
-        }
-      ],
-      "spreadAnalysis": {
-        "priceBasis": "GROSS",
-        "minPrice": 1048000,
-        "maxPrice": 1048070,
-        "medianPrice": 1048035,
-        "referencePrice": 1048000,
-        "marketSpreadPct": 0.01,
-        "cheapestPlatforms": [
-          "GOODNSTAY"
-        ],
-        "mostExpensivePlatforms": [
-          "AGODA"
-        ],
-        "platforms": {
-          "AGODA": {
-            "ota": "AGODA",
-            "price": 1048070,
-            "netPrice": 924224,
-            "grossPrice": 1048070,
-            "taxesAndFees": 123846,
-            "roomName": "Ocean Luxury",
-            "diffVsRefPct": 0.01,
-            "diffVsRefAmount": 70,
-            "customerSavingsVsOtaPct": 0.01,
-            "spreadToMinPct": 0.01,
-            "spreadToMedianPct": 0,
-            "isCheapest": false,
-            "isMostExpensive": true,
-            "parityStatus": "IN_PARITY"
-          },
-          "GOODNSTAY": {
-            "ota": "GOODNSTAY",
-            "price": 1048000,
-            "netPrice": 1048000,
-            "grossPrice": 1048000,
-            "taxesAndFees": 0,
-            "roomName": "Ocean Luxury",
-            "diffVsRefPct": 0,
-            "diffVsRefAmount": 0,
-            "customerSavingsVsOtaPct": 0,
-            "spreadToMinPct": 0,
-            "spreadToMedianPct": 0,
-            "isCheapest": true,
-            "isMostExpensive": false,
-            "parityStatus": "REFERENCE"
-          }
-        }
-      }
-    },
-    {
-      "groupKey": "libra-nha-trang::DELUXE::FLEX_DOUBLE_OR_TWIN::PARTIAL_SEA_VIEW::BB_NON_REFUNDABLE",
-      "hotelId": "libra-nha-trang",
-      "hotelName": "Libra Hotel Nha Trang",
-      "canonicalRoomKey": "libra-nha-trang::DELUXE::FLEX_DOUBLE_OR_TWIN::PARTIAL_SEA_VIEW",
-      "roomType": "Deluxe",
-      "goodNStayBedType": "Any Bed",
-      "detailedBedCategory": "FLEX_DOUBLE_OR_TWIN",
-      "bedFilterLabelVi": "Linh hoạt (1 Đôi hoặc 2 Đơn · 2 Khách)",
-      "totalBeds": 1,
-      "isMultiBed": false,
-      "maxGuests": 2,
-      "viewCategory": "PARTIAL_SEA_VIEW",
-      "areaSqm": 25,
-      "mealPlan": "BB",
-      "mealPlanLabelVi": "Có ăn sáng (BB)",
-      "cancelPolicy": "FREE_CANCEL",
-      "cancelPolicyLabelVi": "Hủy miễn phí",
-      "rateBucket": "BB_NON_REFUNDABLE",
-      "sampleGoodNStayForm": {
-        "uploadPhotos": [],
-        "roomName": "Deluxe Double or Twin Room with Partial Sea View",
-        "description": "[Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Deluxe Double or Twin Room with Partial Sea View — 25 m², Sea view, Lake view, Mountain view, City view, Air conditioning, Ensuite bathroom, Flat-screen TV, Coffee machine, Minibar, Free WiFi",
-        "pricePerNightVnd": 967500,
-        "pricePerNightKrw": 54180,
-        "maximumGuests": 2,
-        "amenityTypes": [
-          "Minibar",
-          "Television",
-          "Free Wi-Fi",
-          "Air Conditioner"
-        ],
-        "roomType": "Deluxe",
-        "bedType": "Any Bed",
-        "totalInventory": 4
-      },
-      "otaOffers": {
-        "BOOKING": {
-          "id": "BOOKING_LIVE_365483707_441137962_2_1_0",
-          "roomName": "Deluxe Double or Twin Room with Partial Sea View",
-          "netPrice": 837662,
-          "taxesAndFees": 129838,
-          "grossPrice": 967500,
-          "formFields": {
-            "uploadPhotos": [],
-            "roomName": "Deluxe Double or Twin Room with Partial Sea View",
-            "description": "[Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Deluxe Double or Twin Room with Partial Sea View — 25 m², Sea view, Lake view, Mountain view, City view, Air conditioning, Ensuite bathroom, Flat-screen TV, Coffee machine, Minibar, Free WiFi",
-            "pricePerNightVnd": 967500,
-            "pricePerNightKrw": 54180,
-            "maximumGuests": 2,
-            "amenityTypes": [
-              "Minibar",
-              "Television",
-              "Free Wi-Fi",
-              "Air Conditioner"
-            ],
-            "roomType": "Deluxe",
-            "bedType": "Any Bed",
-            "totalInventory": 4
-          },
-          "filterMeta": {
-            "canonicalRoomKey": "libra-nha-trang::DELUXE::FLEX_DOUBLE_OR_TWIN::PARTIAL_SEA_VIEW",
-            "roomType": "Deluxe",
-            "roomTypeMethod": "KEYWORD_DIRECT",
-            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Deluxe Double or Twin Room with Partial Sea View')",
-            "goodNStayBedType": "Any Bed",
-            "detailedBedCategory": "FLEX_DOUBLE_OR_TWIN",
-            "bedFilterLabelVi": "Linh hoạt (1 Đôi hoặc 2 Đơn · 2 Khách)",
-            "bedReason": "OTA khai báo linh hoạt 1 giường đôi hoặc 2 giường đơn",
-            "totalBeds": 1,
-            "isMultiBed": false,
-            "maxGuests": 2,
-            "viewCategory": "PARTIAL_SEA_VIEW",
-            "areaSqm": 25,
-            "areaBucket": "24SQM",
-            "mealPlan": "BB",
-            "mealPlanLabelVi": "Có ăn sáng (BB)",
-            "cancelPolicy": "FREE_CANCEL",
-            "cancelPolicyLabelVi": "Hủy miễn phí",
-            "rateBucket": "BB_NON_REFUNDABLE",
-            "netPrice": 837662,
-            "taxesAndFees": 129838,
-            "grossPrice": 967500,
-            "rawBedText": "2 single beds",
-            "rawFeatures": [
-              "25 m²",
-              "Sea view",
-              "Lake view",
-              "Mountain view",
-              "City view",
-              "Air conditioning",
-              "Ensuite bathroom",
-              "Flat-screen TV",
-              "Coffee machine",
-              "Minibar",
-              "Free WiFi"
-            ],
-            "rawBenefits": [
-              "Buffet breakfast included",
-              "Free cancellation before 13 November 2026",
-              "• Pay the property before arrival",
-              "Fully refundable during free cancellation"
-            ]
-          },
-          "liveProof": {
-            "isLiveScraped": true,
-            "externalNativeId": "blockId:365483707_441137962_2_1_0",
-            "scrapedAt": "2026-11-10T04:58:34.435Z",
-            "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
-          }
-        },
-        "GOODNSTAY": {
-          "id": "GNS_REF_libra-nha-trang::DELUXE::FLEX_DOUBLE_OR_TWIN::PARTIAL_SEA_VIEW",
-          "roomName": "Deluxe Double or Twin Room with Partial Sea View",
-          "netPrice": 968000,
-          "taxesAndFees": 0,
-          "grossPrice": 968000,
-          "formFields": {
-            "uploadPhotos": [],
-            "roomName": "Deluxe Double or Twin Room with Partial Sea View",
-            "description": "[Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — [Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Deluxe Double or Twin Room with Partial Sea View — 25 m², Sea view, Lake view, Mountain view, City view, Air conditioning, Ensuite bathroom, Flat-screen TV, Coffee machine, Minibar, Free WiFi",
-            "pricePerNightVnd": 968000,
-            "pricePerNightKrw": 54208,
-            "maximumGuests": 2,
-            "amenityTypes": [
-              "Minibar",
-              "Television",
-              "Free Wi-Fi",
-              "Air Conditioner"
-            ],
-            "roomType": "Deluxe",
-            "bedType": "Any Bed",
-            "totalInventory": 5
-          },
-          "filterMeta": {
-            "canonicalRoomKey": "libra-nha-trang::DELUXE::FLEX_DOUBLE_OR_TWIN::PARTIAL_SEA_VIEW",
-            "roomType": "Deluxe",
-            "roomTypeMethod": "KEYWORD_DIRECT",
-            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Deluxe Double or Twin Room with Partial Sea View')",
-            "goodNStayBedType": "Any Bed",
-            "detailedBedCategory": "FLEX_DOUBLE_OR_TWIN",
-            "bedFilterLabelVi": "Linh hoạt (1 Đôi hoặc 2 Đơn · 2 Khách)",
-            "bedReason": "OTA khai báo linh hoạt 1 giường đôi hoặc 2 giường đơn",
-            "totalBeds": 1,
-            "isMultiBed": false,
-            "maxGuests": 2,
-            "viewCategory": "PARTIAL_SEA_VIEW",
-            "areaSqm": 25,
-            "areaBucket": "24SQM",
-            "mealPlan": "BB",
-            "mealPlanLabelVi": "Có ăn sáng (BB)",
-            "cancelPolicy": "NON_REFUNDABLE",
-            "cancelPolicyLabelVi": "Không hoàn tiền",
-            "rateBucket": "BB_NON_REFUNDABLE",
-            "netPrice": 968000,
-            "taxesAndFees": 0,
-            "grossPrice": 968000,
-            "rawBedText": "2 single beds",
-            "rawFeatures": [
-              "25 m²",
-              "Sea view",
-              "Lake view",
-              "Mountain view",
-              "City view",
-              "Air conditioning",
-              "Ensuite bathroom",
-              "Flat-screen TV",
-              "Coffee machine",
-              "Minibar",
-              "Free WiFi"
-            ],
-            "rawBenefits": [
-              "Breakfast included"
-            ]
-          },
-          "liveProof": {
-            "isLiveScraped": false,
-            "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T04:58:34.435Z",
-            "sourceUrl": "https://goodnstay.com/en-US"
-          }
-        }
-      },
-      "rawItems": [
-        {
-          "id": "BOOKING_LIVE_365483707_441137962_2_1_0",
-          "hotelId": "libra-nha-trang",
-          "hotelName": "Libra Hotel Nha Trang",
-          "otaSource": "BOOKING",
-          "formFields": {
-            "uploadPhotos": [],
-            "roomName": "Deluxe Double or Twin Room with Partial Sea View",
-            "description": "[Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Deluxe Double or Twin Room with Partial Sea View — 25 m², Sea view, Lake view, Mountain view, City view, Air conditioning, Ensuite bathroom, Flat-screen TV, Coffee machine, Minibar, Free WiFi",
-            "pricePerNightVnd": 967500,
-            "pricePerNightKrw": 54180,
-            "maximumGuests": 2,
-            "amenityTypes": [
-              "Minibar",
-              "Television",
-              "Free Wi-Fi",
-              "Air Conditioner"
-            ],
-            "roomType": "Deluxe",
-            "bedType": "Any Bed",
-            "totalInventory": 4
-          },
-          "filterMeta": {
-            "canonicalRoomKey": "libra-nha-trang::DELUXE::FLEX_DOUBLE_OR_TWIN::PARTIAL_SEA_VIEW",
-            "roomType": "Deluxe",
-            "roomTypeMethod": "KEYWORD_DIRECT",
-            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Deluxe Double or Twin Room with Partial Sea View')",
-            "goodNStayBedType": "Any Bed",
-            "detailedBedCategory": "FLEX_DOUBLE_OR_TWIN",
-            "bedFilterLabelVi": "Linh hoạt (1 Đôi hoặc 2 Đơn · 2 Khách)",
-            "bedReason": "OTA khai báo linh hoạt 1 giường đôi hoặc 2 giường đơn",
-            "totalBeds": 1,
-            "isMultiBed": false,
-            "maxGuests": 2,
-            "viewCategory": "PARTIAL_SEA_VIEW",
-            "areaSqm": 25,
-            "areaBucket": "24SQM",
-            "mealPlan": "BB",
-            "mealPlanLabelVi": "Có ăn sáng (BB)",
-            "cancelPolicy": "FREE_CANCEL",
-            "cancelPolicyLabelVi": "Hủy miễn phí",
-            "rateBucket": "BB_NON_REFUNDABLE",
-            "netPrice": 837662,
-            "taxesAndFees": 129838,
-            "grossPrice": 967500,
-            "rawBedText": "2 single beds",
-            "rawFeatures": [
-              "25 m²",
-              "Sea view",
-              "Lake view",
-              "Mountain view",
-              "City view",
-              "Air conditioning",
-              "Ensuite bathroom",
-              "Flat-screen TV",
-              "Coffee machine",
-              "Minibar",
-              "Free WiFi"
-            ],
-            "rawBenefits": [
-              "Buffet breakfast included",
-              "Free cancellation before 13 November 2026",
-              "• Pay the property before arrival",
-              "Fully refundable during free cancellation"
-            ]
-          },
-          "liveProof": {
-            "isLiveScraped": true,
-            "externalNativeId": "blockId:365483707_441137962_2_1_0",
-            "scrapedAt": "2026-11-10T04:58:34.435Z",
-            "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
-          }
-        },
-        {
-          "id": "GNS_REF_libra-nha-trang::DELUXE::FLEX_DOUBLE_OR_TWIN::PARTIAL_SEA_VIEW",
-          "hotelId": "libra-nha-trang",
-          "hotelName": "Libra Hotel Nha Trang",
-          "otaSource": "GOODNSTAY",
-          "formFields": {
-            "uploadPhotos": [],
-            "roomName": "Deluxe Double or Twin Room with Partial Sea View",
-            "description": "[Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — [Hạng phòng: Deluxe | Diện tích: 25 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Deluxe Double or Twin Room with Partial Sea View — 25 m², Sea view, Lake view, Mountain view, City view, Air conditioning, Ensuite bathroom, Flat-screen TV, Coffee machine, Minibar, Free WiFi",
-            "pricePerNightVnd": 968000,
-            "pricePerNightKrw": 54208,
-            "maximumGuests": 2,
-            "amenityTypes": [
-              "Minibar",
-              "Television",
-              "Free Wi-Fi",
-              "Air Conditioner"
-            ],
-            "roomType": "Deluxe",
-            "bedType": "Any Bed",
-            "totalInventory": 5
-          },
-          "filterMeta": {
-            "canonicalRoomKey": "libra-nha-trang::DELUXE::FLEX_DOUBLE_OR_TWIN::PARTIAL_SEA_VIEW",
-            "roomType": "Deluxe",
-            "roomTypeMethod": "KEYWORD_DIRECT",
-            "roomTypeReason": "Tên phòng chứa từ khóa hạng Deluxe/Premier ('Deluxe Double or Twin Room with Partial Sea View')",
-            "goodNStayBedType": "Any Bed",
-            "detailedBedCategory": "FLEX_DOUBLE_OR_TWIN",
-            "bedFilterLabelVi": "Linh hoạt (1 Đôi hoặc 2 Đơn · 2 Khách)",
-            "bedReason": "OTA khai báo linh hoạt 1 giường đôi hoặc 2 giường đơn",
-            "totalBeds": 1,
-            "isMultiBed": false,
-            "maxGuests": 2,
-            "viewCategory": "PARTIAL_SEA_VIEW",
-            "areaSqm": 25,
-            "areaBucket": "24SQM",
-            "mealPlan": "BB",
-            "mealPlanLabelVi": "Có ăn sáng (BB)",
-            "cancelPolicy": "NON_REFUNDABLE",
-            "cancelPolicyLabelVi": "Không hoàn tiền",
-            "rateBucket": "BB_NON_REFUNDABLE",
-            "netPrice": 968000,
-            "taxesAndFees": 0,
-            "grossPrice": 968000,
-            "rawBedText": "2 single beds",
-            "rawFeatures": [
-              "25 m²",
-              "Sea view",
-              "Lake view",
-              "Mountain view",
-              "City view",
-              "Air conditioning",
-              "Ensuite bathroom",
-              "Flat-screen TV",
-              "Coffee machine",
-              "Minibar",
-              "Free WiFi"
-            ],
-            "rawBenefits": [
-              "Breakfast included"
-            ]
-          },
-          "liveProof": {
-            "isLiveScraped": false,
-            "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T04:58:34.435Z",
-            "sourceUrl": "https://goodnstay.com/en-US"
-          }
-        }
-      ],
-      "spreadAnalysis": {
-        "priceBasis": "GROSS",
-        "minPrice": 967500,
-        "maxPrice": 968000,
-        "medianPrice": 967750,
-        "referencePrice": 968000,
-        "marketSpreadPct": 0.05,
-        "cheapestPlatforms": [
-          "BOOKING"
-        ],
-        "mostExpensivePlatforms": [
-          "GOODNSTAY"
-        ],
-        "platforms": {
-          "BOOKING": {
-            "ota": "BOOKING",
-            "price": 967500,
-            "netPrice": 837662,
-            "grossPrice": 967500,
-            "taxesAndFees": 129838,
-            "roomName": "Deluxe Double or Twin Room with Partial Sea View",
-            "diffVsRefPct": -0.05,
-            "diffVsRefAmount": -500,
-            "customerSavingsVsOtaPct": -0.05,
-            "spreadToMinPct": 0,
-            "spreadToMedianPct": -0.03,
-            "isCheapest": true,
-            "isMostExpensive": false,
-            "parityStatus": "IN_PARITY"
-          },
-          "GOODNSTAY": {
-            "ota": "GOODNSTAY",
-            "price": 968000,
-            "netPrice": 968000,
-            "grossPrice": 968000,
-            "taxesAndFees": 0,
-            "roomName": "Deluxe Double or Twin Room with Partial Sea View",
-            "diffVsRefPct": 0,
-            "diffVsRefAmount": 0,
-            "customerSavingsVsOtaPct": 0,
-            "spreadToMinPct": 0.05,
-            "spreadToMedianPct": 0.03,
-            "isCheapest": false,
-            "isMostExpensive": true,
-            "parityStatus": "REFERENCE"
-          }
-        }
-      }
-    },
-    {
-      "groupKey": "libra-nha-trang::DELUXE::DOUBLE_QUEEN_1_BED::OCEAN_SEA_VIEW::SENIOR_OCEAN_27M2::BB_NON_REFUNDABLE",
-      "hotelId": "libra-nha-trang",
-      "hotelName": "Libra Hotel Nha Trang",
-      "canonicalRoomKey": "libra-nha-trang::DELUXE::DOUBLE_QUEEN_1_BED::OCEAN_SEA_VIEW::SENIOR_OCEAN_27M2",
-      "roomType": "Deluxe",
-      "goodNStayBedType": "Double (Queen, King)",
-      "detailedBedCategory": "DOUBLE_QUEEN_1_BED",
-      "bedFilterLabelVi": "Double / Queen (1 Giường đôi · 2 Khách)",
-      "totalBeds": 1,
-      "isMultiBed": false,
-      "maxGuests": 2,
-      "viewCategory": "OCEAN_SEA_VIEW",
-      "areaSqm": 27,
-      "mealPlan": "BB",
-      "mealPlanLabelVi": "Có ăn sáng (BB)",
-      "cancelPolicy": "FREE_CANCEL",
-      "cancelPolicyLabelVi": "Hủy miễn phí",
-      "rateBucket": "BB_NON_REFUNDABLE",
-      "sampleGoodNStayForm": {
-        "uploadPhotos": [],
-        "roomName": "Senior Ocean View Room",
-        "description": "[Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 large double bed] — Senior Ocean View Room — 27 m², Sea view, Mountain view, City view, Air conditioning, Ensuite bathroom, Flat-screen TV, Minibar, Free WiFi",
-        "pricePerNightVnd": 1102500,
-        "pricePerNightKrw": 61740,
-        "maximumGuests": 2,
-        "amenityTypes": [
-          "Free Wi-Fi",
-          "Air Conditioner",
-          "Television"
-        ],
-        "roomType": "Deluxe",
-        "bedType": "Double (Queen, King)",
-        "totalInventory": 4
-      },
-      "otaOffers": {
-        "BOOKING": {
-          "id": "BOOKING_LIVE_365483706_441137962_2_1_0",
-          "roomName": "Senior Ocean View Room",
-          "netPrice": 954545,
-          "taxesAndFees": 147955,
-          "grossPrice": 1102500,
-          "formFields": {
-            "uploadPhotos": [],
-            "roomName": "Senior Ocean View Room",
-            "description": "[Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 large double bed] — Senior Ocean View Room — 27 m², Sea view, Mountain view, City view, Air conditioning, Ensuite bathroom, Flat-screen TV, Minibar, Free WiFi",
-            "pricePerNightVnd": 1102500,
-            "pricePerNightKrw": 61740,
-            "maximumGuests": 2,
-            "amenityTypes": [
-              "Free Wi-Fi",
-              "Air Conditioner",
-              "Television"
-            ],
-            "roomType": "Deluxe",
-            "bedType": "Double (Queen, King)",
-            "totalInventory": 4
-          },
-          "filterMeta": {
-            "canonicalRoomKey": "libra-nha-trang::DELUXE::DOUBLE_QUEEN_1_BED::OCEAN_SEA_VIEW::SENIOR_OCEAN_27M2",
-            "roomType": "Deluxe",
-            "roomTypeMethod": "INTRA_HOTEL_RANKING",
-            "roomTypeReason": "Tên 'Senior Ocean View Room' không chứa từ khóa chuẩn → Xếp hạng phân vị nội bộ (73%, 27m²) thuộc nhóm trung-cao cấp → Deluxe",
-            "goodNStayBedType": "Double (Queen, King)",
-            "detailedBedCategory": "DOUBLE_QUEEN_1_BED",
-            "bedFilterLabelVi": "Double / Queen (1 Giường đôi · 2 Khách)",
-            "bedReason": "1 giường đôi / Queen tiêu chuẩn → điền 'Double (Queen, King)' vào Form goodNstay",
-            "totalBeds": 1,
-            "isMultiBed": false,
-            "maxGuests": 2,
-            "viewCategory": "OCEAN_SEA_VIEW",
-            "areaSqm": 27,
-            "areaBucket": "28SQM",
-            "mealPlan": "BB",
-            "mealPlanLabelVi": "Có ăn sáng (BB)",
-            "cancelPolicy": "FREE_CANCEL",
-            "cancelPolicyLabelVi": "Hủy miễn phí",
-            "rateBucket": "BB_NON_REFUNDABLE",
-            "netPrice": 954545,
-            "taxesAndFees": 147955,
-            "grossPrice": 1102500,
-            "rawBedText": "1 large double bed",
-            "rawFeatures": [
-              "27 m²",
-              "Ocean view",
-              "1 king bed"
-            ],
-            "rawBenefits": [
-              "Buffet breakfast included",
-              "Free cancellation before 13 November 2026",
-              "• Pay the property before arrival",
-              "Fully refundable during free cancellation"
-            ]
-          },
-          "liveProof": {
-            "isLiveScraped": true,
-            "externalNativeId": "blockId:365483706_441137962_2_1_0",
-            "scrapedAt": "2026-11-10T04:58:34.435Z",
-            "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
-          }
-        },
-        "GOODNSTAY": {
-          "id": "GNS_REF_libra-nha-trang::DELUXE::DOUBLE_QUEEN_1_BED::OCEAN_SEA_VIEW::SENIOR_OCEAN_27M2",
-          "roomName": "Senior Ocean View Room",
-          "netPrice": 1103000,
-          "taxesAndFees": 0,
-          "grossPrice": 1103000,
-          "formFields": {
-            "uploadPhotos": [],
-            "roomName": "Senior Ocean View Room",
-            "description": "[Hạng phòng: Executive | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 large double bed] — [Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 large double bed] — Senior Ocean View Room — 27 m², Sea view, Mountain view, City view, Air conditioning, Ensuite bathroom, Flat-screen TV, Minibar, Free WiFi",
-            "pricePerNightVnd": 1103000,
-            "pricePerNightKrw": 61768,
-            "maximumGuests": 2,
-            "amenityTypes": [
-              "Free Wi-Fi",
-              "Air Conditioner",
-              "Television"
-            ],
-            "roomType": "Executive",
-            "bedType": "Double (Queen, King)",
-            "totalInventory": 5
-          },
-          "filterMeta": {
-            "canonicalRoomKey": "libra-nha-trang::DELUXE::DOUBLE_QUEEN_1_BED::OCEAN_SEA_VIEW::SENIOR_OCEAN_27M2",
-            "roomType": "Executive",
-            "roomTypeMethod": "INTRA_HOTEL_RANKING",
-            "roomTypeReason": "Tên 'Senior Ocean View Room' thuộc phân vị cao (87%, 27m²) → Executive",
-            "goodNStayBedType": "Double (Queen, King)",
-            "detailedBedCategory": "DOUBLE_QUEEN_1_BED",
-            "bedFilterLabelVi": "Double / Queen (1 Giường đôi · 2 Khách)",
-            "bedReason": "1 giường đôi / Queen tiêu chuẩn → điền 'Double (Queen, King)' vào Form goodNstay",
-            "totalBeds": 1,
-            "isMultiBed": false,
-            "maxGuests": 2,
-            "viewCategory": "OCEAN_SEA_VIEW",
-            "areaSqm": 27,
-            "areaBucket": "28SQM",
-            "mealPlan": "BB",
-            "mealPlanLabelVi": "Có ăn sáng (BB)",
-            "cancelPolicy": "NON_REFUNDABLE",
-            "cancelPolicyLabelVi": "Không hoàn tiền",
-            "rateBucket": "BB_NON_REFUNDABLE",
-            "netPrice": 1103000,
-            "taxesAndFees": 0,
-            "grossPrice": 1103000,
-            "rawBedText": "1 large double bed",
-            "rawFeatures": [
-              "27 m²",
-              "Ocean view",
-              "1 king bed"
-            ],
-            "rawBenefits": [
-              "Breakfast included"
-            ]
-          },
-          "liveProof": {
-            "isLiveScraped": false,
-            "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T04:58:34.435Z",
-            "sourceUrl": "https://goodnstay.com/en-US"
-          }
-        }
-      },
-      "rawItems": [
-        {
-          "id": "BOOKING_LIVE_365483706_441137962_2_1_0",
-          "hotelId": "libra-nha-trang",
-          "hotelName": "Libra Hotel Nha Trang",
-          "otaSource": "BOOKING",
-          "formFields": {
-            "uploadPhotos": [],
-            "roomName": "Senior Ocean View Room",
-            "description": "[Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 large double bed] — Senior Ocean View Room — 27 m², Sea view, Mountain view, City view, Air conditioning, Ensuite bathroom, Flat-screen TV, Minibar, Free WiFi",
-            "pricePerNightVnd": 1102500,
-            "pricePerNightKrw": 61740,
-            "maximumGuests": 2,
-            "amenityTypes": [
-              "Free Wi-Fi",
-              "Air Conditioner",
-              "Television"
-            ],
-            "roomType": "Deluxe",
-            "bedType": "Double (Queen, King)",
-            "totalInventory": 4
-          },
-          "filterMeta": {
-            "canonicalRoomKey": "libra-nha-trang::DELUXE::DOUBLE_QUEEN_1_BED::OCEAN_SEA_VIEW::SENIOR_OCEAN_27M2",
-            "roomType": "Deluxe",
-            "roomTypeMethod": "INTRA_HOTEL_RANKING",
-            "roomTypeReason": "Tên 'Senior Ocean View Room' không chứa từ khóa chuẩn → Xếp hạng phân vị nội bộ (73%, 27m²) thuộc nhóm trung-cao cấp → Deluxe",
-            "goodNStayBedType": "Double (Queen, King)",
-            "detailedBedCategory": "DOUBLE_QUEEN_1_BED",
-            "bedFilterLabelVi": "Double / Queen (1 Giường đôi · 2 Khách)",
-            "bedReason": "1 giường đôi / Queen tiêu chuẩn → điền 'Double (Queen, King)' vào Form goodNstay",
-            "totalBeds": 1,
-            "isMultiBed": false,
-            "maxGuests": 2,
-            "viewCategory": "OCEAN_SEA_VIEW",
-            "areaSqm": 27,
-            "areaBucket": "28SQM",
-            "mealPlan": "BB",
-            "mealPlanLabelVi": "Có ăn sáng (BB)",
-            "cancelPolicy": "FREE_CANCEL",
-            "cancelPolicyLabelVi": "Hủy miễn phí",
-            "rateBucket": "BB_NON_REFUNDABLE",
-            "netPrice": 954545,
-            "taxesAndFees": 147955,
-            "grossPrice": 1102500,
-            "rawBedText": "1 large double bed",
-            "rawFeatures": [
-              "27 m²",
-              "Ocean view",
-              "1 king bed"
-            ],
-            "rawBenefits": [
-              "Buffet breakfast included",
-              "Free cancellation before 13 November 2026",
-              "• Pay the property before arrival",
-              "Fully refundable during free cancellation"
-            ]
-          },
-          "liveProof": {
-            "isLiveScraped": true,
-            "externalNativeId": "blockId:365483706_441137962_2_1_0",
-            "scrapedAt": "2026-11-10T04:58:34.435Z",
-            "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
-          }
-        },
-        {
-          "id": "GNS_REF_libra-nha-trang::DELUXE::DOUBLE_QUEEN_1_BED::OCEAN_SEA_VIEW::SENIOR_OCEAN_27M2",
-          "hotelId": "libra-nha-trang",
-          "hotelName": "Libra Hotel Nha Trang",
-          "otaSource": "GOODNSTAY",
-          "formFields": {
-            "uploadPhotos": [],
-            "roomName": "Senior Ocean View Room",
-            "description": "[Hạng phòng: Executive | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 large double bed] — [Hạng phòng: Deluxe | Diện tích: 27 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 large double bed] — Senior Ocean View Room — 27 m², Sea view, Mountain view, City view, Air conditioning, Ensuite bathroom, Flat-screen TV, Minibar, Free WiFi",
-            "pricePerNightVnd": 1103000,
-            "pricePerNightKrw": 61768,
-            "maximumGuests": 2,
-            "amenityTypes": [
-              "Free Wi-Fi",
-              "Air Conditioner",
-              "Television"
-            ],
-            "roomType": "Executive",
-            "bedType": "Double (Queen, King)",
-            "totalInventory": 5
-          },
-          "filterMeta": {
-            "canonicalRoomKey": "libra-nha-trang::DELUXE::DOUBLE_QUEEN_1_BED::OCEAN_SEA_VIEW::SENIOR_OCEAN_27M2",
-            "roomType": "Executive",
-            "roomTypeMethod": "INTRA_HOTEL_RANKING",
-            "roomTypeReason": "Tên 'Senior Ocean View Room' thuộc phân vị cao (87%, 27m²) → Executive",
-            "goodNStayBedType": "Double (Queen, King)",
-            "detailedBedCategory": "DOUBLE_QUEEN_1_BED",
-            "bedFilterLabelVi": "Double / Queen (1 Giường đôi · 2 Khách)",
-            "bedReason": "1 giường đôi / Queen tiêu chuẩn → điền 'Double (Queen, King)' vào Form goodNstay",
-            "totalBeds": 1,
-            "isMultiBed": false,
-            "maxGuests": 2,
-            "viewCategory": "OCEAN_SEA_VIEW",
-            "areaSqm": 27,
-            "areaBucket": "28SQM",
-            "mealPlan": "BB",
-            "mealPlanLabelVi": "Có ăn sáng (BB)",
-            "cancelPolicy": "NON_REFUNDABLE",
-            "cancelPolicyLabelVi": "Không hoàn tiền",
-            "rateBucket": "BB_NON_REFUNDABLE",
-            "netPrice": 1103000,
-            "taxesAndFees": 0,
-            "grossPrice": 1103000,
-            "rawBedText": "1 large double bed",
-            "rawFeatures": [
-              "27 m²",
-              "Ocean view",
-              "1 king bed"
-            ],
-            "rawBenefits": [
-              "Breakfast included"
-            ]
-          },
-          "liveProof": {
-            "isLiveScraped": false,
-            "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T04:58:34.435Z",
-            "sourceUrl": "https://goodnstay.com/en-US"
-          }
-        }
-      ],
-      "spreadAnalysis": {
-        "priceBasis": "GROSS",
-        "minPrice": 1102500,
-        "maxPrice": 1103000,
-        "medianPrice": 1102750,
-        "referencePrice": 1103000,
-        "marketSpreadPct": 0.05,
-        "cheapestPlatforms": [
-          "BOOKING"
-        ],
-        "mostExpensivePlatforms": [
-          "GOODNSTAY"
-        ],
-        "platforms": {
-          "BOOKING": {
-            "ota": "BOOKING",
-            "price": 1102500,
-            "netPrice": 954545,
-            "grossPrice": 1102500,
-            "taxesAndFees": 147955,
-            "roomName": "Senior Ocean View Room",
-            "diffVsRefPct": -0.05,
-            "diffVsRefAmount": -500,
-            "customerSavingsVsOtaPct": -0.05,
-            "spreadToMinPct": 0,
-            "spreadToMedianPct": -0.02,
-            "isCheapest": true,
-            "isMostExpensive": false,
-            "parityStatus": "IN_PARITY"
-          },
-          "GOODNSTAY": {
-            "ota": "GOODNSTAY",
-            "price": 1103000,
-            "netPrice": 1103000,
-            "grossPrice": 1103000,
-            "taxesAndFees": 0,
-            "roomName": "Senior Ocean View Room",
-            "diffVsRefPct": 0,
-            "diffVsRefAmount": 0,
-            "customerSavingsVsOtaPct": 0,
-            "spreadToMinPct": 0.05,
-            "spreadToMedianPct": 0.02,
-            "isCheapest": false,
-            "isMostExpensive": true,
-            "parityStatus": "REFERENCE"
-          }
-        }
-      }
+      "matchRank": 10
     }
   ],
   "allNormalizedRooms": [
@@ -5382,7 +5605,13 @@
       },
       "liveProof": {
         "isLiveScraped": true,
+        "roomId": "39364820",
+        "offerId": "39364820",
+        "blockId": null,
         "externalNativeId": "masterRoomId:39364820",
+        "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Standard%20Double%20Room%20without%20Window",
+        "uiDisplayedPriceVnd": 603575,
+        "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
         "scrapedAt": "2026-11-10T04:58:34.435Z",
         "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
       }
@@ -5463,7 +5692,13 @@
       },
       "liveProof": {
         "isLiveScraped": true,
+        "roomId": "39364641",
+        "offerId": "39364641",
+        "blockId": null,
         "externalNativeId": "masterRoomId:39364641",
+        "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Superior%20Room%20without%20Window",
+        "uiDisplayedPriceVnd": 622436,
+        "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
         "scrapedAt": "2026-11-10T04:58:34.435Z",
         "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
       }
@@ -5544,7 +5779,13 @@
       },
       "liveProof": {
         "isLiveScraped": true,
+        "roomId": "1199240914",
+        "offerId": "1199240914",
+        "blockId": null,
         "externalNativeId": "masterRoomId:1199240914",
+        "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Deluxe%20Room%20without%20Window",
+        "uiDisplayedPriceVnd": 641298,
+        "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
         "scrapedAt": "2026-11-10T04:58:34.435Z",
         "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
       }
@@ -5613,7 +5854,13 @@
       },
       "liveProof": {
         "isLiveScraped": true,
+        "roomId": "286515631",
+        "offerId": "636109484",
+        "blockId": null,
         "externalNativeId": "masterRoomId:286515631",
+        "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Double%20or%20Twin%20Room%20no%20window",
+        "uiDisplayedPriceVnd": 734766,
+        "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
         "scrapedAt": "2026-11-10T04:58:34.435Z",
         "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
       }
@@ -5694,7 +5941,13 @@
       },
       "liveProof": {
         "isLiveScraped": true,
+        "roomId": "39364751",
+        "offerId": "39364751",
+        "blockId": null,
         "externalNativeId": "masterRoomId:39364751",
+        "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Deluxe%20City%20View%20Room",
+        "uiDisplayedPriceVnd": 754468,
+        "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
         "scrapedAt": "2026-11-10T04:58:34.435Z",
         "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
       }
@@ -5775,7 +6028,13 @@
       },
       "liveProof": {
         "isLiveScraped": true,
+        "roomId": "39364831",
+        "offerId": "39364831",
+        "blockId": null,
         "externalNativeId": "masterRoomId:39364831",
+        "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Deluxe%20Sea%20View%20Room",
+        "uiDisplayedPriceVnd": 811053,
+        "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
         "scrapedAt": "2026-11-10T04:58:34.435Z",
         "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
       }
@@ -5844,7 +6103,13 @@
       },
       "liveProof": {
         "isLiveScraped": true,
+        "roomId": "60274373",
+        "offerId": "472042779",
+        "blockId": null,
         "externalNativeId": "masterRoomId:60274373",
+        "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Senior%20Ocean%20View%20Room",
+        "uiDisplayedPriceVnd": 891939,
+        "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
         "scrapedAt": "2026-11-10T04:58:34.435Z",
         "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
       }
@@ -5917,7 +6182,13 @@
       },
       "liveProof": {
         "isLiveScraped": true,
+        "roomId": "1616493025",
+        "offerId": "1616493025",
+        "blockId": null,
         "externalNativeId": "masterRoomId:1616493025",
+        "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Ocean%202%20Twin",
+        "uiDisplayedPriceVnd": 924224,
+        "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
         "scrapedAt": "2026-11-10T04:58:34.435Z",
         "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
       }
@@ -5998,13 +6269,19 @@
       },
       "liveProof": {
         "isLiveScraped": true,
+        "roomId": "39376081",
+        "offerId": "39376081",
+        "blockId": null,
         "externalNativeId": "masterRoomId:39376081",
+        "deepLinkUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp#:~:text=Ocean%20Luxury",
+        "uiDisplayedPriceVnd": 924224,
+        "uiDisplayedPriceLabel": "Giá mặt web Agoda (Net)",
         "scrapedAt": "2026-11-10T04:58:34.435Z",
         "sourceUrl": "https://www.agoda.com/libra-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=KyWAFsGCJn4V8mMp"
       }
     },
     {
-      "id": "BOOKING_LIVE_bbasic_0",
+      "id": "BOOKING_LIVE_365483700",
       "hotelId": "libra-nha-trang",
       "hotelName": "Libra Hotel Nha Trang",
       "otaSource": "BOOKING",
@@ -6079,13 +6356,19 @@
       },
       "liveProof": {
         "isLiveScraped": true,
-        "externalNativeId": "blockId:bbasic_0",
+        "roomId": "365483700",
+        "offerId": null,
+        "blockId": "bbasic_0",
+        "externalNativeId": "roomId:365483700",
+        "deepLinkUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND#:~:text=Standard%20Double%20Room%20with%20no%20Window",
+        "uiDisplayedPriceVnd": 680181,
+        "uiDisplayedPriceLabel": "Giá mặt web Booking (Gross)",
         "scrapedAt": "2026-11-10T04:58:34.435Z",
         "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
       }
     },
     {
-      "id": "BOOKING_LIVE_365483701_bbasic_0",
+      "id": "BOOKING_LIVE_365483701",
       "hotelId": "libra-nha-trang",
       "hotelName": "Libra Hotel Nha Trang",
       "otaSource": "BOOKING",
@@ -6146,13 +6429,19 @@
       },
       "liveProof": {
         "isLiveScraped": true,
-        "externalNativeId": "blockId:365483701_bbasic_0",
+        "roomId": "365483701",
+        "offerId": null,
+        "blockId": "365483701_bbasic_0",
+        "externalNativeId": "roomId:365483701",
+        "deepLinkUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND#:~:text=Superior%20Double%20or%20Twin%20Room%20with%20No%20Window",
+        "uiDisplayedPriceVnd": 702378,
+        "uiDisplayedPriceLabel": "Giá mặt web Booking (Gross)",
         "scrapedAt": "2026-11-10T04:58:34.435Z",
         "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
       }
     },
     {
-      "id": "BOOKING_LIVE_365483709_441137962_2_1_0",
+      "id": "BOOKING_LIVE_365483709",
       "hotelId": "libra-nha-trang",
       "hotelName": "Libra Hotel Nha Trang",
       "otaSource": "BOOKING",
@@ -6214,13 +6503,19 @@
       },
       "liveProof": {
         "isLiveScraped": true,
-        "externalNativeId": "blockId:365483709_441137962_2_1_0",
+        "roomId": "365483709",
+        "offerId": null,
+        "blockId": "365483709_441137962_2_1_0",
+        "externalNativeId": "roomId:365483709",
+        "deepLinkUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND#:~:text=Deluxe%20Double%20or%20Twin%20Room%20with%20No%20Window",
+        "uiDisplayedPriceVnd": 765000,
+        "uiDisplayedPriceLabel": "Giá mặt web Booking (Gross)",
         "scrapedAt": "2026-11-10T04:58:34.435Z",
         "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
       }
     },
     {
-      "id": "BOOKING_LIVE_365483702_441137962_2_1_0",
+      "id": "BOOKING_LIVE_365483702",
       "hotelId": "libra-nha-trang",
       "hotelName": "Libra Hotel Nha Trang",
       "otaSource": "BOOKING",
@@ -6284,13 +6579,19 @@
       },
       "liveProof": {
         "isLiveScraped": true,
-        "externalNativeId": "blockId:365483702_441137962_2_1_0",
+        "roomId": "365483702",
+        "offerId": null,
+        "blockId": "365483702_441137962_2_1_0",
+        "externalNativeId": "roomId:365483702",
+        "deepLinkUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND#:~:text=Deluxe%20Double%20or%20Twin%20Room%20with%20City%20View",
+        "uiDisplayedPriceVnd": 900000,
+        "uiDisplayedPriceLabel": "Giá mặt web Booking (Gross)",
         "scrapedAt": "2026-11-10T04:58:34.435Z",
         "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
       }
     },
     {
-      "id": "BOOKING_LIVE_365483707_441137962_2_1_0",
+      "id": "BOOKING_LIVE_365483707",
       "hotelId": "libra-nha-trang",
       "hotelName": "Libra Hotel Nha Trang",
       "otaSource": "BOOKING",
@@ -6357,13 +6658,19 @@
       },
       "liveProof": {
         "isLiveScraped": true,
-        "externalNativeId": "blockId:365483707_441137962_2_1_0",
+        "roomId": "365483707",
+        "offerId": null,
+        "blockId": "365483707_441137962_2_1_0",
+        "externalNativeId": "roomId:365483707",
+        "deepLinkUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND#:~:text=Deluxe%20Double%20or%20Twin%20Room%20with%20Partial%20Sea%20View",
+        "uiDisplayedPriceVnd": 967500,
+        "uiDisplayedPriceLabel": "Giá mặt web Booking (Gross)",
         "scrapedAt": "2026-11-10T04:58:34.435Z",
         "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
       }
     },
     {
-      "id": "BOOKING_LIVE_365483706_441137962_2_1_0",
+      "id": "BOOKING_LIVE_365483706",
       "hotelId": "libra-nha-trang",
       "hotelName": "Libra Hotel Nha Trang",
       "otaSource": "BOOKING",
@@ -6421,13 +6728,19 @@
       },
       "liveProof": {
         "isLiveScraped": true,
-        "externalNativeId": "blockId:365483706_441137962_2_1_0",
+        "roomId": "365483706",
+        "offerId": null,
+        "blockId": "365483706_441137962_2_1_0",
+        "externalNativeId": "roomId:365483706",
+        "deepLinkUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND#:~:text=Senior%20Ocean%20View%20Room",
+        "uiDisplayedPriceVnd": 1102500,
+        "uiDisplayedPriceLabel": "Giá mặt web Booking (Gross)",
         "scrapedAt": "2026-11-10T04:58:34.435Z",
         "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
       }
     },
     {
-      "id": "BOOKING_LIVE_365483726_441137962_2_1_0",
+      "id": "BOOKING_LIVE_365483726",
       "hotelId": "libra-nha-trang",
       "hotelName": "Libra Hotel Nha Trang",
       "otaSource": "BOOKING",
@@ -6485,7 +6798,13 @@
       },
       "liveProof": {
         "isLiveScraped": true,
-        "externalNativeId": "blockId:365483726_441137962_2_1_0",
+        "roomId": "365483726",
+        "offerId": null,
+        "blockId": "365483726_441137962_2_1_0",
+        "externalNativeId": "roomId:365483726",
+        "deepLinkUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND#:~:text=Twin%20Room%20with%20Sea%20View",
+        "uiDisplayedPriceVnd": 1102500,
+        "uiDisplayedPriceLabel": "Giá mặt web Booking (Gross)",
         "scrapedAt": "2026-11-10T04:58:34.435Z",
         "sourceUrl": "https://www.booking.com/hotel/vn/libra-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
       }
