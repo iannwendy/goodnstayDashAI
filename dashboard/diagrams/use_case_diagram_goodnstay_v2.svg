@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1660" height="1100" viewBox="0 0 1660 1100">
+<defs>
+  <marker id="arrow-solid" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#334155" />
+  </marker>
+  <marker id="arrow-open" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 1 1.5 L 9 5 L 1 8.5" fill="none" stroke="#64748B" stroke-width="1.6" />
+  </marker>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+  </style>
+</defs>
+<rect x="0" y="0" width="1660" height="1100" fill="#FFFFFF" />
+<rect x="260.0" y="80.0" width="1120.0" height="980.0" rx="6" fill="#fafafa" stroke="#666666" stroke-width="1.6" />
+<path d="M 260.0 120.0 L 1380.0 120.0" stroke="#666666" stroke-width="1.4" />
+<rect x="261.0" y="81.0" width="1118.0" height="39.0" rx="5" fill="#E2E8F0" opacity="0.55" />
+<text x="820.0" y="105.0" text-anchor="middle" font-size="13" font-weight="700" fill="#0F172A">Hệ Thống Sàn Đấu Giá Ngược &amp; Quản Trị Quỹ Phòng Thời Gian Thực goodNstay</text>
+<rect x="260.0" y="20.0" width="1120.0" height="44.0" rx="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6" />
+<text x="820.0" y="46.9" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A">USE CASE DIAGRAM — HỆ THỐNG ĐẤU GIÁ NGƯỢC &amp; TẠM KHÓA THANH TOÁN 10 PHÚT (goodNstay Partner Hub v2.7)</text>
+<circle cx="100.0" cy="236.0" r="12" fill="#dae8fc" stroke="#6c8ebf" stroke-width="2" />
+<line x1="100.0" y1="248.0" x2="100.0" y2="284.0" stroke="#6c8ebf" stroke-width="2.2" />
+<line x1="78.0" y1="262.0" x2="122.0" y2="262.0" stroke="#6c8ebf" stroke-width="2.2" />
+<line x1="100.0" y1="284.0" x2="82.0" y2="312.0" stroke="#6c8ebf" stroke-width="2.2" />
+<line x1="100.0" y1="284.0" x2="118.0" y2="312.0" stroke="#6c8ebf" stroke-width="2.2" />
+<text x="100.0" y="336.0" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">Du khách (Guest App/Web)</text>
+<circle cx="100.0" cy="756.0" r="12" fill="#ffe6cc" stroke="#d79b00" stroke-width="2" />
+<line x1="100.0" y1="768.0" x2="100.0" y2="804.0" stroke="#d79b00" stroke-width="2.2" />
+<line x1="78.0" y1="782.0" x2="122.0" y2="782.0" stroke="#d79b00" stroke-width="2.2" />
+<line x1="100.0" y1="804.0" x2="82.0" y2="832.0" stroke="#d79b00" stroke-width="2.2" />
+<line x1="100.0" y1="804.0" x2="118.0" y2="832.0" stroke="#d79b00" stroke-width="2.2" />
+<text x="100.0" y="856.0" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">Cổng Ký Quỹ &amp; Thanh Toán (NHN KCP)</text>
+<circle cx="1540.0" cy="236.0" r="12" fill="#dae8fc" stroke="#6c8ebf" stroke-width="2" />
+<line x1="1540.0" y1="248.0" x2="1540.0" y2="284.0" stroke="#6c8ebf" stroke-width="2.2" />
+<line x1="1518.0" y1="262.0" x2="1562.0" y2="262.0" stroke="#6c8ebf" stroke-width="2.2" />
+<line x1="1540.0" y1="284.0" x2="1522.0" y2="312.0" stroke="#6c8ebf" stroke-width="2.2" />
+<line x1="1540.0" y1="284.0" x2="1558.0" y2="312.0" stroke="#6c8ebf" stroke-width="2.2" />
+<text x="1540.0" y="336.0" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">Lễ tân / Quản lý KS (Partner Hub RBAC)</text>
+<circle cx="1540.0" cy="756.0" r="12" fill="#e1d5e7" stroke="#9673a6" stroke-width="2" />
+<line x1="1540.0" y1="768.0" x2="1540.0" y2="804.0" stroke="#9673a6" stroke-width="2.2" />
+<line x1="1518.0" y1="782.0" x2="1562.0" y2="782.0" stroke="#9673a6" stroke-width="2.2" />
+<line x1="1540.0" y1="804.0" x2="1522.0" y2="832.0" stroke="#9673a6" stroke-width="2.2" />
+<line x1="1540.0" y1="804.0" x2="1558.0" y2="832.0" stroke="#9673a6" stroke-width="2.2" />
+<text x="1540.0" y="856.0" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">AI Auto-Bid &amp; 10m Lock Engine</text>
+<ellipse cx="490.0" cy="187.0" rx="170.0" ry="37.0" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6" />
+<text x="490.0" y="183.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">UC-01: Đặt phòng &amp; Khởi tạo phiên Đấu</text>
+<text x="490.0" y="199.2" text-anchor="middle" font-size="12" font-weight="500" fill="#0F172A">giá (Hard Rules · TTL 60p)</text>
+<ellipse cx="490.0" cy="297.0" rx="170.0" ry="37.0" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6" />
+<text x="490.0" y="293.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">UC-02: So sánh Báo giá Live, Điểm khớp</text>
+<text x="490.0" y="309.2" text-anchor="middle" font-size="12" font-weight="500" fill="#0F172A">AI (%) &amp; Đặc quyền mềm</text>
+<ellipse cx="490.0" cy="409.0" rx="170.0" ry="39.0" fill="#fff2cc" stroke="#d6b656" stroke-width="1.6" />
+<text x="490.0" y="405.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">UC-03: Chọn Chào giá &amp; Giữ khóa phòng</text>
+<text x="490.0" y="421.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">tạm thời 10 phút (Movie-Seat Hold)</text>
+<ellipse cx="490.0" cy="522.0" rx="170.0" ry="37.0" fill="#d5e8d4" stroke="#82b366" stroke-width="1.6" />
+<text x="490.0" y="518.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">UC-04: Thanh toán 100% trực tuyến (Giá</text>
+<text x="490.0" y="534.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">gốc × 1.265) &amp; Nhận phòng</text>
+<ellipse cx="490.0" cy="632.0" rx="170.0" ry="37.0" fill="#f8cecc" stroke="#b85450" stroke-width="1.6" />
+<text x="490.0" y="628.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">UC-05: Hủy / Thoát Checkout hoặc Thẻ</text>
+<text x="490.0" y="644.2" text-anchor="middle" font-size="12" font-weight="500" fill="#0F172A">lỗi -&gt; Nhả khóa phòng tức thì</text>
+<ellipse cx="490.0" cy="742.0" rx="170.0" ry="37.0" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6" />
+<text x="490.0" y="738.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">UC-06: Đánh giá 5 tiêu chí &amp; Yêu cầu</text>
+<text x="490.0" y="754.2" text-anchor="middle" font-size="12" font-weight="500" fill="#0F172A">Hoàn hủy Bất khả kháng</text>
+<ellipse cx="1150.0" cy="187.0" rx="170.0" ry="37.0" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6" />
+<text x="1150.0" y="183.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">UC-07: Gửi Báo giá 1 lần (Quick-Bid /</text>
+<text x="1150.0" y="199.2" text-anchor="middle" font-size="12" font-weight="500" fill="#0F172A">Tùy chỉnh + Đặc quyền bù điểm)</text>
+<ellipse cx="1150.0" cy="297.0" rx="170.0" ry="37.0" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.6" />
+<text x="1150.0" y="293.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">UC-08: Cấu hình AI Auto-Bid, Giá sàn</text>
+<text x="1150.0" y="309.2" text-anchor="middle" font-size="12" font-weight="500" fill="#0F172A">RBAC &amp; Xả phòng đêm (-15%)</text>
+<ellipse cx="1150.0" cy="409.0" rx="170.0" ry="39.0" fill="#fff2cc" stroke="#d6b656" stroke-width="1.6" />
+<text x="1150.0" y="405.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">UC-09: Quản lý Sơ đồ 30 Phòng 14 ngày &amp;</text>
+<text x="1150.0" y="421.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">Bảo vệ phòng đang giữ 10p</text>
+<ellipse cx="1150.0" cy="522.0" rx="170.0" ry="37.0" fill="#f8cecc" stroke="#b85450" stroke-width="1.6" />
+<text x="1150.0" y="518.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">UC-10: Xếp hàng Chờ xung đột giữ phòng</text>
+<text x="1150.0" y="534.2" text-anchor="middle" font-size="12" font-weight="500" fill="#0F172A">(Standby) &amp; Bỏ qua phiên</text>
+<ellipse cx="1150.0" cy="632.0" rx="170.0" ry="37.0" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6" />
+<text x="1150.0" y="628.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">UC-11: Phân tích Phễu Chuyển đổi 8</text>
+<text x="1150.0" y="644.2" text-anchor="middle" font-size="12" font-weight="500" fill="#0F172A">bước, Benchmark &amp; Mổ xẻ phiên thua</text>
+<ellipse cx="1150.0" cy="742.0" rx="170.0" ry="37.0" fill="#d5e8d4" stroke="#82b366" stroke-width="1.6" />
+<text x="1150.0" y="738.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">UC-12: Giám sát Vòng đời 9 chặng, 11 Mã</text>
+<text x="1150.0" y="754.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">Reject &amp; Đối soát T+7 (0% phí)</text>
+<ellipse cx="820.0" cy="868.0" rx="170.0" ry="38.0" fill="#fff2cc" stroke="#d6b656" stroke-width="1.6" />
+<text x="820.0" y="856.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">UC-13: Khóa nguyên tử Redis SET NX EX</text>
+<text x="820.0" y="872.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">600s (payment_hold) &amp; Auto-Release</text>
+<text x="820.0" y="888.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">00:00</text>
+<ellipse cx="820.0" cy="978.0" rx="170.0" ry="38.0" fill="#d5e8d4" stroke="#82b366" stroke-width="1.6" />
+<text x="820.0" y="974.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">UC-14: Xác thực Webhook Ký quỹ -&gt; Khóa</text>
+<text x="820.0" y="990.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">cứng PMS (booked_auction) &amp; Auto-Close</text>
+<path d="M 130.0 247.0 L 320.0 187.0" fill="none" stroke="#4A6B82" stroke-width="1.6" stroke-linejoin="round" />
+<path d="M 130.0 259.0 L 320.0 297.0" fill="none" stroke="#4A6B82" stroke-width="1.6" stroke-linejoin="round" />
+<path d="M 130.0 271.0 L 320.0 409.0" fill="none" stroke="#4A6B82" stroke-width="1.6" stroke-linejoin="round" />
+<path d="M 130.0 283.0 L 320.0 522.0" fill="none" stroke="#4A6B82" stroke-width="1.6" stroke-linejoin="round" />
+<path d="M 130.0 295.0 L 320.0 632.0" fill="none" stroke="#4A6B82" stroke-width="1.6" stroke-linejoin="round" />
+<path d="M 130.0 307.0 L 320.0 742.0" fill="none" stroke="#4A6B82" stroke-width="1.6" stroke-linejoin="round" />
+<path d="M 1510.0 247.0 L 1320.0 187.0" fill="none" stroke="#4A6B82" stroke-width="1.6" stroke-linejoin="round" />
+<path d="M 1510.0 259.0 L 1320.0 297.0" fill="none" stroke="#4A6B82" stroke-width="1.6" stroke-linejoin="round" />
+<path d="M 1510.0 271.0 L 1320.0 409.0" fill="none" stroke="#4A6B82" stroke-width="1.6" stroke-linejoin="round" />
+<path d="M 1510.0 283.0 L 1320.0 522.0" fill="none" stroke="#4A6B82" stroke-width="1.6" stroke-linejoin="round" />
+<path d="M 1510.0 295.0 L 1320.0 632.0" fill="none" stroke="#4A6B82" stroke-width="1.6" stroke-linejoin="round" />
+<path d="M 1510.0 307.0 L 1320.0 742.0" fill="none" stroke="#4A6B82" stroke-width="1.6" stroke-linejoin="round" />
+<path d="M 130.0 770.0 L 320.0 540.5" fill="none" stroke="#4A6B82" stroke-width="1.6" stroke-linejoin="round" />
+<path d="M 130.0 790.0 L 320.0 650.5" fill="none" stroke="#4A6B82" stroke-width="1.6" stroke-linejoin="round" />
+<path d="M 130.0 820.0 L 650.0 978.0" fill="none" stroke="#4A6B82" stroke-width="1.6" stroke-linejoin="round" />
+<path d="M 1510.0 765.0 L 1320.0 315.5" fill="none" stroke="#4A6B82" stroke-width="1.6" stroke-linejoin="round" />
+<path d="M 1510.0 785.0 L 1320.0 540.5" fill="none" stroke="#4A6B82" stroke-width="1.6" stroke-linejoin="round" />
+<path d="M 1510.0 810.0 L 990.0 868.0" fill="none" stroke="#4A6B82" stroke-width="1.6" stroke-linejoin="round" />
+<path d="M 1510.0 830.0 L 990.0 978.0" fill="none" stroke="#4A6B82" stroke-width="1.6" stroke-linejoin="round" />
+<path d="M 490.0 448.0 L 490.0 639.0 L 735.0 639.0 L 735.0 830.0" fill="none" stroke="#666666" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#arrow-open)" stroke-linejoin="round" />
+<path d="M 490.0 559.0 L 690.0 580.0 L 690.0 978.0 L 650.0 978.0" fill="none" stroke="#666666" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#arrow-open)" stroke-linejoin="round" />
+<path d="M 660.0 632.0 L 680.0 632.0 L 680.0 868.0 L 650.0 868.0" fill="none" stroke="#666666" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#arrow-open)" stroke-linejoin="round" />
+<path d="M 905.0 830.0 L 905.0 800.0 L 1150.0 800.0 L 1150.0 448.0" fill="none" stroke="#666666" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#arrow-open)" stroke-linejoin="round" />
+<path d="M 990.0 959.0 L 1020.0 959.0 L 1020.0 810.0 L 1150.0 810.0 L 1150.0 559.0" fill="none" stroke="#666666" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#arrow-open)" stroke-linejoin="round" />
+<rect x="570.3" y="629.0" width="84.4" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="612.5" y="641.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">&lt;&lt;include&gt;&gt;</text>
+<rect x="647.8" y="769.0" width="84.4" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="690.0" y="781.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">&lt;&lt;include&gt;&gt;</text>
+<rect x="641.0" y="740.0" width="78.0" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="680.0" y="752.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">&lt;&lt;extend&gt;&gt;</text>
+<rect x="1107.8" y="614.0" width="84.4" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="1150.0" y="626.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">&lt;&lt;include&gt;&gt;</text>
+<rect x="1069.4" y="674.5" width="161.20000000000002" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="1150.0" y="686.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">&lt;&lt;extend&gt;&gt; (Auto-Close)</text>
+</svg>

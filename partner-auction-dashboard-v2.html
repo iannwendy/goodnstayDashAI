@@ -1,0 +1,2155 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RevBid Partner Hub - Hệ Thống Đấu Giá Ngược & AI Chẩn Đoán</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.3); }
+        }
+        .pulse-live { animation: pulse-dot 1.8s infinite ease-in-out; }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: #f8fafc; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        .expand-transition { transition: all 0.35s ease-in-out; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- TOP HEADER -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-sm">
+                    <i class="fa-solid fa-hotel"></i>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="font-extrabold text-lg text-slate-900 tracking-tight">RevBid<span class="text-indigo-600">.Partner</span></span>
+                        <span class="bg-emerald-50 text-emerald-700 text-[11px] font-semibold px-2 py-0.5 rounded-full border border-emerald-200">
+                            ● Đang kết nối sàn
+                        </span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs text-slate-500 font-medium">Grand Sunrise Beach Resort (30 phòng • Đà Nẵng)</span>
+                        <span class="bg-indigo-50 text-indigo-700 text-[11px] font-bold px-2 py-0.5 rounded-md border border-indigo-200 hidden md:inline-flex items-center" title="Chỉ nhận phiên check-in trong vòng 14 ngày tới để bảo toàn giá OTA">
+                            <i class="fa-regular fa-calendar-check mr-1 text-indigo-600"></i> Khung 14 ngày: 04/11 - 18/11
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs">
+                    <span class="px-2.5 font-medium text-slate-600 hidden sm:inline">AI Chào giá tự động:</span>
+                    <button id="autoBidToggle" onclick="toggleAutoBid()" class="bg-emerald-600 text-white font-bold px-2.5 py-1 rounded-lg text-xs shadow-sm hover:bg-emerald-700 transition">
+                        BẬT (Sàn 750k)
+                    </button>
+                </div>
+
+                <div class="flex items-center space-x-2 pl-2 border-l border-slate-200">
+                    <div class="w-9 h-9 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-xs">
+                        MQ
+                    </div>
+                    <div class="hidden md:block text-left text-xs">
+                        <div class="font-bold text-slate-800">Trần Minh Quân</div>
+                        <div class="text-[10px] text-slate-400">Chủ / Quản lý khách sạn</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN NAVIGATION TABS -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-6 border-t border-slate-100 text-xs font-bold">
+            <button onclick="switchMainTab('workspace')" id="mainTab-workspace" class="py-3 border-b-2 border-indigo-600 text-indigo-600 flex items-center space-x-2 transition">
+                <i class="fa-solid fa-gauge-high"></i>
+                <span>Sàn Đấu Giá Live (60 Phút)</span>
+                <span class="bg-indigo-100 text-indigo-700 text-[10px] px-1.5 py-0.2 rounded-full font-bold">2</span>
+            </button>
+            <button onclick="switchMainTab('ai-analytics')" id="mainTab-ai" class="py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-2 transition">
+                <i class="fa-solid fa-brain text-indigo-500"></i>
+                <span>AI Chẩn Đoán & Dữ Liệu</span>
+                <span class="bg-rose-100 text-rose-700 text-[10px] px-1.5 py-0.2 rounded-full font-bold">Mới cập nhật</span>
+            </button>
+            <button onclick="switchMainTab('inventory')" id="mainTab-inventory" class="py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-2 transition">
+                <i class="fa-solid fa-bed"></i>
+                <span>Quản Lý Tồn Phòng (Soft-Hold)</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 flex-1 w-full">
+
+                <!-- 6 CHỈ SỐ DOANH THU & PHÒNG CỐT LÕI (BẤM VÀO ĐỂ BÓC TÁCH CHI TIẾT) -->
+        <section class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+            <!-- 1. Tổng doanh thu -->
+            <div onclick="openKpiModal('revenue_total')" class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between cursor-pointer hover:border-indigo-400 hover:shadow-md transition-all group relative">
+                <div class="flex items-center justify-between text-slate-400 mb-1">
+                    <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Doanh thu RevBid</span>
+                    <span class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs group-hover:bg-emerald-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </span>
+                </div>
+                <div>
+                    <div class="text-xl font-black text-slate-900 leading-tight">245.8M <span class="text-xs font-normal text-slate-500">đ</span></div>
+                    <div class="text-[10px] text-emerald-600 font-bold mt-1"><i class="fa-solid fa-arrow-trend-up"></i> +14.2% tháng này</div>
+                    <div class="text-[10px] text-indigo-600 font-bold mt-1.5 opacity-0 group-hover:opacity-100 transition flex items-center">
+                        Bóc tách chi tiết &rarr;
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Doanh thu ngày -->
+            <div onclick="openKpiModal('revenue_today')" class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between cursor-pointer hover:border-indigo-400 hover:shadow-md transition-all group relative">
+                <div class="flex items-center justify-between text-slate-400 mb-1">
+                    <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Doanh thu ngày</span>
+                    <span class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs group-hover:bg-emerald-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-calendar-day"></i>
+                    </span>
+                </div>
+                <div>
+                    <div class="text-xl font-black text-emerald-600 leading-tight">11.850k <span class="text-xs font-normal text-slate-500">đ</span></div>
+                    <div class="text-[10px] text-slate-400 font-medium mt-1">Hôm nay: 8 phòng chốt</div>
+                    <div class="text-[10px] text-indigo-600 font-bold mt-1.5 opacity-0 group-hover:opacity-100 transition flex items-center">
+                        Xem 8 đơn phòng &rarr;
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Số phiên đấu giá -->
+            <div onclick="openKpiModal('sessions_total')" class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between cursor-pointer hover:border-indigo-400 hover:shadow-md transition-all group relative">
+                <div class="flex items-center justify-between text-slate-400 mb-1">
+                    <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Số phiên đấu giá</span>
+                    <span class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs group-hover:bg-indigo-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-gavel"></i>
+                    </span>
+                </div>
+                <div>
+                    <div class="text-xl font-black text-slate-900 leading-tight">68 <span class="text-xs font-normal text-slate-500">phiên</span></div>
+                    <div class="text-[10px] text-indigo-600 font-semibold mt-1">12 phiên trong ngày</div>
+                    <div class="text-[10px] text-indigo-600 font-bold mt-1.5 opacity-0 group-hover:opacity-100 transition flex items-center">
+                        Xem biểu đồ giờ &rarr;
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Số phiên thắng & Win Rate -->
+            <div onclick="openKpiModal('win_rate')" class="bg-white p-4 rounded-2xl border border-indigo-200 bg-indigo-50/20 shadow-sm flex flex-col justify-between cursor-pointer hover:border-indigo-400 hover:shadow-md transition-all group relative">
+                <div class="flex items-center justify-between text-slate-400 mb-1">
+                    <span class="text-[11px] font-semibold uppercase tracking-wider text-indigo-900">Phiên thắng & Tỷ lệ</span>
+                    <span class="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs group-hover:bg-indigo-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-trophy"></i>
+                    </span>
+                </div>
+                <div>
+                    <div class="text-xl font-black text-indigo-700 leading-tight">29 <span class="text-xs font-normal text-slate-500">/ 68 phiên</span></div>
+                    <div class="mt-1 inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-indigo-600 text-white">
+                        Tỷ lệ thắng: 42.6%
+                    </div>
+                    <div class="text-[10px] text-indigo-600 font-bold mt-1.5 opacity-0 group-hover:opacity-100 transition flex items-center">
+                        Xem phễu chốt đơn &rarr;
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Phòng đang được đặt -->
+            <div onclick="openKpiModal('rooms_occupied')" class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between cursor-pointer hover:border-indigo-400 hover:shadow-md transition-all group relative">
+                <div class="flex items-center justify-between text-slate-400 mb-1">
+                    <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Phòng đang đặt</span>
+                    <span class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs group-hover:bg-blue-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-user-check"></i>
+                    </span>
+                </div>
+                <div>
+                    <div class="text-xl font-black text-blue-700 leading-tight">24 <span class="text-xs font-normal text-slate-500">/ 30 phòng</span></div>
+                    <div class="text-[10px] text-blue-600 font-semibold mt-1">Công suất đạt: 80%</div>
+                    <div class="text-[10px] text-indigo-600 font-bold mt-1.5 opacity-0 group-hover:opacity-100 transition flex items-center">
+                        Xem sơ đồ 30 phòng &rarr;
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Phòng chưa được đặt (trống) -->
+            <div onclick="openKpiModal('rooms_vacant')" class="bg-white p-4 rounded-2xl border border-amber-200 bg-amber-50/20 shadow-sm flex flex-col justify-between cursor-pointer hover:border-amber-400 hover:shadow-md transition-all group relative">
+                <div class="flex items-center justify-between text-slate-400 mb-1">
+                    <span class="text-[11px] font-semibold uppercase tracking-wider text-amber-800">Chưa được đặt</span>
+                    <span class="w-7 h-7 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center text-xs group-hover:bg-amber-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-door-open"></i>
+                    </span>
+                </div>
+                <div>
+                    <div class="text-xl font-black text-amber-700 leading-tight">6 <span class="text-xs font-normal text-slate-500">phòng trống</span></div>
+                    <div class="text-[10px] text-amber-800 font-medium mt-1">(2 phòng đang giữ tạm)</div>
+                    <div class="text-[10px] text-amber-800 font-bold mt-1.5 opacity-0 group-hover:opacity-100 transition flex items-center">
+                        Xả phòng đêm AI &rarr;
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 1: SÀN ĐẤU GIÁ LIVE & LỊCH SỬ CÁC CUỘC ĐẤU GIÁ        -->
+        <!-- ======================================================== -->
+        <section id="view-workspace" class="space-y-6">
+
+            <!-- Banner thông báo live -->
+            <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-3 flex items-center justify-between text-xs">
+                <div class="flex items-center space-x-2 text-indigo-950">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 pulse-live"></span>
+                    <span class="font-bold">Đang có 2 phiên yêu cầu phòng khớp với khách sạn của bạn:</span>
+                    <span class="text-slate-600 hidden md:inline">Khách hàng đang đếm ngược 60 phút để chọn phòng. Hãy phản hồi nhanh để tăng tỷ lệ chốt!</span>
+                </div>
+                <button onclick="switchMainTab('ai-analytics')" class="text-indigo-600 hover:text-indigo-800 font-bold underline">
+                    Xem phân tích AI &rarr;
+                </button>
+            </div>
+
+            <!-- 1. Danh sách phiên Live 60 Phút -->
+            <div class="space-y-3">
+                <div class="flex items-center justify-between px-1">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2"></span>
+                        Phiên Đang Đếm Ngược (Cần Hành Động)
+                    </h3>
+                    <span class="text-xs text-slate-400">Thời hạn mỗi phiên: 60 phút</span>
+                </div>
+
+                <!-- Item 1: Urgent -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition">
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        <div class="space-y-2 flex-1">
+                            <div class="flex items-center space-x-2.5">
+                                <span class="bg-rose-100 text-rose-700 text-xs font-bold px-2.5 py-0.5 rounded-full flex items-center">
+                                    <i class="fa-regular fa-clock mr-1"></i> Còn: <span class="timer-display font-mono ml-1 font-extrabold" data-seconds="460">07:40</span>
+                                </span>
+                                <span class="font-mono text-xs font-bold text-slate-500">#REQ-8942</span>
+                                <span class="bg-amber-100 text-amber-900 text-xs font-bold px-2 py-0.5 rounded">
+                                    ⚡ Check-in: Hôm nay • 2 đêm
+                                </span>
+                                <span class="bg-emerald-50 text-emerald-700 text-xs font-semibold px-2 py-0.5 rounded border border-emerald-200">
+                                    <i class="fa-regular fa-credit-card mr-1 text-emerald-600"></i> Đã gắn thẻ
+                                </span>
+                            </div>
+                            <div class="text-base font-extrabold text-slate-900">
+                                Phòng Cao cấp • Giường đôi (Queen/King) • 1 khách
+                            </div>
+                            <div class="flex flex-wrap items-center gap-1.5 text-xs">
+                                <span class="bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded font-bold border border-indigo-100">
+                                    <i class="fa-solid fa-bed mr-1 text-indigo-500"></i> Phòng: Cao cấp*
+                                </span>
+                                <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">
+                                    <i class="fa-solid fa-bed mr-1 text-slate-400"></i> Giường đôi
+                                </span>
+                                <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">
+                                    <i class="fa-solid fa-utensils mr-1 text-slate-400"></i> Bữa sáng
+                                </span>
+                                <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">
+                                    <i class="fa-solid fa-person-swimming mr-1 text-slate-400"></i> Hồ bơi
+                                </span>
+                                <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">
+                                    <i class="fa-solid fa-wifi mr-1 text-slate-400"></i> Wifi
+                                </span>
+                                <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">
+                                    <i class="fa-solid fa-tv mr-1 text-slate-400"></i> Truyền hình
+                                </span>
+                                <span class="text-slate-400 text-xs ml-1">• 3 khách sạn đang chào giá</span>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-3.5 lg:w-96 flex flex-col justify-between space-y-3">
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-slate-500">Phòng khớp: <strong class="text-slate-900">Deluxe Ocean View</strong></span>
+                                <button onclick="openMatchModal('REQ-8942')" class="text-indigo-700 hover:text-indigo-900 font-bold bg-indigo-50 hover:bg-indigo-100 px-2 py-0.5 rounded border border-indigo-200 transition flex items-center cursor-pointer shadow-2xs group" title="Bấm để xem chi tiết tiêu chí khớp / không khớp"><i class="fa-solid fa-list-check mr-1 text-[10px] text-indigo-500 group-hover:scale-110 transition"></i> AI Khớp 95% <i class="fa-solid fa-chevron-right ml-1 text-[9px] text-indigo-400"></i></button>
+                            </div>
+                            <div class="flex items-baseline justify-between">
+                                <span class="text-xs text-slate-500">Giá AI đề xuất:</span>
+                                <div class="text-lg font-black text-indigo-700">950.000đ <span class="text-xs font-normal text-slate-500">/đêm</span></div>
+                            </div>
+                            <div class="flex space-x-2 pt-1">
+                                <button onclick="quickBid('item-1', '950.000đ')" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-2 px-3 rounded-lg shadow-sm transition">
+                                    GỬI GIÁ 950K
+                                </button>
+                                <button onclick="openCustomBidModal('REQ-8942', 950000)" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs px-3 py-2 rounded-lg font-medium transition">
+                                    Sửa
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 2: Normal -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition">
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        <div class="space-y-2.5 flex-1">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="bg-indigo-50 text-indigo-700 text-xs font-bold px-2.5 py-0.5 rounded-full flex items-center">
+                                    <i class="fa-regular fa-clock mr-1"></i> Còn: <span class="timer-display font-mono ml-1 font-black" data-seconds="2140">35:40</span>
+                                </span>
+                                <span class="font-mono text-xs font-bold text-slate-500">#REQ-8943</span>
+                                <span class="bg-blue-100 text-blue-900 text-xs font-bold px-2 py-0.5 rounded">
+                                    📅 Check-in: Sau 6 ngày (10/11) • 3 đêm
+                                </span>
+                            </div>
+                            <div class="text-base font-extrabold text-slate-900">
+                                Phòng Suite • Giường đôi + Hai giường đơn • 2 lớn + 2 trẻ em
+                            </div>
+                            <div class="flex flex-wrap items-center gap-1.5 text-xs">
+                                <span class="bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded font-bold border border-indigo-100">
+                                    <i class="fa-solid fa-bed mr-1 text-indigo-500"></i> Phòng: Suite*
+                                </span>
+                                <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">
+                                    <i class="fa-solid fa-mattress-pillow mr-1 text-slate-400"></i> Giường đôi + 2 Đơn
+                                </span>
+                                <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">
+                                    <i class="fa-solid fa-utensils mr-1 text-slate-400"></i> Bữa sáng
+                                </span>
+                                <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">
+                                    <i class="fa-solid fa-square-parking mr-1 text-slate-400"></i> Bãi đậu xe
+                                </span>
+                                <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">
+                                    <i class="fa-solid fa-clock mr-1 text-slate-400"></i> Trả phòng trễ
+                                </span>
+                                <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">
+                                    <i class="fa-solid fa-elevator mr-1 text-slate-400"></i> Thang máy
+                                </span>
+                                <span class="text-emerald-600 text-xs font-semibold ml-1">• Chưa có ai gửi giá</span>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-3.5 lg:w-96 flex flex-col justify-between space-y-3">
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-slate-500">Phòng khớp: <strong class="text-slate-900">Family Suite</strong></span>
+                                <button onclick="openMatchModal('REQ-8943')" class="text-indigo-700 hover:text-indigo-900 font-bold bg-indigo-50 hover:bg-indigo-100 px-2 py-0.5 rounded border border-indigo-200 transition flex items-center cursor-pointer shadow-2xs group" title="Bấm để xem chi tiết tiêu chí khớp / không khớp"><i class="fa-solid fa-list-check mr-1 text-[10px] text-indigo-500 group-hover:scale-110 transition"></i> AI Khớp 92% <i class="fa-solid fa-chevron-right ml-1 text-[9px] text-indigo-400"></i></button>
+                            </div>
+                            <div class="flex items-baseline justify-between">
+                                <span class="text-xs text-slate-500">Giá AI đề xuất:</span>
+                                <div class="text-lg font-black text-indigo-700">2.150.000đ <span class="text-xs font-normal text-slate-500">/đêm</span></div>
+                            </div>
+                            <div class="flex space-x-2 pt-1">
+                                <button onclick="quickBid('item-2', '2.150.000đ')" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-2 px-3 rounded-lg shadow-sm transition">
+                                    GỬI GIÁ 2.15M
+                                </button>
+                                <button onclick="openCustomBidModal('REQ-8943', 2150000)" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs px-3 py-2 rounded-lg font-medium transition">
+                                    Sửa
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- 2. BẢNG LỊCH SỬ CÁC CUỘC ĐẤU GIÁ (HIỂN THỊ 5 & XỔ THÊM)   -->
+            <!-- ======================================================== -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                    <div>
+                        <h3 class="text-sm font-extrabold text-slate-900 flex items-center">
+                            <i class="fa-solid fa-clock-rotate-left text-indigo-600 mr-2"></i>
+                            Lịch Sử Các Cuộc Đấu Giá Gần Đây
+                        </h3>
+                        <p class="text-xs text-slate-400 mt-0.5">5 phiên gần nhất (Bấm xem thêm để mở rộng)</p>
+                    </div>
+
+                    <!-- Quick filters -->
+                    <div class="flex items-center space-x-1.5 text-xs">
+                        <button onclick="filterHistory('all')" id="histTab-all" class="px-2.5 py-1 rounded-lg bg-indigo-600 text-white font-bold">Tất cả</button>
+                        <button onclick="filterHistory('won')" id="histTab-won" class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold">Thắng</button>
+                        <button onclick="filterHistory('rejected')" id="histTab-rejected" class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold">Bị từ chối</button>
+                        <button onclick="filterHistory('expired')" id="histTab-expired" class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold">Hết hạn</button>
+                    </div>
+                </div>
+
+                <!-- Bảng Danh Sách Lịch Sử -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-200">
+                            <tr>
+                                <th class="p-3">Mã & Thời gian</th>
+                                <th class="p-3">Yêu cầu từ khách</th>
+                                <th class="p-3">Phòng & Giá bạn chào</th>
+                                <th class="p-3 text-center">Độ khớp yêu cầu</th>
+                                <th class="p-3">Tốc độ chốt</th>
+                                <th class="p-3">Kết quả phiên</th>
+                                <th class="p-3 text-right">Chi tiết</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700" id="historyTableBody">
+                            
+                            <!-- ===== TOP 5 PHIÊN MẶC ĐỊNH (LUÔN HIỂN THỊ) ===== -->
+
+                            <!-- 1. Phiên 1 (Thắng siêu nhanh) -->
+                            <tr class="hist-row won hover:bg-slate-50 transition">
+                                <td class="p-3">
+                                    <div class="font-mono font-bold text-slate-900">#REQ-8930</div>
+                                    <div class="text-[11px] text-slate-400">14:12 Hôm nay</div>
+                                </td>
+                                <td class="p-3">
+                                    <div class="font-medium text-slate-800">Superior • Giường đôi</div>
+                                    <div class="text-[11px] text-slate-400">Dịch vụ: Bữa sáng, Wifi (2 đêm)</div>
+                                </td>
+                                <td class="p-3">
+                                    <div class="font-bold text-slate-900">Superior City View</div>
+                                    <div class="text-indigo-600 font-semibold">750.000đ /đêm</div>
+                                </td>
+                                <td class="p-3 text-center">
+                                    <button onclick="openMatchModal('REQ-8930')" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-100 hover:bg-emerald-200 text-emerald-800 border border-emerald-300 transition cursor-pointer hover:shadow-xs group" title="Bấm để xem tiêu chí khớp"><i class="fa-solid fa-bullseye mr-1 text-[10px] group-hover:scale-110 transition"></i> 98% <i class="fa-solid fa-circle-info ml-1 text-[9px] text-emerald-600"></i></button>
+                                    <span class="text-[10px] text-emerald-700 block font-medium mt-0.5">Khớp hoàn hảo</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="font-bold text-emerald-600">01:40</span>
+                                    <span class="text-[10px] text-amber-600 block">(Bán hớ ~250k)</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="bg-emerald-100 text-emerald-800 font-extrabold text-[11px] px-2.5 py-1 rounded-full flex items-center w-max">
+                                        <i class="fa-solid fa-trophy mr-1 text-[10px]"></i> ĐƯỢC CHỌN (+1.5M)
+                                    </span>
+                                </td>
+                                <td class="p-3 text-right">
+                                    <button onclick="switchMainTab('ai-analytics')" class="text-indigo-600 hover:text-indigo-800 font-bold underline">
+                                        AI Mổ xẻ ↗
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- 2. Phiên 2 (Bị từ chối) -->
+                            <tr class="hist-row rejected hover:bg-slate-50 transition">
+                                <td class="p-3">
+                                    <div class="font-mono font-bold text-slate-900">#REQ-8924</div>
+                                    <div class="text-[11px] text-slate-400">13:05 Hôm nay</div>
+                                </td>
+                                <td class="p-3">
+                                    <div class="font-medium text-slate-800">Khách kỳ nghỉ 1 đêm</div>
+                                    <div class="text-[11px] text-slate-400">Dịch vụ: Bữa sáng, Hồ bơi (2 đêm)</div>
+                                </td>
+                                <td class="p-3">
+                                    <div class="font-bold text-slate-900">Deluxe Ocean View</div>
+                                    <div class="text-slate-600 font-semibold">1.150.000đ /đêm</div>
+                                </td>
+                                <td class="p-3 text-center">
+                                    <button onclick="openMatchModal('REQ-8924')" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-black bg-indigo-50 text-indigo-700 border border-indigo-200 transition cursor-pointer hover:shadow-xs group" title="Bấm để xem tiêu chí khớp"><i class="fa-solid fa-bullseye text-amber-600 mr-1 text-[10px] group-hover:scale-110 transition"></i> 88% <i class="fa-solid fa-circle-info ml-1 text-[9px] opacity-70"></i></button>
+                                    <span class="text-[10px] text-slate-500 block mt-0.5">Lệch trần giá</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="text-slate-500">Phút 14:20</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="bg-rose-100 text-rose-800 font-extrabold text-[11px] px-2.5 py-1 rounded-full flex items-center w-max">
+                                        <i class="fa-solid fa-xmark mr-1"></i> BỊ TỪ CHỐI
+                                    </span>
+                                    <span class="text-[10px] text-slate-400 block mt-0.5">Khách chọn KS 4* (980k)</span>
+                                </td>
+                                <td class="p-3 text-right">
+                                    <button onclick="switchMainTab('ai-analytics')" class="text-indigo-600 hover:text-indigo-800 font-bold underline">
+                                        AI Mổ xẻ ↗
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- 3. Phiên 3 (Thắng sát nút) -->
+                            <tr class="hist-row won hover:bg-slate-50 transition">
+                                <td class="p-3">
+                                    <div class="font-mono font-bold text-slate-900">#REQ-8919</div>
+                                    <div class="text-[11px] text-slate-400">11:45 Hôm nay</div>
+                                </td>
+                                <td class="p-3">
+                                    <div class="font-medium text-slate-800">Gia đình 4 người (3 đêm)</div>
+                                    <div class="text-[11px] text-slate-400">Cần buffet sáng trẻ em</div>
+                                </td>
+                                <td class="p-3">
+                                    <div class="font-bold text-slate-900">Family Suite</div>
+                                    <div class="text-indigo-600 font-semibold">800.000đ /đêm</div>
+                                </td>
+                                <td class="p-3 text-center">
+                                    <button onclick="openMatchModal('REQ-8919')" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-100 hover:bg-emerald-200 text-emerald-800 border border-emerald-300 transition cursor-pointer hover:shadow-xs group" title="Bấm để xem tiêu chí khớp"><i class="fa-solid fa-bullseye mr-1 text-[10px] group-hover:scale-110 transition"></i> 96% <i class="fa-solid fa-circle-info ml-1 text-[9px] text-emerald-600"></i></button>
+                                    <span class="text-[10px] text-emerald-700 block font-medium mt-0.5">Khớp gói gia đình</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="font-bold text-slate-600">54:12</span>
+                                    <span class="text-[10px] text-slate-400 block">(Sát giờ hết 60p)</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="bg-emerald-100 text-emerald-800 font-extrabold text-[11px] px-2.5 py-1 rounded-full flex items-center w-max">
+                                        <i class="fa-solid fa-trophy mr-1 text-[10px]"></i> ĐƯỢC CHỌN (+2.4M)
+                                    </span>
+                                </td>
+                                <td class="p-3 text-right">
+                                    <button onclick="switchMainTab('ai-analytics')" class="text-indigo-600 hover:text-indigo-800 font-bold underline">
+                                        AI Mổ xẻ ↗
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- 4. Phiên 4 (Hết hạn 60p) -->
+                            <tr class="hist-row expired hover:bg-slate-50 transition">
+                                <td class="p-3">
+                                    <div class="font-mono font-bold text-slate-900">#REQ-8910</div>
+                                    <div class="text-[11px] text-slate-400">10:00 Hôm nay</div>
+                                </td>
+                                <td class="p-3">
+                                    <div class="font-medium text-slate-800">Khách nghỉ dưỡng 2 đêm</div>
+                                    <div class="text-[11px] text-slate-400">Dịch vụ: Bữa sáng, Bãi xe, Xe lăn (2 đêm)</div>
+                                </td>
+                                <td class="p-3">
+                                    <div class="font-bold text-slate-900">Executive Suite</div>
+                                    <div class="text-slate-600 font-semibold">2.300.000đ /đêm</div>
+                                </td>
+                                <td class="p-3 text-center">
+                                    <button onclick="openMatchModal('REQ-8910')" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-black bg-slate-100 text-slate-700 border border-slate-200 transition cursor-pointer hover:shadow-xs group" title="Bấm để xem tiêu chí khớp"><i class="fa-solid fa-bullseye text-emerald-600 mr-1 text-[10px] group-hover:scale-110 transition"></i> 91% <i class="fa-solid fa-circle-info ml-1 text-[9px] opacity-70"></i></button>
+                                    <span class="text-[10px] text-slate-400 block mt-0.5">Khớp tiện ích</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="text-slate-400">Cháy 60p</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="bg-slate-100 text-slate-700 font-extrabold text-[11px] px-2.5 py-1 rounded-full flex items-center w-max">
+                                        <i class="fa-regular fa-clock mr-1"></i> HẾT HẠN 60P
+                                    </span>
+                                    <span class="text-[10px] text-slate-400 block mt-0.5">Khách bỏ dở phiên</span>
+                                </td>
+                                <td class="p-3 text-right">
+                                    <button onclick="switchMainTab('ai-analytics')" class="text-indigo-600 hover:text-indigo-800 font-bold underline">
+                                        AI Mổ xẻ ↗
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- 5. Phiên 5 (Thắng nhanh) -->
+                            <tr class="hist-row won hover:bg-slate-50 transition">
+                                <td class="p-3">
+                                    <div class="font-mono font-bold text-slate-900">#REQ-8905</div>
+                                    <div class="text-[11px] text-slate-400">08:30 Hôm nay</div>
+                                </td>
+                                <td class="p-3">
+                                    <div class="font-medium text-slate-800">Khách công tác (1 đêm)</div>
+                                    <div class="text-[11px] text-slate-400">Cần wifi mạnh & bàn làm việc</div>
+                                </td>
+                                <td class="p-3">
+                                    <div class="font-bold text-slate-900">Deluxe City View</div>
+                                    <div class="text-indigo-600 font-semibold">890.000đ /đêm</div>
+                                </td>
+                                <td class="p-3 text-center">
+                                    <button onclick="openMatchModal('REQ-8905')" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-100 hover:bg-emerald-200 text-emerald-800 border border-emerald-300 transition cursor-pointer hover:shadow-xs group" title="Bấm để xem tiêu chí khớp"><i class="fa-solid fa-bullseye mr-1 text-[10px] group-hover:scale-110 transition"></i> 95% <i class="fa-solid fa-circle-info ml-1 text-[9px] text-emerald-600"></i></button>
+                                    <span class="text-[10px] text-emerald-700 block font-medium mt-0.5">Khớp công tác</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="font-bold text-emerald-600">08:15</span>
+                                    <span class="text-[10px] text-emerald-600 block">(Gửi giá sau 2 phút)</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="bg-emerald-100 text-emerald-800 font-extrabold text-[11px] px-2.5 py-1 rounded-full flex items-center w-max">
+                                        <i class="fa-solid fa-trophy mr-1 text-[10px]"></i> ĐƯỢC CHỌN (+890k)
+                                    </span>
+                                </td>
+                                <td class="p-3 text-right">
+                                    <button onclick="switchMainTab('ai-analytics')" class="text-indigo-600 hover:text-indigo-800 font-bold underline">
+                                        AI Mổ xẻ ↗
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- ===== CÁC PHIÊN MỞ RỘNG (ẨN MẶC ĐỊNH, XỔ RA KHI BẤM NÚT) ===== -->
+                            
+                            <!-- 6. Phiên 6 (Hôm qua - Thắng đêm) -->
+                            <tr class="hist-row hist-expandable won hidden bg-slate-50/40 hover:bg-slate-50 transition">
+                                <td class="p-3">
+                                    <div class="font-mono font-bold text-slate-900">#REQ-8898</div>
+                                    <div class="text-[11px] text-slate-400">21:15 Hôm qua</div>
+                                </td>
+                                <td class="p-3">
+                                    <div class="font-medium text-slate-800">Khách check-in đêm (1 đêm)</div>
+                                    <div class="text-[11px] text-slate-400">Dịch vụ: Wifi, Truyền hình, Thang máy (1 đêm)</div>
+                                </td>
+                                <td class="p-3">
+                                    <div class="font-bold text-slate-900">Standard Room</div>
+                                    <div class="text-indigo-600 font-semibold">650.000đ /đêm</div>
+                                </td>
+                                <td class="p-3 text-center">
+                                    <button onclick="openMatchModal('REQ-8898')" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-100 hover:bg-emerald-200 text-emerald-800 border border-emerald-300 transition cursor-pointer hover:shadow-xs group" title="Bấm để xem tiêu chí khớp"><i class="fa-solid fa-bullseye text-emerald-600 mr-1 text-[10px] group-hover:scale-110 transition"></i> 93% <i class="fa-solid fa-circle-info ml-1 text-[9px] opacity-70"></i></button>
+                                    <span class="text-[10px] text-emerald-700 block font-medium mt-0.5">Khớp giá đêm</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="font-bold text-emerald-600">04:30</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="bg-emerald-100 text-emerald-800 font-extrabold text-[11px] px-2.5 py-1 rounded-full flex items-center w-max">
+                                        <i class="fa-solid fa-trophy mr-1 text-[10px]"></i> ĐƯỢC CHỌN (+650k)
+                                    </span>
+                                    <span class="text-[10px] text-emerald-600 block mt-0.5">Auto-bid khớp lệnh đêm</span>
+                                </td>
+                                <td class="p-3 text-right">
+                                    <button onclick="switchMainTab('ai-analytics')" class="text-indigo-600 hover:text-indigo-800 font-bold underline">AI Mổ xẻ ↗</button>
+                                </td>
+                            </tr>
+
+                            <!-- 7. Phiên 7 (Hôm qua - Bị từ chối do thiếu bồn tắm) -->
+                            <tr class="hist-row hist-expandable rejected hidden bg-slate-50/40 hover:bg-slate-50 transition">
+                                <td class="p-3">
+                                    <div class="font-mono font-bold text-slate-900">#REQ-8892</div>
+                                    <div class="text-[11px] text-slate-400">19:40 Hôm qua</div>
+                                </td>
+                                <td class="p-3">
+                                    <div class="font-medium text-slate-800">Cao cấp • Giường đôi</div>
+                                    <div class="text-[11px] text-slate-400">Dịch vụ: Trả phòng trễ, Bữa sáng, Thang máy</div>
+                                </td>
+                                <td class="p-3">
+                                    <div class="font-bold text-slate-900">Superior City View</div>
+                                    <div class="text-slate-600 font-semibold">900.000đ /đêm</div>
+                                </td>
+                                <td class="p-3 text-center">
+                                    <button onclick="openMatchModal('REQ-8892')" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-black bg-rose-100 hover:bg-rose-200 text-rose-800 border border-rose-300 transition cursor-pointer hover:shadow-xs group" title="Bấm để xem tiêu chí khớp"><i class="fa-solid fa-triangle-exclamation text-rose-600 mr-1 text-[10px] group-hover:scale-110 transition"></i> 72% <i class="fa-solid fa-circle-info ml-1 text-[9px] opacity-70"></i></button>
+                                    <span class="text-[10px] text-rose-600 block font-semibold mt-0.5">Thiếu bồn tắm</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="text-slate-500">Phút 06:10</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="bg-rose-100 text-rose-800 font-extrabold text-[11px] px-2.5 py-1 rounded-full flex items-center w-max">
+                                        <i class="fa-solid fa-xmark mr-1"></i> BỊ TỪ CHỐI
+                                    </span>
+                                    <span class="text-[10px] text-rose-600 block mt-0.5">Lý do: Phòng không có bồn tắm</span>
+                                </td>
+                                <td class="p-3 text-right">
+                                    <button onclick="switchMainTab('ai-analytics')" class="text-indigo-600 hover:text-indigo-800 font-bold underline">AI Mổ xẻ ↗</button>
+                                </td>
+                            </tr>
+
+                            <!-- 8. Phiên 8 (Hôm qua - Hết hạn 60p) -->
+                            <tr class="hist-row hist-expandable expired hidden bg-slate-50/40 hover:bg-slate-50 transition">
+                                <td class="p-3">
+                                    <div class="font-mono font-bold text-slate-900">#REQ-8885</div>
+                                    <div class="text-[11px] text-slate-400">17:10 Hôm qua</div>
+                                </td>
+                                <td class="p-3">
+                                    <div class="font-medium text-slate-800">Cặp đôi du lịch (2 đêm)</div>
+                                    <div class="text-[11px] text-slate-400">Dịch vụ: Bãi xe, Giặt ủi, Wifi (1 đêm)</div>
+                                </td>
+                                <td class="p-3">
+                                    <div class="font-bold text-slate-900">Deluxe Ocean View</div>
+                                    <div class="text-slate-600 font-semibold">1.200.000đ /đêm</div>
+                                </td>
+                                <td class="p-3 text-center">
+                                    <button onclick="openMatchModal('REQ-8885')" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-black bg-slate-100 text-slate-700 border border-slate-200 transition cursor-pointer hover:shadow-xs group" title="Bấm để xem tiêu chí khớp"><i class="fa-solid fa-bullseye text-amber-600 mr-1 text-[10px] group-hover:scale-110 transition"></i> 85% <i class="fa-solid fa-circle-info ml-1 text-[9px] opacity-70"></i></button>
+                                    <span class="text-[10px] text-slate-400 block mt-0.5">Giá chạm trần</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="text-slate-400">Cháy 60p</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="bg-slate-100 text-slate-700 font-extrabold text-[11px] px-2.5 py-1 rounded-full flex items-center w-max">
+                                        <i class="fa-regular fa-clock mr-1"></i> HẾT HẠN 60P
+                                    </span>
+                                    <span class="text-[10px] text-slate-400 block mt-0.5">Khách khảo sát giá</span>
+                                </td>
+                                <td class="p-3 text-right">
+                                    <button onclick="switchMainTab('ai-analytics')" class="text-indigo-600 hover:text-indigo-800 font-bold underline">AI Mổ xẻ ↗</button>
+                                </td>
+                            </tr>
+
+                            <!-- 9. Phiên 9 (Hôm qua - Thắng lớn 3 đêm) -->
+                            <tr class="hist-row hist-expandable won hidden bg-slate-50/40 hover:bg-slate-50 transition">
+                                <td class="p-3">
+                                    <div class="font-mono font-bold text-slate-900">#REQ-8874</div>
+                                    <div class="text-[11px] text-slate-400">14:00 Hôm qua</div>
+                                </td>
+                                <td class="p-3">
+                                    <div class="font-medium text-slate-800">Khách chuyên gia (3 đêm)</div>
+                                    <div class="text-[11px] text-slate-400">Dịch vụ: Bữa sáng, Hồ bơi, Wifi (1 đêm)</div>
+                                </td>
+                                <td class="p-3">
+                                    <div class="font-bold text-slate-900">Superior City View</div>
+                                    <div class="text-indigo-600 font-semibold">820.000đ /đêm</div>
+                                </td>
+                                <td class="p-3 text-center">
+                                    <button onclick="openMatchModal('REQ-8874')" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-100 hover:bg-emerald-200 text-emerald-800 border border-emerald-300 transition cursor-pointer hover:shadow-xs group" title="Bấm để xem tiêu chí khớp"><i class="fa-solid fa-bullseye mr-1 text-[10px] group-hover:scale-110 transition"></i> 97% <i class="fa-solid fa-circle-info ml-1 text-[9px] text-emerald-600"></i></button>
+                                    <span class="text-[10px] text-emerald-700 block font-medium mt-0.5">Khớp 3 đêm dài</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="font-bold text-emerald-600">11:20</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="bg-emerald-100 text-emerald-800 font-extrabold text-[11px] px-2.5 py-1 rounded-full flex items-center w-max">
+                                        <i class="fa-solid fa-trophy mr-1 text-[10px]"></i> ĐƯỢC CHỌN (+2.46M)
+                                    </span>
+                                </td>
+                                <td class="p-3 text-right">
+                                    <button onclick="switchMainTab('ai-analytics')" class="text-indigo-600 hover:text-indigo-800 font-bold underline">AI Mổ xẻ ↗</button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- NÚT BẤM XỔ XUỐNG / THU GỌN LỊCH SỬ -->
+                <div class="pt-2 text-center border-t border-slate-100">
+                    <button id="btnToggleHistory" onclick="toggleHistory()" class="bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 font-bold text-xs py-2.5 px-5 rounded-xl border border-slate-200 transition inline-flex items-center space-x-2 shadow-2xs">
+                        <span id="toggleHistoryText">Xem thêm 4 cuộc đấu giá trước đó</span>
+                        <i id="toggleHistoryIcon" class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 2: TRUNG TÂM AI PHÂN TÍCH CHUYÊN SÂU                 -->
+        <!-- ======================================================== -->
+        <section id="view-ai-analytics" class="hidden space-y-6">
+
+            <!-- 1. SƠ ĐỒ TRỰC QUAN: 4 NGUỒN DỮ LIỆU ĐẦU VÀO CỦA AI -->
+            <div class="bg-white rounded-2xl border-2 border-indigo-100 p-6 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                    <div>
+                        <div class="flex items-center space-x-2 text-indigo-600 font-bold text-xs uppercase tracking-wider">
+                            <i class="fa-solid fa-network-wired"></i> Kiến Trúc Dữ Liệu Thu Thập Của AI
+                        </div>
+                        <h3 class="text-base font-extrabold text-slate-900 mt-0.5">
+                            AI Thu Thập 4 Nguồn Dữ Liệu Sau Để Chẩn Đoán Lý Do Phòng Được Đặt Hay Bị Từ Chối
+                        </h3>
+                    </div>
+                    <span class="bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full border border-indigo-200 flex items-center">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 pulse-live mr-1.5"></span> Engine Đang Chạy
+                    </span>
+                </div>
+
+                <!-- 4 Cột Nguồn Dữ Liệu -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 pt-1">
+                    <!-- Nguồn 1 -->
+                    <div class="bg-blue-50/70 rounded-xl p-3.5 border border-blue-200 flex flex-col justify-between space-y-2.5">
+                        <div>
+                            <div class="flex items-center space-x-2 text-blue-900 font-bold text-xs mb-1.5">
+                                <span class="w-5 h-5 rounded-md bg-blue-600 text-white flex items-center justify-center text-[10px]">1</span>
+                                <span>Form Yêu Cầu Của Khách</span>
+                            </div>
+                            <div class="text-[11px] text-slate-700 space-y-1 font-medium bg-white/70 p-2.5 rounded-lg border border-blue-100">
+                                <div class="flex justify-between"><span>Loại phòng:</span><strong class="text-slate-900">Cao cấp* (Deluxe)</strong></div>
+                                <div class="flex justify-between"><span>Loại giường:</span><strong class="text-slate-900">Giường đôi (King)</strong></div>
+                                <div class="flex justify-between"><span>Dịch vụ:</span><strong class="text-slate-900">Bữa sáng, Trả phòng trễ</strong></div>
+                                <div class="flex justify-between"><span>Tiện ích:</span><strong class="text-slate-900">Truyền hình, Thang máy</strong></div>
+                            </div>
+                        </div>
+                        <div class="text-[10px] text-blue-800 bg-white px-2 py-1 rounded font-bold border border-blue-200 flex items-center justify-between">
+                            <span>Khách ẩn ngân sách:</span> <span class="text-indigo-600 font-bold">Đấu giá tự do</span>
+                        </div>
+                    </div>
+
+                    <!-- Nguồn 2 -->
+                    <div class="bg-purple-50/70 rounded-xl p-3.5 border border-purple-200 flex flex-col justify-between space-y-2.5">
+                        <div>
+                            <div class="flex items-center space-x-2 text-purple-900 font-bold text-xs mb-1.5">
+                                <span class="w-5 h-5 rounded-md bg-purple-600 text-white flex items-center justify-center text-[10px]">2</span>
+                                <span>Hành Vi Telemetry</span>
+                            </div>
+                            <div class="text-[11px] text-slate-700 space-y-1 font-medium bg-white/70 p-2.5 rounded-lg border border-purple-100">
+                                <div class="flex justify-between"><span>Lướt xem ảnh:</span><strong class="text-slate-900">14 lần (42s)</strong></div>
+                                <div class="flex justify-between"><span>So sánh giá:</span><strong class="text-slate-900">3 khách sạn</strong></div>
+                                <div class="flex justify-between"><span>Tag từ chối:</span><strong class="text-rose-600">"Thiếu ăn sáng"</strong></div>
+                            </div>
+                        </div>
+                        <div class="text-[10px] text-purple-800 bg-white px-2 py-1 rounded font-bold border border-purple-200 flex items-center justify-between">
+                            <span>Điểm dừng mắt:</span> <span>Ảnh Buffet (85%)</span>
+                        </div>
+                    </div>
+
+                    <!-- Nguồn 3 -->
+                    <div class="bg-amber-50/70 rounded-xl p-3.5 border border-amber-200 flex flex-col justify-between space-y-2.5">
+                        <div>
+                            <div class="flex items-center space-x-2 text-amber-900 font-bold text-xs mb-1.5">
+                                <span class="w-5 h-5 rounded-md bg-amber-600 text-white flex items-center justify-center text-[10px]">3</span>
+                                <span>Báo Giá Của Bạn</span>
+                            </div>
+                            <div class="text-[11px] text-slate-700 space-y-1 font-medium bg-white/70 p-2.5 rounded-lg border border-amber-100">
+                                <div class="flex justify-between"><span>Hạng phòng:</span><strong class="text-slate-900">Deluxe Ocean</strong></div>
+                                <div class="flex justify-between"><span>Mức giá:</span><strong class="text-slate-900">1.050.000đ</strong></div>
+                                <div class="flex justify-between"><span>Bữa sáng:</span><strong class="text-rose-600">Không kèm</strong></div>
+                            </div>
+                        </div>
+                        <div class="text-[10px] text-amber-800 bg-white px-2 py-1 rounded font-bold border border-amber-200 flex items-center justify-between">
+                            <span>Tốc độ gửi:</span> <span>Phút thứ 18 (Muộn)</span>
+                        </div>
+                    </div>
+
+                    <!-- Nguồn 4 -->
+                    <div class="bg-rose-50/70 rounded-xl p-3.5 border border-rose-200 flex flex-col justify-between space-y-2.5">
+                        <div>
+                            <div class="flex items-center space-x-2 text-rose-900 font-bold text-xs mb-1.5">
+                                <span class="w-5 h-5 rounded-md bg-rose-600 text-white flex items-center justify-center text-[10px]">4</span>
+                                <span>Đối Thủ Thắng Cuộc</span>
+                            </div>
+                            <div class="text-[11px] text-slate-700 space-y-1 font-medium bg-white/70 p-2.5 rounded-lg border border-rose-100">
+                                <div class="flex justify-between"><span>Phân khúc:</span><strong class="text-slate-900">Khách sạn 4*</strong></div>
+                                <div class="flex justify-between"><span>Mức giá chốt:</span><strong class="text-emerald-700">980.000đ</strong></div>
+                                <div class="flex justify-between"><span>Bữa sáng:</span><strong class="text-emerald-700">Miễn phí Buffet</strong></div>
+                            </div>
+                        </div>
+                        <div class="text-[10px] text-rose-800 bg-white px-2 py-1 rounded font-bold border border-rose-200 flex items-center justify-between">
+                            <span>Tốc độ gửi:</span> <span>Phút thứ 04 (Nhanh)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 text-white p-3 rounded-xl flex items-center justify-between text-xs mt-2">
+                    <span class="flex items-center">
+                        <i class="fa-solid fa-arrows-to-circle text-amber-400 text-base mr-2"></i>
+                        <span>AI tổng hợp 4 luồng dữ liệu trên theo thời gian thực để tạo ra <strong>Báo Cáo Mổ Xẻ Thất Bại (Loss Autopsy)</strong> bên dưới:</span>
+                    </span>
+                    <span class="text-amber-400 font-mono font-bold">100% Khách quan</span>
+                </div>
+            </div>
+
+            <!-- 2. BẢNG MỔ XẺ TRỰC DIỆN 1 PHIÊN THẤT BẠI -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="bg-rose-100 text-rose-800 text-xs font-extrabold px-2.5 py-0.5 rounded-full">
+                                🔎 AI MỔ XẺ CHI TIẾT PHIÊN THẤT BẠI
+                            </span>
+                            <span class="font-mono text-sm font-bold text-slate-800">#REQ-8924</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">
+                            Yêu cầu khách: Phòng Cao cấp • Giường đôi • Cần Bữa sáng, Trả phòng trễ, Thang máy • Bị khách bấm từ chối lúc 14:18
+                        </p>
+                    </div>
+                    <div class="bg-rose-50 border border-rose-200 p-2 rounded-xl text-right">
+                        <span class="text-[10px] font-bold text-rose-600 uppercase block">Tag Khách Bấm Khi Từ Chối:</span>
+                        <span class="text-xs font-extrabold text-rose-900">"Giá cao hơn so với nơi khác"</span>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-500">
+                                <th class="p-3 w-1/4">Yếu tố so sánh</th>
+                                <th class="p-3 w-1/3 text-slate-900 font-bold bg-indigo-50/50">Khách sạn của bạn</th>
+                                <th class="p-3 w-1/3 text-emerald-800 font-bold bg-emerald-50/50">Đối thủ chiến thắng (Ẩn danh - Cách 350m)</th>
+                                <th class="p-3 text-center">AI Đánh giá</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <!-- Row 0: Độ khớp yêu cầu -->
+                            <tr>
+                                <td class="p-3 font-semibold text-slate-600">Độ khớp với yêu cầu của khách</td>
+                                <td class="p-3 bg-indigo-50/30">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-800 font-extrabold text-xs border border-indigo-200">
+                                        <i class="fa-solid fa-bullseye mr-1 text-[10px]"></i> 88%
+                                    </span>
+                                    <span class="text-[11px] text-slate-500 block font-normal mt-0.5">Khớp view biển & wifi, nhưng giá cao hơn mong đợi</span>
+                                </td>
+                                <td class="p-3 bg-emerald-50/30">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-xs border border-emerald-300">
+                                        <i class="fa-solid fa-bullseye mr-1 text-[10px]"></i> 98%
+                                    </span>
+                                    <span class="text-[11px] text-emerald-800 block font-normal mt-0.5">Khớp trọn vẹn dịch vụ form + kèm buffet sáng</span>
+                                </td>
+                                <td class="p-3 text-center">
+                                    <span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded text-[10px] font-bold">Đối thủ khớp hơn 10%</span>
+                                </td>
+                            </tr>
+                            <!-- Row 1: Giá -->
+                            <tr>
+                                <td class="p-3 font-semibold text-slate-600">Mức giá chào cho khách</td>
+                                <td class="p-3 font-bold text-rose-600 bg-indigo-50/30 text-sm">1.150.000đ /đêm</td>
+                                <td class="p-3 font-bold text-emerald-600 bg-emerald-50/30 text-sm">980.000đ /đêm</td>
+                                <td class="p-3 text-center">
+                                    <span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded text-[10px] font-bold">Bạn đắt hơn 170k</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-semibold text-slate-600">Thời điểm gửi báo giá</td>
+                                <td class="p-3 bg-indigo-50/30">Phút thứ 14 của phiên</td>
+                                <td class="p-3 bg-emerald-50/30 font-bold text-slate-900">Phút thứ 03 của phiên</td>
+                                <td class="p-3 text-center">
+                                    <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-[10px] font-bold">Chậm hơn 11 phút</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-semibold text-slate-600">Quyền lợi / Quà tặng kèm</td>
+                                <td class="p-3 bg-indigo-50/30 text-slate-400">Không có quà tặng kèm</td>
+                                <td class="p-3 bg-emerald-50/30 font-semibold text-slate-900">Miễn phí Buffet sáng 2 người</td>
+                                <td class="p-3 text-center">
+                                    <span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded text-[10px] font-bold">Điểm then chốt</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-semibold text-slate-600">Hành vi Telemetry của khách</td>
+                                <td class="p-3 bg-indigo-50/30 text-slate-600">Mở xem lúc 14:15, dừng xem 32 giây rồi bấm "Từ chối"</td>
+                                <td class="p-3 bg-emerald-50/30 text-slate-600">Khách mở xem lúc 14:04 và bấm "Chọn phòng" lúc 14:18</td>
+                                <td class="p-3 text-center text-slate-500 font-mono text-[10px]">Telemetry Log</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-semibold text-slate-600">Điểm đánh giá sạch sẽ (Review)</td>
+                                <td class="p-3 bg-indigo-50/30 font-semibold">8.4 / 10</td>
+                                <td class="p-3 bg-emerald-50/30 font-semibold">9.1 / 10</td>
+                                <td class="p-3 text-center text-slate-400">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="bg-gradient-to-r from-amber-50 to-indigo-50 border border-amber-200 rounded-xl p-4 text-xs space-y-2">
+                    <div class="font-bold text-slate-900 flex items-center text-sm">
+                        <i class="fa-solid fa-lightbulb text-amber-500 mr-2 text-base"></i>
+                        <span>AI Kết Luận & Đưa Ra Giải Pháp Sửa Sai:</span>
+                    </div>
+                    <p class="text-slate-700 leading-relaxed">
+                        Khách hàng này có ngân sách tối đa 1.2M, nhưng đã chọn đối thủ vì mức giá 980k đi kèm <strong>Buffet sáng</strong>. Phòng của bạn có lợi thế lớn là <strong>View Biển trực diện</strong>. Nếu lần sau gặp yêu cầu tương tự:
+                    </p>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+                        <div class="bg-white px-3 py-2 rounded-lg border border-indigo-200 font-bold text-indigo-950">
+                            👉 Chiến lược gợi ý: Chào giá <span class="text-indigo-600 font-extrabold text-sm">1.050.000đ</span> + Tặng 2 suất buffet sáng (Chi phí vốn của KS chỉ ~35k) &rarr; Xác suất thắng ước tính: <span class="text-emerald-600 font-extrabold">85%</span>.
+                        </div>
+                        <button onclick="showToast('Đã lưu quy tắc chào giá này vào danh sách ưu tiên của bot!', 'success')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2 rounded-lg shadow-sm transition whitespace-nowrap">
+                            Lưu quy tắc này cho lần sau
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. BIỂU ĐỒ TRÒN TỔNG HỢP NGUYÊN NHÂN TRƯỢT TUẦN NÀY -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-6 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <h4 class="font-bold text-sm text-slate-900 flex items-center">
+                        <i class="fa-solid fa-chart-pie text-rose-500 mr-2"></i> Tỷ Lệ Các Nguyên Nhân Trượt Deal Tuần Này (35 Phiên)
+                    </h4>
+                    <div class="flex flex-col sm:flex-row items-center gap-6 py-2">
+                        <div class="w-40 h-40 relative flex-shrink-0">
+                            <canvas id="lossReasonChart"></canvas>
+                        </div>
+                        <div class="space-y-2 text-xs w-full">
+                            <div class="flex items-center justify-between p-2 rounded-lg bg-rose-50 border border-rose-100">
+                                <span class="font-semibold text-rose-900">1. Giá cao hơn đối thủ lân cận</span>
+                                <span class="font-extrabold text-rose-700">42% (15 phiên)</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-lg bg-amber-50 border border-amber-100">
+                                <span class="font-semibold text-amber-900">2. Phản hồi chậm (>15 phút)</span>
+                                <span class="font-extrabold text-amber-700">26% (9 phiên)</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 border border-slate-100">
+                                <span class="font-semibold text-slate-800">3. Khách bỏ dở phiên (Ghosting)</span>
+                                <span class="font-extrabold text-slate-700">18% (6 phiên)</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-lg bg-indigo-50 border border-indigo-100">
+                                <span class="font-semibold text-indigo-900">4. Lệch tiện ích khách đòi hỏi</span>
+                                <span class="font-extrabold text-indigo-700">14% (5 phiên)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <h4 class="font-bold text-sm text-slate-900 flex items-center">
+                        <i class="fa-solid fa-wand-magic-sparkles text-indigo-600 mr-2"></i> 2 Đề Xuất Trọng Tâm Để Tăng Tỷ Lệ Lấp Đầy
+                    </h4>
+                    <div class="space-y-3 text-xs">
+                        <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 space-y-1.5">
+                            <div class="flex items-center justify-between font-bold text-slate-800">
+                                <span>Bật AI Auto-Bid trong 3 phút đầu tiên</span>
+                                <span class="text-rose-600 font-extrabold">Khắc phục 26% trượt deal</span>
+                            </div>
+                            <p class="text-slate-600 text-[11px] leading-relaxed">
+                                Dữ liệu Telemetry cho thấy hơn 70% khách hàng chốt phòng trước phút thứ 12. Khi nhân viên bận không bấm giá kịp, bot sẽ tự động chào giá với giá sàn bảo vệ 750k.
+                            </p>
+                        </div>
+
+                        <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 space-y-1.5">
+                            <div class="flex items-center justify-between font-bold text-slate-800">
+                                <span>Thêm ưu đãi "Check-in sớm 2 tiếng"</span>
+                                <span class="text-emerald-600 font-extrabold">+18% Win Rate</span>
+                            </div>
+                            <p class="text-slate-600 text-[11px] leading-relaxed">
+                                Đa số khách công tác tìm phòng giữa tuần đều tick tìm kiếm tag này. Khách sạn có thể tận dụng phòng trống từ đêm trước để kích hoạt gói quà này mà không tốn chi phí.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 3: QUỸ PHÒNG & KHÓA TẠM (SOFT-HOLD)                   -->
+        <!-- ======================================================== -->
+        <section id="view-inventory" class="hidden space-y-5">
+
+            <!-- BẢNG LỊCH 14 NGÀY VÀNG: GIẢI CỨU PHÒNG TRỐNG (TỪ D0 ĐẾN D14) -->
+            <div class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <h4 class="font-black text-base text-slate-900">Phân Bổ Tồn Phòng Trong Khung 14 Ngày Vàng</h4>
+                            <span class="bg-indigo-100 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded-full">04/11 &rarr; 18/11</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-0.5">
+                            Số phòng trống theo ngày. Sau ngày thứ 14, quỹ phòng được quản lý tự động bởi các kênh OTA đối tác.
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-2 text-[11px]">
+                        <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 mr-1"></span> Đỏ: Khẩn cấp (0-1 ngày)</span>
+                        <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 mr-1"></span> Vàng: Cận ngày (2-6 ngày)</span>
+                        <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 mr-1"></span> Xanh: An toàn (7-14 ngày)</span>
+                    </div>
+                </div>
+
+                <!-- 14-Day Horizontal Timeline Cards -->
+                <div class="overflow-x-auto pb-2">
+                    <div class="flex space-x-2.5 min-w-[1050px]">
+                        <!-- D0: Hôm nay -->
+                        <div class="flex-1 p-3 rounded-xl border-2 border-rose-400 bg-rose-50/70 space-y-1.5 text-center shadow-xs">
+                            <div class="text-[10px] font-black uppercase text-rose-700 bg-rose-100 py-0.5 px-1.5 rounded-full inline-block">Hôm nay</div>
+                            <div class="font-extrabold text-sm text-slate-900">04/11</div>
+                            <div class="text-rose-700 font-black text-base">6 <span class="text-[11px] font-normal">trống</span></div>
+                            <div class="text-[10px] text-rose-800 font-bold bg-white/80 rounded py-1 px-1 border border-rose-200">
+                                Giảm sàn -20%
+                            </div>
+                        </div>
+
+                        <!-- D1: Ngày mai -->
+                        <div class="flex-1 p-3 rounded-xl border-2 border-rose-300 bg-rose-50/50 space-y-1.5 text-center">
+                            <div class="text-[10px] font-bold text-rose-600 bg-rose-100 py-0.5 px-1.5 rounded-full inline-block">Ngày mai</div>
+                            <div class="font-extrabold text-sm text-slate-900">05/11</div>
+                            <div class="text-rose-600 font-black text-base">5 <span class="text-[11px] font-normal">trống</span></div>
+                            <div class="text-[10px] text-rose-700 font-medium bg-white/80 rounded py-1 px-1 border border-rose-200">
+                                Giảm sàn -15%
+                            </div>
+                        </div>
+
+                        <!-- D2 -->
+                        <div class="flex-1 p-3 rounded-xl border border-amber-300 bg-amber-50/60 space-y-1.5 text-center">
+                            <div class="text-[10px] font-semibold text-amber-700">+2 ngày</div>
+                            <div class="font-extrabold text-sm text-slate-900">06/11</div>
+                            <div class="text-amber-700 font-black text-base">7 <span class="text-[11px] font-normal">trống</span></div>
+                            <div class="text-[10px] text-amber-800 font-medium bg-white/80 rounded py-1 px-1 border border-amber-200">
+                                Giảm sàn -10%
+                            </div>
+                        </div>
+
+                        <!-- D3 -->
+                        <div class="flex-1 p-3 rounded-xl border border-amber-200 bg-amber-50/40 space-y-1.5 text-center">
+                            <div class="text-[10px] font-semibold text-amber-700">+3 ngày</div>
+                            <div class="font-extrabold text-sm text-slate-900">07/11</div>
+                            <div class="text-amber-700 font-black text-base">4 <span class="text-[11px] font-normal">trống</span></div>
+                            <div class="text-[10px] text-amber-800 font-medium bg-white/80 rounded py-1 px-1 border border-amber-200">
+                                Giảm sàn -10%
+                            </div>
+                        </div>
+
+                        <!-- D4 -->
+                        <div class="flex-1 p-3 rounded-xl border border-amber-200 bg-amber-50/40 space-y-1.5 text-center">
+                            <div class="text-[10px] font-semibold text-amber-700">+4 ngày</div>
+                            <div class="font-extrabold text-sm text-slate-900">08/11</div>
+                            <div class="text-amber-700 font-black text-base">3 <span class="text-[11px] font-normal">trống</span></div>
+                            <div class="text-[10px] text-slate-600 font-medium bg-white/80 rounded py-1 px-1 border border-slate-200">
+                                Chào theo AI
+                            </div>
+                        </div>
+
+                        <!-- D5 -->
+                        <div class="flex-1 p-3 rounded-xl border border-amber-200 bg-amber-50/40 space-y-1.5 text-center">
+                            <div class="text-[10px] font-semibold text-amber-700">+5 ngày</div>
+                            <div class="font-extrabold text-sm text-slate-900">09/11</div>
+                            <div class="text-amber-700 font-black text-base">6 <span class="text-[11px] font-normal">trống</span></div>
+                            <div class="text-[10px] text-slate-600 font-medium bg-white/80 rounded py-1 px-1 border border-slate-200">
+                                Chào theo AI
+                            </div>
+                        </div>
+
+                        <!-- D6 -->
+                        <div class="flex-1 p-3 rounded-xl border-2 border-indigo-300 bg-indigo-50/70 space-y-1.5 text-center shadow-xs">
+                            <div class="text-[10px] font-bold text-indigo-700 bg-indigo-100 py-0.5 px-1.5 rounded-full inline-block">+6 ngày (Sôi nổi)</div>
+                            <div class="font-extrabold text-sm text-slate-900">10/11</div>
+                            <div class="text-indigo-700 font-black text-base">8 <span class="text-[11px] font-normal">trống</span></div>
+                            <div class="text-[10px] text-indigo-800 font-bold bg-white/90 rounded py-1 px-1 border border-indigo-200">
+                                Khớp #8943
+                            </div>
+                        </div>
+
+                        <!-- D7-D10: Khung an toàn -->
+                        <div class="flex-1 p-3 rounded-xl border border-emerald-200 bg-emerald-50/30 space-y-1.5 text-center">
+                            <div class="text-[10px] font-semibold text-emerald-700">+7 ngày</div>
+                            <div class="font-extrabold text-sm text-slate-900">11/11</div>
+                            <div class="text-emerald-700 font-black text-base">4 <span class="text-[11px] font-normal">trống</span></div>
+                            <div class="text-[10px] text-emerald-800 font-medium bg-white/80 rounded py-1 px-1 border border-emerald-200">
+                                Giữ giá chuẩn
+                            </div>
+                        </div>
+
+                        <div class="flex-1 p-3 rounded-xl border border-emerald-200 bg-emerald-50/30 space-y-1.5 text-center">
+                            <div class="text-[10px] font-semibold text-emerald-700">+8 ngày</div>
+                            <div class="font-extrabold text-sm text-slate-900">12/11</div>
+                            <div class="text-emerald-700 font-black text-base">3 <span class="text-[11px] font-normal">trống</span></div>
+                            <div class="text-[10px] text-emerald-800 font-medium bg-white/80 rounded py-1 px-1 border border-emerald-200">
+                                Giữ giá chuẩn
+                            </div>
+                        </div>
+
+                        <div class="flex-1 p-3 rounded-xl border border-emerald-200 bg-emerald-50/30 space-y-1.5 text-center">
+                            <div class="text-[10px] font-semibold text-emerald-700">+9 ngày</div>
+                            <div class="font-extrabold text-sm text-slate-900">13/11</div>
+                            <div class="text-emerald-700 font-black text-base">5 <span class="text-[11px] font-normal">trống</span></div>
+                            <div class="text-[10px] text-emerald-800 font-medium bg-white/80 rounded py-1 px-1 border border-emerald-200">
+                                Giữ giá chuẩn
+                            </div>
+                        </div>
+
+                        <div class="flex-1 p-3 rounded-xl border border-emerald-200 bg-emerald-50/30 space-y-1.5 text-center">
+                            <div class="text-[10px] font-semibold text-emerald-700">+10 ngày</div>
+                            <div class="font-extrabold text-sm text-slate-900">14/11</div>
+                            <div class="text-emerald-700 font-black text-base">4 <span class="text-[11px] font-normal">trống</span></div>
+                            <div class="text-[10px] text-emerald-800 font-medium bg-white/80 rounded py-1 px-1 border border-emerald-200">
+                                Giữ giá chuẩn
+                            </div>
+                        </div>
+
+                        <!-- D14: Mốc chuyển giao -->
+                        <div class="flex-1 p-3 rounded-xl border border-slate-300 bg-slate-100 space-y-1.5 text-center">
+                            <div class="text-[10px] font-semibold text-slate-600">+14 ngày</div>
+                            <div class="font-extrabold text-sm text-slate-900">18/11</div>
+                            <div class="text-slate-700 font-black text-base">1 <span class="text-[11px] font-normal">trống</span></div>
+                            <div class="text-[10px] text-slate-600 font-medium bg-white/80 rounded py-1 px-1 border border-slate-200">
+                                Mốc bàn giao
+                            </div>
+                        </div>
+
+                        <!-- Sau 14 ngày: Bàn giao OTA -->
+                        <div class="w-36 p-3 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 space-y-1.5 text-center flex flex-col justify-center">
+                            <div class="text-[10px] font-black text-slate-500 uppercase tracking-wider">&gt; 14 Ngày Nữa</div>
+                            <div class="text-xs font-bold text-slate-700">Kênh OTA Quản Lý</div>
+                            <div class="text-[10px] text-slate-400 leading-tight mt-1">
+                                Bán trên Booking, Agoda giá niêm yết
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+            </div>
+            <div class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div>
+                        <h4 class="font-bold text-base text-slate-900">Bảo Vệ Quỹ Phòng & Cơ Chế Khóa Tạm (Soft-Hold)</h4>
+                        <p class="text-xs text-slate-500">Giúp bạn tham gia nhiều phiên đấu giá cùng lúc mà không lo bán vượt công suất (Overbooking)</p>
+                    </div>
+                    <span class="text-xs font-bold text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1 rounded-xl">
+                        Đang khóa tạm: 2 phòng
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-slate-900 text-sm">Deluxe Ocean View</span>
+                            <span class="text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded font-bold">Còn 3 trống</span>
+                        </div>
+                        <div class="text-slate-600">1 phòng đang được khóa tạm cho phiên #REQ-8942.</div>
+                        <div class="text-[11px] text-slate-400">Nếu khách từ chối hoặc hết hạn 60p, phòng tự động mở lại ngay lập tức.</div>
+                    </div>
+
+                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-slate-900 text-sm">Superior City View</span>
+                            <span class="text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded font-bold">Còn 2 trống</span>
+                        </div>
+                        <div class="text-slate-600">1 phòng vừa chốt thành công (#REQ-8930), đã trừ quỹ PMS.</div>
+                        <div class="text-[11px] text-slate-400">Sẵn sàng nhận thêm 1 phiên mới.</div>
+                    </div>
+
+                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-slate-900 text-sm">Family Suite</span>
+                            <span class="text-rose-700 bg-rose-100 px-2 py-0.5 rounded font-bold">Hết phòng (Sold out)</span>
+                        </div>
+                        <div class="text-slate-600">Hệ thống tự động từ chối các yêu cầu khớp phòng này để bảo vệ khách sạn.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- CUSTOM BID MODAL -->
+    <div id="bidModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div>
+                    <h3 class="font-bold text-base text-slate-900">Tùy Chỉnh Giá Báo Cho Khách</h3>
+                    <p class="text-xs text-slate-500" id="modalReqId">Phiên: #REQ-8942</p>
+                </div>
+                <button onclick="closeCustomBidModal()" class="text-slate-400 hover:text-slate-600 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Mức giá bạn muốn chào (VNĐ/đêm):</label>
+                    <input type="number" id="customPriceInput" value="950000" step="50000" class="w-full p-2.5 rounded-xl border border-slate-200 font-bold text-slate-900 text-base focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    <p class="text-[11px] text-slate-400 mt-1">Giá sàn bảo vệ tối thiểu: 750.000đ</p>
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1.5">Tặng kèm quà (Tăng xác suất thắng):</label>
+                    <div class="space-y-1.5">
+                        <label class="flex items-center space-x-2 text-slate-700 p-2 bg-slate-50 rounded-lg cursor-pointer">
+                            <input type="checkbox" checked class="rounded text-indigo-600">
+                            <span>Miễn phí buffet sáng 2 người</span>
+                        </label>
+                        <label class="flex items-center space-x-2 text-slate-700 p-2 bg-slate-50 rounded-lg cursor-pointer">
+                            <input type="checkbox" checked class="rounded text-indigo-600">
+                            <span>Cho phép Check-in sớm 2 tiếng</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex space-x-2 pt-2">
+                <button onclick="closeCustomBidModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs py-2.5 rounded-xl transition">
+                    Đóng
+                </button>
+                <button onclick="confirmCustomBid()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-2.5 rounded-xl transition shadow-md shadow-indigo-200">
+                    Xác nhận gửi giá
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MATCH BREAKDOWN MINI MODAL (Ô NHỎ VỪA ĐỦ ĐỐI SOÁT ĐỘ KHỚP) -->
+    <!-- ======================================================== -->
+    <div id="matchDetailModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-5 shadow-2xl border border-slate-200 space-y-3.5 animate-in fade-in zoom-in-95 duration-150">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="flex items-center space-x-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-sm font-bold">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-sm text-slate-900">Chi Tiết Tỷ Lệ Khớp Yêu Cầu</h3>
+                        <p class="text-[11px] text-slate-500 font-medium" id="matchModalSub">Phiên #REQ-8942 • Deluxe Ocean View</p>
+                    </div>
+                </div>
+                <button onclick="closeMatchModal()" class="text-slate-400 hover:text-slate-600 text-base p-1.5 rounded-lg hover:bg-slate-100 transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Score Summary Card -->
+            <div id="matchModalScoreCard" class="p-3.5 rounded-2xl border flex items-center justify-between bg-emerald-50 border-emerald-200 text-emerald-900">
+                <!-- Injected via JavaScript -->
+            </div>
+
+            <!-- Criteria Checklist -->
+            <div class="space-y-2">
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Đối Soát Tiêu Chí Khách Đặt vs Khách Sạn:</div>
+                <div id="matchModalChecklist" class="space-y-2 max-h-[300px] overflow-y-auto pr-1">
+                    <!-- Injected via JavaScript -->
+                </div>
+            </div>
+
+            <!-- AI Tip / Gợi ý -->
+            <div id="matchModalTip" class="p-3 rounded-xl text-xs space-y-1">
+                <!-- Injected via JavaScript -->
+            </div>
+
+            <!-- Footer -->
+            <div class="flex justify-between items-center pt-2.5 border-t border-slate-100">
+                <span class="text-[10px] text-slate-400 flex items-center">
+                    <i class="fa-solid fa-microchip text-indigo-500 mr-1"></i> AI Match Engine v2.4
+                </span>
+                <button onclick="closeMatchModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs px-4 py-2 rounded-xl transition">
+                    Đã hiểu & Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- KPI DRILL-DOWN INSPECTOR MODAL -->
+    <div id="kpiDetailModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl border border-slate-100 space-y-4 max-h-[90vh] overflow-y-auto">
+            <!-- Modal Header -->
+            <div class="flex items-start justify-between border-b border-slate-100 pb-3">
+                <div id="kpiModalHeader">
+                    <!-- Injected via JavaScript -->
+                </div>
+                <button onclick="closeKpiModal()" class="text-slate-400 hover:text-slate-600 text-lg p-1.5 rounded-xl hover:bg-slate-100 transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content Body -->
+            <div id="kpiModalBody" class="space-y-4 text-xs">
+                <!-- Injected via JavaScript -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="flex justify-between items-center pt-3 border-t border-slate-100">
+                <span class="text-[11px] text-slate-400"><i class="fa-solid fa-circle-info mr-1"></i> Dữ liệu đồng bộ trực tiếp từ PMS & Sàn RevBid</span>
+                <button onclick="closeKpiModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs px-5 py-2.5 rounded-xl transition">
+                    Đóng cửa sổ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-3 text-xs font-medium translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+        <span id="toastMsg">Thao tác thành công</span>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-2">
+            <div>
+                RevBid Partner Management System © 2026 • Giao diện tối ưu cho Chủ khách sạn
+            </div>
+            <div class="flex space-x-4">
+                <a href="#" class="hover:text-indigo-600">Hỗ trợ đối tác</a>
+                <a href="#" class="hover:text-indigo-600">Cấu hình giá sàn</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE SCRIPT -->
+    <script>
+        // 1. COUNTDOWN TIMERS
+        function startTimers() {
+            const displays = document.querySelectorAll('.timer-display');
+            displays.forEach(display => {
+                let seconds = parseInt(display.getAttribute('data-seconds'), 10);
+                setInterval(() => {
+                    if (seconds <= 0) {
+                        display.textContent = "00:00 (Hết hạn)";
+                        display.parentElement.classList.replace('bg-rose-100', 'bg-slate-100');
+                        display.parentElement.classList.replace('text-rose-700', 'text-slate-400');
+                        return;
+                    }
+                    seconds--;
+                    display.setAttribute('data-seconds', seconds);
+                    const m = Math.floor(seconds / 60);
+                    const s = seconds % 60;
+                    display.textContent = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+                }, 1000);
+            });
+        }
+        startTimers();
+
+        // 2. SWITCH MAIN TABS
+        function switchMainTab(tabId) {
+            const tabs = ['workspace', 'ai-analytics', 'inventory'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`mainTab-${t === 'ai-analytics' ? 'ai' : t}`);
+                const view = document.getElementById(`view-${t}`);
+                if (t === tabId) {
+                    btn.className = "py-3 border-b-2 border-indigo-600 text-indigo-600 font-bold flex items-center space-x-2 transition";
+                    view.classList.remove('hidden');
+                } else {
+                    btn.className = "py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 font-bold flex items-center space-x-2 transition";
+                    view.classList.add('hidden');
+                }
+            });
+        }
+
+        // 3. CHART.JS: AI LOSS REASON CHART
+        const ctx = document.getElementById('lossReasonChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Giá cao hơn đối thủ', 'Phản hồi chậm', 'Khách bỏ phiên (Ghosting)', 'Thiếu tiện ích'],
+                datasets: [{
+                    data: [42, 26, 18, 14],
+                    backgroundColor: ['#ef4444', '#f59e0b', '#94a3b8', '#6366f1'],
+                    borderWidth: 0,
+                    hoverOffset: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                cutout: '70%'
+            }
+        });
+
+        // 4. TOAST NOTIFICATIONS
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMsg.textContent = message;
+            if (type === 'success') toastIcon.className = "fa-solid fa-circle-check text-emerald-400 text-base";
+            else toastIcon.className = "fa-solid fa-triangle-exclamation text-amber-400 text-base";
+
+            toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+
+        // 5. QUICK ACTIONS
+        function quickBid(itemId, price) {
+            showToast(`Đã gửi báo giá ${price} thành công! Đang chờ khách phản hồi.`, 'success');
+        }
+
+        // 6. MODAL
+        function openCustomBidModal(reqId, price) {
+            document.getElementById('modalReqId').textContent = `Phiên: ${reqId}`;
+            document.getElementById('customPriceInput').value = price;
+            document.getElementById('bidModal').classList.remove('hidden');
+        }
+        function closeCustomBidModal() {
+            document.getElementById('bidModal').classList.add('hidden');
+        }
+        function confirmCustomBid() {
+            const p = parseInt(document.getElementById('customPriceInput').value).toLocaleString('vi-VN') + 'đ';
+            closeCustomBidModal();
+            showToast(`Đã gửi báo giá tùy chỉnh ${p} thành công!`, 'success');
+        }
+
+        // 7. AUTO-BID TOGGLE
+        let autoBidActive = true;
+        function toggleAutoBid() {
+            autoBidActive = !autoBidActive;
+            const btn = document.getElementById('autoBidToggle');
+            if (autoBidActive) {
+                btn.className = "bg-emerald-600 text-white font-bold px-2.5 py-1 rounded-lg text-xs shadow-sm hover:bg-emerald-700 transition";
+                btn.textContent = "BẬT (Sàn 750k)";
+                showToast('Đã bật AI Auto-Bid.', 'success');
+            } else {
+                btn.className = "bg-slate-400 text-white font-bold px-2.5 py-1 rounded-lg text-xs shadow-sm hover:bg-slate-500 transition";
+                btn.textContent = "TẮT";
+                showToast('Đã tắt AI Auto-Bid. Chuyển sang duyệt tay.', 'warning');
+            }
+        }
+
+        // 8. EXPAND / COLLAPSE AUCTION HISTORY (HIỂN THỊ 5 VÀ XỔ XUỐNG XEM THÊM)
+        let isHistoryExpanded = false;
+        function toggleHistory() {
+            isHistoryExpanded = !isHistoryExpanded;
+            const expandableRows = document.querySelectorAll('.hist-expandable');
+            const toggleText = document.getElementById('toggleHistoryText');
+            const toggleIcon = document.getElementById('toggleHistoryIcon');
+
+            expandableRows.forEach(row => {
+                if (isHistoryExpanded) {
+                    row.classList.remove('hidden');
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+
+            if (isHistoryExpanded) {
+                toggleText.textContent = "Thu gọn lịch sử";
+                toggleIcon.className = "fa-solid fa-chevron-up text-indigo-600";
+            } else {
+                toggleText.textContent = "Xem thêm 4 cuộc đấu giá trước đó";
+                toggleIcon.className = "fa-solid fa-chevron-down text-slate-400";
+            }
+        }
+
+        // 9. FILTER HISTORY ROWS
+        function filterHistory(type) {
+            const tabs = ['all', 'won', 'rejected', 'expired'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`histTab-${t}`);
+                if (t === type) {
+                    btn.className = "px-2.5 py-1 rounded-lg bg-indigo-600 text-white font-bold";
+                } else {
+                    btn.className = "px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold";
+                }
+            });
+
+            const rows = document.querySelectorAll('.hist-row');
+            rows.forEach(r => {
+                if (type === 'all') {
+                    // Check if it's an expandable row and if history is currently collapsed
+                    if (r.classList.contains('hist-expandable') && !isHistoryExpanded) {
+                        r.classList.add('hidden');
+                    } else {
+                        r.classList.remove('hidden');
+                    }
+                } else {
+                    if (r.classList.contains(type)) {
+                        r.classList.remove('hidden');
+                    } else {
+                        r.classList.add('hidden');
+                    }
+                }
+            });
+        }
+
+        // 10. KPI DRILL-DOWN INSPECTOR MODAL LOGIC
+        function openKpiModal(type) {
+            const header = document.getElementById('kpiModalHeader');
+            const body = document.getElementById('kpiModalBody');
+            const modal = document.getElementById('kpiDetailModal');
+
+            if (type === 'revenue_total') {
+                header.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <span class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-extrabold text-base text-slate-900">Bóc Tách Tổng Doanh Thu Lũy Kế</h3>
+                            <p class="text-xs text-slate-500">Tháng 11/2026 • Đạt 245.800.000đ (+14.2% so với tháng 10)</p>
+                        </div>
+                    </div>
+                `;
+                body.innerHTML = `
+                    <div class="grid grid-cols-3 gap-3 text-center">
+                        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200">
+                            <span class="text-[11px] text-slate-400 block font-medium">Doanh thu gộp (Gross)</span>
+                            <span class="text-base font-extrabold text-slate-800">273.100.000đ</span>
+                        </div>
+                        <div class="p-3 bg-rose-50 rounded-2xl border border-rose-100">
+                            <span class="text-[11px] text-rose-500 block font-medium">Phí hoa hồng sàn (10%)</span>
+                            <span class="text-base font-extrabold text-rose-600">-27.300.000đ</span>
+                        </div>
+                        <div class="p-3 bg-emerald-50 rounded-2xl border border-emerald-200">
+                            <span class="text-[11px] text-emerald-600 block font-bold">Thực nhận về KS (Net)</span>
+                            <span class="text-base font-extrabold text-emerald-700">245.800.000đ</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-3">
+                        <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Tỷ Trọng Doanh Thu Theo Hạng Phòng</h4>
+                        <div class="space-y-2">
+                            <div>
+                                <div class="flex justify-between text-slate-600 mb-1">
+                                    <span>Deluxe Ocean View (14 phòng chốt)</span>
+                                    <span class="font-bold text-slate-900">127.800.000đ (52%)</span>
+                                </div>
+                                <div class="w-full bg-slate-200 rounded-full h-2">
+                                    <div class="bg-indigo-600 h-2 rounded-full" style="width: 52%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-slate-600 mb-1">
+                                    <span>Superior City View (11 phòng chốt)</span>
+                                    <span class="font-bold text-slate-900">73.700.000đ (30%)</span>
+                                </div>
+                                <div class="w-full bg-slate-200 rounded-full h-2">
+                                    <div class="bg-indigo-400 h-2 rounded-full" style="width: 30%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-slate-600 mb-1">
+                                    <span>Family Suite (4 phòng chốt)</span>
+                                    <span class="font-bold text-slate-900">44.300.000đ (18%)</span>
+                                </div>
+                                <div class="w-full bg-slate-200 rounded-full h-2">
+                                    <div class="bg-indigo-300 h-2 rounded-full" style="width: 18%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-emerald-50 border border-emerald-200 p-3.5 rounded-2xl space-y-1">
+                        <div class="font-bold text-emerald-900 flex items-center">
+                            <i class="fa-solid fa-circle-check text-emerald-600 mr-1.5"></i> Nhận định tăng trưởng từ AI:
+                        </div>
+                        <p class="text-[11px] text-emerald-800 leading-relaxed">
+                            Doanh thu tháng này tăng +14.2% chủ yếu đến từ việc khai thác thành công 12 phòng trống vào đêm thứ 3 & thứ 4 (các đêm vắng khách truyền thống) thông qua cơ chế đấu giá ngược.
+                        </p>
+                    </div>
+
+                    <div class="text-[11px] text-slate-400 flex items-center justify-between">
+                        <span>Kỳ thanh toán tự động kế tiếp: <strong>15/11/2026</strong></span>
+                        <span>Ngân hàng: <strong>Vietcombank ****8888</strong></span>
+                    </div>
+                `;
+            } else if (type === 'revenue_today') {
+                header.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <span class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">
+                            <i class="fa-solid fa-calendar-day"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-extrabold text-base text-slate-900">Doanh Thu Trong Ngày Hôm Nay</h3>
+                            <p class="text-xs text-slate-500">Hôm nay (04/11) • Đã chốt 8 phòng thành công</p>
+                        </div>
+                    </div>
+                `;
+                body.innerHTML = `
+                    <div class="grid grid-cols-3 gap-3 text-center">
+                        <div class="p-3 bg-emerald-50 rounded-2xl border border-emerald-200">
+                            <span class="text-[11px] text-emerald-600 block font-medium">Doanh thu hôm nay</span>
+                            <span class="text-base font-extrabold text-emerald-700">11.850.000đ</span>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200">
+                            <span class="text-[11px] text-slate-500 block font-medium">Giá phòng TB (ADR)</span>
+                            <span class="text-base font-extrabold text-slate-800">1.481.000đ/đêm</span>
+                        </div>
+                        <div class="p-3 bg-blue-50 rounded-2xl border border-blue-200">
+                            <span class="text-[11px] text-blue-600 block font-medium">Trạng thái thu tiền</span>
+                            <span class="text-base font-extrabold text-blue-700">100% Đã thu/Cọc</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Danh Sách 8 Đơn Phòng Chốt Hôm Nay</h4>
+                        <div class="max-h-48 overflow-y-auto divide-y divide-slate-100 border border-slate-200 rounded-xl bg-white">
+                            <div class="p-2.5 flex items-center justify-between text-xs hover:bg-slate-50">
+                                <div><strong class="font-mono text-slate-800">#REQ-8930</strong> • Superior City (2 đêm) <span class="text-slate-400 text-[10px] block">14:12 - Chốt nhanh</span></div>
+                                <div class="text-right"><strong class="text-emerald-700">1.500.000đ</strong><span class="text-[10px] text-emerald-600 block">Đã thanh toán</span></div>
+                            </div>
+                            <div class="p-2.5 flex items-center justify-between text-xs hover:bg-slate-50">
+                                <div><strong class="font-mono text-slate-800">#REQ-8919</strong> • Family Suite (3 đêm) <span class="text-slate-400 text-[10px] block">11:45 - Thắng sát nút</span></div>
+                                <div class="text-right"><strong class="text-emerald-700">2.400.000đ</strong><span class="text-[10px] text-blue-600 block">Giữ cọc thẻ</span></div>
+                            </div>
+                            <div class="p-2.5 flex items-center justify-between text-xs hover:bg-slate-50">
+                                <div><strong class="font-mono text-slate-800">#REQ-8905</strong> • Deluxe City (1 đêm) <span class="text-slate-400 text-[10px] block">08:30 - Khách công tác</span></div>
+                                <div class="text-right"><strong class="text-emerald-700">890.000đ</strong><span class="text-[10px] text-emerald-600 block">Đã thanh toán</span></div>
+                            </div>
+                            <div class="p-2.5 flex items-center justify-between text-xs hover:bg-slate-50">
+                                <div><strong class="font-mono text-slate-800">#REQ-8898</strong> • Standard Room (1 đêm) <span class="text-slate-400 text-[10px] block">04:30 - Auto-bid đêm</span></div>
+                                <div class="text-right"><strong class="text-emerald-700">650.000đ</strong><span class="text-[10px] text-emerald-600 block">Đã thanh toán</span></div>
+                            </div>
+                            <div class="p-2.5 flex items-center justify-between text-xs hover:bg-slate-50">
+                                <div><strong class="font-mono text-slate-800">#REQ-8890</strong> • Deluxe Ocean (2 đêm) <span class="text-slate-400 text-[10px] block">02:15 - Đặt trước</span></div>
+                                <div class="text-right"><strong class="text-emerald-700">1.900.000đ</strong><span class="text-[10px] text-emerald-600 block">Đã thanh toán</span></div>
+                            </div>
+                            <div class="p-2.5 flex items-center justify-between text-xs hover:bg-slate-50">
+                                <div><strong class="font-mono text-slate-800">#REQ-8884</strong> • Superior City (1 đêm) <span class="text-slate-400 text-[10px] block">01:20 - Khách lẻ</span></div>
+                                <div class="text-right"><strong class="text-emerald-700">780.000đ</strong><span class="text-[10px] text-emerald-600 block">Đã thanh toán</span></div>
+                            </div>
+                            <div class="p-2.5 flex items-center justify-between text-xs hover:bg-slate-50">
+                                <div><strong class="font-mono text-slate-800">#REQ-8881</strong> • Deluxe Ocean (2 đêm) <span class="text-slate-400 text-[10px] block">00:45 - Cuối tuần</span></div>
+                                <div class="text-right"><strong class="text-emerald-700">2.100.000đ</strong><span class="text-[10px] text-emerald-600 block">Đã thanh toán</span></div>
+                            </div>
+                            <div class="p-2.5 flex items-center justify-between text-xs hover:bg-slate-50">
+                                <div><strong class="font-mono text-slate-800">#REQ-8878</strong> • Superior City (2 đêm) <span class="text-slate-400 text-[10px] block">00:10 - Đặt sớm</span></div>
+                                <div class="text-right"><strong class="text-emerald-700">1.630.000đ</strong><span class="text-[10px] text-emerald-600 block">Đã thanh toán</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-indigo-50 border border-indigo-200 p-3 rounded-xl flex items-center justify-between">
+                        <span class="text-indigo-950 font-medium">Dự báo từ giờ đến 23h00: Còn khoảng 2-3 yêu cầu tiềm năng.</span>
+                        <span class="font-bold text-indigo-700">+2.5M - 3.5M tiềm năng</span>
+                    </div>
+                `;
+            } else if (type === 'sessions_total') {
+                header.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <span class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-sm">
+                            <i class="fa-solid fa-gavel"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-extrabold text-base text-slate-900">Báo Cáo 68 Phiên Đấu Giá Đã Tham Gia</h3>
+                            <p class="text-xs text-slate-500">12 phiên trong ngày • Tỷ lệ phản hồi hợp lệ: 94.1%</p>
+                        </div>
+                    </div>
+                `;
+                body.innerHTML = `
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="font-bold text-slate-800">Chào giá Thủ công</span>
+                                <span class="text-xs font-bold text-indigo-600">46 phiên (67.6%)</span>
+                            </div>
+                            <p class="text-[11px] text-slate-500">Do nhân viên lễ tân trực tiếp duyệt và gửi. Tốc độ phản hồi trung bình: <strong>4.8 phút</strong>.</p>
+                        </div>
+                        <div class="p-3.5 bg-emerald-50 rounded-2xl border border-emerald-200">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="font-bold text-emerald-950">AI Auto-Bid Tự Động</span>
+                                <span class="text-xs font-bold text-emerald-700">22 phiên (32.4%)</span>
+                            </div>
+                            <p class="text-[11px] text-emerald-800">Bot tự động gửi trong 3 phút đầu theo giá sàn bảo vệ. Tỷ lệ thắng của bot: <strong>45.4%</strong>.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 space-y-3">
+                        <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Khung Giờ Khách Gửi Yêu Cầu Nhiều Nhất</h4>
+                        <div class="space-y-2">
+                            <div>
+                                <div class="flex justify-between text-slate-600 mb-1">
+                                    <span>Khung trưa (11h30 - 13h30): Khách công tác tranh thủ</span>
+                                    <span class="font-bold text-slate-900">24 phiên (35%)</span>
+                                </div>
+                                <div class="w-full bg-slate-100 rounded-full h-2">
+                                    <div class="bg-amber-500 h-2 rounded-full" style="width: 35%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-slate-600 mb-1">
+                                    <span>Khung tối (19h30 - 22h00): Khách tìm phòng cận giờ</span>
+                                    <span class="font-bold text-slate-900">31 phiên (46%)</span>
+                                </div>
+                                <div class="w-full bg-slate-100 rounded-full h-2">
+                                    <div class="bg-indigo-600 h-2 rounded-full" style="width: 46%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-slate-600 mb-1">
+                                    <span>Các khung giờ rải rác khác</span>
+                                    <span class="font-bold text-slate-900">13 phiên (19%)</span>
+                                </div>
+                                <div class="w-full bg-slate-100 rounded-full h-2">
+                                    <div class="bg-slate-400 h-2 rounded-full" style="width: 19%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-rose-50 border border-rose-200 p-3 rounded-xl flex items-center justify-between text-xs">
+                        <span class="text-rose-900"><i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-600"></i> Cảnh báo: Ca đêm qua bỏ lỡ 2 phiên vì không có người trực. Hãy luôn bật AI Auto-Bid!</span>
+                    </div>
+                `;
+            } else if (type === 'win_rate') {
+                header.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <span class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-sm">
+                            <i class="fa-solid fa-trophy"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-extrabold text-base text-slate-900">Phễu Chuyển Đổi & Tỷ Lệ Thắng: 42.6%</h3>
+                            <p class="text-xs text-slate-500">29 / 68 phiên thắng • Vượt mức chuẩn sàn (> 35%)</p>
+                        </div>
+                    </div>
+                `;
+                body.innerHTML = `
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                        <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Phễu Đấu Giá 3 Giai Đoạn (Funnel)</h4>
+                        <div class="space-y-1.5">
+                            <div class="flex items-center justify-between p-2 bg-white rounded-xl border border-slate-200">
+                                <span>1. Gửi báo giá tham gia</span>
+                                <strong class="text-slate-900">68 phiên (100%)</strong>
+                            </div>
+                            <div class="flex items-center justify-between p-2 bg-indigo-50/50 rounded-xl border border-indigo-100">
+                                <span>2. Khách mở xem chi tiết phòng bạn</span>
+                                <strong class="text-indigo-700">56 khách (82.3%)</strong>
+                            </div>
+                            <div class="flex items-center justify-between p-2 bg-emerald-50 rounded-xl border border-emerald-200">
+                                <span>3. Khách bấm nhận phòng (Thắng thầu)</span>
+                                <strong class="text-emerald-700 font-extrabold">29 khách (42.6%)</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 space-y-3">
+                        <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Tỷ Lệ Thắng Theo Tầm Ngân Sách</h4>
+                        <div class="grid grid-cols-3 gap-2 text-center">
+                            <div class="p-2.5 bg-emerald-50 rounded-xl border border-emerald-200">
+                                <span class="text-[10px] text-slate-500 block">Dưới 1.000k</span>
+                                <span class="text-sm font-extrabold text-emerald-700">58.1%</span>
+                                <span class="text-[10px] text-emerald-600 block mt-0.5">Thắng 18/31 phiên</span>
+                            </div>
+                            <div class="p-2.5 bg-indigo-50 rounded-xl border border-indigo-200">
+                                <span class="text-[10px] text-slate-500 block">1.000k - 1.500k</span>
+                                <span class="text-sm font-extrabold text-indigo-700">40.9%</span>
+                                <span class="text-[10px] text-indigo-600 block mt-0.5">Thắng 9/22 phiên</span>
+                            </div>
+                            <div class="p-2.5 bg-rose-50 rounded-xl border border-rose-200">
+                                <span class="text-[10px] text-slate-500 block">Trên 1.500k (Suite)</span>
+                                <span class="text-sm font-extrabold text-rose-700">13.3%</span>
+                                <span class="text-[10px] text-rose-600 block mt-0.5">Thắng 2/15 phiên</span>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-slate-500 italic">
+                            *Phân khúc Suite bị trượt nhiều do thiếu gói quà tặng kèm (Buffet sáng/Trà chiều). Đã có đề xuất tối ưu trong Tab AI.
+                        </p>
+                    </div>
+
+                    <div class="text-[11px] text-slate-600 bg-slate-50 p-3 rounded-xl flex items-center justify-between">
+                        <span>Thời gian khách chốt trung bình của các deal thắng:</span>
+                        <strong class="text-slate-900">5.4 phút sau khi gửi</strong>
+                    </div>
+                `;
+            } else if (type === 'rooms_occupied') {
+                header.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <span class="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-sm">
+                            <i class="fa-solid fa-user-check"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-extrabold text-base text-slate-900">Sơ Đồ 24 Phòng Đang Được Đặt (Công Suất: 80%)</h3>
+                            <p class="text-xs text-slate-500">24 / 30 phòng đã có khách • 8 phòng đến từ kênh đấu giá ngược</p>
+                        </div>
+                    </div>
+                `;
+                // Generate 30 room matrix badges
+                let roomGridHtml = '';
+                for (let i = 1; i <= 30; i++) {
+                    let roomNum = 100 + i;
+                    if (i <= 16) {
+                        roomGridHtml += `<span class="p-1.5 rounded-lg bg-emerald-100 text-emerald-800 text-center font-bold font-mono text-[11px] border border-emerald-200" title="Khách In-house (Kênh khác)">#${roomNum}</span>`;
+                    } else if (i <= 24) {
+                        roomGridHtml += `<span class="p-1.5 rounded-lg bg-indigo-100 text-indigo-800 text-center font-bold font-mono text-[11px] border border-indigo-200" title="Khách chốt qua RevBid (Đấu giá)">#${roomNum}</span>`;
+                    } else {
+                        roomGridHtml += `<span class="p-1.5 rounded-lg bg-slate-100 text-slate-400 text-center font-mono text-[11px] border border-slate-200" title="Phòng trống">#${roomNum}</span>`;
+                    }
+                }
+
+                body.innerHTML = `
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Ma Trận 30 Buồng Phòng Khách Sạn</h4>
+                            <div class="flex items-center space-x-3 text-[10px]">
+                                <span class="flex items-center"><span class="w-2 h-2 rounded bg-emerald-500 mr-1"></span> Kênh khác (16)</span>
+                                <span class="flex items-center"><span class="w-2 h-2 rounded bg-indigo-600 mr-1"></span> Đấu giá RevBid (8)</span>
+                                <span class="flex items-center"><span class="w-2 h-2 rounded bg-slate-300 mr-1"></span> Phòng trống (6)</span>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-6 sm:grid-cols-10 gap-1.5">
+                            ${roomGridHtml}
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="p-3 bg-white rounded-xl border border-slate-200">
+                            <span class="text-slate-400 text-[11px] block">Đóng góp của Kênh Đấu Giá:</span>
+                            <span class="text-base font-extrabold text-indigo-700">8 phòng (26.7%)</span>
+                            <span class="text-[10px] text-slate-500 block mt-0.5">Toàn bộ là phòng bán bổ sung cận giờ</span>
+                        </div>
+                        <div class="p-3 bg-white rounded-xl border border-slate-200">
+                            <span class="text-slate-400 text-[11px] block">Lịch trả phòng ngày mai:</span>
+                            <span class="text-base font-extrabold text-slate-800">9 phòng check-out</span>
+                            <span class="text-[10px] text-slate-500 block mt-0.5">Sẵn sàng nhận phiên mới từ 10h00</span>
+                        </div>
+                    </div>
+                `;
+            } else if (type === 'rooms_vacant') {
+                header.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm">
+                            <i class="fa-solid fa-door-open"></i>
+                        </span>
+                        <div>
+                            <h3 class="font-extrabold text-base text-slate-900">Quản Lý 6 Phòng Chưa Được Đặt & Khóa Tạm</h3>
+                            <p class="text-xs text-slate-500">Cần thanh lý trước 22h00 đêm nay để tránh ế phòng</p>
+                        </div>
+                    </div>
+                `;
+                body.innerHTML = `
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2.5">
+                        <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Danh Sách 6 Phòng Trống Cụ Thể</h4>
+                        <div class="space-y-2">
+                            <div class="p-2.5 bg-white rounded-xl border border-slate-200 flex items-center justify-between">
+                                <div>
+                                    <strong class="text-slate-900">Deluxe Ocean View (3 phòng)</strong>
+                                    <span class="text-slate-400 text-[11px] block">2 phòng trống tự do • 1 phòng đang khóa tạm</span>
+                                </div>
+                                <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded">
+                                    Khóa tạm cho #REQ-8942 (còn 7p)
+                                </span>
+                            </div>
+
+                            <div class="p-2.5 bg-white rounded-xl border border-slate-200 flex items-center justify-between">
+                                <div>
+                                    <strong class="text-slate-900">Superior City View (2 phòng)</strong>
+                                    <span class="text-slate-400 text-[11px] block">1 phòng trống tự do • 1 phòng đang khóa tạm</span>
+                                </div>
+                                <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded">
+                                    Khóa tạm cho #REQ-8943 (còn 35p)
+                                </span>
+                            </div>
+
+                            <div class="p-2.5 bg-white rounded-xl border border-slate-200 flex items-center justify-between">
+                                <div>
+                                    <strong class="text-slate-900">Family Suite (1 phòng)</strong>
+                                    <span class="text-slate-400 text-[11px] block">Phòng cao cấp còn trống tự do</span>
+                                </div>
+                                <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded">
+                                    Sẵn sàng chào giá
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Soft-Hold Rule Box -->
+                    <div class="bg-indigo-50 border border-indigo-200 p-3 rounded-xl text-xs space-y-1">
+                        <div class="font-bold text-indigo-950 flex items-center">
+                            <i class="fa-solid fa-shield-halved text-indigo-600 mr-1.5"></i> Cơ chế Soft-Hold Chống Bán Vượt (Overbooking):
+                        </div>
+                        <p class="text-[11px] text-indigo-900/90 leading-relaxed">
+                            2 phòng đang khóa tạm sẽ tự động mở khóa về kho bán tự do ngay lập tức nếu phiên đấu giá 60 phút hết hạn hoặc khi khách hàng bấm từ chối.
+                        </p>
+                    </div>
+
+                    <!-- AI Emergency Action Box -->
+                    <div class="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 p-4 rounded-2xl shadow space-y-2">
+                        <div class="font-extrabold text-xs uppercase tracking-wide flex items-center text-slate-900">
+                            <i class="fa-solid fa-bolt mr-1.5"></i> Đề Xuất Khẩn Cấp Từ AI Cho Đêm Nay:
+                        </div>
+                        <p class="text-xs text-slate-900 leading-relaxed font-medium">
+                            Hiện tại đã là 19h45 tối. Nguy cơ 4 phòng trống tự do sẽ bị bỏ phí đêm nay. Hãy kích hoạt chế độ Xả Phòng Đêm để tự động giảm giá sàn 15% cho khách check-in sau 20h00, giúp kéo công suất từ <strong>80% lên 93%</strong>.
+                        </p>
+                        <div class="pt-1">
+                            <button onclick="activateNightFlashSale()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow transition flex items-center justify-center space-x-1.5">
+                                <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
+                                <span>KÍCH HOẠT XẢ PHÒNG ĐÊM (GIẢM SÀN 15%)</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeKpiModal() {
+            document.getElementById('kpiDetailModal').classList.add('hidden');
+        }
+
+        function activateNightFlashSale() {
+            closeKpiModal();
+            showToast('Đã kích hoạt chế độ Xả Phòng Đêm! Giá sàn tự động giảm 15% cho các phiên sau 20h00.', 'success');
+        }
+
+        
+        // ==========================================
+        // MATCH BREAKDOWN POPUP LOGIC (Ô NHỎ VỪA ĐỦ)
+        // ==========================================
+        const matchBreakdownData = {
+            'REQ-8942': {
+                score: 95,
+                sub: 'Phiên #REQ-8942 • Phòng Deluxe Ocean View',
+                title: 'Khớp Rất Cao (4/5 tiêu chí hoàn hảo)',
+                color: 'emerald',
+                items: [
+                    { name: 'Loại phòng * (bắt buộc)', guest: 'Cao cấp (Deluxe)', hotel: 'Deluxe Ocean View', status: 'match', label: 'Khớp 100%' },
+                    { name: 'Loại giường', guest: 'Giường đôi (Queen, King)', hotel: '1 Giường King lớn', status: 'match', label: 'Khớp 100%' },
+                    { name: 'Loại dịch vụ đã chọn', guest: 'Bữa sáng, Hồ bơi, Wifi', hotel: 'Có Hồ bơi vô cực & Wifi (Chưa gồm Bữa sáng)', status: 'warn', label: 'Thiếu Bữa sáng (-5%)' },
+                    { name: 'Tiện ích phòng', guest: 'Truyền hình', hotel: 'Smart TV 55 inch sẵn có', status: 'match', label: 'Khớp 100%' },
+                    { name: 'Lịch Check-in (Khung 14 ngày)', guest: 'Hôm nay (04/11) • 2 đêm', hotel: 'Phòng trống sẵn sàng nhận ngay', status: 'match', label: 'Khớp 100%' }
+                ],
+                tip: '💡 <strong>Gợi ý AI:</strong> Khách tick chọn dịch vụ <em>Bữa sáng</em>. Giá đề xuất 950k chưa kèm buffet sáng. Nếu tặng thêm bữa sáng (+40k cost), tỷ lệ khớp sẽ đạt 100% và tăng cơ hội thắng lên 89%.'
+            },
+            'REQ-8943': {
+                score: 92,
+                sub: 'Phiên #REQ-8943 • Phòng Family Suite',
+                title: 'Khớp Tốt (Đúng hạng Suite, lệch Trả phòng trễ)',
+                color: 'indigo',
+                items: [
+                    { name: 'Loại phòng * (bắt buộc)', guest: 'Suite', hotel: 'Family Suite cao cấp', status: 'match', label: 'Khớp 100%' },
+                    { name: 'Loại giường', guest: 'Giường đôi + Hai giường đơn', hotel: '1 King + 2 Giường đơn tiêu chuẩn', status: 'match', label: 'Khớp 100%' },
+                    { name: 'Loại dịch vụ đã chọn', guest: 'Bữa sáng, Bãi xe, Trả phòng trễ', hotel: 'Có Bữa sáng, Bãi xe (Chưa hỗ trợ Trả phòng trễ)', status: 'warn', label: 'Chưa hỗ trợ Late Checkout (-8%)' },
+                    { name: 'Tiện ích phòng', guest: 'Truyền hình, Thang máy', hotel: 'Đầy đủ TV & Thang máy trực tiếp', status: 'match', label: 'Khớp 100%' },
+                    { name: 'Lịch Check-in (Khung 14 ngày)', guest: 'Sau 6 ngày (10/11) • 3 đêm', hotel: 'Sẵn buồng trống thông suốt 3 đêm', status: 'match', label: 'Khớp 100%' }
+                ],
+                tip: '💡 <strong>Gợi ý AI:</strong> Khách đi gia đình cần trả phòng trễ. Nếu khách sạn hỗ trợ checkout lúc 14h00, phiên này cầm chắc chiến thắng vì hiện chưa đối thủ nào chào giá.'
+            },
+            'REQ-8930': {
+                score: 98,
+                sub: 'Phiên #REQ-8930 • Superior City View',
+                title: 'Khớp Hoàn Hảo Toàn Bộ Tiêu Chí Form',
+                color: 'emerald',
+                items: [
+                    { name: 'Loại phòng * (bắt buộc)', guest: 'Superior', hotel: 'Superior City View', status: 'match', label: 'Khớp 100%' },
+                    { name: 'Loại giường', guest: 'Giường đôi (Queen, King)', hotel: '1 Giường đôi Queen', status: 'match', label: 'Khớp 100%' },
+                    { name: 'Loại dịch vụ đã chọn', guest: 'Bữa sáng, Wifi', hotel: 'Kèm Buffet sáng + Wifi cáp quang', status: 'match', label: 'Khớp 100%' },
+                    { name: 'Lịch Check-in', guest: '04/11 - 2 đêm', hotel: 'Sẵn buồng', status: 'match', label: 'Khớp 100%' }
+                ],
+                tip: '🏆 <strong>Chiến thắng thuyết phục:</strong> Bạn đáp ứng 100% tất cả dịch vụ khách tick trong form, chốt thành công sau 1m40s với giá 750k/đêm.'
+            },
+            'REQ-8892': {
+                score: 72,
+                sub: 'Phiên #REQ-8892 • Deluxe Standard',
+                title: 'Trượt Deal Vì Thiếu 2 Dịch Vụ Khách Tick',
+                color: 'rose',
+                items: [
+                    { name: 'Loại phòng * (bắt buộc)', guest: 'Cao cấp (Deluxe)', hotel: 'Deluxe Standard (Có buồng)', status: 'match', label: 'Khớp phòng' },
+                    { name: 'Loại giường', guest: 'Giường đôi', hotel: 'Giường đôi King', status: 'match', label: 'Khớp giường' },
+                    { name: 'Loại dịch vụ đã chọn', guest: 'Bữa sáng, Trả phòng trễ', hotel: 'Không kèm Bữa sáng & Từ chối Trả phòng trễ', status: 'miss', label: 'THIẾU 2 DỊCH VỤ' },
+                    { name: 'Tiện ích phòng', guest: 'Thang máy, Truyền hình', hotel: 'Khách sạn có thang máy & Smart TV', status: 'match', label: 'Khớp tiện ích' }
+                ],
+                tip: '⚠️ <strong>Mổ xẻ nguyên nhân:</strong> Khách chọn bắt buộc <em>Bữa sáng</em> và <em>Trả phòng trễ</em>. Bạn chào giá 1.050k nhưng không kèm dịch vụ này. Đối thủ thắng với giá 980k bao gồm cả ăn sáng và hỗ trợ trả phòng muộn.'
+            },
+            'REQ-8924': {
+                score: 88,
+                sub: 'Phiên #REQ-8924 • Executive King',
+                title: 'Khớp Phòng & Giường, Thiếu Giặt Ủi',
+                color: 'amber',
+                items: [
+                    { name: 'Loại phòng * (bắt buộc)', guest: 'Executive', hotel: 'Executive King Suite', status: 'match', label: 'Khớp 100%' },
+                    { name: 'Loại giường', guest: 'Giường đơn', hotel: 'Bố trí Giường đơn lớn', status: 'match', label: 'Khớp 100%' },
+                    { name: 'Loại dịch vụ & Tiện ích', guest: 'Wifi, Bãi xe, Giặt ủi', hotel: 'Có Wifi, Bãi xe (Chưa gồm giặt ủi miễn phí)', status: 'warn', label: 'Giặt ủi tính phí (-12%)' }
+                ],
+                tip: '💡 <strong>Gợi ý:</strong> Khách đi công tác cần dịch vụ giặt ủi áo sơ mi nhanh. Lần sau hãy tích hợp thêm tag dịch vụ này.'
+            },
+            'REQ-8919': {
+                score: 96,
+                sub: 'Phiên #REQ-8919 • Deluxe Ocean View',
+                title: 'Khớp Xuất Sắc Toàn Bộ 3 Đêm',
+                color: 'emerald',
+                items: [
+                    { name: 'Loại phòng * (bắt buộc)', guest: 'Cao cấp (Deluxe)', hotel: 'Deluxe Ocean View tầng 8', status: 'match', label: 'Khớp 100%' },
+                    { name: 'Loại giường', guest: 'Giường đôi', hotel: 'Giường King hướng biển', status: 'match', label: 'Khớp 100%' },
+                    { name: 'Loại dịch vụ', guest: 'Hồ bơi, Bữa sáng, Trả phòng trễ', hotel: 'Đầy đủ trọn gói dịch vụ', status: 'match', label: 'Khớp 100%' }
+                ],
+                tip: '🏆 <strong>Thắng đậm:</strong> Đáp ứng hoàn hảo mọi dịch vụ khách yêu cầu, mang về 4.35M cho 3 đêm lưu trú.'
+            },
+            'AUTOPSY-YOU': {
+                score: 82,
+                sub: 'Báo Giá Của Bạn • Deluxe Ocean View',
+                title: 'Khớp 82% (Thiếu Bữa Sáng & Trả Phòng Trễ)',
+                color: 'amber',
+                items: [
+                    { name: 'Loại phòng * (bắt buộc)', guest: 'Cao cấp (Deluxe)', hotel: 'Deluxe Ocean View (Khớp)', status: 'match', label: 'Khớp 100%' },
+                    { name: 'Loại giường', guest: 'Giường đôi (Queen, King)', hotel: 'Giường King hướng biển', status: 'match', label: 'Khớp 100%' },
+                    { name: 'Loại dịch vụ', guest: 'Bữa sáng + Trả phòng trễ', hotel: 'Giá 1.050k chưa gồm Bữa sáng & Trả phòng trễ', status: 'miss', label: 'Thiếu dịch vụ' },
+                    { name: 'Tiện ích phòng', guest: 'Thang máy, Truyền hình', hotel: 'Có thang máy & TV', status: 'match', label: 'Khớp 100%' }
+                ],
+                tip: '💡 Khách hàng cần Bữa sáng và Trả phòng trễ. Khách sạn chào phòng thiếu 2 dịch vụ này nên bị trượt deal.'
+            },
+            'AUTOPSY-WINNER': {
+                score: 98,
+                sub: 'Khách Sạn Thắng Cuộc (Đối Thủ Ẩn Danh)',
+                title: 'Khớp 98% (Đáp Ứng Đủ Dịch Vụ + Giá Tốt)',
+                color: 'emerald',
+                items: [
+                    { name: 'Loại phòng * (bắt buộc)', guest: 'Cao cấp (Deluxe)', hotel: 'Deluxe City View 4 sao', status: 'match', label: 'Khớp 100%' },
+                    { name: 'Loại giường', guest: 'Giường đôi (King)', hotel: 'Giường King tiêu chuẩn', status: 'match', label: 'Khớp 100%' },
+                    { name: 'Loại dịch vụ', guest: 'Bữa sáng + Trả phòng trễ', hotel: 'Tặng kèm 2 Buffet sáng + Hỗ trợ checkout 14h', status: 'match', label: 'Khớp trọn gói' },
+                    { name: 'Mức giá chốt', guest: 'Đấu giá kín', hotel: '980.000đ (Bao trọn dịch vụ)', status: 'match', label: 'Ưu thế giá' }
+                ],
+                tip: '🏆 <strong>Điểm thắng đối thủ:</strong> Vừa khớp 100% dịch vụ Bữa sáng & Trả phòng trễ theo form, mức giá lại mềm hơn 70k.'
+            }
+        };
+
+        function openMatchModal(reqId) {
+            const data = matchBreakdownData[reqId] || {
+                score: 90,
+                sub: 'Phiên #' + reqId + ' • Phân tích độ khớp phòng',
+                title: 'Khớp Yêu Cầu Tương Đối Cao',
+                color: 'emerald',
+                items: [
+                    { name: 'Hạng phòng', guest: 'Đúng phân khúc lựa chọn', hotel: 'Có buồng trống sẵn sàng', status: 'match', label: 'Khớp 100%' },
+                    { name: 'Loại dịch vụ & Tiện ích', guest: 'Các mục khách đã tick chọn', hotel: 'Khách sạn đáp ứng đầy đủ', status: 'match', label: 'Khớp 100%' },
+                    { name: 'Lịch ở', guest: 'Check-in trong khung 14 ngày', hotel: 'Đảm bảo buồng lưu trú', status: 'match', label: 'Khớp 100%' },
+                    { name: 'Dịch vụ phụ trợ', guest: 'Các yêu cầu tiện ích thêm', hotel: 'Đáp ứng tiêu chuẩn cơ bản', status: 'warn', label: 'Đáp ứng 90%' }
+                ],
+                tip: '💡 Hệ thống tự động phân tích dựa trên lịch sử đặt phòng và phản hồi telemetry của khách.'
+            };
+
+            document.getElementById('matchModalSub').textContent = data.sub;
+
+            // Score card color mapping
+            let scoreBg = 'bg-emerald-50 border-emerald-200 text-emerald-900';
+            let barBg = 'bg-emerald-600';
+            let badgeBg = 'bg-emerald-100 text-emerald-800';
+            if (data.score < 80) {
+                scoreBg = 'bg-rose-50 border-rose-200 text-rose-900';
+                barBg = 'bg-rose-600';
+                badgeBg = 'bg-rose-100 text-rose-800';
+            } else if (data.score < 90) {
+                scoreBg = 'bg-amber-50 border-amber-200 text-amber-900';
+                barBg = 'bg-amber-600';
+                badgeBg = 'bg-amber-100 text-amber-800';
+            }
+
+            document.getElementById('matchModalScoreCard').className = `p-3.5 rounded-2xl border flex items-center justify-between ${scoreBg}`;
+            document.getElementById('matchModalScoreCard').innerHTML = `
+                <div>
+                    <div class="text-[10px] font-bold uppercase tracking-wider opacity-75">Tổng Điểm Khớp AI</div>
+                    <div class="font-extrabold text-sm leading-snug">${data.title}</div>
+                    <div class="w-36 bg-slate-200/80 rounded-full h-1.5 mt-1.5 overflow-hidden">
+                        <div class="${barBg} h-1.5 rounded-full" style="width: ${data.score}%"></div>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <span class="text-3xl font-black font-mono">${data.score}%</span>
+                </div>
+            `;
+
+            // Checklist items
+            let itemsHtml = '';
+            data.items.forEach(item => {
+                let iconHtml = '<i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>';
+                let tagBg = 'bg-emerald-50 text-emerald-700 border-emerald-200';
+
+                if (item.status === 'warn') {
+                    iconHtml = '<i class="fa-solid fa-triangle-exclamation text-amber-500 text-sm"></i>';
+                    tagBg = 'bg-amber-50 text-amber-700 border-amber-200';
+                } else if (item.status === 'miss') {
+                    iconHtml = '<i class="fa-solid fa-circle-xmark text-rose-500 text-sm"></i>';
+                    tagBg = 'bg-rose-50 text-rose-700 border-rose-200 font-bold';
+                }
+
+                itemsHtml += `
+                    <div class="p-2.5 rounded-xl border border-slate-100 bg-slate-50 flex items-start justify-between gap-2">
+                        <div class="flex items-start space-x-2">
+                            <span class="mt-0.5 flex-shrink-0">${iconHtml}</span>
+                            <div>
+                                <span class="font-bold text-slate-800 block text-xs">${item.name}</span>
+                                <div class="text-[11px] text-slate-500 mt-0.5 space-y-0.5">
+                                    <div><span class="text-slate-400">Khách đặt:</span> <strong>${item.guest}</strong></div>
+                                    <div><span class="text-slate-400">KS có:</span> <span class="text-slate-700">${item.hotel}</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded border ${tagBg} flex-shrink-0">
+                            ${item.label}
+                        </span>
+                    </div>
+                `;
+            });
+            document.getElementById('matchModalChecklist').innerHTML = itemsHtml;
+
+            // Tip
+            let tipBg = data.score < 80 ? 'bg-rose-50 border-rose-200 text-rose-900' : (data.score < 90 ? 'bg-amber-50 border-amber-200 text-amber-900' : 'bg-indigo-50 border-indigo-200 text-indigo-900');
+            document.getElementById('matchModalTip').className = `p-3 rounded-xl border text-xs leading-relaxed ${tipBg}`;
+            document.getElementById('matchModalTip').innerHTML = data.tip;
+
+            // Show modal
+            document.getElementById('matchDetailModal').classList.remove('hidden');
+        }
+
+        function closeMatchModal() {
+            document.getElementById('matchDetailModal').classList.add('hidden');
+        }
+
+        // Close KPI modal when clicking outside
+        window.addEventListener('click', function(event) {
+            const kpiModal = document.getElementById('kpiDetailModal');
+            if (event.target === kpiModal) {
+                closeKpiModal();
+            }
+            const matchModal = document.getElementById('matchDetailModal');
+            if (event.target === matchModal) {
+                closeMatchModal();
+            }
+        });
+
+        // Close on ESC key
+        window.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeKpiModal();
+                closeCustomBidModal();
+                closeMatchModal();
+            }
+        });
+    </script>
+</body>
+</html>

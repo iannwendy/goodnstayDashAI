@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1720" height="1210" viewBox="0 0 1720 1210">
+<defs>
+  <marker id="arrow-solid" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#334155" />
+  </marker>
+  <marker id="arrow-open" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 1 1.5 L 9 5 L 1 8.5" fill="none" stroke="#64748B" stroke-width="1.6" />
+  </marker>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+  </style>
+</defs>
+<rect x="0" y="0" width="1720" height="1210" fill="#FFFFFF" />
+<rect x="40.0" y="70.0" width="1640.0" height="240.0" rx="6" fill="#f5f5f5" stroke="#666666" stroke-width="1.6" />
+<path d="M 40.0 106.0 L 1680.0 106.0" stroke="#666666" stroke-width="1.4" />
+<rect x="41.0" y="71.0" width="1638.0" height="35.0" rx="5" fill="#E2E8F0" opacity="0.55" />
+<text x="860.0" y="93.0" text-anchor="middle" font-size="13" font-weight="700" fill="#0F172A">1. Trạng thái Phòng PMS (RoomStatus — 4 trạng thái vật lý trên Sơ đồ 30 Buồng)</text>
+<rect x="40.0" y="330.0" width="1640.0" height="290.0" rx="6" fill="#f5f5f5" stroke="#666666" stroke-width="1.6" />
+<path d="M 40.0 366.0 L 1680.0 366.0" stroke="#666666" stroke-width="1.4" />
+<rect x="41.0" y="331.0" width="1638.0" height="35.0" rx="5" fill="#E2E8F0" opacity="0.55" />
+<text x="860.0" y="353.0" text-anchor="middle" font-size="13" font-weight="700" fill="#0F172A">2. Trạng thái Báo giá Đấu giá (BidStatus — 10 trạng thái vòng đời chào giá của Khách sạn)</text>
+<rect x="40.0" y="640.0" width="1640.0" height="260.0" rx="6" fill="#f5f5f5" stroke="#666666" stroke-width="1.6" />
+<path d="M 40.0 676.0 L 1680.0 676.0" stroke="#666666" stroke-width="1.4" />
+<rect x="41.0" y="641.0" width="1638.0" height="35.0" rx="5" fill="#E2E8F0" opacity="0.55" />
+<text x="860.0" y="663.0" text-anchor="middle" font-size="13" font-weight="700" fill="#0F172A">3. Trạng thái Thanh toán &amp; Đối soát (PaymentStatus — 9 trạng thái dòng tiền Ký quỹ)</text>
+<rect x="40.0" y="920.0" width="1640.0" height="250.0" rx="6" fill="#f5f5f5" stroke="#666666" stroke-width="1.6" />
+<path d="M 40.0 956.0 L 1680.0 956.0" stroke="#666666" stroke-width="1.4" />
+<rect x="41.0" y="921.0" width="1638.0" height="35.0" rx="5" fill="#E2E8F0" opacity="0.55" />
+<text x="860.0" y="943.0" text-anchor="middle" font-size="13" font-weight="700" fill="#0F172A">4. Từ điển 11 Mã Reject / Kết thúc Không Thành Công &amp; Quy tắc Tính Mẫu số Tỷ lệ Thắng (Win-Rate)</text>
+<rect x="40.0" y="15.0" width="1640.0" height="42.0" rx="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6" />
+<text x="860.0" y="40.9" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A">STATE MACHINE ĐỒNG BỘ 4 THỰC THỂ (ROOM × BID × PAYMENT) &amp; PHÂN LOẠI 11 MÃ TỪ CHỐI (REJECT STATUS)</text>
+<rect x="110.0" y="140.0" width="310.0" height="76.0" rx="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6" />
+<text x="265.0" y="174.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">vacant_unlocked (Phòng trống · Mở cho N</text>
+<text x="265.0" y="190.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">phiên đấu giá cùng lúc)</text>
+<rect x="570.0" y="140.0" width="360.0" height="76.0" rx="8" fill="#fff2cc" stroke="#d6b656" stroke-width="1.6" />
+<text x="750.0" y="174.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">payment_hold (TTL 10:00 = 600s) (Tạm khóa như ghế</text>
+<text x="750.0" y="190.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">xem phim · Chặn khách khác &amp; Lễ tân)</text>
+<rect x="1080.0" y="140.0" width="300.0" height="76.0" rx="8" fill="#d5e8d4" stroke="#82b366" stroke-width="1.6" />
+<text x="1230.0" y="174.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">booked_auction (Đã TT 100% · Khóa cứng PMS</text>
+<text x="1230.0" y="190.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">· Chống sửa tay)</text>
+<rect x="1430.0" y="140.0" width="220.0" height="76.0" rx="8" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.6" />
+<text x="1540.0" y="174.35" text-anchor="middle" font-size="11" font-weight="500" fill="#0F172A">booked_other (Khóa kênh OTA /</text>
+<text x="1540.0" y="189.35" text-anchor="middle" font-size="11" font-weight="500" fill="#0F172A">Walk-in / Khóa tay Lễ tân)</text>
+<rect x="90.0" y="395.0" width="220.0" height="68.0" rx="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6" />
+<text x="200.0" y="425.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">open_unbid (Đang mở &lt;60p · Chờ</text>
+<text x="200.0" y="441.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">báo giá)</text>
+<rect x="380.0" y="395.0" width="230.0" height="68.0" rx="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6" />
+<text x="495.0" y="425.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">bid_sent (Đã gửi One-Shot · Chờ</text>
+<text x="495.0" y="441.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">chọn)</text>
+<rect x="690.0" y="395.0" width="240.0" height="68.0" rx="8" fill="#fff2cc" stroke="#d6b656" stroke-width="1.6" />
+<text x="810.0" y="425.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">payment_hold_10m (Khách đang giữ</text>
+<text x="810.0" y="441.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">phòng 10p)</text>
+<rect x="1020.0" y="395.0" width="230.0" height="68.0" rx="8" fill="#d5e8d4" stroke="#82b366" stroke-width="1.6" />
+<text x="1135.0" y="433.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">won (Thắng phiên · Đã TT 100%)</text>
+<rect x="1340.0" y="395.0" width="280.0" height="68.0" rx="8" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.6" />
+<text x="1480.0" y="432.85" text-anchor="middle" font-size="11" font-weight="500" fill="#0F172A">auto_closed (Tự đóng bảo vệ hết phòng)</text>
+<rect x="90.0" y="515.0" width="250.0" height="68.0" rx="8" fill="#f8cecc" stroke="#b85450" stroke-width="1.6" />
+<text x="215.0" y="545.35" text-anchor="middle" font-size="11" font-weight="500" fill="#0F172A">partner_declined / expired (KS bỏ qua</text>
+<text x="215.0" y="560.35" text-anchor="middle" font-size="11" font-weight="500" fill="#0F172A">/ Quá 60p không báo)</text>
+<rect x="400.0" y="515.0" width="250.0" height="68.0" rx="8" fill="#fff2cc" stroke="#d6b656" stroke-width="1.6" />
+<text x="525.0" y="545.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">standby_hold_conflict (Chờ khách</text>
+<text x="525.0" y="561.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">trước hết khóa 10p)</text>
+<rect x="720.0" y="515.0" width="250.0" height="68.0" rx="8" fill="#f8cecc" stroke="#b85450" stroke-width="1.6" />
+<text x="845.0" y="545.35" text-anchor="middle" font-size="11" font-weight="500" fill="#0F172A">payment_failed (Quá 10p / Thẻ lỗi /</text>
+<text x="845.0" y="560.35" text-anchor="middle" font-size="11" font-weight="500" fill="#0F172A">Thoát TT)</text>
+<rect x="1040.0" y="515.0" width="250.0" height="68.0" rx="8" fill="#f8cecc" stroke="#b85450" stroke-width="1.6" />
+<text x="1165.0" y="552.85" text-anchor="middle" font-size="11" font-weight="500" fill="#0F172A">rejected (Khách chọn đối thủ khác)</text>
+<rect x="100.0" y="700.0" width="230.0" height="66.0" rx="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.6" />
+<text x="215.0" y="729.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">not_started (Chưa mở Checkout ·</text>
+<text x="215.0" y="745.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">0đ)</text>
+<rect x="410.0" y="700.0" width="240.0" height="66.0" rx="8" fill="#fff2cc" stroke="#d6b656" stroke-width="1.6" />
+<text x="530.0" y="729.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">awaiting_hold_10m (Đang chờ TT</text>
+<text x="530.0" y="745.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">trong 10:00)</text>
+<rect x="730.0" y="700.0" width="250.0" height="66.0" rx="8" fill="#fff2cc" stroke="#d6b656" stroke-width="1.6" />
+<text x="855.0" y="729.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">processing_webhook (Đang xác thực</text>
+<text x="855.0" y="745.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">chữ ký Ký quỹ)</text>
+<rect x="1060.0" y="700.0" width="260.0" height="66.0" rx="8" fill="#d5e8d4" stroke="#82b366" stroke-width="1.6" />
+<text x="1190.0" y="729.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">captured_escrow (Đã thu 100% ×1.265</text>
+<text x="1190.0" y="745.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">vào Ký quỹ)</text>
+<rect x="1400.0" y="700.0" width="240.0" height="66.0" rx="8" fill="#d5e8d4" stroke="#82b366" stroke-width="1.6" />
+<text x="1520.0" y="729.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">settled_t7 (Giải ngân T+7 đủ 100%</text>
+<text x="1520.0" y="745.2" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">Giá gốc)</text>
+<rect x="410.0" y="808.0" width="570.0" height="64.0" rx="8" fill="#f8cecc" stroke="#b85450" stroke-width="1.6" />
+<text x="695.0" y="836.35" text-anchor="middle" font-size="11" font-weight="500" fill="#0F172A">hold_timeout_10m / gateway_declined / guest_abandoned_checkout (Không thu tiền · Giải</text>
+<text x="695.0" y="851.35" text-anchor="middle" font-size="11" font-weight="500" fill="#0F172A">phóng khóa phòng về vacant_unlocked ngay lập tức)</text>
+<rect x="1060.0" y="808.0" width="340.0" height="64.0" rx="8" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.6" />
+<text x="1230.0" y="836.35" text-anchor="middle" font-size="11" font-weight="500" fill="#0F172A">refunded_medical (Hoàn tiền bất khả kháng có chứng</text>
+<text x="1230.0" y="851.35" text-anchor="middle" font-size="11" font-weight="500" fill="#0F172A">từ hợp lệ)</text>
+<rect x="100.0" y="980.0" width="820.0" height="155.0" rx="8" fill="#f8cecc" stroke="#b85450" stroke-width="1.6" />
+<text x="510.0" y="1038.85" text-anchor="middle" font-size="11" font-weight="500" fill="#0F172A">NHÓM A — TÍNH VÀO MẪU SỐ TỶ LỆ ĐƯỢC CHỌN (7 MÃ REJECT CẠNH TRANH &amp; THANH TOÁN) 1. REJ_PRICE_HIGH (Giá cao &gt;+5%)  |  2.</text>
+<text x="510.0" y="1053.85" text-anchor="middle" font-size="11" font-weight="500" fill="#0F172A">REJ_SLOW_RESPONSE (Phản hồi chậm)  |  3. REJ_MISSING_PERK (Thiếu tiện ích mềm) 4. REJ_HOLD_EXPIRED_10M (Hết 10p giữ phòng -&gt; Nhả</text>
+<text x="510.0" y="1068.85" text-anchor="middle" font-size="11" font-weight="500" fill="#0F172A">khóa)  |  5. REJ_PAYMENT_GATEWAY_DECLINED (Thẻ lỗi -&gt; Nhả khóa) 6. REJ_GUEST_ABANDONED_HOLD (Thoát màn TT -&gt; Nhả khóa)  |  7.</text>
+<text x="510.0" y="1083.85" text-anchor="middle" font-size="11" font-weight="500" fill="#0F172A">REJ_BID_TTL_EXPIRED (Quá 60p không tương tác)</text>
+<rect x="970.0" y="980.0" width="660.0" height="155.0" rx="8" fill="#d5e8d4" stroke="#82b366" stroke-width="1.6" />
+<text x="1300.0" y="1029.7" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">NHÓM B — LOẠI KHỎI MẪU SỐ WIN-RATE ĐỂ BẢO VỆ CHỈ SỐ CÔNG BẰNG CHO KHÁCH SẠN (4 MÃ TRUNG LẬP) 8.</text>
+<text x="1300.0" y="1045.7" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">REJ_AUTO_CLOSED_SOLD_OUT (Hệ thống tự rút báo giá khi phòng cuối vừa được khách khác TT 100%) 9.</text>
+<text x="1300.0" y="1061.7" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">REJ_PARTNER_DECLINED (Lễ tân chủ động bấm Bỏ qua phiên trước khi báo giá) 10.</text>
+<text x="1300.0" y="1077.7" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">REJ_GUEST_CANCELLED_EARLY (Khách tự hủy yêu cầu sớm)  |  11. REJ_NO_MATCHED_SUPPLY (0 KS khớp</text>
+<text x="1300.0" y="1093.7" text-anchor="middle" font-size="12" font-weight="700" fill="#0F172A">Hard Rules)</text>
+<path d="M 420.0 162.8 L 570.0 162.8" fill="none" stroke="#334155" stroke-width="1.6" marker-end="url(#arrow-solid)" stroke-linejoin="round" />
+<path d="M 570.0 197.0 L 420.0 197.0" fill="none" stroke="#334155" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#arrow-solid)" stroke-linejoin="round" />
+<path d="M 930.0 178.0 L 1080.0 178.0" fill="none" stroke="#334155" stroke-width="1.6" marker-end="url(#arrow-solid)" stroke-linejoin="round" />
+<path d="M 265.0 216.0 L 265.0 280.0 L 1540.0 280.0 L 1540.0 216.0" fill="none" stroke="#334155" stroke-width="1.6" marker-end="url(#arrow-solid)" stroke-linejoin="round" />
+<path d="M 310.0 429.0 L 380.0 429.0" fill="none" stroke="#334155" stroke-width="1.6" marker-end="url(#arrow-solid)" stroke-linejoin="round" />
+<path d="M 200.0 463.0 L 202.5 515.0" fill="none" stroke="#334155" stroke-width="1.6" marker-end="url(#arrow-solid)" stroke-linejoin="round" />
+<path d="M 610.0 429.0 L 690.0 429.0" fill="none" stroke="#334155" stroke-width="1.6" marker-end="url(#arrow-solid)" stroke-linejoin="round" />
+<path d="M 495.0 463.0 L 495.0 489.0 L 512.5 489.0 L 512.5 515.0" fill="none" stroke="#334155" stroke-width="1.6" marker-end="url(#arrow-solid)" stroke-linejoin="round" />
+<path d="M 575.5 463.0 L 575.0 490.0 L 1165.0 490.0 L 1165.0 515.0" fill="none" stroke="#334155" stroke-width="1.6" marker-end="url(#arrow-solid)" stroke-linejoin="round" />
+<path d="M 930.0 429.0 L 1020.0 429.0" fill="none" stroke="#334155" stroke-width="1.6" marker-end="url(#arrow-solid)" stroke-linejoin="round" />
+<path d="M 810.0 463.0 L 810.0 489.0 L 832.5 489.0 L 832.5 515.0" fill="none" stroke="#334155" stroke-width="1.6" marker-end="url(#arrow-solid)" stroke-linejoin="round" />
+<path d="M 1250.0 429.0 L 1340.0 429.0" fill="none" stroke="#334155" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#arrow-solid)" stroke-linejoin="round" />
+<path d="M 330.0 733.0 L 410.0 733.0" fill="none" stroke="#334155" stroke-width="1.6" marker-end="url(#arrow-solid)" stroke-linejoin="round" />
+<path d="M 650.0 733.0 L 730.0 733.0" fill="none" stroke="#334155" stroke-width="1.6" marker-end="url(#arrow-solid)" stroke-linejoin="round" />
+<path d="M 530.0 766.0 L 530.0 787.0 L 552.5 787.0 L 552.5 808.0" fill="none" stroke="#334155" stroke-width="1.6" marker-end="url(#arrow-solid)" stroke-linejoin="round" />
+<path d="M 855.0 766.0 L 855.0 787.0 L 837.5 787.0 L 837.5 808.0" fill="none" stroke="#334155" stroke-width="1.6" marker-end="url(#arrow-solid)" stroke-linejoin="round" />
+<path d="M 980.0 733.0 L 1060.0 733.0" fill="none" stroke="#334155" stroke-width="1.6" marker-end="url(#arrow-solid)" stroke-linejoin="round" />
+<path d="M 1320.0 733.0 L 1400.0 733.0" fill="none" stroke="#334155" stroke-width="1.6" marker-end="url(#arrow-solid)" stroke-linejoin="round" />
+<path d="M 1190.0 766.0 L 1190.0 787.0 L 1230.0 787.0 L 1230.0 808.0" fill="none" stroke="#334155" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#arrow-solid)" stroke-linejoin="round" />
+<rect x="414.4" y="152.8" width="161.20000000000002" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="495.0" y="164.8" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">Khách bấm Chọn chào giá</text>
+<rect x="372.8" y="187.0" width="244.4" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="495.0" y="199.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">Quá 10p / Thẻ lỗi / Thoát (Nhả khóa)</text>
+<rect x="950.0" y="168.0" width="110.0" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="1005.0" y="180.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">Webhook TT 100%</text>
+<rect x="828.3" y="270.0" width="148.4" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="902.5" y="282.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">Lễ tân khóa tay / OTA</text>
+<rect x="270.8" y="419.0" width="148.4" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="345.0" y="431.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">Quick/Custom/Auto-Bid</text>
+<rect x="143.05" y="479.0" width="116.4" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="201.25" y="491.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">Bỏ qua / Hết 60p</text>
+<rect x="607.8" y="419.0" width="84.4" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="650.0" y="431.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">Giữ chỗ 10p</text>
+<rect x="408.0" y="466.0" width="174.0" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="495.0" y="478.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">Trùng phòng đang khóa 10p</text>
+<rect x="824.6" y="480.0" width="90.80000000000001" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="870.0" y="492.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">Chọn KS khác</text>
+<rect x="945.6" y="419.0" width="58.800000000000004" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="975.0" y="431.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">TT 100%</text>
+<rect x="748.6" y="466.0" width="122.80000000000001" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="810.0" y="478.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">Hết 10p / Lỗi thẻ</text>
+<rect x="1201.6" y="419.0" width="186.8" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="1295.0" y="431.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">Kích hoạt đóng phiên anh em</text>
+<rect x="324.6" y="723.0" width="90.80000000000001" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="370.0" y="735.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">Cấp khóa 10p</text>
+<rect x="619.0" y="723.0" width="142.0" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="690.0" y="735.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">Khách bấm Thanh toán</text>
+<rect x="486.25" y="777.0" width="110.0" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="541.25" y="789.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">Quá 10p / Thoát</text>
+<rect x="793.6" y="766.5" width="122.80000000000001" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="855.0" y="778.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">Thẻ lỗi / OTP sai</text>
+<rect x="993.8" y="723.0" width="52.400000000000006" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="1020.0" y="735.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">200 OK</text>
+<rect x="1295.4" y="723.0" width="129.2" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="1360.0" y="735.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">Check-out + 7 ngày</text>
+<rect x="1158.2" y="777.0" width="103.60000000000001" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.9" />
+<text x="1210.0" y="789.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1E293B">Duyệt ngoại lệ</text>
+</svg>
