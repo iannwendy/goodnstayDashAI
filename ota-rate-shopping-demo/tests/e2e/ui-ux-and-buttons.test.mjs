@@ -347,3 +347,124 @@ test("E2E-3: Kiểm tra toàn bộ nút bấm Bộ lọc 6 tầng, Chuyển đ�
     await browser.close();
   }
 });
+
+test("E2E-4: Khi bấm 'Cào Trực Tiếp Ngay', toàn bộ số tiền, KPI và Form 8 trường ẩn đi thay bằng Skeleton Loading, có dữ liệu mới hiện lại", async () => {
+  const browser = await launchBrowser();
+  try {
+    const page = await browser.newPage({
+      viewport: { width: 1440, height: 900 },
+    });
+
+    await page.goto(BASE_URL, { waitUntil: "networkidle" });
+
+    // Kiểm tra trước khi bấm: Giá tiền thật đang hiển thị và cột Booking.com không bị cắt chữ 'đ'
+    const beforeCheck = await page.evaluate(() => {
+      const wrapper = document.querySelector(
+        "[data-testid='comparison-table-wrapper']"
+      );
+      const bookingPrices = Array.from(
+        document.querySelectorAll("[data-testid='price-value-BOOKING']")
+      );
+      const wRect = wrapper?.getBoundingClientRect();
+      const clipped = bookingPrices.some((el) => {
+        const r = el.getBoundingClientRect();
+        return !wRect || r.right > wRect.right - 6;
+      });
+      return {
+        bookingPriceCount: bookingPrices.length,
+        clipped,
+      };
+    });
+    assert.ok(beforeCheck.bookingPriceCount > 0, "Phải có giá Booking.com hiển thị");
+    assert.equal(
+      beforeCheck.clipped,
+      false,
+      "Cột giá Booking.com (LIVE) bị sát lề hoặc lẹm chữ 'đ'"
+    );
+
+    // Giữ request POST /api/scrape-live trong 900ms để xác minh trạng thái Skeleton Shimmer trên toàn trang
+    let scrapeRouteHit = false;
+    await page.route("**/api/scrape-live", async (route) => {
+      scrapeRouteHit = true;
+      await new Promise((r) => setTimeout(r, 900));
+      const reportRes = await page.request.get(
+        `${BASE_URL}/api/report?hotelKey=champton-nha-trang&checkIn=2026-11-20`
+      );
+      const body = await reportRes.text();
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json; charset=utf-8",
+        body,
+      });
+    });
+
+    // Bấm nút "Cào Trực Tiếp Ngay"
+    await page.getByTestId("btn-live-scrape").click();
+
+    // Xác minh ngay trong lúc đang cào:
+    // 1) Toàn bộ con số giá tiền trong bảng ([data-testid^='price-value-']) ĐÃ ẨN ĐI (count === 0)
+    // 2) Các thanh animation loading ([data-testid='price-cell-skeleton'], [data-testid='data-skeleton'], [data-testid='form-field-skeleton']) HIỆN LÊN
+    await page.getByTestId("scraping-status-banner").waitFor({ timeout: 2000 });
+
+    const duringScrapeCheck = await page.evaluate(() => ({
+      visiblePriceNumbers: document.querySelectorAll(
+        "[data-testid^='price-value-']"
+      ).length,
+      tablePriceSkeletons: document.querySelectorAll(
+        "[data-testid='price-cell-skeleton']"
+      ).length,
+      kpiSkeletons: document.querySelectorAll("[data-testid='data-skeleton']")
+        .length,
+      inspectorSkeletons: document.querySelectorAll(
+        "[data-testid='form-field-skeleton']"
+      ).length,
+    }));
+
+    assert.equal(
+      duringScrapeCheck.visiblePriceNumbers,
+      0,
+      "Trong lúc đang cào, toàn bộ con số giá tiền cũ phải ẩn đi hoàn toàn"
+    );
+    assert.ok(
+      duringScrapeCheck.tablePriceSkeletons >= 15,
+      `Trong lúc đang cào, các ô giá trong bảng phải hiện skeleton loading (thực tế: ${duringScrapeCheck.tablePriceSkeletons})`
+    );
+    assert.equal(
+      duringScrapeCheck.kpiSkeletons,
+      4,
+      "4 thẻ KPI phía trên phải hiện skeleton loading"
+    );
+    assert.ok(
+      duringScrapeCheck.inspectorSkeletons >= 4,
+      "Form 8 trường bên phải phải hiện skeleton loading"
+    );
+
+    // Chờ phiên cào hoàn tất -> Toàn bộ skeleton biến mất, dữ liệu thật hiển thị trở lại
+    await page
+      .locator("[data-testid='price-value-AGODA']")
+      .first()
+      .waitFor({ timeout: 5000 });
+
+    const afterScrapeCheck = await page.evaluate(() => ({
+      visiblePriceNumbers: document.querySelectorAll(
+        "[data-testid^='price-value-']"
+      ).length,
+      tablePriceSkeletons: document.querySelectorAll(
+        "[data-testid='price-cell-skeleton']"
+      ).length,
+    }));
+
+    assert.equal(scrapeRouteHit, true);
+    assert.equal(
+      afterScrapeCheck.tablePriceSkeletons,
+      0,
+      "Sau khi có dữ liệu, skeleton loading phải ẩn đi"
+    );
+    assert.ok(
+      afterScrapeCheck.visiblePriceNumbers >= 15,
+      "Sau khi có dữ liệu, các con số giá tiền phải hiện lên đầy đủ"
+    );
+  } finally {
+    await browser.close();
+  }
+});
