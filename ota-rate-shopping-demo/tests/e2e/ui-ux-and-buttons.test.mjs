@@ -80,6 +80,7 @@ test("E2E-1: Topbar không bị lấp chữ (0px overlap) và không tràn ngang
           "[data-testid='select-hotel']",
           "[data-testid='select-checkin']",
           "[data-testid='btn-live-badge']",
+          "[data-testid='btn-toggle-theme']",
           "[data-testid='btn-toggle-formulas']",
           "[data-testid='btn-live-scrape']",
         ];
@@ -232,15 +233,23 @@ test("E2E-3: Kiểm tra toàn bộ nút bấm Bộ lọc 6 tầng, Chuyển đ�
     const formulaBtn = page.getByTestId("btn-toggle-formulas");
     await formulaBtn.click();
     await page
-      .getByText("4 Bằng Chứng Cào Thực Tế & Công Thức Chuẩn Hóa Đa Sàn")
+      .getByText("Công Thức Chuẩn Hóa & Khớp Phòng Đa Sàn")
       .waitFor({ timeout: 3000 });
     await page.getByRole("button", { name: /Thu gọn/i }).click();
 
-    // 2. Chuyển đổi Giá Sau thuế (Gross) <-> Trước thuế (Net)
-    await page.getByRole("button", { name: "Trước thuế (Net)" }).click();
+    // 2. Chuyển đổi 3 chế độ Giá: Khớp UI Web (Mặt trang) <-> Sau thuế (Gross) <-> Trước thuế (Net)
+    // Mặc định mở trang là "Khớp UI Web (Mặt trang)" -> Giá chính cột Agoda là 1.371.998đ, cột Booking là 1.719.200đ
     await page.getByText("1.371.998đ").first().waitFor({ timeout: 3000 });
-    await page.getByRole("button", { name: "Sau thuế (Gross)" }).click();
+    await page.getByText("1.719.200đ").first().waitFor({ timeout: 3000 });
+
+    await page.getByTestId("basis-GROSS").click();
     await page.getByText("1.699.905đ").first().waitFor({ timeout: 3000 });
+
+    await page.getByTestId("basis-NET").click();
+    await page.getByText("1.488.485đ").first().waitFor({ timeout: 3000 });
+
+    await page.getByTestId("basis-UI_WEB").click();
+    await page.getByText("1.371.998đ").first().waitFor({ timeout: 3000 });
 
     // 3. Test 3 tab chế độ số giường (Tất cả phòng / Phòng 1 Giường / Phòng Nhiều Giường)
     await page.getByTestId("bed-mode-SINGLE_BED_ONLY").click();
@@ -251,15 +260,17 @@ test("E2E-3: Kiểm tra toàn bộ nút bấm Bộ lọc 6 tầng, Chuyển đ�
 
     await page.getByTestId("bed-mode-ALL").click();
 
-    // 4. Test các select lọc Hạng phòng, Cấu hình Giường, Hướng nhìn + nút Đặt lại
+    // 4. Test các select lọc Hạng phòng, Cấu hình Giường, Hướng nhìn, Diện tích + nút Đặt lại
     await page.getByTestId("filter-room-type").selectOption("Suite");
     await page.getByText("Champa Junior Suite").first().waitFor({ timeout: 3000 });
     await page.getByTestId("filter-bed-category").selectOption("KING_1_BED");
     await page.getByTestId("filter-view-category").selectOption("PARTIAL_SEA_VIEW");
+    await page.getByTestId("filter-area-range").selectOption("OVER_50");
     await page.getByTestId("btn-reset-filters").click();
     assert.equal(await page.getByTestId("filter-room-type").inputValue(), "ALL");
     assert.equal(await page.getByTestId("filter-bed-category").inputValue(), "ALL");
     assert.equal(await page.getByTestId("filter-view-category").inputValue(), "ALL");
+    assert.equal(await page.getByTestId("filter-area-range").inputValue(), "ALL");
 
     // 5. Bấm chọn dòng phòng trên bảng & kiểm tra Form 8 trường goodNstay bên phải
     await page.getByText("Champa Deluxe Double").first().click();
@@ -282,7 +293,7 @@ test("E2E-3: Kiểm tra toàn bộ nút bấm Bộ lọc 6 tầng, Chuyển đ�
       `Ô Description * bị hẹp hoặc bị cắt chữ: ${JSON.stringify(descMetrics)}`
     );
 
-    // Chuyển đổi giữa tab Agoda (Live) và Booking.com (Live) trong Inspector
+    // Chuyển đổi giữa tab Agoda (Live), Booking.com (Live), Expedia (EPS) và Trip.com trong Inspector (đã bỏ nút goodNstay khỏi thanh chọn sàn)
     const bookingSwitchBtn = page.getByRole("button", {
       name: "Booking.com (Live)",
     });
@@ -292,6 +303,18 @@ test("E2E-3: Kiểm tra toàn bộ nút bấm Bộ lọc 6 tầng, Chuyển đ�
       /Champa Deluxe Double with Partial Sea View/
     );
 
+    const expediaSwitchBtn = page.getByRole("button", {
+      name: "Expedia (EPS)",
+    });
+    await expediaSwitchBtn.click();
+    assert.match(await roomNameInput.inputValue(), /Champa Deluxe Double/);
+
+    const tripSwitchBtn = page.getByRole("button", {
+      name: "Trip.com",
+    });
+    await tripSwitchBtn.click();
+    assert.match(await roomNameInput.inputValue(), /Champa Deluxe Double/);
+
     // 6. Bấm mở Modal UPLOAD PHOTOS và đóng lại
     const photoBtn = page.getByRole("button", { name: /UPLOAD PHOTOS/i });
     await photoBtn.click();
@@ -300,42 +323,124 @@ test("E2E-3: Kiểm tra toàn bộ nút bấm Bộ lọc 6 tầng, Chuyển đ�
       .waitFor({ timeout: 3000 });
     await page.keyboard.press("Escape");
 
-    // 7. Chuyển sang Tab "Thuế & Khớp phòng"
+    // 7. Chuyển sang Tab "Thuế & Khớp phòng" & Kiểm tra Hợp đồng JSON Mapping (gns-room-matcher-v1) cho cả 6 nền tảng
     await page.getByRole("tab", { name: "Thuế & Khớp phòng" }).click();
     await page
-      .getByText(/Giải thích phân loại/)
+      .getByTestId("json-mapping-contract-panel")
       .waitFor({ timeout: 3000 });
 
-    // 8. Chuyển sang Tab "Bằng chứng Live" và xác minh 2 ảnh chụp màn hình thật tải thành công (naturalWidth > 0)
+    const jsonCodeEl = page.getByTestId("json-mapping-code");
+    await jsonCodeEl.waitFor({ timeout: 3000 });
+    const bookingContract = JSON.parse(await jsonCodeEl.innerText());
+    assert.equal(bookingContract.ota, "BOOKING_COM");
+    assert.equal(bookingContract.externalProperty.propertyId, "14399894");
+    assert.equal(bookingContract.matching.status, "VERIFIED");
+    assert.equal(bookingContract.matching.method, "HYBRID_RULES_AI");
+    assert.equal(bookingContract.matching.modelVersion, "gns-room-matcher-v1");
+    assert.equal(
+      bookingContract.rateLookup.lookupMethod,
+      "PROPERTY_AND_ROOM_ID"
+    );
+
+    // Chuyển sang xem JSON Mapping của AGODA
+    await page.getByTestId("mapping-ota-AGODA").click();
+    const agodaContract = JSON.parse(await jsonCodeEl.innerText());
+    assert.equal(agodaContract.ota, "AGODA");
+    assert.equal(agodaContract.externalProperty.propertyId, "75836171");
+    assert.equal(agodaContract.matching.status, "VERIFIED");
+
+    // Chuyển sang xem JSON Mapping của EXPEDIA
+    await page.getByTestId("mapping-ota-EXPEDIA").click();
+    const expediaContract = JSON.parse(await jsonCodeEl.innerText());
+    assert.equal(expediaContract.ota, "EXPEDIA");
+    assert.equal(expediaContract.externalProperty.propertyId, "104829512");
+    assert.equal(expediaContract.matching.status, "VERIFIED");
+    assert.equal(expediaContract.source.type, "EXTERNAL_CATALOG");
+    assert.equal(
+      expediaContract.rateLookup.lookupMethod,
+      "PROPERTY_AND_ROOM_ID"
+    );
+
+    // Chuyển sang xem JSON Mapping của TRIP_COM
+    await page.getByTestId("mapping-ota-TRIP_COM").click();
+    const tripContract = JSON.parse(await jsonCodeEl.innerText());
+    assert.equal(tripContract.ota, "TRIP_COM");
+    assert.equal(tripContract.externalProperty.propertyId, "108549210");
+    assert.equal(tripContract.matching.status, "VERIFIED");
+    assert.equal(tripContract.source.type, "EXTERNAL_CATALOG");
+    assert.equal(
+      tripContract.rateLookup.lookupMethod,
+      "PROPERTY_AND_ROOM_ID"
+    );
+
+    // Chuyển sang xem JSON Mapping của HOTELS_COM
+    await page.getByTestId("mapping-ota-HOTELS_COM").click();
+    const hotelsComContract = JSON.parse(await jsonCodeEl.innerText());
+    assert.equal(hotelsComContract.ota, "HOTELS_COM");
+    assert.equal(hotelsComContract.externalProperty.propertyId, "ho3354644384");
+    assert.equal(
+      hotelsComContract.source.type,
+      "EXPEDIA_EPS_SHARED_CATALOG"
+    );
+    assert.equal(
+      hotelsComContract.rateLookup.lookupMethod,
+      "PROPERTY_AND_ROOM_ID"
+    );
+
+    // Chuyển sang xem JSON Mapping của GOOGLE_HOTELS
+    await page.getByTestId("mapping-ota-GOOGLE_HOTELS").click();
+    const googleHotelsContract = JSON.parse(await jsonCodeEl.innerText());
+    assert.equal(googleHotelsContract.ota, "GOOGLE_HOTELS");
+    assert.equal(googleHotelsContract.source.type, "METASEARCH_ARI_FEED");
+    assert.equal(
+      googleHotelsContract.rateLookup.lookupMethod,
+      "METASEARCH_RATE_FEED"
+    );
+
+    // Bấm nút Sao chép JSON
+    await page.getByTestId("btn-copy-json-mapping").click();
+    await page.getByText("Đã sao chép").waitFor({ timeout: 3000 });
+
+    // Kiểm tra API endpoint /api/room-mappings trả về đúng JSON Contract cho cả 6 nền tảng
+    const apiContracts = await page.evaluate(async () => {
+      const r = await fetch(
+        "/api/room-mappings?hotelKey=champton-nha-trang&gnsRoomId=GNS-R201&ota=ALL"
+      );
+      return r.json();
+    });
+    assert.equal(Array.isArray(apiContracts), true);
+    assert.equal(apiContracts.length, 6);
+    assert.deepEqual(
+      apiContracts.map((c) => c.ota),
+      [
+        "BOOKING_COM",
+        "AGODA",
+        "EXPEDIA",
+        "TRIP_COM",
+        "HOTELS_COM",
+        "GOOGLE_HOTELS",
+      ]
+    );
+
+    // 8. Chuyển sang Tab "Bằng chứng Live" và xác minh chỉ hiển thị danh sách Link phòng trực tiếp gọn nhẹ (đã bỏ khung SHA-256 & 2 ảnh chụp màn hình gây rối mắt)
     await page.getByRole("tab", { name: "Bằng chứng Live" }).click();
     await page
-      .getByText("Xác thực Phiên Cào Trực Tiếp (Playwright Chromium)")
+      .getByTestId("selected-room-proof-panel")
       .waitFor({ timeout: 3000 });
 
-    const imagesLoaded = await page.evaluate(async () => {
-      const imgs = Array.from(
-        document.querySelectorAll("img[alt*='Screenshot']")
-      );
-      if (imgs.length < 2) return { count: imgs.length, allLoaded: false };
-      for (const img of imgs) {
-        if (!img.complete) {
-          await new Promise((res) => {
-            img.addEventListener("load", res, { once: true });
-            img.addEventListener("error", res, { once: true });
-          });
-        }
-      }
-      return {
-        count: imgs.length,
-        widths: imgs.map((i) => i.naturalWidth),
-        allLoaded: imgs.every((i) => i.complete && i.naturalWidth > 0),
-      };
-    });
-
+    const proofCleanAudit = await page.evaluate(() => ({
+      screenshotImgCount: document.querySelectorAll("img[alt*='Screenshot']").length,
+      hasSha256Card: document.body.innerText.includes("SHA-256:"),
+    }));
     assert.equal(
-      imagesLoaded.allLoaded,
-      true,
-      `Ảnh bằng chứng chụp màn hình chưa load được: ${JSON.stringify(imagesLoaded)}`
+      proofCleanAudit.screenshotImgCount,
+      0,
+      "Ảnh chụp màn hình lớn trong tab Bằng chứng Live phải được gỡ bỏ khỏi UI"
+    );
+    assert.equal(
+      proofCleanAudit.hasSha256Card,
+      false,
+      "Thẻ SHA-256 phải được gỡ bỏ khỏi UI để giao diện tối giản"
     );
 
     assert.equal(
@@ -431,8 +536,8 @@ test("E2E-4: Khi bấm 'Cào Trực Tiếp Ngay', toàn bộ số tiền, KPI v�
     );
     assert.equal(
       duringScrapeCheck.kpiSkeletons,
-      4,
-      "4 thẻ KPI phía trên phải hiện skeleton loading"
+      3,
+      "3 thẻ KPI phía trên phải hiện skeleton loading"
     );
     assert.ok(
       duringScrapeCheck.inspectorSkeletons >= 4,
@@ -545,8 +650,8 @@ test("E2E-5: Phân trang Lazy Top-5 (bấm tiếp mới load tiếp) & Deep Link
     }
     assert.equal(
       deepLinkAudit.uiWebPriceCount,
-      10,
-      "Mỗi ô Agoda và Booking trong Top 5 đều phải hiển thị rõ 'UI Web: ...đ'"
+      20,
+      "Mỗi ô Agoda, Booking, Expedia và Trip.com trong Top 5 (5 dòng x 4 sàn = 20 ô) đều phải hiển thị rõ 'UI Web: ...đ'"
     );
 
     // 3. Bấm nút "Tiếp Top 5 →" để tải Trang 2 (Top 6–10)
@@ -560,7 +665,7 @@ test("E2E-5: Phân trang Lazy Top-5 (bấm tiếp mới load tiếp) & Deep Link
     await page.getByTestId("btn-page-1").click();
     await page.getByText(/Hiển thị Top 1–5/).waitFor({ timeout: 3000 });
 
-    // 5. Kiểm tra khung "Đối chiếu Nhanh Phòng Đang Chọn" trong tab Bằng chứng Live
+    // 5. Kiểm tra khung "Đối chiếu Nhanh Phòng Đang Chọn" + Thời điểm cào chuẩn Giờ VN (GMT+7) trong tab Bằng chứng Live
     await page.getByRole("tab", { name: "Bằng chứng Live" }).click();
     await page.getByTestId("selected-room-proof-panel").waitFor({ timeout: 3000 });
     const agodaJumpHref = await page
@@ -569,9 +674,181 @@ test("E2E-5: Phân trang Lazy Top-5 (bấm tiếp mới load tiếp) & Deep Link
     const bookingJumpHref = await page
       .getByTestId("inspector-deep-jump-BOOKING")
       .getAttribute("href");
+    const expediaJumpHref = await page
+      .getByTestId("inspector-deep-jump-EXPEDIA")
+      .getAttribute("href");
+    const tripJumpHref = await page
+      .getByTestId("inspector-deep-jump-TRIP")
+      .getAttribute("href");
     assert.match(agodaJumpHref || "", /#:~:text=/);
     assert.match(bookingJumpHref || "", /#:~:text=/);
+    assert.match(expediaJumpHref || "", /selectedRoomType=/);
+    assert.match(tripJumpHref || "", /roomId=/);
+
+    // Xác minh Thời điểm cào hiển thị đúng định dạng Giờ Việt Nam (GMT+7), KHÔNG hiển thị chuỗi UTC (...Z) lệch -7 tiếng
+    const scrapedTimeText =
+      (await page.getByTestId("scraped-at-vietnam-time").textContent()) || "";
+    assert.match(
+      scrapedTimeText,
+      /\d{2}:\d{2}:\d{2}\s*—\s*\d{2}\/\d{2}\/\d{4}\s*\(Giờ VN GMT\+7\)/,
+      `Thời điểm cào phải hiển thị đúng Giờ VN GMT+7, thực tế: ${scrapedTimeText}`
+    );
+    assert.equal(
+      scrapedTimeText.includes("Z"),
+      false,
+      `Thời điểm cào không được chứa hậu tố UTC 'Z': ${scrapedTimeText}`
+    );
   } finally {
     await browser.close();
   }
 });
+
+test("E2E-6: Kiểm tra Bộ lọc theo Diện tích (m²), Chuyển đổi Light/Dark Mode và trạng thái 'Sàn chưa cào giá' khi thiếu dữ liệu hoặc lỗi gọi API", async () => {
+  const browser = await launchBrowser();
+  try {
+    const page = await browser.newPage({
+      viewport: { width: 1440, height: 900 },
+    });
+
+    await page.goto(BASE_URL, { waitUntil: "networkidle" });
+
+    // 1. Kiểm tra chuyển đổi Light / Dark Mode bằng nút btn-toggle-theme
+    const themeBtn = page.getByTestId("btn-toggle-theme");
+    await themeBtn.waitFor({ timeout: 5000 });
+
+    const initialTheme = await page.evaluate(() => ({
+      isDarkClass: document.documentElement.classList.contains("dark"),
+      dataTheme: document.documentElement.getAttribute("data-theme"),
+    }));
+    assert.equal(initialTheme.isDarkClass, false);
+    assert.equal(initialTheme.dataTheme, "light");
+
+    await themeBtn.click();
+    const darkThemeState = await page.evaluate(() => {
+      const root = document.documentElement;
+      const bodyBg = window.getComputedStyle(document.body).backgroundColor;
+      return {
+        isDarkClass: root.classList.contains("dark"),
+        dataTheme: root.getAttribute("data-theme"),
+        savedStorage: window.localStorage.getItem("gns_ota_theme"),
+        bodyBg,
+      };
+    });
+    assert.equal(darkThemeState.isDarkClass, true);
+    assert.equal(darkThemeState.dataTheme, "dark");
+    assert.equal(darkThemeState.savedStorage, "dark");
+    assert.equal(darkThemeState.bodyBg, "rgb(9, 9, 11)");
+
+    // Bấm lại để quay về Light Mode
+    await themeBtn.click();
+    const lightThemeState = await page.evaluate(() => ({
+      isDarkClass: document.documentElement.classList.contains("dark"),
+      dataTheme: document.documentElement.getAttribute("data-theme"),
+      savedStorage: window.localStorage.getItem("gns_ota_theme"),
+    }));
+    assert.equal(lightThemeState.isDarkClass, false);
+    assert.equal(lightThemeState.dataTheme, "light");
+    assert.equal(lightThemeState.savedStorage, "light");
+
+    // 2. Kiểm tra Bộ lọc theo Diện tích (filter-area-range)
+    const areaFilter = page.getByTestId("filter-area-range");
+    await areaFilter.selectOption("FROM_36_TO_50");
+    await page.getByText("Champa Junior Suite").first().waitFor({ timeout: 5000 });
+
+    await areaFilter.selectOption("OVER_50");
+    await page.getByText("Terrace Suite").first().waitFor({ timeout: 5000 });
+
+    const over50Areas = await page.evaluate(() =>
+      Array.from(document.querySelectorAll("[data-testid='comparison-row']")).map(
+        (r) => r.textContent || ""
+      )
+    );
+    assert.ok(over50Areas.length >= 1);
+    for (const rowText of over50Areas) {
+      const m = rowText.match(/(\d+)\s*m²/);
+      assert.ok(m && Number(m[1]) > 50, `Dòng lọc OVER_50 phải > 50m²: ${rowText}`);
+    }
+
+    // Đổi sang Libra Hotel Nha Trang và lọc UNDER_25 (< 25m²)
+    await page.getByTestId("select-hotel").selectOption("libra-nha-trang");
+    await areaFilter.selectOption("UNDER_25");
+    await page
+      .getByText("Standard Double Room without Window")
+      .first()
+      .waitFor({ timeout: 5000 });
+    const under25Areas = await page.evaluate(() =>
+      Array.from(document.querySelectorAll("[data-testid='comparison-row']")).map(
+        (r) => r.textContent || ""
+      )
+    );
+    assert.ok(under25Areas.length >= 1);
+    for (const rowText of under25Areas) {
+      const m = rowText.match(/(\d+)\s*m²/);
+      assert.ok(m && Number(m[1]) < 25, `Dòng lọc UNDER_25 phải < 25m²: ${rowText}`);
+    }
+
+    // Đặt lại bộ lọc và quay về Champton Nha Trang
+    await page.getByTestId("btn-reset-filters").click();
+    await page.getByTestId("select-hotel").selectOption("champton-nha-trang");
+    await page.getByText("Champa Deluxe Double").first().waitFor({ timeout: 5000 });
+
+    // 3. Kiểm tra trạng thái "Sàn chưa cào giá" trên dòng phòng thiếu dữ liệu OTA (Trang 3: Top 11–12)
+    await page.getByTestId("btn-page-3").click();
+    await page.getByText(/Hiển thị Top 11–/).waitFor({ timeout: 5000 });
+    const unscrapedCellsPage3 = await page
+      .locator("[data-testid^='ota-unscraped-']")
+      .count();
+    assert.ok(
+      unscrapedCellsPage3 >= 1,
+      "Các sàn chưa có dữ liệu cào ở Trang 3 phải hiển thị rõ badge 'Sàn chưa cào giá'"
+    );
+    const rowBadgeTextPage3 =
+      (await page.getByTestId("row-live-ota-badge").first().textContent()) || "";
+    assert.match(rowBadgeTextPage3, /Sàn chưa cào giá/);
+
+    // Quay về Trang 1
+    await page.getByTestId("btn-page-1").click();
+    await page.getByText(/Hiển thị Top 1–5/).waitFor({ timeout: 5000 });
+
+    // 4. Giả lập lỗi gọi API (/api/scrape-live trả về HTTP 500) -> kiểm tra Live # Sàn & KPI & Ma trận hiển thị "Sàn chưa cào giá"
+    await page.route("**/api/scrape-live", async (route) => {
+      await route.fulfill({
+        status: 500,
+        contentType: "application/json",
+        body: JSON.stringify({ error: "Simulated API Failure" }),
+      });
+    });
+
+    await page.getByTestId("btn-live-scrape").click();
+
+    await page.getByTestId("api-fail-unscraped-banner").waitFor({ timeout: 5000 });
+    const liveBadgeTextAfterFail =
+      (await page.getByTestId("btn-live-badge").textContent()) || "";
+    assert.match(
+      liveBadgeTextAfterFail,
+      /Live 0 Sàn · Sàn chưa cào giá/,
+      `Topbar btn-live-badge phải hiển thị 'Live 0 Sàn · Sàn chưa cào giá' khi lỗi gọi API, thực tế: ${liveBadgeTextAfterFail}`
+    );
+
+    const agodaKpiStatus =
+      (await page.getByTestId("kpi-status-agoda").textContent()) || "";
+    const bookingKpiStatus =
+      (await page.getByTestId("kpi-status-booking").textContent()) || "";
+    assert.equal(agodaKpiStatus.trim(), "Sàn chưa cào giá");
+    assert.equal(bookingKpiStatus.trim(), "Sàn chưa cào giá");
+
+    const unscrapedAgodaCells = await page
+      .getByTestId("ota-unscraped-AGODA")
+      .count();
+    const unscrapedBookingCells = await page
+      .getByTestId("ota-unscraped-BOOKING")
+      .count();
+    assert.equal(unscrapedAgodaCells, 5);
+    assert.equal(unscrapedBookingCells, 5);
+
+    await page.unroute("**/api/scrape-live");
+  } finally {
+    await browser.close();
+  }
+});
+
