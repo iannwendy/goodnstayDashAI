@@ -26,6 +26,7 @@ const TABLE_FILE_MAP: Record<string, string> = {
   matchBreakdowns: "match_breakdowns.json",
   lossAutopsies: "loss_autopsies.json",
   botRules: "bot_rules.json",
+  lifecycleCatalog: "lifecycle_catalog.json",
 };
 
 function readAllMasterTables() {

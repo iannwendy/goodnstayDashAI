@@ -121,27 +121,21 @@
     },
     {
       "id": "slow_response",
-      "shortName": "Phản hồi chậm / Hết 60p",
+      "shortName": "Phản hồi chậm / Quá 60p",
       "color": "#f59e0b",
       "actionHint": "Luôn bật Auto-Bid ca trưa & sau 22h00 đêm"
     },
     {
       "id": "missing_perk",
       "shortName": "Thiếu Bữa sáng / Late C/O",
-      "color": "#6366f1",
+      "color": "#52525b",
       "actionHint": "Đính kèm đặc quyền mềm 0đ–90k khi độ khớp <90%"
     },
     {
-      "id": "hold_expired_10m",
-      "shortName": "Hết 10p giữ chỗ / Lỗi thẻ KCP",
-      "color": "#d97706",
-      "actionHint": "Hệ thống tự nhả khóa phòng sau 10p để đón khách kế tiếp"
-    },
-    {
       "id": "payment_abandoned",
-      "shortName": "Khách thoát cổng TT sớm",
-      "color": "#71717a",
-      "actionHint": "Giữ giá gốc mềm để giảm sốc tổng giá ×1.265 bước cuối"
+      "shortName": "Hết hạn giữ 10p / Lỗi TT",
+      "color": "#a1a1aa",
+      "actionHint": "Phòng tự mở lại sau 10p tạm khóa nên không thiệt hại công suất"
     }
   ]
 }

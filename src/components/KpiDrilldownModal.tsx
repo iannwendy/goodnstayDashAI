@@ -425,7 +425,7 @@ export function KpiDrilldownModal({
                           setRevenueScopeTab("by_room");
                         }
                       }}
-                      className="h-7 px-2.5 rounded-lg bg-white border border-zinc-200 text-xs font-medium text-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-900/20 max-w-[230px] truncate cursor-pointer"
+                      className="h-7 px-2.5 rounded-lg bg-white border border-zinc-200 text-xs font-medium text-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-900/20 max-w-full sm:max-w-[230px] min-w-0 truncate cursor-pointer"
                     >
                       <option value="all">
                         Tất cả {periodMetrics.roomRevenues.length} phòng
@@ -592,15 +592,15 @@ export function KpiDrilldownModal({
                           _name: unknown,
                           item: {
                             payload?: {
-                              revenue?: number;
-                              ordersCount?: number;
-                              nightsCount?: number;
+                              revenueVnd?: number,
+                              ordersCount?: number,
+                              nightsCount?: number,
                             };
                           },
                         ) => {
                           const p = item?.payload;
                           return [
-                            `${formatFullVnd(p?.revenue ?? 0)} (${p?.ordersCount ?? 0} đơn · ${p?.nightsCount ?? 0} đêm)`,
+                            `${formatFullVnd(p?.revenueVnd ?? 0)} (${p?.ordersCount ?? 0} đơn · ${p?.nightsCount ?? 0} đêm)`,
                             "Doanh thu",
                           ];
                         }}
@@ -1315,6 +1315,9 @@ export function KpiDrilldownModal({
                   <span className="text-sm font-bold text-zinc-950 font-mono">
                     {activeDaySchedule.auctionBooked} phòng goodNstay TT 100% ·{" "}
                     {activeDaySchedule.otherBooked} phòng kênh khác
+                    {(activeDaySchedule.paymentHoldRooms ?? 0) > 0
+                      ? ` · ${activeDaySchedule.paymentHoldRooms} tạm khóa 10p`
+                      : ""}
                   </span>
                 </div>
                 <div className="p-3.5 bg-zinc-50 rounded-xl border border-zinc-200/80">
@@ -1325,6 +1328,9 @@ export function KpiDrilldownModal({
                   <span className="text-sm font-bold text-zinc-950 font-mono">
                     {activeDayCheckoutCount} phòng check-out 12:00 ·{" "}
                     {activeDaySchedule.vacantRooms} phòng đang trống
+                    {(activeDaySchedule.paymentHoldRooms ?? 0) > 0
+                      ? ` (${activeDaySchedule.paymentHoldRooms} đang giữ 10p)`
+                      : ""}
                   </span>
                 </div>
               </div>
@@ -1348,8 +1354,8 @@ export function KpiDrilldownModal({
                   <DialogDescription className="text-xs text-zinc-500 mt-0.5">
                     Bấm trực tiếp vào từng buồng để{" "}
                     <strong>Khóa phòng</strong> (khách Lễ tân/OTA) hoặc{" "}
-                    <strong>Mở khóa</strong> nhận đấu giá · Ngày đang chọn được
-                    giữ nguyên khi đóng hộp thoại.
+                    <strong>Mở khóa</strong> nhận đấu giá · Phòng đang{" "}
+                    <strong>Tạm khóa 10p</strong> được bảo vệ độc quyền như giữ ghế xem phim.
                   </DialogDescription>
                 </div>
               </div>
@@ -1376,9 +1382,7 @@ export function KpiDrilldownModal({
                 <div className="flex items-center gap-2 text-zinc-700">
                   <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>
-                    <strong>Tự động chống Overbooking:</strong> Ngay khi phòng
-                    trống cuối cùng của một hạng trong ngày lưu trú được khách TT
-                    100%, các báo giá trùng ngày của hạng đó sẽ tự động đóng.
+                    <strong>Khóa ghế 10p &amp; Chống Overbooking:</strong> Khi khách bấm thanh toán, phòng được tạm khóa độc quyền 10 phút (khách khác &amp; Lễ tân không thể chọn đè); hoàn tất TT 100% sẽ khóa cứng và tự đóng các báo giá trùng ngày.
                   </span>
                 </div>
               </div>

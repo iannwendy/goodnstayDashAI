@@ -1,8 +1,17 @@
 import { useMemo, useState } from "react";
-import { CalendarDays, LayoutGrid, Lock, LockOpen } from "lucide-react";
-import type { DailyRoomCell, DailyRoomSchedule } from "@/data";
+import { CalendarDays, Clock, LayoutGrid, Lock, LockOpen } from "lucide-react";
+import {
+  formatCountdown,
+  type DailyRoomCell,
+  type DailyRoomSchedule,
+} from "@/data";
 
-export type ExplorerStatusFilter = "all" | "vacant" | "auction" | "other";
+export type ExplorerStatusFilter =
+  | "all"
+  | "vacant"
+  | "hold"
+  | "auction"
+  | "other";
 export type ExplorerViewMode = "day" | "timeline";
 
 interface RoomScheduleExplorerProps {
@@ -135,9 +144,11 @@ export function RoomScheduleExplorer({
           ? true
           : statusFilter === "vacant"
             ? cell.status === "vacant_unlocked"
-            : statusFilter === "auction"
-              ? cell.status === "booked_auction"
-              : cell.status === "booked_other";
+            : statusFilter === "hold"
+              ? cell.status === "payment_hold"
+              : statusFilter === "auction"
+                ? cell.status === "booked_auction"
+                : cell.status === "booked_other";
       if (matchStatus) {
         grp.filteredRooms.push(cell);
       }
@@ -157,6 +168,8 @@ export function RoomScheduleExplorer({
       if (!cellOnSelectedDay) return true;
       if (statusFilter === "vacant")
         return cellOnSelectedDay.status === "vacant_unlocked";
+      if (statusFilter === "hold")
+        return cellOnSelectedDay.status === "payment_hold";
       if (statusFilter === "auction")
         return cellOnSelectedDay.status === "booked_auction";
       return cellOnSelectedDay.status === "booked_other";
@@ -211,6 +224,11 @@ export function RoomScheduleExplorer({
                 "bg-sky-600 text-white",
               ],
               [
+                "hold",
+                `Tạm khóa 10p (${activeSchedule.paymentHoldRooms ?? 0})`,
+                "bg-amber-600 text-white",
+              ],
+              [
                 "auction",
                 `goodNstay (${activeSchedule.auctionBooked})`,
                 "bg-emerald-600 text-white",
@@ -253,6 +271,7 @@ export function RoomScheduleExplorer({
               const occPct = Math.round(
                 ((day.otherBooked + day.auctionBooked) / day.totalRooms) * 100,
               );
+              const holdCnt = day.paymentHoldRooms ?? 0;
               return (
                 <button
                   key={day.isoDate}
@@ -273,16 +292,24 @@ export function RoomScheduleExplorer({
                         isSelected ? "text-zinc-300" : "text-zinc-400"
                       }`}
                     >
-                      {day.dayLabel}
+                      {holdCnt > 0 ? `Giữ ${holdCnt}` : day.dayLabel}
                     </span>
                   </div>
-                  <div className="w-full h-1 rounded-full bg-zinc-200/60 overflow-hidden mt-1.5">
+                  <div className="w-full h-1 rounded-full bg-zinc-200/60 overflow-hidden mt-1.5 flex">
                     <div
-                      className={`h-full rounded-full ${
+                      className={`h-full ${
                         isSelected ? "bg-emerald-400" : "bg-zinc-700"
                       }`}
                       style={{ width: `${occPct}%` }}
                     />
+                    {holdCnt > 0 && (
+                      <div
+                        className="h-full bg-amber-400"
+                        style={{
+                          width: `${Math.round((holdCnt / day.totalRooms) * 100)}%`,
+                        }}
+                      />
+                    )}
                   </div>
                   <div
                     className={`text-[10px] font-mono mt-1 flex items-center justify-between ${
@@ -321,7 +348,11 @@ export function RoomScheduleExplorer({
                   {activeSchedule.totalRooms}
                 </strong>{" "}
                 (goodNstay: {activeSchedule.auctionBooked}, Kênh khác:{" "}
-                {activeSchedule.otherBooked})
+                {activeSchedule.otherBooked}
+                {(activeSchedule.paymentHoldRooms ?? 0) > 0
+                  ? `, Tạm khóa 10p: ${activeSchedule.paymentHoldRooms}`
+                  : ""}
+                )
               </span>
             </div>
             <span className="text-[11px] text-zinc-500">
@@ -351,13 +382,16 @@ export function RoomScheduleExplorer({
               const vacantInGrp = grp.allRooms.filter(
                 (r) => r.status === "vacant_unlocked",
               ).length;
+              const holdInGrp = grp.allRooms.filter(
+                (r) => r.status === "payment_hold",
+              ).length;
 
               return (
                 <div
                   key={grp.roomClassId}
                   className="p-3 rounded-xl bg-white border border-zinc-200/80 space-y-2 min-w-0"
                 >
-                  <div className="flex items-center justify-between gap-2 text-xs">
+                  <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
                     <div className="flex items-center gap-2 min-w-0">
                       <span className="px-2 py-0.5 rounded bg-zinc-100 text-zinc-600 text-[11px] font-medium shrink-0">
                         {grp.category}
@@ -366,16 +400,23 @@ export function RoomScheduleExplorer({
                         {grp.roomClass}
                       </span>
                     </div>
-                    <span className="font-mono text-xs text-zinc-500 shrink-0">
-                      <strong
-                        className={
-                          vacantInGrp > 0 ? "text-sky-600" : "text-zinc-500"
-                        }
-                      >
-                        {vacantInGrp}
-                      </strong>
-                      /{grp.allRooms.length} trống
-                    </span>
+                    <div className="flex items-center gap-2 font-mono text-xs text-zinc-500 shrink-0">
+                      {holdInGrp > 0 && (
+                        <span className="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 text-[10.5px] font-semibold">
+                          {holdInGrp} giữ 10p
+                        </span>
+                      )}
+                      <span>
+                        <strong
+                          className={
+                            vacantInGrp > 0 ? "text-sky-600" : "text-zinc-500"
+                          }
+                        >
+                          {vacantInGrp}
+                        </strong>
+                        /{grp.allRooms.length} trống
+                      </span>
+                    </div>
                   </div>
 
                   <div
@@ -387,6 +428,7 @@ export function RoomScheduleExplorer({
                   >
                     {grp.filteredRooms.map((cell) => {
                       const isAuction = cell.status === "booked_auction";
+                      const isHold = cell.status === "payment_hold";
                       const isVacant = cell.status === "vacant_unlocked";
                       const isSelected =
                         cell.roomNumber === focusedCell?.roomNumber;
@@ -408,18 +450,22 @@ export function RoomScheduleExplorer({
                           title={
                             isAuction
                               ? `Phòng #${cell.roomNumber} (${cell.branchName}): Đã khóa đơn goodNstay (${cell.linkedReqId})`
-                              : isVacant
-                                ? `Bấm để KHÓA thủ công phòng #${cell.roomNumber} ngày ${activeSchedule.dateStr}`
-                                : `Bấm để MỞ KHÓA phòng #${cell.roomNumber} nhận đấu giá ngày ${activeSchedule.dateStr}`
+                              : isHold
+                                ? `Phòng #${cell.roomNumber} (${cell.branchName}): Đang tạm khóa chờ thanh toán 10p bởi #${cell.linkedReqId ?? "goodNstay"} (còn ${formatCountdown(cell.holdRemainingSeconds ?? 600)}) — Không thể chọn đè`
+                                : isVacant
+                                  ? `Bấm để KHÓA thủ công phòng #${cell.roomNumber} ngày ${activeSchedule.dateStr}`
+                                  : `Bấm để MỞ KHÓA phòng #${cell.roomNumber} nhận đấu giá ngày ${activeSchedule.dateStr}`
                           }
                           className={`group px-2.5 py-2 rounded-xl border text-left transition-all cursor-pointer min-w-0 ${
                             isAuction
                               ? "bg-emerald-50/70 border-emerald-300 text-emerald-950"
-                              : isVacant
-                                ? cell.activeAuctionCount > 0
-                                  ? "bg-sky-50/80 border-sky-400 hover:border-sky-600 text-zinc-900"
-                                  : "bg-white border-sky-200 hover:border-sky-500 text-zinc-900"
-                                : "bg-zinc-100/70 border-zinc-200 hover:border-zinc-400 text-zinc-600"
+                              : isHold
+                                ? "bg-amber-50/90 border-amber-400 text-amber-950"
+                                : isVacant
+                                  ? cell.activeAuctionCount > 0
+                                    ? "bg-sky-50/80 border-sky-400 hover:border-sky-600 text-zinc-900"
+                                    : "bg-white border-sky-200 hover:border-sky-500 text-zinc-900"
+                                  : "bg-zinc-100/70 border-zinc-200 hover:border-zinc-400 text-zinc-600"
                           } ${isSelected ? "ring-2 ring-zinc-900/80" : ""}`}
                         >
                           <div className="flex items-center justify-between gap-1">
@@ -431,6 +477,11 @@ export function RoomScheduleExplorer({
                                 <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[9.5px] font-semibold shrink-0">
                                   <Lock className="w-2.5 h-2.5" />
                                   Đã TT
+                                </span>
+                              ) : isHold ? (
+                                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-amber-200/90 text-amber-900 text-[9.5px] font-mono font-semibold shrink-0">
+                                  <Clock className="w-2.5 h-2.5" />
+                                  {formatCountdown(cell.holdRemainingSeconds ?? 600)}
                                 </span>
                               ) : isVacant ? (
                                 <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-sky-100 group-hover:bg-zinc-900 text-sky-800 group-hover:text-white text-[9.5px] font-semibold transition-colors shrink-0">
@@ -445,6 +496,8 @@ export function RoomScheduleExplorer({
                               )
                             ) : isVacant ? (
                               <LockOpen className="w-3 h-3 text-sky-600 shrink-0" />
+                            ) : isHold ? (
+                              <Clock className="w-3 h-3 text-amber-600 shrink-0" />
                             ) : (
                               <Lock
                                 className={`w-3 h-3 shrink-0 ${
@@ -459,16 +512,20 @@ export function RoomScheduleExplorer({
                             <span className="truncate font-medium">
                               {isAuction
                                 ? `#${cell.linkedReqId?.replace("CRQ-", "") ?? "TT"}`
-                                : isVacant
-                                  ? cell.activeAuctionCount > 0
-                                    ? `Đấu ${cell.activeAuctionCount} phiên`
-                                    : "Trống mở"
-                                  : shortSource}
+                                : isHold
+                                  ? `Giữ #${cell.linkedReqId?.replace("CRQ-", "") ?? "10p"}`
+                                  : isVacant
+                                    ? cell.activeAuctionCount > 0
+                                      ? `Đấu ${cell.activeAuctionCount} phiên`
+                                      : "Trống mở"
+                                    : shortSource}
                             </span>
                             <span className="text-[9.5px] text-zinc-400 font-mono shrink-0">
-                              {isVacant
-                                ? activeSchedule.dateStr
-                                : cell.staySpanText.split(" (")[0]}
+                              {isHold
+                                ? "10p TT"
+                                : isVacant
+                                  ? activeSchedule.dateStr
+                                  : cell.staySpanText.split(" (")[0]}
                             </span>
                           </div>
                         </button>
@@ -574,6 +631,7 @@ export function RoomScheduleExplorer({
                           (c) => c.roomNumber === roomMeta.roomNumber,
                         )!;
                         const isAuction = cell.status === "booked_auction";
+                        const isHold = cell.status === "payment_hold";
                         const isVacant = cell.status === "vacant_unlocked";
                         const isFocused =
                           day.dayOffset === selectedDayOffset &&
@@ -596,23 +654,27 @@ export function RoomScheduleExplorer({
                               className={`w-full py-1 px-0.5 rounded text-[9.5px] font-mono truncate transition-all cursor-pointer ${
                                 isAuction
                                   ? "bg-emerald-100/90 text-emerald-900 font-semibold"
-                                  : isVacant
-                                    ? cell.activeAuctionCount > 0
-                                      ? "bg-sky-100 text-sky-800 font-semibold border border-sky-300"
-                                      : "bg-sky-50/50 text-sky-700 hover:bg-sky-100/60"
-                                    : "bg-zinc-100 text-zinc-500"
+                                  : isHold
+                                    ? "bg-amber-100 text-amber-900 font-semibold border border-amber-300"
+                                    : isVacant
+                                      ? cell.activeAuctionCount > 0
+                                        ? "bg-sky-100 text-sky-800 font-semibold border border-sky-300"
+                                        : "bg-sky-50/50 text-sky-700 hover:bg-sky-100/60"
+                                      : "bg-zinc-100 text-zinc-500"
                               } ${isFocused ? "ring-2 ring-zinc-900" : ""}`}
                               title={`Ngày ${day.fullDate} • Phòng #${cell.roomNumber}: ${cell.sourceChannel} (${cell.staySpanText}) — Nháy đúp để Khóa/Mở khóa`}
                             >
                               {isAuction
                                 ? `#${cell.linkedReqId?.slice(-4) ?? "TT"}`
-                                : isVacant
-                                  ? cell.activeAuctionCount > 0
-                                    ? `Đấu ${cell.activeAuctionCount}`
-                                    : "Trống"
-                                  : cell.sourceChannel.includes("Khóa tay")
-                                    ? "Khóa"
-                                    : "OTA"}
+                                : isHold
+                                  ? "10p"
+                                  : isVacant
+                                    ? cell.activeAuctionCount > 0
+                                      ? `Đấu ${cell.activeAuctionCount}`
+                                      : "Trống"
+                                    : cell.sourceChannel.includes("Khóa tay")
+                                      ? "Khóa"
+                                      : "OTA"}
                             </button>
                           </td>
                         );
@@ -646,6 +708,11 @@ export function RoomScheduleExplorer({
                   Đã khóa goodNstay TT 100% ({focusedCell.linkedReqId}) ·{" "}
                   {focusedCell.staySpanText}
                 </span>
+              ) : focusedCell.status === "payment_hold" ? (
+                <span className="text-amber-300 font-semibold">
+                  Tạm khóa chờ TT 10p (#{focusedCell.linkedReqId ?? "goodNstay"}) · Còn{" "}
+                  {formatCountdown(focusedCell.holdRemainingSeconds ?? 600)}/10:00 — Chặn khách khác &amp; Lễ tân chọn đè
+                </span>
               ) : focusedCell.status === "booked_other" ? (
                 <span className="text-zinc-200">
                   Đã khóa {focusedCell.sourceChannel} · {focusedCell.staySpanText}
@@ -669,6 +736,11 @@ export function RoomScheduleExplorer({
                 <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 text-[11px] font-medium">
                   <Lock className="w-3 h-3" />
                   Đã khóa đơn TT 100%
+                </span>
+              ) : focusedCell.status === "payment_hold" ? (
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-500/20 border border-amber-400/40 text-amber-200 text-[11px] font-mono font-medium">
+                  <Clock className="w-3 h-3" />
+                  Đang giữ ghế 10p ({formatCountdown(focusedCell.holdRemainingSeconds ?? 600)})
                 </span>
               ) : focusedCell.status === "vacant_unlocked" ? (
                 <button

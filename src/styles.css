@@ -155,3 +155,9 @@ td {
     0 4px 16px -4px rgba(9, 9, 11, 0.06);
   color: #09090b;
 }
+
+.recharts-responsive-container {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}

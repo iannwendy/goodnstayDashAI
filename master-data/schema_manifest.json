@@ -1,13 +1,13 @@
 {
-  "schemaVersion": "2.6.0",
-  "architecture": "goodNstay 10-Min Movie-Seat Payment Hold • 0% Hotel Commission • 1.265x Guest Total • Full Lifecycle",
+  "schemaVersion": "2.7.0",
+  "architecture": "goodNstay Pay-to-Lock • 10-Min Payment Hold • Multi-Entity Lifecycle • 0% Hotel Commission",
   "generatedAt": "2026-11-06T19:45:00+07:00",
   "primaryReferenceDate": "2026-11-06",
   "tables": {
     "hotelProfile": {
       "file": "hotel_profile.json",
       "pk": "hotelId",
-      "description": "Cấu hình khách sạn, TTL 60p báo giá + TTL 10p giữ phòng TT, phí 15% + VAT 10%, ELO & Review"
+      "description": "Cấu hình khách sạn, TTL báo giá 60p, TTL tạm khóa thanh toán 10p (600s), ELO & 3 chi nhánh"
     },
     "usersRoles": {
       "file": "users_roles.json",
@@ -28,23 +28,23 @@
       "file": "rooms_pms.json",
       "pk": "roomNumber",
       "fk": "roomClassId -> roomClasses.id",
-      "description": "4 trạng thái thực tế (vacant_unlocked, payment_hold 10p, booked_auction, booked_other) của 30 phòng #101-#130"
+      "description": "Trạng thái thực tế 30 mã phòng #101-#130 đêm 06/11/2026 (gồm 4 trạng thái: vacant_unlocked, payment_hold, booked_auction, booked_other)"
     },
     "calendar14dPms": {
       "file": "calendar_14d_pms.json",
       "pk": "dayOffset",
-      "description": "Lịch tồn kho 14 ngày vàng 4 lớp trạng thái (06/11 - 19/11/2026)"
+      "description": "Lịch tồn kho 14 ngày vàng (06/11 - 19/11/2026) có đồng bộ paymentHoldRooms"
     },
     "systemBenchmarks": {
       "file": "system_benchmarks.json",
       "pk": "regionName",
-      "description": "Dữ liệu chuẩn so sánh toàn sàn Đà Nẵng & 5 nhóm nguyên nhân Pareto"
+      "description": "Dữ liệu chuẩn so sánh toàn sàn Đà Nẵng theo kỳ Today / 7D / 30D"
     },
     "auctionSessions": {
       "file": "auction_sessions.json",
       "pk": "id",
       "fk": "matchedRoomClassId -> roomClasses.id",
-      "description": "Bảng giao dịch đa trạng thái (Request / Bid / Payment / Reject) gồm 5 phiên Live + 72 phiên lịch sử"
+      "description": "Bảng giao dịch gốc gồm 4 phiên Live + 68 phiên lịch sử đồng bộ 4 chiều trạng thái (Request / Bid / Payment / Reject)"
     },
     "matchBreakdowns": {
       "file": "match_breakdowns.json",
@@ -54,7 +54,7 @@
     "lossAutopsies": {
       "file": "loss_autopsies.json",
       "pk": "id",
-      "description": "Hồ sơ đối chiếu mổ xẻ phiên trượt & quá hạn giữ phòng 10p"
+      "description": "Hồ sơ đối chiếu mổ xẻ phiên trượt"
     },
     "botRules": {
       "file": "bot_rules.json",
@@ -64,7 +64,7 @@
     "lifecycleCatalog": {
       "file": "lifecycle_catalog.json",
       "pk": "version",
-      "description": "Đặc tả 9 giai đoạn vòng đời, từ điển 4 trạng thái phòng, 11 mã Reject & 18 kịch bản nghiệp vụ"
+      "description": "Đặc tả 9 bước vòng đời, 4 trạng thái phòng, 11 mã Reject và 18 kịch bản nghiệp vụ"
     }
   }
 }

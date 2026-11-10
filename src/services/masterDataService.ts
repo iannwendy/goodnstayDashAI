@@ -20,9 +20,10 @@ const STATIC_TABLE_PATHS: Record<MasterTableKey, string> = {
   matchBreakdowns: "/master-data/match_breakdowns.json",
   lossAutopsies: "/master-data/loss_autopsies.json",
   botRules: "/master-data/bot_rules.json",
+  lifecycleCatalog: "/master-data/lifecycle_catalog.json",
 };
 
-const LOCAL_FALLBACK_PREFIX = "gns_master_v26_";
+const LOCAL_FALLBACK_PREFIX = "gns_master_v28_";
 
 export async function loadMasterDataBundle(): Promise<LoadedMasterDataResult> {
   // 1. Direct live Master Data REST API (/api/master-data)

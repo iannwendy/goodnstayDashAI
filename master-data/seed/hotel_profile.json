@@ -2,7 +2,7 @@
   "hotelId": "HTL-DN-024",
   "brandName": "goodNstay",
   "brandSuffix": "Partner Studio",
-  "version": "v2.6",
+  "version": "v2.7",
   "hotelName": "L'amour Boutique Hotel",
   "starRating": 4,
   "totalRooms": 30,
@@ -17,6 +17,7 @@
   "paymentHoldTtlSeconds": 600,
   "urgentThresholdSeconds": 600,
   "warnThresholdSeconds": 1800,
+  "payoutCycleLabel": "Đối soát T+7 (Ký quỹ tự động)",
   "hotelCommissionRate": 0.0,
   "platformFeeRate": 0.15,
   "vatRate": 0.1,
@@ -39,12 +40,44 @@
     "amenitiesExpectation": 4.7,
     "valueForMoney": 4.8
   },
-  "payoutInfo": {
-    "gateway": "NHN KCP Escrow (kcp.co.kr)",
-    "settlementCycle": "Đối soát T+7 sau Check-out",
-    "nextPayoutDate": "13/11/2026",
-    "beneficiaryBank": "Vietcombank ••8829 (CTCP L'amour Boutique)"
-  },
+  "branches": [
+    {
+      "id": "br_mykhe",
+      "shortName": "CN Mỹ Khê",
+      "name": "L'amour Mỹ Khê · Sơn Trà",
+      "district": "Phước Mỹ, Sơn Trà",
+      "totalRooms": 12,
+      "previousPeriodRevenue": {
+        "today": 4600000,
+        "7d": 7200000,
+        "30d": 20200000
+      }
+    },
+    {
+      "id": "br_songhan",
+      "shortName": "CN Sông Hàn",
+      "name": "L'amour Sông Hàn · Hải Châu",
+      "district": "Bạch Đằng, Hải Châu",
+      "totalRooms": 10,
+      "previousPeriodRevenue": {
+        "today": 2500000,
+        "7d": 13100000,
+        "30d": 20400000
+      }
+    },
+    {
+      "id": "br_anthuong",
+      "shortName": "CN An Thượng",
+      "name": "L'amour An Thượng · Ngũ Hành Sơn",
+      "district": "Mỹ An, Ngũ Hành Sơn",
+      "totalRooms": 8,
+      "previousPeriodRevenue": {
+        "today": 2700000,
+        "7d": 4900000,
+        "30d": 14000000
+      }
+    }
+  ],
   "eveningForecast": {
     "expectedRequestsMin": 6,
     "expectedRequestsMax": 9,

@@ -1,4 +1,4 @@
-export type MainTab = "workspace" | "ai-analytics" | "inventory";
+export type MainTab = "workspace" | "ai-analytics" | "inventory" | "lifecycle";
 
 export type DateRangeKey = "today" | "7d" | "30d";
 
@@ -10,8 +10,72 @@ export type KpiType =
   | "rooms_occupied"
   | "rooms_vacant";
 
-export type HistoryStatus = "won" | "rejected" | "expired" | "auto_closed";
+export type RoomPhysicalStatus =
+  | "booked_other"
+  | "booked_auction"
+  | "payment_hold"
+  | "vacant_unlocked";
+
+export type HistoryStatus =
+  | "won"
+  | "rejected"
+  | "expired"
+  | "auto_closed"
+  | "payment_failed"
+  | "partner_declined";
 export type SessionRecordStatus = "live" | HistoryStatus;
+
+export type RequestStatus =
+  | "created"
+  | "matching"
+  | "bidding_open"
+  | "offers_comparing"
+  | "checkout_hold_10m"
+  | "confirmed_paid"
+  | "checked_in"
+  | "settled_t_plus_7"
+  | "closed_unbooked"
+  | "cancelled_force_majeure";
+
+export type BidStatus =
+  | "not_invited"
+  | "pending_quote"
+  | "sent_waiting_guest"
+  | "payment_hold_10m"
+  | "standby_hold_conflict"
+  | "won_paid_100"
+  | "lost_to_competitor"
+  | "expired_ttl_60m"
+  | "auto_closed"
+  | "partner_declined"
+  | "release_after_hold";
+
+export type PaymentStatus =
+  | "not_started"
+  | "awaiting_hold_10m"
+  | "blocked_by_hold"
+  | "processing_gateway"
+  | "paid_escrow_100"
+  | "settled_hotel"
+  | "failed_gateway"
+  | "expired_hold_10m"
+  | "abandoned_by_guest"
+  | "refunded_force_majeure";
+
+export type RejectCode =
+  | "REJ_HARD_RULE_MISMATCH"
+  | "REJ_FLOOR_GUARDRAIL_BLOCKED"
+  | "REJ_PARTNER_SKIPPED_SESSION"
+  | "REJ_SLOW_RESPONSE_TTL_60M"
+  | "REJ_COMPETITOR_WON_PRICE"
+  | "REJ_MISSING_MANDATORY_PERK"
+  | "REJ_NO_GUEST_ACTION_60M"
+  | "REJ_HOLD_EXPIRED_10M"
+  | "REJ_PAYMENT_GATEWAY_DECLINED"
+  | "REJ_GUEST_ABANDONED_HOLD"
+  | "REJ_AUTO_CLOSED_SOLD_OUT"
+  | "REJ_FORCE_MAJEURE_REFUND";
+
 export type UserRole = "manager" | "receptionist";
 export type TimeSlotType = "lunch_peak" | "evening_peak" | "off_peak";
 export type LossReasonId =
@@ -47,6 +111,8 @@ export interface HotelProfileMaster {
   goldenWindowRange: string;
   goldenWindowDays: number;
   bidTtlSeconds: number;
+  paymentHoldTtlSeconds?: number;
+  payoutCycleLabel?: string;
   urgentThresholdSeconds: number;
   warnThresholdSeconds: number;
   hotelCommissionRate: number;
@@ -123,10 +189,12 @@ export interface PmsRoomRecord {
   roomClassId: string;
   roomClass: string;
   category: string;
-  status: "booked_other" | "booked_auction" | "vacant_unlocked";
+  status: RoomPhysicalStatus;
   sourceChannel: string;
   linkedReqId: string | null;
   checkOutTomorrow: boolean;
+  holdRemainingSeconds?: number;
+  holdTotalSeconds?: number;
 }
 
 export interface Calendar14DayPmsRecord {
@@ -138,6 +206,7 @@ export interface Calendar14DayPmsRecord {
   totalRooms: number;
   otherBooked: number;
   auctionBooked: number;
+  paymentHoldRooms?: number;
   vacantRooms: number;
   policyShort: string;
   linkedReqId?: string | null;
@@ -186,6 +255,15 @@ export interface AuctionSessionMasterRecord {
   timeLabel: string;
   dateTimeLabel?: string;
   timeSlot: TimeSlotType;
+  // Multi-entity lifecycle state fields
+  requestStatus?: RequestStatus;
+  bidStatus?: BidStatus;
+  paymentStatus?: PaymentStatus;
+  rejectCode?: RejectCode | null;
+  rejectLabel?: string | null;
+  holdRoomNumber?: number | null;
+  holdRemainingSeconds?: number;
+  holdTotalSeconds?: number;
   // Live session fields
   remainingSeconds?: number;
   checkInDateRange?: string;
@@ -257,6 +335,16 @@ export interface LiveSession {
   isTonightCheckIn: boolean;
   flashDiscountApplied: boolean;
   vacantForStay: number;
+  paymentHoldForStay: number;
+  isBlockedByPaymentHold: boolean;
+  heldByReqIds: string[];
+  heldRoomNumbers: number[];
+  holdRoomNumber?: number | null;
+  holdRemainingSeconds?: number;
+  holdTotalSeconds?: number;
+  requestStatus: RequestStatus;
+  bidStatus: BidStatus;
+  paymentStatus: PaymentStatus;
   concurrentForStay: number;
   isAutoBidEligible: boolean;
   bidSubmitted?: {
@@ -287,6 +375,12 @@ export interface HistorySession {
     tone: "underpriced" | "late" | "fast";
   };
   status: HistoryStatus;
+  requestStatus: RequestStatus;
+  bidStatus: BidStatus;
+  paymentStatus: PaymentStatus;
+  rejectCode?: RejectCode | null;
+  rejectLabel?: string | null;
+  lockedRoomNumber?: number;
   hotelEarnedBase?: number;
   guestPaidTotal?: number;
   resultNote: string;
@@ -319,6 +413,7 @@ export interface RoomClassInventory {
   totalRooms: number;
   otherChannelBooked: number;
   auctionPaidBooked: number;
+  paymentHoldCount: number;
   baseFloorPrice: number;
   rackRate: number;
 }
@@ -332,10 +427,12 @@ export interface RoomCell {
   roomClass: string;
   category: string;
   sourceChannel: string;
-  status: "booked_other" | "booked_auction" | "vacant_unlocked";
+  status: RoomPhysicalStatus;
   linkedReqId?: string | null;
   checkOutTomorrow: boolean;
   activeAuctionCount: number;
+  holdRemainingSeconds?: number;
+  holdTotalSeconds?: number;
 }
 
 export interface DailyRoomCell {
@@ -346,13 +443,15 @@ export interface DailyRoomCell {
   roomClassId: string;
   roomClass: string;
   category: string;
-  status: "booked_other" | "booked_auction" | "vacant_unlocked";
+  status: RoomPhysicalStatus;
   sourceChannel: string;
   linkedReqId: string | null;
   staySpanText: string;
   checkOutTomorrow: boolean;
   activeAuctionIds: string[];
   activeAuctionCount: number;
+  holdRemainingSeconds?: number;
+  holdTotalSeconds?: number;
 }
 
 export interface DailyRoomSchedule {
@@ -364,6 +463,7 @@ export interface DailyRoomSchedule {
   totalRooms: number;
   otherBooked: number;
   auctionBooked: number;
+  paymentHoldRooms: number;
   vacantRooms: number;
   policyShort: string;
   rooms: DailyRoomCell[];
@@ -456,6 +556,73 @@ export interface BotRuleRecord {
   sourceCaseId: string;
 }
 
+export interface RoomStateMachineDefinition {
+  status: RoomPhysicalStatus;
+  label: string;
+  badgeTone: "sky" | "amber" | "emerald" | "zinc";
+  canBid: boolean;
+  canGuestCheckout: boolean;
+  canManualOverride: boolean;
+  description: string;
+}
+
+export interface LifecycleStageDefinition {
+  stageNumber: number;
+  id: string;
+  title: string;
+  actor: string;
+  slaText: string;
+  roomStatus: RoomPhysicalStatus;
+  requestStatus: RequestStatus;
+  bidStatus: BidStatus;
+  paymentStatus: PaymentStatus;
+  happyOutcome: string;
+  failureOutcomes: string[];
+}
+
+export interface RejectCatalogDefinition {
+  code: RejectCode;
+  shortLabel: string;
+  group: "pre_bid" | "bidding_competition" | "payment_hold_10m" | "post_payment";
+  stageNumber: number;
+  roomEffect: string;
+  financialEffect: string;
+  description: string;
+  partnerAction: string;
+}
+
+export interface LifecycleScenarioItem {
+  caseId: string;
+  title: string;
+  category:
+    | "happy_path"
+    | "payment_hold_concurrency"
+    | "inventory_guardrail"
+    | "bidding_rejection"
+    | "post_stay_settlement";
+  trigger: string;
+  roomTransition: string;
+  bidTransition: string;
+  paymentTransition: string;
+  rejectCode: RejectCode | null;
+  outcome: string;
+  sampleSessionId: string;
+}
+
+export interface LifecycleCatalogMaster {
+  version: string;
+  holdMechanism: {
+    ttlSeconds: number;
+    ttlMinutes: number;
+    analogy: string;
+    summary: string;
+  };
+  roomStateMachine: RoomStateMachineDefinition[];
+  stages: LifecycleStageDefinition[];
+  rejectCatalog: RejectCatalogDefinition[];
+  scenarioMatrix: LifecycleScenarioItem[];
+}
+
 export interface MasterDataBundle {
   hotelProfile: HotelProfileMaster;
   usersRoles: UserRoleMaster[];
@@ -468,6 +635,7 @@ export interface MasterDataBundle {
   matchBreakdowns: Record<string, MatchBreakdown>;
   lossAutopsies: Record<string, LossAutopsyCase>;
   botRules: BotRuleRecord[];
+  lifecycleCatalog?: LifecycleCatalogMaster;
 }
 
 /**

@@ -13,6 +13,11 @@ import {
   SlidersHorizontal,
   ShieldCheck,
   ChevronUp,
+  ChevronLeft,
+  ChevronRight,
+  Search,
+  ArrowUpDown,
+  X,
   Trash2,
   XCircle,
   Building2,
@@ -51,6 +56,7 @@ import {
   type MainTab,
   type MasterDataBundle,
   type PmsRoomRecord,
+  type RejectCode,
   type UserRole,
 } from "@/data";
 import {
@@ -69,6 +75,64 @@ import {
 } from "@/components/RoomScheduleExplorer";
 import { PaymentConversionFunnelPanel } from "@/components/PaymentConversionFunnelPanel";
 import { SelectionBenchmarkLinePanel } from "@/components/SelectionBenchmarkLinePanel";
+import { LifecycleStateExplorer } from "@/components/LifecycleStateExplorer";
+
+type HistorySortKey =
+  | "newest"
+  | "oldest"
+  | "price_desc"
+  | "price_asc"
+  | "total_desc"
+  | "match_desc"
+  | "match_asc";
+
+const HISTORY_PAGE_SIZE = 10;
+
+function normalizeSearchText(input: string): string {
+  return input
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[đĐ]/g, "d")
+    .toLowerCase()
+    .trim();
+}
+
+function getMatchScoreStyle(score: number): {
+  pillClass: string;
+  dotClass: string;
+  hint: string;
+} {
+  if (score >= 95) {
+    return {
+      pillClass:
+        "bg-emerald-50 text-emerald-700 border-emerald-200/90 hover:bg-emerald-100/80",
+      dotClass: "bg-emerald-500",
+      hint: `Khớp tối ưu (${score}%) · Bấm xem chi tiết tiêu chí`,
+    };
+  }
+  if (score >= 90) {
+    return {
+      pillClass:
+        "bg-sky-50 text-sky-700 border-sky-200/90 hover:bg-sky-100/80",
+      dotClass: "bg-sky-500",
+      hint: `Khớp tốt (${score}%) · Bấm xem chi tiết tiêu chí`,
+    };
+  }
+  if (score >= 85) {
+    return {
+      pillClass:
+        "bg-amber-50 text-amber-700 border-amber-200/90 hover:bg-amber-100/80",
+      dotClass: "bg-amber-500",
+      hint: `Khớp khá (${score}%) · Có thể bù thêm đặc quyền`,
+    };
+  }
+  return {
+    pillClass:
+      "bg-rose-50 text-rose-700 border-rose-200/90 hover:bg-rose-100/80",
+    dotClass: "bg-rose-500",
+    hint: `Khớp thấp (${score}%) · Lệch hoặc thiếu tiêu chí quan trọng`,
+  };
+}
 
 interface PersistedUiPrefs {
   activeTab: MainTab;
@@ -77,6 +141,7 @@ interface PersistedUiPrefs {
   userRole: UserRole;
   showFormulas: boolean;
   historyFilter: "all" | HistoryStatus;
+  historySortBy?: HistorySortKey;
   selectedAutopsyId: string;
   selectedScheduleDayOffset: number;
   explorerViewMode: ExplorerViewMode;
@@ -92,6 +157,7 @@ const DEFAULT_UI_STATE: PersistedUiPrefs = {
   userRole: "manager",
   showFormulas: false,
   historyFilter: "all",
+  historySortBy: "newest",
   selectedAutopsyId: "CRQ-8924",
   selectedScheduleDayOffset: 0,
   explorerViewMode: "day",
@@ -135,6 +201,11 @@ export function App() {
   const [historyFilter, setHistoryFilter] = useState<"all" | HistoryStatus>(
     initialUi.historyFilter ?? "all",
   );
+  const [historySortBy, setHistorySortBy] = useState<HistorySortKey>(
+    initialUi.historySortBy ?? "newest",
+  );
+  const [historySearch, setHistorySearch] = useState<string>("");
+  const [historyPage, setHistoryPage] = useState<number>(1);
   const [selectedAutopsyId, setSelectedAutopsyId] = useState<string>(
     initialUi.selectedAutopsyId ?? "CRQ-8924",
   );
@@ -154,6 +225,17 @@ export function App() {
   const [liveCountdowns, setLiveCountdowns] = useState<Record<string, number>>(
     {},
   );
+  const [holdCountdowns, setHoldCountdowns] = useState<Record<string, number>>(
+    {},
+  );
+  const [expiredHoldSessionId, setExpiredHoldSessionId] = useState<
+    string | null
+  >(null);
+
+  // Reset pagination to page 1 whenever filters, search query, sort order, or period changes
+  useEffect(() => {
+    setHistoryPage(1);
+  }, [dateRange, branchFilter, historyFilter, historySearch, historySortBy]);
 
   // Persist UI preferences across modal close, tab switches, and page reloads
   useEffect(() => {
@@ -165,6 +247,7 @@ export function App() {
         userRole,
         showFormulas,
         historyFilter,
+        historySortBy,
         selectedAutopsyId,
         selectedScheduleDayOffset,
         explorerViewMode,
@@ -183,6 +266,7 @@ export function App() {
     userRole,
     showFormulas,
     historyFilter,
+    historySortBy,
     selectedAutopsyId,
     selectedScheduleDayOffset,
     explorerViewMode,
@@ -219,13 +303,24 @@ export function App() {
         if (mounted) {
           setBundle(res.bundle);
           const initialCountdowns: Record<string, number> = {};
+          const initialHolds: Record<string, number> = {};
           res.bundle.auctionSessions.forEach((s) => {
             if (s.status === "live") {
               initialCountdowns[s.id] =
                 s.remainingSeconds ?? res.bundle.hotelProfile.bidTtlSeconds;
+              if (
+                s.holdRoomNumber != null &&
+                (s.holdRemainingSeconds ?? 0) > 0
+              ) {
+                initialHolds[s.id] =
+                  s.holdRemainingSeconds ??
+                  res.bundle.hotelProfile.paymentHoldTtlSeconds ??
+                  600;
+              }
             }
           });
           setLiveCountdowns(initialCountdowns);
+          setHoldCountdowns(initialHolds);
           setLoading(false);
         }
       })
@@ -237,7 +332,7 @@ export function App() {
     };
   }, []);
 
-  // 1-second live countdown ticker
+  // 1-second live countdown & 10-minute payment hold ticker
   useEffect(() => {
     if (!bundle) return;
     const timer = window.setInterval(() => {
@@ -248,6 +343,23 @@ export function App() {
           if (sec > 0) {
             next[id] = sec - 1;
             changed = true;
+          } else {
+            next[id] = 0;
+          }
+        }
+        return changed ? next : prev;
+      });
+      setHoldCountdowns((prev) => {
+        const next: Record<string, number> = {};
+        let changed = false;
+        for (const [id, sec] of Object.entries(prev)) {
+          if (sec > 1) {
+            next[id] = sec - 1;
+            changed = true;
+          } else if (sec === 1) {
+            next[id] = 0;
+            changed = true;
+            setExpiredHoldSessionId(id);
           } else {
             next[id] = 0;
           }
@@ -265,8 +377,9 @@ export function App() {
       dateRange,
       liveCountdowns,
       branchFilter,
+      holdCountdowns,
     );
-  }, [bundle, dateRange, liveCountdowns, branchFilter]);
+  }, [bundle, dateRange, liveCountdowns, branchFilter, holdCountdowns]);
 
   const currentUser = useMemo(() => {
     if (!bundle) return null;
@@ -313,15 +426,22 @@ export function App() {
     mode: "quick" | "custom" = "custom",
   ) => {
     if (!bundle) return;
+    const liveRef = analytics?.liveSessions.find((ls) => ls.id === sessionId);
+    const isStandby = Boolean(liveRef?.isBlockedByPaymentHold);
     const nextSessions: AuctionSessionMasterRecord[] =
       bundle.auctionSessions.map((s) => {
         if (s.id !== sessionId) return s;
         return {
           ...s,
+          requestStatus: "offers_comparing",
+          bidStatus: isStandby ? "standby_hold_conflict" : "sent_waiting_guest",
+          paymentStatus: isStandby ? "blocked_by_hold" : "not_started",
           bidSubmitted: {
             basePrice,
             perks,
-            submittedAtText: "Đã gửi báo giá · Chờ khách TT 100%",
+            submittedAtText: isStandby
+              ? "Đã gửi báo giá · Standby chờ phòng nhả khóa 10p"
+              : "Đã gửi báo giá · Chờ khách TT 100%",
             mode,
           },
         };
@@ -332,9 +452,334 @@ export function App() {
     setSuggestedPerkForBid(undefined);
     await persistMasterTable("auctionSessions", nextSessions);
     showToast(
-      `Đã gửi báo giá ${formatFullVnd(basePrice)}/đêm cho #${sessionId}. Phòng vẫn mở khóa đến khi khách thanh toán 100%.`,
+      isStandby
+        ? `Đã gửi báo giá Standby ${formatFullVnd(basePrice)}/đêm cho #${sessionId}. Phiên đang chờ phòng tạm khóa 10p nhả ra hoặc sẽ tự đóng nếu khách trước hoàn tất TT 100%.`
+        : `Đã gửi báo giá ${formatFullVnd(basePrice)}/đêm cho #${sessionId}. Phòng vẫn mở khóa đến khi khách bấm thanh toán (giữ chỗ 10p) hoặc hoàn tất TT 100%.`,
     );
   };
+
+  // Simulate Guest Clicking Checkout -> Acquires 10-minute Temporary Payment Hold (Movie-Seat Lock)
+  const handleSimulateGuestStartHold10m = async (session: LiveSession) => {
+    if (!bundle || !analytics) return;
+    if (session.remainingSeconds <= 0) {
+      showToast("Phiên đã hết hạn 60 phút, không thể tạo khóa thanh toán 10p.");
+      return;
+    }
+    if (
+      session.holdRoomNumber != null &&
+      (session.holdRemainingSeconds ?? 0) > 0
+    ) {
+      showToast(
+        `Phiên #${session.id} đang giữ tạm khóa phòng #${session.holdRoomNumber} rồi.`,
+      );
+      return;
+    }
+
+    const stayOffsets = parseStayDayOffsets(
+      session.checkInDateRange,
+      bundle.hotelProfile.referenceDate,
+      session.nights,
+    );
+    const effectiveOffsets = stayOffsets.length > 0 ? stayOffsets : [0];
+    const includesTonight = effectiveOffsets.includes(0);
+
+    const classRooms = bundle.roomsPms
+      .filter((r) => r.roomClassId === session.matchedRoomClassId)
+      .sort(
+        (a, b) =>
+          Number(b.branchId === session.branchId) -
+            Number(a.branchId === session.branchId) ||
+          a.roomNumber - b.roomNumber,
+      );
+
+    const candidateRoom = classRooms.find((r) =>
+      effectiveOffsets.every((off) => {
+        const daySched = analytics.dailyRoomSchedules[off];
+        const cell = daySched?.rooms.find((c) => c.roomNumber === r.roomNumber);
+        return cell?.status === "vacant_unlocked";
+      }),
+    );
+
+    if (!candidateRoom) {
+      showToast(
+        "Không còn phòng trống mở khóa để giữ chỗ 10 phút — phòng đang được khách khác thanh toán hoặc đã khóa.",
+      );
+      return;
+    }
+
+    const holdTtlSec = bundle.hotelProfile.paymentHoldTtlSeconds ?? 600;
+    const offeredBase =
+      session.bidSubmitted?.basePrice ?? session.aiSuggestedBasePrice;
+
+    const nextRoomsPms: PmsRoomRecord[] = includesTonight
+      ? bundle.roomsPms.map((r) =>
+          r.roomNumber === candidateRoom.roomNumber
+            ? {
+                ...r,
+                status: "payment_hold",
+                sourceChannel: "Tạm khóa 10p chờ TT (goodNstay)",
+                linkedReqId: session.id,
+                holdRemainingSeconds: holdTtlSec,
+                holdExpiresAtLabel: "10:00",
+                checkOutTomorrow: false,
+              }
+            : r,
+        )
+      : bundle.roomsPms;
+
+    const nextOther0 = nextRoomsPms.filter(
+      (r) => r.status === "booked_other",
+    ).length;
+    const nextAuction0 = nextRoomsPms.filter(
+      (r) => r.status === "booked_auction",
+    ).length;
+    const nextHold0 = nextRoomsPms.filter(
+      (r) => r.status === "payment_hold",
+    ).length;
+    const nextVacant0 = Math.max(
+      0,
+      bundle.hotelProfile.totalRooms - (nextOther0 + nextAuction0 + nextHold0),
+    );
+
+    const nextCalendar14d = bundle.calendar14dPms.map((d) => {
+      if (d.dayOffset === 0) {
+        return {
+          ...d,
+          otherBooked: nextOther0,
+          auctionBooked: nextAuction0,
+          paymentHoldRooms: nextHold0,
+          vacantRooms: nextVacant0,
+        };
+      }
+      if (effectiveOffsets.includes(d.dayOffset)) {
+        const nextHold = Math.min(
+          d.totalRooms - d.otherBooked - d.auctionBooked,
+          (d.paymentHoldRooms ?? 0) + 1,
+        );
+        return {
+          ...d,
+          paymentHoldRooms: nextHold,
+          vacantRooms: Math.max(
+            0,
+            d.totalRooms - d.otherBooked - d.auctionBooked - nextHold,
+          ),
+        };
+      }
+      return d;
+    });
+
+    const nextSessions: AuctionSessionMasterRecord[] =
+      bundle.auctionSessions.map((s) => {
+        if (s.id !== session.id) return s;
+        return {
+          ...s,
+          branchId: candidateRoom.branchId,
+          branchName: candidateRoom.branchName,
+          holdRoomNumber: candidateRoom.roomNumber,
+          holdRemainingSeconds: holdTtlSec,
+          requestStatus: "checkout_hold_10m",
+          bidStatus: "payment_hold_10m",
+          paymentStatus: "awaiting_hold_10m",
+          bidSubmitted: s.bidSubmitted ?? {
+            basePrice: offeredBase,
+            perks: ["Miễn phí Buffet sáng 2 khách"],
+            submittedAtText: `Khách đang tạm khóa #${candidateRoom.roomNumber} chờ TT (10p)`,
+            mode: "quick",
+          },
+        };
+      });
+
+    setHoldCountdowns((prev) => ({
+      ...prev,
+      [session.id]: holdTtlSec,
+    }));
+    setBundle({
+      ...bundle,
+      roomsPms: nextRoomsPms,
+      calendar14dPms: nextCalendar14d,
+      auctionSessions: nextSessions,
+    });
+
+    await Promise.all([
+      persistMasterTable("roomsPms", nextRoomsPms),
+      persistMasterTable("calendar14dPms", nextCalendar14d),
+      persistMasterTable("auctionSessions", nextSessions),
+    ]);
+
+    showToast(
+      `Khách #${session.id} bấm thanh toán → Đã tạm khóa phòng #${candidateRoom.roomNumber} trong 10:00 (khách khác không thể chọn trùng ghế này).`,
+    );
+  };
+
+  // Release 10-minute Temporary Payment Hold (Timeout 00:00 / Card Declined / Guest Exited Checkout)
+  const handleReleasePaymentHold = useCallback(
+    async (
+      sessionId: string,
+      reasonCode:
+        | "REJ_HOLD_EXPIRED_10M"
+        | "REJ_PAYMENT_GATEWAY_DECLINED"
+        | "REJ_GUEST_ABANDONED_HOLD" = "REJ_HOLD_EXPIRED_10M",
+    ) => {
+      if (!bundle) return;
+      const rawSession = bundle.auctionSessions.find((s) => s.id === sessionId);
+      if (!rawSession || rawSession.status !== "live") return;
+
+      const heldRoomNum = rawSession.holdRoomNumber;
+      const stayOffsets = parseStayDayOffsets(
+        rawSession.checkInDateRange ?? "06/11 – 07/11",
+        bundle.hotelProfile.referenceDate,
+        rawSession.nights,
+      );
+      const effectiveOffsets = stayOffsets.length > 0 ? stayOffsets : [0];
+      const includesTonight = effectiveOffsets.includes(0);
+
+      const nextRoomsPms: PmsRoomRecord[] =
+        heldRoomNum != null && includesTonight
+          ? bundle.roomsPms.map((r) =>
+              r.roomNumber === heldRoomNum && r.status === "payment_hold"
+                ? {
+                    ...r,
+                    status: "vacant_unlocked",
+                    sourceChannel: "Trống · Mở đấu giá",
+                    linkedReqId: null,
+                    holdRemainingSeconds: 0,
+                    holdExpiresAtLabel: null,
+                    checkOutTomorrow: false,
+                  }
+                : r,
+            )
+          : bundle.roomsPms;
+
+      const nextOther0 = nextRoomsPms.filter(
+        (r) => r.status === "booked_other",
+      ).length;
+      const nextAuction0 = nextRoomsPms.filter(
+        (r) => r.status === "booked_auction",
+      ).length;
+      const nextHold0 = nextRoomsPms.filter(
+        (r) => r.status === "payment_hold",
+      ).length;
+      const nextVacant0 = Math.max(
+        0,
+        bundle.hotelProfile.totalRooms -
+          (nextOther0 + nextAuction0 + nextHold0),
+      );
+
+      const nextCalendar14d = bundle.calendar14dPms.map((d) => {
+        if (d.dayOffset === 0) {
+          return {
+            ...d,
+            otherBooked: nextOther0,
+            auctionBooked: nextAuction0,
+            paymentHoldRooms: nextHold0,
+            vacantRooms: nextVacant0,
+          };
+        }
+        if (heldRoomNum != null && effectiveOffsets.includes(d.dayOffset)) {
+          const nextHold = Math.max(0, (d.paymentHoldRooms ?? 0) - 1);
+          return {
+            ...d,
+            paymentHoldRooms: nextHold,
+            vacantRooms: Math.max(
+              0,
+              d.totalRooms - d.otherBooked - d.auctionBooked - nextHold,
+            ),
+          };
+        }
+        return d;
+      });
+
+      const staySpanClean = (
+        rawSession.checkInDateRange ??
+        rawSession.stayDatesLabel ??
+        "06/11 – 07/11"
+      ).split(" (")[0];
+      const offeredBasePrice =
+        rawSession.bidSubmitted?.basePrice ??
+        rawSession.aiSuggestedBasePrice ??
+        rawSession.offeredBasePrice ??
+        1000000;
+      const reasonNote =
+        reasonCode === "REJ_HOLD_EXPIRED_10M"
+          ? `Hết hạn giữ phòng 10p (#${heldRoomNum ?? "--"}) · Hệ thống tự nhả khóa mở lại cho phiên khác`
+          : reasonCode === "REJ_PAYMENT_GATEWAY_DECLINED"
+            ? `Cổng TT báo lỗi thẻ/3DS (#${heldRoomNum ?? "--"}) · Đã nhả khóa 10p về phòng trống`
+            : `Khách thoát trang thanh toán (#${heldRoomNum ?? "--"}) · Đã nhả khóa 10p tức thì`;
+
+      const nextSessions: AuctionSessionMasterRecord[] =
+        bundle.auctionSessions.map((s) => {
+          if (s.id !== sessionId) return s;
+          return {
+            ...s,
+            status: "payment_failed",
+            requestStatus: "closed_unbooked",
+            bidStatus: "release_after_hold",
+            paymentStatus:
+              reasonCode === "REJ_HOLD_EXPIRED_10M"
+                ? "expired_hold_10m"
+                : reasonCode === "REJ_GUEST_ABANDONED_HOLD"
+                  ? "abandoned_by_guest"
+                  : "failed_gateway",
+            rejectCode: reasonCode,
+            holdRoomNumber: null,
+            holdRemainingSeconds: 0,
+            sessionDate: bundle.hotelProfile.referenceDate,
+            dateTimeLabel: "06/11 • Nhả khóa 10p",
+            stayDatesLabel: staySpanClean,
+            guestRequestTitle:
+              rawSession.guestSummary ??
+              rawSession.guestRequestTitle ??
+              "Yêu cầu lưu trú",
+            amenitiesTags: rawSession.amenities ?? rawSession.amenitiesTags,
+            roomCategory:
+              rawSession.mandatoryRoomCategory ??
+              rawSession.roomCategory ??
+              "DELUXE",
+            offeredRoom:
+              rawSession.matchedRoomName ?? rawSession.offeredRoom ?? "",
+            offeredBasePrice,
+            bidMode:
+              rawSession.bidSubmitted?.mode === "auto" ? "auto" : "manual",
+            responseMinutes: 1.4,
+            guestOpenedDetail: true,
+            lossReasonId: "payment_abandoned",
+            resultNote: reasonNote,
+            showInHistory: true,
+          };
+        });
+
+      setHoldCountdowns((prev) => {
+        const copy = { ...prev };
+        delete copy[sessionId];
+        return copy;
+      });
+      setBundle({
+        ...bundle,
+        roomsPms: nextRoomsPms,
+        calendar14dPms: nextCalendar14d,
+        auctionSessions: nextSessions,
+      });
+
+      await Promise.all([
+        persistMasterTable("roomsPms", nextRoomsPms),
+        persistMasterTable("calendar14dPms", nextCalendar14d),
+        persistMasterTable("auctionSessions", nextSessions),
+      ]);
+
+      showToast(
+        `Đã nhả khóa tạm 10p của #${sessionId}${heldRoomNum ? ` (Phòng #${heldRoomNum} trở về Trống mở khóa)` : ""} · Các phiên Standby trùng ngày có thể thanh toán ngay!`,
+      );
+    },
+    [bundle, showToast],
+  );
+
+  // Auto-release if a 10-minute countdown naturally hits 00:00
+  useEffect(() => {
+    if (!expiredHoldSessionId) return;
+    const targetId = expiredHoldSessionId;
+    setExpiredHoldSessionId(null);
+    void handleReleasePaymentHold(targetId, "REJ_HOLD_EXPIRED_10M");
+  }, [expiredHoldSessionId, handleReleasePaymentHold]);
 
   // Simulate Guest Completing 100% Payment -> Locks Physical Room across exact stay dates!
   const handleSimulateGuestFullPayment = async (session: LiveSession) => {
@@ -355,7 +800,16 @@ export function App() {
     const effectiveOffsets = stayOffsets.length > 0 ? stayOffsets : [0];
     const includesTonight = effectiveOffsets.includes(0);
 
-    // Find a room in this class that is vacant across ALL nights of the stay (preferring session's branch)
+    const wasHoldingThisSession =
+      session.holdRoomNumber != null &&
+      (session.holdRemainingSeconds ?? 0) > 0;
+
+    // 1) If this session already holds a 10-minute reserved room (like a reserved cinema seat), commit that exact room!
+    const heldRoomRecord = wasHoldingThisSession
+      ? bundle.roomsPms.find((r) => r.roomNumber === session.holdRoomNumber)
+      : undefined;
+
+    // 2) Otherwise find a vacant_unlocked room across ALL nights of the stay (never steal another session's payment_hold room!)
     const classRooms = bundle.roomsPms
       .filter((r) => r.roomClassId === session.matchedRoomClassId)
       .sort(
@@ -373,7 +827,6 @@ export function App() {
       }),
     );
 
-    // Fallback to vacant on first check-in night if multi-night rotation differed
     const firstOff = effectiveOffsets[0];
     const fallbackCandidate = classRooms.find((r) => {
       const cell = analytics.dailyRoomSchedules[firstOff]?.rooms.find(
@@ -382,23 +835,29 @@ export function App() {
       return cell?.status === "vacant_unlocked";
     });
 
-    const lockedRoom = candidateAcrossAllNights ?? fallbackCandidate;
+    const lockedRoom =
+      heldRoomRecord ?? candidateAcrossAllNights ?? fallbackCandidate;
 
     if (!lockedRoom) {
-      showToast("Hạng phòng này đã hết buồng trống trong khoảng ngày lưu trú.");
+      showToast(
+        session.isBlockedByPaymentHold
+          ? `Phòng hạng này đang tạm khóa 10 phút chờ khách #${session.heldByReqIds.join(", #")} thanh toán — vui lòng chờ nhả khóa.`
+          : "Hạng phòng này đã hết buồng trống trong khoảng ngày lưu trú.",
+      );
       return;
     }
 
-    // Check which stay dates in this room class drop to 0 vacant rooms after locking
+    // Check which stay dates in this room class drop to 0 (vacant + payment_hold) rooms after permanent lock
     const soldOutOffsets = new Set<number>();
     effectiveOffsets.forEach((off) => {
-      const vacantBefore =
+      const schedRooms =
         analytics.dailyRoomSchedules[off]?.rooms.filter(
-          (c) =>
-            c.roomClassId === session.matchedRoomClassId &&
-            c.status === "vacant_unlocked",
-        ).length ?? 1;
-      if (vacantBefore - 1 <= 0) {
+          (c) => c.roomClassId === session.matchedRoomClassId,
+        ) ?? [];
+      const openOrHoldBefore = schedRooms.filter(
+        (c) => c.status === "vacant_unlocked" || c.status === "payment_hold",
+      ).length;
+      if (openOrHoldBefore - 1 <= 0) {
         soldOutOffsets.add(off);
       }
     });
@@ -411,6 +870,8 @@ export function App() {
                 status: "booked_auction",
                 sourceChannel: "goodNstay (Đã TT 100%)",
                 linkedReqId: session.id,
+                holdRemainingSeconds: 0,
+                holdExpiresAtLabel: null,
                 checkOutTomorrow: !effectiveOffsets.includes(1),
               }
             : r,
@@ -423,9 +884,13 @@ export function App() {
     const nextAuctionTotal = nextRoomsPms.filter(
       (r) => r.status === "booked_auction",
     ).length;
+    const nextHoldTotal = nextRoomsPms.filter(
+      (r) => r.status === "payment_hold",
+    ).length;
     const nextVacantTotal = Math.max(
       0,
-      bundle.hotelProfile.totalRooms - (nextOtherTotal + nextAuctionTotal),
+      bundle.hotelProfile.totalRooms -
+        (nextOtherTotal + nextAuctionTotal + nextHoldTotal),
     );
 
     const nextCalendar14d = bundle.calendar14dPms.map((d) => {
@@ -434,15 +899,26 @@ export function App() {
           ...d,
           otherBooked: nextOtherTotal,
           auctionBooked: nextAuctionTotal,
+          paymentHoldRooms: nextHoldTotal,
           vacantRooms: nextVacantTotal,
         };
       }
       if (effectiveOffsets.includes(d.dayOffset)) {
-        const nextAuc = Math.min(d.totalRooms - d.otherBooked, d.auctionBooked + 1);
+        const nextHold = wasHoldingThisSession
+          ? Math.max(0, (d.paymentHoldRooms ?? 0) - 1)
+          : (d.paymentHoldRooms ?? 0);
+        const nextAuc = Math.min(
+          d.totalRooms - d.otherBooked - nextHold,
+          d.auctionBooked + 1,
+        );
         return {
           ...d,
           auctionBooked: nextAuc,
-          vacantRooms: Math.max(0, d.totalRooms - d.otherBooked - nextAuc),
+          paymentHoldRooms: nextHold,
+          vacantRooms: Math.max(
+            0,
+            d.totalRooms - d.otherBooked - nextAuc - nextHold,
+          ),
         };
       }
       return d;
@@ -464,6 +940,12 @@ export function App() {
             branchId: lockedRoom.branchId,
             branchName: lockedRoom.branchName,
             status: "won",
+            requestStatus: "confirmed_paid",
+            bidStatus: "won_paid_100",
+            paymentStatus: "paid_escrow_100",
+            rejectCode: null,
+            holdRoomNumber: null,
+            holdRemainingSeconds: 0,
             sessionDate: bundle.hotelProfile.referenceDate,
             dateTimeLabel: "06/11 • Vừa TT 100%",
             stayDatesLabel: staySpanClean,
@@ -480,7 +962,7 @@ export function App() {
             closeMinutes: 2.3,
             closeSpeedText: "02p 18s",
             lockedRoomNumber: lockedRoom.roomNumber,
-            resultNote: `Đã TT 100% · Khóa #${lockedRoom.roomNumber} (${staySpanClean})`,
+            resultNote: `Đã TT 100% · Khóa cứng #${lockedRoom.roomNumber} (${staySpanClean})`,
             showInHistory: true,
           };
         }
@@ -499,14 +981,27 @@ export function App() {
             return {
               ...s,
               status: "auto_closed",
+              requestStatus: "closed_unbooked",
+              bidStatus: "auto_closed",
+              paymentStatus: "not_started",
+              rejectCode: "REJ_AUTO_CLOSED_SOLD_OUT",
+              holdRoomNumber: null,
+              holdRemainingSeconds: 0,
               dateTimeLabel: "06/11 • Tự đóng",
-              resultNote: `Tự rút do hạng ${session.matchedRoomName} đã khóa hết phòng ngày trùng`,
+              resultNote: `Tự đóng do hạng ${session.matchedRoomName} đã khóa hết phòng ngày trùng (#${lockedRoom.roomNumber})`,
               showInHistory: true,
             };
           }
         }
         return s;
       });
+
+    setHoldCountdowns((prev) => {
+      const copy = { ...prev };
+      delete copy[session.id];
+      autoClosedSiblingIds.forEach((id) => delete copy[id]);
+      return copy;
+    });
 
     setBundle({
       ...bundle,
@@ -523,11 +1018,11 @@ export function App() {
 
     if (autoClosedSiblingIds.length > 0) {
       showToast(
-        `Khách #${session.id} đã TT 100% → Khóa phòng #${lockedRoom.roomNumber} (${lockedRoom.branchName}) & tự đóng phiên trùng #${autoClosedSiblingIds.join(", #")}.`,
+        `Khách #${session.id} đã TT 100% → Khóa cứng phòng #${lockedRoom.roomNumber} (${lockedRoom.branchName}) & tự đóng phiên trùng #${autoClosedSiblingIds.join(", #")}.`,
       );
     } else {
       showToast(
-        `Khách #${session.id} đã TT 100% → Đã khóa phòng #${lockedRoom.roomNumber} (${lockedRoom.branchName} · Doanh thu +${formatFullVnd(baseAmt)}).`,
+        `Khách #${session.id} đã TT 100% → Đã khóa cứng phòng #${lockedRoom.roomNumber} (${lockedRoom.branchName} · Doanh thu +${formatFullVnd(baseAmt)}).`,
       );
     }
   };
@@ -542,6 +1037,13 @@ export function App() {
     if (cell.status === "booked_auction") {
       showToast(
         `Phòng #${cell.roomNumber} đã được khách #${cell.linkedReqId ?? "goodNstay"} thanh toán 100% — hệ thống khóa cứng bảo vệ khách (không thể mở khóa thủ công).`,
+      );
+      return;
+    }
+
+    if (cell.status === "payment_hold") {
+      showToast(
+        `Phòng #${cell.roomNumber} đang tạm khóa 10 phút chờ khách #${cell.linkedReqId ?? "goodNstay"} thanh toán — không thể khóa/mở khóa thủ công khi ghế đang giữ thanh toán.`,
       );
       return;
     }
@@ -575,9 +1077,12 @@ export function App() {
       const nextAuction = nextRoomsPms.filter(
         (r) => r.status === "booked_auction",
       ).length;
+      const nextHold = nextRoomsPms.filter(
+        (r) => r.status === "payment_hold",
+      ).length;
       const nextVacant = Math.max(
         0,
-        bundle.hotelProfile.totalRooms - (nextOther + nextAuction),
+        bundle.hotelProfile.totalRooms - (nextOther + nextAuction + nextHold),
       );
 
       const nextCalendar14d = bundle.calendar14dPms.map((d) =>
@@ -586,6 +1091,7 @@ export function App() {
               ...d,
               otherBooked: nextOther,
               auctionBooked: nextAuction,
+              paymentHoldRooms: nextHold,
               vacantRooms: nextVacant,
             }
           : d,
@@ -713,12 +1219,78 @@ export function App() {
     );
   };
 
-  // Simulate Guest Rejecting a Submitted Bid (tests Loss Rate & Pareto chart)
+  // Simulate Guest Rejecting a Submitted Bid (also releases 10m hold if active)
   const handleSimulateGuestReject = async (session: LiveSession) => {
     if (!bundle) return;
     const offeredBasePrice =
       session.bidSubmitted?.basePrice ?? session.aiSuggestedBasePrice;
     const staySpanClean = session.checkInDateRange.split(" (")[0];
+    const heldRoomNum = session.holdRoomNumber;
+    const stayOffsets = parseStayDayOffsets(
+      session.checkInDateRange,
+      bundle.hotelProfile.referenceDate,
+      session.nights,
+    );
+    const effectiveOffsets = stayOffsets.length > 0 ? stayOffsets : [0];
+    const includesTonight = effectiveOffsets.includes(0);
+
+    const nextRoomsPms: PmsRoomRecord[] =
+      heldRoomNum != null && includesTonight
+        ? bundle.roomsPms.map((r) =>
+            r.roomNumber === heldRoomNum && r.status === "payment_hold"
+              ? {
+                  ...r,
+                  status: "vacant_unlocked",
+                  sourceChannel: "Trống · Mở đấu giá",
+                  linkedReqId: null,
+                  holdRemainingSeconds: 0,
+                  holdExpiresAtLabel: null,
+                  checkOutTomorrow: false,
+                }
+              : r,
+          )
+        : bundle.roomsPms;
+
+    const nextOther0 = nextRoomsPms.filter(
+      (r) => r.status === "booked_other",
+    ).length;
+    const nextAuction0 = nextRoomsPms.filter(
+      (r) => r.status === "booked_auction",
+    ).length;
+    const nextHold0 = nextRoomsPms.filter(
+      (r) => r.status === "payment_hold",
+    ).length;
+    const nextVacant0 = Math.max(
+      0,
+      bundle.hotelProfile.totalRooms - (nextOther0 + nextAuction0 + nextHold0),
+    );
+
+    const nextCalendar14d =
+      heldRoomNum != null
+        ? bundle.calendar14dPms.map((d) => {
+            if (d.dayOffset === 0) {
+              return {
+                ...d,
+                otherBooked: nextOther0,
+                auctionBooked: nextAuction0,
+                paymentHoldRooms: nextHold0,
+                vacantRooms: nextVacant0,
+              };
+            }
+            if (effectiveOffsets.includes(d.dayOffset)) {
+              const nextHold = Math.max(0, (d.paymentHoldRooms ?? 0) - 1);
+              return {
+                ...d,
+                paymentHoldRooms: nextHold,
+                vacantRooms: Math.max(
+                  0,
+                  d.totalRooms - d.otherBooked - d.auctionBooked - nextHold,
+                ),
+              };
+            }
+            return d;
+          })
+        : bundle.calendar14dPms;
 
     const nextSessions: AuctionSessionMasterRecord[] =
       bundle.auctionSessions.map((s) => {
@@ -726,6 +1298,13 @@ export function App() {
         return {
           ...s,
           status: "rejected",
+          requestStatus: "closed_unbooked",
+          bidStatus: "lost_to_competitor",
+          paymentStatus:
+            heldRoomNum != null ? "abandoned_by_guest" : "not_started",
+          rejectCode: "REJ_COMPETITOR_WON_PRICE",
+          holdRoomNumber: null,
+          holdRemainingSeconds: 0,
           sessionDate: bundle.hotelProfile.referenceDate,
           dateTimeLabel: "06/11 • Khách từ chối",
           stayDatesLabel: staySpanClean,
@@ -738,8 +1317,68 @@ export function App() {
           responseMinutes: 1.8,
           guestOpenedDetail: true,
           lossReasonId: "price_high",
-          resultNote: "Khách chọn đối thủ cùng khu vực có giá mềm hơn",
+          resultNote:
+            heldRoomNum != null
+              ? `Khách hủy thanh toán (#${heldRoomNum} đã nhả khóa) · Chọn đối thủ giá mềm hơn`
+              : "Khách chọn đối thủ cùng khu vực có giá mềm hơn",
           autopsyId: "CRQ-8924",
+          showInHistory: true,
+        };
+      });
+
+    if (heldRoomNum != null) {
+      setHoldCountdowns((prev) => {
+        const copy = { ...prev };
+        delete copy[session.id];
+        return copy;
+      });
+    }
+
+    setBundle({
+      ...bundle,
+      roomsPms: nextRoomsPms,
+      calendar14dPms: nextCalendar14d,
+      auctionSessions: nextSessions,
+    });
+    await Promise.all([
+      persistMasterTable("roomsPms", nextRoomsPms),
+      persistMasterTable("calendar14dPms", nextCalendar14d),
+      persistMasterTable("auctionSessions", nextSessions),
+    ]);
+    showToast(
+      `Đã mô phỏng khách từ chối #${session.id}${heldRoomNum ? ` (đã nhả khóa #${heldRoomNum})` : ""} → Tỷ lệ được chọn & biểu đồ Pareto đã cập nhật.`,
+    );
+  };
+
+  // Hotel Partner Explicitly Skips / Declines an Open Live Request (REJ_PARTNER_SKIPPED_SESSION)
+  const handlePartnerSkipSession = async (session: LiveSession) => {
+    if (!bundle) return;
+    const staySpanClean = session.checkInDateRange.split(" (")[0];
+    const nextSessions: AuctionSessionMasterRecord[] =
+      bundle.auctionSessions.map((s) => {
+        if (s.id !== session.id) return s;
+        return {
+          ...s,
+          status: "partner_declined",
+          requestStatus: "bidding_open",
+          bidStatus: "partner_declined",
+          paymentStatus: "not_started",
+          rejectCode: "REJ_PARTNER_SKIPPED_SESSION",
+          holdRoomNumber: null,
+          holdRemainingSeconds: 0,
+          sessionDate: bundle.hotelProfile.referenceDate,
+          dateTimeLabel: "06/11 • KS bỏ qua",
+          stayDatesLabel: staySpanClean,
+          guestRequestTitle: session.guestSummary,
+          amenitiesTags: session.amenities,
+          roomCategory: session.mandatoryRoomCategory,
+          offeredRoom: session.matchedRoomName,
+          offeredBasePrice: session.aiSuggestedBasePrice,
+          bidMode: "manual",
+          responseMinutes: undefined,
+          guestOpenedDetail: false,
+          resultNote:
+            "Khách sạn chủ động bỏ qua phiên · Giữ phòng cho kênh khách lẻ",
           showInHistory: true,
         };
       });
@@ -747,7 +1386,7 @@ export function App() {
     setBundle({ ...bundle, auctionSessions: nextSessions });
     await persistMasterTable("auctionSessions", nextSessions);
     showToast(
-      `Đã mô phỏng khách từ chối #${session.id} → Tỷ lệ được chọn & biểu đồ Pareto nguyên nhân trượt đã cập nhật.`,
+      `Khách sạn đã bỏ qua phiên #${session.id} (Mã REJ_PARTNER_SKIPPED_SESSION · Không ảnh hưởng điểm ELO).`,
     );
   };
 
@@ -806,13 +1445,22 @@ export function App() {
     const fresh = await resetMasterDataToSeed();
     setBundle(fresh.bundle);
     const freshCountdowns: Record<string, number> = {};
+    const freshHolds: Record<string, number> = {};
     fresh.bundle.auctionSessions.forEach((s) => {
       if (s.status === "live") {
         freshCountdowns[s.id] =
           s.remainingSeconds ?? fresh.bundle.hotelProfile.bidTtlSeconds;
+        if (s.holdRoomNumber != null && (s.holdRemainingSeconds ?? 0) > 0) {
+          freshHolds[s.id] =
+            s.holdRemainingSeconds ??
+            fresh.bundle.hotelProfile.paymentHoldTtlSeconds ??
+            600;
+        }
       }
     });
     setLiveCountdowns(freshCountdowns);
+    setHoldCountdowns(freshHolds);
+    setExpiredHoldSessionId(null);
     setActiveTab(DEFAULT_UI_STATE.activeTab);
     setDateRange(DEFAULT_UI_STATE.dateRange);
     setBranchFilter(DEFAULT_UI_STATE.branchFilter);
@@ -824,6 +1472,9 @@ export function App() {
     setExplorerClassFilter(DEFAULT_UI_STATE.explorerClassFilter);
     setSelectedRoomNum(DEFAULT_UI_STATE.selectedRoomNum);
     setHistoryFilter(DEFAULT_UI_STATE.historyFilter);
+    setHistorySortBy(DEFAULT_UI_STATE.historySortBy ?? "newest");
+    setHistorySearch("");
+    setHistoryPage(1);
     setSelectedAutopsyId(DEFAULT_UI_STATE.selectedAutopsyId);
     showToast("Đã khôi phục dữ liệu mẫu & lịch phòng về ngày 06/11/2026.");
   };
@@ -873,20 +1524,120 @@ export function App() {
 
   const activeCustomBidSession =
     analytics.liveSessions.find((s) => s.id === customBidSessionId) ?? null;
-  const filteredHistory = analytics.historySessions.filter((h) =>
-    historyFilter === "all" ? true : h.status === historyFilter,
-  );
+
+  const normalizedHistoryQuery = normalizeSearchText(historySearch);
+  const indexedHistory = analytics.historySessions.map((session, origIdx) => ({
+    session,
+    origIdx,
+  }));
+
+  const searchMatchedIndexedHistory = normalizedHistoryQuery
+    ? indexedHistory.filter(({ session: h }) => {
+        const statusText =
+          h.status === "won"
+            ? "Đã TT 100%"
+            : h.status === "payment_failed"
+              ? "Lỗi TT / Nhả khóa 10p"
+              : h.status === "partner_declined"
+                ? "KS bỏ qua"
+                : h.status === "rejected"
+                  ? "Khách từ chối"
+                  : h.status === "expired"
+                    ? "Hết hạn 60p"
+                    : "Tự đóng";
+        const haystack = normalizeSearchText(
+          [
+            `#${h.id}`,
+            h.id,
+            h.guestRequestTitle,
+            h.stayDatesLabel,
+            h.dateTimeLabel,
+            h.roomCategory,
+            h.offeredRoom,
+            h.branchName,
+            h.resultNote,
+            h.rejectCode ?? "",
+            statusText,
+            ...(h.amenitiesTags ?? []),
+          ].join(" "),
+        );
+        return haystack.includes(normalizedHistoryQuery);
+      })
+    : indexedHistory;
+
   const historyCounts: Record<"all" | HistoryStatus, number> = {
-    all: analytics.historySessions.length,
-    won: analytics.historySessions.filter((h) => h.status === "won").length,
-    rejected: analytics.historySessions.filter((h) => h.status === "rejected")
+    all: searchMatchedIndexedHistory.length,
+    won: searchMatchedIndexedHistory.filter((x) => x.session.status === "won")
       .length,
-    expired: analytics.historySessions.filter((h) => h.status === "expired")
-      .length,
-    auto_closed: analytics.historySessions.filter(
-      (h) => h.status === "auto_closed",
+    payment_failed: searchMatchedIndexedHistory.filter(
+      (x) => x.session.status === "payment_failed",
+    ).length,
+    rejected: searchMatchedIndexedHistory.filter(
+      (x) => x.session.status === "rejected",
+    ).length,
+    expired: searchMatchedIndexedHistory.filter(
+      (x) => x.session.status === "expired",
+    ).length,
+    auto_closed: searchMatchedIndexedHistory.filter(
+      (x) => x.session.status === "auto_closed",
+    ).length,
+    partner_declined: searchMatchedIndexedHistory.filter(
+      (x) => x.session.status === "partner_declined",
     ).length,
   };
+
+  const filteredHistory = searchMatchedIndexedHistory
+    .filter(({ session: h }) =>
+      historyFilter === "all" ? true : h.status === historyFilter,
+    )
+    .sort((a, b) => {
+      switch (historySortBy) {
+        case "oldest":
+          return b.origIdx - a.origIdx;
+        case "price_desc":
+          return (
+            b.session.offeredBasePrice - a.session.offeredBasePrice ||
+            a.origIdx - b.origIdx
+          );
+        case "price_asc":
+          return (
+            a.session.offeredBasePrice - b.session.offeredBasePrice ||
+            a.origIdx - b.origIdx
+          );
+        case "total_desc": {
+          const totalA =
+            a.session.hotelEarnedBase ??
+            a.session.offeredBasePrice * a.session.nights;
+          const totalB =
+            b.session.hotelEarnedBase ??
+            b.session.offeredBasePrice * b.session.nights;
+          return totalB - totalA || a.origIdx - b.origIdx;
+        }
+        case "match_desc":
+          return (
+            b.session.matchScore - a.session.matchScore || a.origIdx - b.origIdx
+          );
+        case "match_asc":
+          return (
+            a.session.matchScore - b.session.matchScore || a.origIdx - b.origIdx
+          );
+        case "newest":
+        default:
+          return a.origIdx - b.origIdx;
+      }
+    })
+    .map((x) => x.session);
+
+  const totalHistoryPages = Math.max(
+    1,
+    Math.ceil(filteredHistory.length / HISTORY_PAGE_SIZE),
+  );
+  const safeHistoryPage = Math.min(Math.max(1, historyPage), totalHistoryPages);
+  const historyPageStartIdx = (safeHistoryPage - 1) * HISTORY_PAGE_SIZE;
+  const paginatedHistory = filteredHistory.slice(
+    historyPageStartIdx,
+    historyPageStartIdx + HISTORY_PAGE_SIZE,
+  );
   const activeAutopsy =
     bundle.lossAutopsies[selectedAutopsyId] ??
     Object.values(bundle.lossAutopsies)[0];
@@ -913,7 +1664,7 @@ export function App() {
   );
 
   return (
-    <div className="min-h-screen bg-[#f6f7f8] text-zinc-900 pb-14">
+    <div className="min-h-screen bg-[#f6f7f8] text-zinc-900 pb-14 overflow-x-clip">
       {/* ===================================================================== */}
       {/* SINGLE-LINE CLEAN TOPBAR (NO WRAPPING BUTTONS)                        */}
       {/* ===================================================================== */}
@@ -1390,9 +2141,22 @@ export function App() {
                     width: `${(selectedDaySchedule.auctionBooked / selectedDaySchedule.totalRooms) * 100}%`,
                   }}
                 />
+                {(selectedDaySchedule.paymentHoldRooms ?? 0) > 0 && (
+                  <div
+                    className="h-full bg-amber-400 transition-all"
+                    style={{
+                      width: `${((selectedDaySchedule.paymentHoldRooms ?? 0) / selectedDaySchedule.totalRooms) * 100}%`,
+                    }}
+                  />
+                )}
               </div>
-              <div className="flex items-center justify-between text-[11px] text-zinc-500">
+              <div className="flex flex-wrap items-center justify-between gap-x-2 text-[11px] text-zinc-500">
                 <span>TT 100%: {selectedDaySchedule.auctionBooked}</span>
+                {(selectedDaySchedule.paymentHoldRooms ?? 0) > 0 && (
+                  <span className="text-amber-700 font-semibold">
+                    Giữ 10p: {selectedDaySchedule.paymentHoldRooms}
+                  </span>
+                )}
                 <span>OTA/Lễ tân: {selectedDaySchedule.otherBooked}</span>
               </div>
             </div>
@@ -1431,10 +2195,22 @@ export function App() {
                 className="px-2.5 sm:px-3.5 rounded-lg text-xs shrink-0"
               >
                 Quỹ phòng ({selectedDaySchedule.vacantRooms} trống
+                {(selectedDaySchedule.paymentHoldRooms ?? 0) > 0
+                  ? ` · ${selectedDaySchedule.paymentHoldRooms} giữ 10p`
+                  : ""}
                 {selectedScheduleDayOffset > 0
                   ? ` · ${selectedDaySchedule.dateStr}`
                   : ""}
                 )
+              </TabsTrigger>
+              <TabsTrigger
+                value="lifecycle"
+                className="gap-1.5 px-2.5 sm:px-3.5 rounded-lg text-xs shrink-0"
+              >
+                <span>Vòng đời &amp; Case</span>
+                <span className="px-1.5 py-0.2 rounded-full bg-amber-100 text-amber-800 text-[10px] font-mono">
+                  {bundle.lifecycleCatalog?.scenarioMatrix.length ?? 18}
+                </span>
               </TabsTrigger>
             </TabsList>
 
@@ -1538,17 +2314,28 @@ export function App() {
                     const vacantInClass = session.vacantForStay;
                     const concurrentInClass = session.concurrentForStay;
                     const isMultiContest = concurrentInClass > 1;
-                    const noRoomsAvailable = vacantInClass <= 0;
+                    const isHoldingThisSession =
+                      session.holdRoomNumber != null &&
+                      (session.holdRemainingSeconds ?? 0) > 0;
+                    const isBlockedByOtherHold =
+                      !isHoldingThisSession && session.isBlockedByPaymentHold;
+                    const trulySoldOut =
+                      !isHoldingThisSession &&
+                      vacantInClass <= 0 &&
+                      session.paymentHoldForStay <= 0;
 
                     return (
                       <div
                         key={session.id}
+                        data-testid={`live-card-${session.id}`}
                         className={`rounded-2xl bg-white border p-5 flex flex-col justify-between gap-4 shadow-2xs transition-all ${
-                          noRoomsAvailable
-                            ? "border-amber-200 bg-amber-50/20"
-                            : session.bidSubmitted
-                              ? "border-emerald-300/90"
-                              : "border-zinc-200/90 hover:border-zinc-300"
+                          isHoldingThisSession
+                            ? "border-amber-400 bg-amber-50/15 ring-1 ring-amber-200/70"
+                            : isBlockedByOtherHold || trulySoldOut
+                              ? "border-amber-200 bg-amber-50/20"
+                              : session.bidSubmitted
+                                ? "border-emerald-300/90"
+                                : "border-zinc-200/90 hover:border-zinc-300"
                         }`}
                       >
                         <div className="space-y-2.5">
@@ -1571,13 +2358,27 @@ export function App() {
                                     Xả đêm -{hotelProfile.nightFlashDiscountPct}%
                                   </span>
                                 )}
-                              <button
-                                type="button"
-                                onClick={() => setActiveMatchReqId(session.id)}
-                                className="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 hover:bg-emerald-100 text-xs font-medium cursor-pointer transition-colors"
-                              >
-                                Khớp {session.matchScore}%
-                              </button>
+                              {(() => {
+                                const liveMatchUi = getMatchScoreStyle(
+                                  session.matchScore,
+                                );
+                                return (
+                                  <button
+                                    type="button"
+                                    title={liveMatchUi.hint}
+                                    onClick={() =>
+                                      setActiveMatchReqId(session.id)
+                                    }
+                                    className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border text-xs font-medium cursor-pointer transition-colors ${liveMatchUi.pillClass}`}
+                                  >
+                                    <span
+                                      aria-hidden="true"
+                                      className={`w-1.5 h-1.5 rounded-full shrink-0 ${liveMatchUi.dotClass}`}
+                                    />
+                                    Khớp {session.matchScore}%
+                                  </button>
+                                );
+                              })()}
                               <span
                                 className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md font-mono text-xs font-medium ${
                                   isUrgent
@@ -1606,13 +2407,129 @@ export function App() {
                             </span>
                           </div>
 
-                          {/* Row 3: Subtle Inline Amenities (No Bordered Pill Clutter) */}
+                          {/* Row 3: Subtle Inline Amenities */}
                           <div className="text-xs text-zinc-400 truncate">
                             {session.amenities.join("  ·  ")}
                           </div>
 
-                          {/* Row 4: Calm Inline Room Lock Status (Clickable -> Opens Schedule on Session Stay Date) */}
-                          {noRoomsAvailable ? (
+                          {/* Row 3.5: Synchronized Multi-Entity Status Strip (Room · Bid · Payment) */}
+                          <div className="flex flex-wrap items-center gap-1.5 pt-0.5 text-[10px]">
+                            <span
+                              className={`px-2 py-0.5 rounded-md font-medium border ${
+                                isHoldingThisSession
+                                  ? "bg-amber-50 text-amber-800 border-amber-200"
+                                  : isBlockedByOtherHold
+                                    ? "bg-orange-50 text-orange-800 border-orange-200"
+                                    : trulySoldOut
+                                      ? "bg-rose-50 text-rose-700 border-rose-200"
+                                      : "bg-sky-50 text-sky-700 border-sky-200"
+                              }`}
+                            >
+                              Room:{" "}
+                              {isHoldingThisSession
+                                ? `Tạm khóa #${session.holdRoomNumber} (10p)`
+                                : isBlockedByOtherHold
+                                  ? `Bị giữ bởi #${session.heldByReqIds[0] ?? "--"}`
+                                  : trulySoldOut
+                                    ? "Hết phòng"
+                                    : "Trống mở khóa"}
+                            </span>
+                            <span
+                              className={`px-2 py-0.5 rounded-md font-medium border ${
+                                isHoldingThisSession
+                                  ? "bg-amber-50 text-amber-800 border-amber-200"
+                                  : session.bidStatus ===
+                                      "standby_hold_conflict"
+                                    ? "bg-orange-50 text-orange-800 border-orange-200"
+                                    : session.bidSubmitted
+                                      ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                                      : "bg-zinc-50 text-zinc-600 border-zinc-200"
+                              }`}
+                            >
+                              Bid:{" "}
+                              {isHoldingThisSession
+                                ? "Khách đã chọn · Giữ 10p"
+                                : session.bidStatus === "standby_hold_conflict"
+                                  ? "Standby (Chờ nhả ghế)"
+                                  : session.bidSubmitted
+                                    ? "Đã báo giá One-Shot"
+                                    : "Chờ KS báo giá"}
+                            </span>
+                            <span
+                              className={`px-2 py-0.5 rounded-md font-mono font-medium border ${
+                                isHoldingThisSession
+                                  ? "bg-amber-100/80 text-amber-900 border-amber-300"
+                                  : "bg-zinc-50 text-zinc-500 border-zinc-200"
+                              }`}
+                            >
+                              Pay:{" "}
+                              {isHoldingThisSession
+                                ? `Checkout ${formatCountdown(session.holdRemainingSeconds ?? 0)}/10:00`
+                                : isBlockedByOtherHold
+                                  ? "Khóa click chọn"
+                                  : "Chưa khởi tạo"}
+                            </span>
+                          </div>
+
+                          {/* Row 4: Movie-Seat 10m Hold / Standby Conflict / Vacant Status */}
+                          {isHoldingThisSession ? (
+                            <div
+                              data-testid={`hold-banner-${session.id}`}
+                              className="p-2.5 rounded-xl bg-amber-50/90 border border-amber-200/90 flex flex-wrap items-center justify-between gap-2 text-xs"
+                            >
+                              <span className="inline-flex items-center gap-1.5 text-amber-900 font-semibold">
+                                <Lock className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                                Đang tạm khóa phòng #{session.holdRoomNumber} chờ
+                                thanh toán · Còn{" "}
+                                <span className="font-mono bg-amber-200/70 px-1.5 py-0.5 rounded text-amber-950">
+                                  {formatCountdown(
+                                    session.holdRemainingSeconds ?? 0,
+                                  )}
+                                </span>{" "}
+                                / 10:00
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  if (session.holdRoomNumber != null) {
+                                    setSelectedRoomNum(session.holdRoomNumber);
+                                  }
+                                  openRoomScheduleForSession(
+                                    session,
+                                    "rooms_vacant",
+                                  );
+                                }}
+                                className="text-amber-800 hover:text-amber-950 font-semibold underline underline-offset-2 cursor-pointer"
+                              >
+                                Xem ghế #{session.holdRoomNumber} →
+                              </button>
+                            </div>
+                          ) : isBlockedByOtherHold ? (
+                            <div
+                              data-testid={`standby-banner-${session.id}`}
+                              className="p-2.5 rounded-xl bg-orange-50/80 border border-orange-200/90 flex flex-wrap items-center justify-between gap-2 text-xs"
+                            >
+                              <span className="inline-flex items-center gap-1.5 text-orange-800 font-medium">
+                                <Clock className="w-3.5 h-3.5 text-orange-600 shrink-0" />
+                                Phòng #{session.heldRoomNumbers.join(", #")}{" "}
+                                đang tạm khóa 10p bởi #
+                                {session.heldByReqIds.join(", #")} · Khách khác
+                                không thể click thanh toán lúc này
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  openRoomScheduleForSession(
+                                    session,
+                                    "rooms_vacant",
+                                  )
+                                }
+                                className="text-orange-800 hover:text-orange-950 font-semibold underline underline-offset-2 cursor-pointer"
+                              >
+                                Xem lịch phòng →
+                              </button>
+                            </div>
+                          ) : trulySoldOut ? (
                             <div className="pt-0.5 flex flex-wrap items-center justify-between gap-2 text-xs">
                               <span className="inline-flex items-center gap-1.5 text-rose-600 font-medium">
                                 <Lock className="w-3.5 h-3.5 shrink-0" />
@@ -1632,7 +2549,7 @@ export function App() {
                               </button>
                             </div>
                           ) : (
-                            <div className="pt-0.5 flex items-center gap-1.5 text-xs">
+                            <div className="pt-0.5 flex flex-wrap items-center gap-1.5 text-xs">
                               <LockOpen
                                 className={`w-3.5 h-3.5 shrink-0 ${
                                   isMultiContest
@@ -1661,7 +2578,9 @@ export function App() {
                                   : ""}
                               </button>
                               <span className="text-zinc-400">
-                                · TT 100% mới khóa
+                                {session.paymentHoldForStay > 0
+                                  ? `· ${session.paymentHoldForStay} giữ 10p`
+                                  : "· TT 100% mới khóa"}
                               </span>
                             </div>
                           )}
@@ -1697,42 +2616,135 @@ export function App() {
                               Đã hết hạn 60 phút
                             </span>
                           ) : session.bidSubmitted ? (
-                            <div className="flex flex-wrap items-center gap-1.5">
-                              <span className="text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded font-medium">
-                                {session.bidSubmitted.mode === "auto"
-                                  ? "Auto-Bid đã gửi"
-                                  : "Đã báo giá"}
-                              </span>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() =>
-                                  handleSimulateGuestReject(session)
-                                }
-                                title="Mô phỏng khách chọn khách sạn khác để kiểm thử Tỷ lệ trượt & Pareto"
-                                className="text-zinc-600 hover:text-rose-600 hover:border-rose-200"
-                              >
-                                <XCircle className="w-3.5 h-3.5" />
-                                Từ chối
-                              </Button>
-                              <Button
-                                variant="emerald"
-                                size="sm"
-                                disabled={noRoomsAvailable}
-                                onClick={() =>
-                                  handleSimulateGuestFullPayment(session)
-                                }
-                              >
-                                <Lock className="w-3.5 h-3.5" />
-                                Khách TT 100% · Khóa phòng
-                              </Button>
-                            </div>
+                            isHoldingThisSession ? (
+                              <div className="flex flex-wrap items-center gap-1.5">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  data-testid={`btn-release-hold-${session.id}`}
+                                  onClick={() =>
+                                    handleReleasePaymentHold(
+                                      session.id,
+                                      "REJ_HOLD_EXPIRED_10M",
+                                    )
+                                  }
+                                  title="Mô phỏng hết 10 phút hoặc khách thoát trang thanh toán → Nhả khóa phòng ngay lập tức"
+                                  className="border-amber-300 bg-amber-50/70 text-amber-900 hover:bg-amber-100"
+                                >
+                                  <LockOpen className="w-3.5 h-3.5" />
+                                  Nhả khóa 10p
+                                </Button>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() =>
+                                    handleReleasePaymentHold(
+                                      session.id,
+                                      "REJ_PAYMENT_GATEWAY_DECLINED",
+                                    )
+                                  }
+                                  title="Mô phỏng lỗi thẻ / 3DS bị từ chối → Nhả khóa phòng & ghi nhận REJ_PAYMENT_GATEWAY_DECLINED"
+                                  className="text-zinc-600 hover:text-rose-600 hover:border-rose-200"
+                                >
+                                  <XCircle className="w-3.5 h-3.5" />
+                                  Lỗi thẻ
+                                </Button>
+                                <Button
+                                  variant="emerald"
+                                  size="sm"
+                                  onClick={() =>
+                                    handleSimulateGuestFullPayment(session)
+                                  }
+                                >
+                                  <Lock className="w-3.5 h-3.5" />
+                                  Khách TT 100% · Khóa phòng
+                                </Button>
+                              </div>
+                            ) : isBlockedByOtherHold ? (
+                              <div className="flex flex-wrap items-center gap-1.5">
+                                <span
+                                  data-testid={`standby-lock-pill-${session.id}`}
+                                  className="inline-flex items-center gap-1 text-[11px] text-orange-800 bg-orange-100/80 border border-orange-200 px-2.5 py-1 rounded-lg font-medium"
+                                >
+                                  <Lock className="w-3 h-3 text-orange-600" />
+                                  Chờ #{session.heldRoomNumbers[0] ?? "--"} nhả
+                                  khóa 10p
+                                </span>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() =>
+                                    handleSimulateGuestReject(session)
+                                  }
+                                  className="text-zinc-600 hover:text-rose-600 hover:border-rose-200"
+                                >
+                                  <XCircle className="w-3.5 h-3.5" />
+                                  Từ chối
+                                </Button>
+                              </div>
+                            ) : (
+                              <div className="flex flex-wrap items-center gap-1.5">
+                                <span className="text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded font-medium">
+                                  {session.bidSubmitted.mode === "auto"
+                                    ? "Auto-Bid đã gửi"
+                                    : "Đã báo giá"}
+                                </span>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  data-testid={`btn-start-hold-${session.id}`}
+                                  disabled={vacantInClass <= 0}
+                                  onClick={() =>
+                                    handleSimulateGuestStartHold10m(session)
+                                  }
+                                  title="Mô phỏng khách bấm chọn khách sạn & vào trang thanh toán → Tạm khóa phòng 10 phút (như giữ ghế rạp phim)"
+                                  className="border-amber-300 text-amber-800 hover:bg-amber-50"
+                                >
+                                  <Clock className="w-3.5 h-3.5 text-amber-600" />
+                                  Giữ phòng 10p
+                                </Button>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() =>
+                                    handleSimulateGuestReject(session)
+                                  }
+                                  title="Mô phỏng khách chọn khách sạn khác để kiểm thử Tỷ lệ trượt & Pareto"
+                                  className="text-zinc-600 hover:text-rose-600 hover:border-rose-200"
+                                >
+                                  <XCircle className="w-3.5 h-3.5" />
+                                  Từ chối
+                                </Button>
+                                <Button
+                                  variant="emerald"
+                                  size="sm"
+                                  disabled={vacantInClass <= 0}
+                                  onClick={() =>
+                                    handleSimulateGuestFullPayment(session)
+                                  }
+                                >
+                                  <Lock className="w-3.5 h-3.5" />
+                                  Khách TT 100% · Khóa phòng
+                                </Button>
+                              </div>
+                            )
                           ) : (
-                            <div className="flex items-center gap-2">
+                            <div className="flex flex-wrap items-center gap-1.5">
                               <Button
                                 variant="outline"
                                 size="sm"
-                                disabled={noRoomsAvailable}
+                                onClick={() =>
+                                  handlePartnerSkipSession(session)
+                                }
+                                title="Khách sạn chủ động bỏ qua phiên này (REJ_PARTNER_SKIPPED)"
+                                className="text-zinc-500 hover:text-zinc-900"
+                              >
+                                Bỏ qua
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                disabled={trulySoldOut}
                                 onClick={() => {
                                   setSuggestedPerkForBid(undefined);
                                   setCustomBidSessionId(session.id);
@@ -1744,7 +2756,7 @@ export function App() {
                               <Button
                                 variant="default"
                                 size="sm"
-                                disabled={noRoomsAvailable}
+                                disabled={trulySoldOut}
                                 onClick={() =>
                                   handleSubmitBid(
                                     session.id,
@@ -1859,42 +2871,104 @@ export function App() {
               </div>
             </div>
 
-            {/* 3. Clean Session Log Table (Synced with Period Filter) */}
+            {/* 3. Clean Session Log Table (Synced with Period Filter, Search, Sort & 10-item Pagination) */}
             <div className="rounded-2xl bg-white border border-zinc-200/80 shadow-2xs overflow-hidden">
-              <div className="p-5 border-b border-zinc-100 flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <h3 className="text-sm font-semibold text-zinc-900">
-                    Nhật ký phiên đấu giá ({periodMetrics.shortLabel}:{" "}
-                    {periodMetrics.rangeText})
-                  </h3>
-                  <p className="text-xs text-zinc-400 mt-0.5">
-                    Khách hoàn tất thanh toán 100% sẽ khóa phòng ngay · Không có
-                    trạng thái đặt cọc
-                  </p>
+              <div className="p-5 border-b border-zinc-100 space-y-3.5">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <h3 className="text-sm font-semibold text-zinc-900">
+                      Nhật ký phiên đấu giá ({periodMetrics.shortLabel}:{" "}
+                      {periodMetrics.rangeText})
+                    </h3>
+                    <p className="text-xs text-zinc-400 mt-0.5">
+                      Khách hoàn tất thanh toán 100% sẽ khóa phòng ngay · Không
+                      có trạng thái đặt cọc
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-1 bg-zinc-100 p-1 rounded-lg">
+                    {(
+                      [
+                        ["all", "Tất cả"],
+                        ["won", "Đã TT 100%"],
+                        ["payment_failed", "Lỗi TT / 10p"],
+                        ["rejected", "Từ chối"],
+                        ["expired", "Hết hạn"],
+                        ["auto_closed", "Tự đóng"],
+                        ["partner_declined", "KS bỏ qua"],
+                      ] as const
+                    ).map(([val, label]) => (
+                      <button
+                        key={val}
+                        type="button"
+                        onClick={() => setHistoryFilter(val)}
+                        className={`px-2.5 py-1 rounded-md text-xs font-medium cursor-pointer transition-all ${
+                          historyFilter === val
+                            ? "bg-white text-zinc-950 shadow-2xs"
+                            : "text-zinc-500 hover:text-zinc-900"
+                        }`}
+                      >
+                        {label} ({historyCounts[val]})
+                      </button>
+                    ))}
+                  </div>
                 </div>
-                <div className="flex flex-wrap items-center gap-1 bg-zinc-100 p-1 rounded-lg">
-                  {(
-                    [
-                      ["all", "Tất cả"],
-                      ["won", "Đã TT 100%"],
-                      ["rejected", "Từ chối"],
-                      ["expired", "Hết hạn"],
-                      ["auto_closed", "Tự đóng"],
-                    ] as const
-                  ).map(([val, label]) => (
-                    <button
-                      key={val}
-                      type="button"
-                      onClick={() => setHistoryFilter(val)}
-                      className={`px-2.5 py-1 rounded-md text-xs font-medium cursor-pointer transition-all ${
-                        historyFilter === val
-                          ? "bg-white text-zinc-950 shadow-2xs"
-                          : "text-zinc-500 hover:text-zinc-900"
-                      }`}
+
+                {/* Search & Sort By Toolbar */}
+                <div className="flex flex-wrap items-center justify-between gap-2.5 pt-1">
+                  <div className="relative flex-1 min-w-[200px] sm:max-w-sm">
+                    <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <input
+                      type="text"
+                      value={historySearch}
+                      onChange={(e) => setHistorySearch(e.target.value)}
+                      placeholder="Tìm theo mã #CRQ, tên yêu cầu, hạng phòng, #phòng..."
+                      aria-label="Tìm kiếm nhật ký phiên đấu giá"
+                      className="w-full bg-zinc-50/70 hover:bg-zinc-50 focus:bg-white border border-zinc-200/90 rounded-lg pl-8 pr-8 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 transition-colors"
+                    />
+                    {historySearch && (
+                      <button
+                        type="button"
+                        onClick={() => setHistorySearch("")}
+                        aria-label="Xóa từ khóa tìm kiếm"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 p-0.5 rounded text-zinc-400 hover:text-zinc-700 hover:bg-zinc-200/60 cursor-pointer"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+                    <label
+                      htmlFor="history-sort-select"
+                      className="inline-flex items-center gap-1.5 text-xs text-zinc-500 whitespace-nowrap"
                     >
-                      {label} ({historyCounts[val]})
-                    </button>
-                  ))}
+                      <ArrowUpDown className="w-3.5 h-3.5 text-zinc-400" />
+                      <span>Sort by:</span>
+                    </label>
+                    <select
+                      id="history-sort-select"
+                      aria-label="Sắp xếp nhật ký phiên đấu giá"
+                      value={historySortBy}
+                      onChange={(e) =>
+                        setHistorySortBy(e.target.value as HistorySortKey)
+                      }
+                      className="bg-zinc-50/70 hover:bg-zinc-50 focus:bg-white border border-zinc-200/90 rounded-lg px-2.5 py-1.5 text-xs font-medium text-zinc-800 cursor-pointer focus:outline-none focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 transition-colors"
+                    >
+                      <option value="newest">Mới nhất trước</option>
+                      <option value="oldest">Cũ nhất trước</option>
+                      <option value="price_desc">
+                        Giá gốc / đêm: Cao → Thấp
+                      </option>
+                      <option value="price_asc">
+                        Giá gốc / đêm: Thấp → Cao
+                      </option>
+                      <option value="total_desc">
+                        Tổng thực nhận: Cao → Thấp
+                      </option>
+                      <option value="match_desc">Độ khớp: Cao → Thấp</option>
+                      <option value="match_asc">Độ khớp: Thấp → Cao</option>
+                    </select>
+                  </div>
                 </div>
               </div>
 
@@ -1913,27 +2987,47 @@ export function App() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-100">
-                    {filteredHistory.length === 0 ? (
+                    {paginatedHistory.length === 0 ? (
                       <tr>
                         <td
                           colSpan={6}
                           className="py-10 px-5 text-center text-xs text-zinc-500"
                         >
-                          Không có phiên nào thuộc trạng thái này trong kỳ{" "}
-                          <strong>{periodMetrics.rangeText}</strong>.
-                          {historyFilter !== "all" && (
-                            <button
-                              type="button"
-                              onClick={() => setHistoryFilter("all")}
-                              className="ml-2 font-semibold text-zinc-900 underline underline-offset-2 cursor-pointer"
-                            >
-                              Xem tất cả ({historyCounts.all})
-                            </button>
+                          {normalizedHistoryQuery ? (
+                            <>
+                              Không tìm thấy phiên nào khớp với từ khóa{" "}
+                              <strong>&ldquo;{historySearch.trim()}&rdquo;</strong>{" "}
+                              trong kỳ <strong>{periodMetrics.rangeText}</strong>.
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setHistorySearch("");
+                                  setHistoryFilter("all");
+                                }}
+                                className="ml-2 font-semibold text-zinc-900 underline underline-offset-2 cursor-pointer"
+                              >
+                                Xóa bộ lọc tìm kiếm
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              Không có phiên nào thuộc trạng thái này trong kỳ{" "}
+                              <strong>{periodMetrics.rangeText}</strong>.
+                              {historyFilter !== "all" && (
+                                <button
+                                  type="button"
+                                  onClick={() => setHistoryFilter("all")}
+                                  className="ml-2 font-semibold text-zinc-900 underline underline-offset-2 cursor-pointer"
+                                >
+                                  Xem tất cả ({historyCounts.all})
+                                </button>
+                              )}
+                            </>
                           )}
                         </td>
                       </tr>
                     ) : (
-                      filteredHistory.map((h) => (
+                      paginatedHistory.map((h) => (
                         <tr key={h.id} className="hover:bg-zinc-50/50">
                           <td className="py-3.5 px-5">
                             <div className="font-mono font-semibold text-zinc-900">
@@ -1970,54 +3064,127 @@ export function App() {
                             )}
                           </td>
                           <td className="py-3.5 px-5 text-center">
-                            <button
-                              type="button"
-                              onClick={() => setActiveMatchReqId(h.id)}
-                              className="px-2 py-0.5 rounded-md bg-zinc-100 hover:bg-zinc-200 font-mono text-xs text-zinc-700 cursor-pointer"
-                            >
-                              {h.matchScore}%
-                            </button>
+                            {(() => {
+                              const matchUi = getMatchScoreStyle(h.matchScore);
+                              return (
+                                <button
+                                  type="button"
+                                  title={matchUi.hint}
+                                  onClick={() => setActiveMatchReqId(h.id)}
+                                  className={`inline-flex items-center justify-center gap-1.5 px-2.5 py-0.5 rounded-full border font-mono text-xs font-semibold tabular-nums cursor-pointer transition-colors ${matchUi.pillClass}`}
+                                >
+                                  <span
+                                    aria-hidden="true"
+                                    className={`w-1.5 h-1.5 rounded-full shrink-0 ${matchUi.dotClass}`}
+                                  />
+                                  {h.matchScore}%
+                                </button>
+                              );
+                            })()}
                           </td>
                           <td className="py-3.5 px-5 text-right">
                             {h.status === "won" ? (
-                              <div>
-                                <Badge variant="success">Đã TT 100%</Badge>
-                                <div className="text-[11px] text-zinc-500 mt-0.5">
+                              <div className="space-y-0.5">
+                                <div className="inline-flex flex-wrap items-center justify-end gap-1">
+                                  <Badge variant="success">Đã TT 100%</Badge>
+                                  <span className="px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200/80 font-mono text-[10px]">
+                                    {h.paymentStatus === "settled_hotel"
+                                      ? "T+7 đã đối soát"
+                                      : "Escrow 100%"}
+                                  </span>
+                                </div>
+                                <div className="text-[11px] text-zinc-500">
                                   {h.resultNote}
                                 </div>
                               </div>
-                            ) : h.status === "auto_closed" ? (
-                              <div>
-                                <Badge variant="neutral">Tự đóng</Badge>
-                                <div className="text-[11px] text-zinc-400 mt-0.5">
+                            ) : h.status === "auto_closed" ||
+                              h.status === "partner_declined" ? (
+                              <div className="space-y-0.5">
+                                <div className="inline-flex flex-wrap items-center justify-end gap-1">
+                                  <Badge variant="neutral">
+                                    {h.status === "partner_declined"
+                                      ? "KS bỏ qua"
+                                      : "Tự đóng"}
+                                  </Badge>
+                                  {h.rejectCode && (
+                                    <button
+                                      type="button"
+                                      onClick={() => setActiveTab("lifecycle")}
+                                      title="Xem chi tiết mã Reject trong Vòng đời & Case"
+                                      className="px-1.5 py-0.5 rounded bg-zinc-100 hover:bg-zinc-200 text-zinc-600 font-mono text-[10px] cursor-pointer"
+                                    >
+                                      {h.rejectCode}
+                                    </button>
+                                  )}
+                                </div>
+                                <div className="text-[11px] text-zinc-400">
+                                  {h.resultNote}
+                                </div>
+                              </div>
+                            ) : h.status === "payment_failed" ? (
+                              <div className="space-y-0.5">
+                                <div className="inline-flex flex-wrap items-center justify-end gap-1">
+                                  <button
+                                    type="button"
+                                    onClick={() => setActiveTab("lifecycle")}
+                                    className="cursor-pointer"
+                                  >
+                                    <Badge variant="warning">
+                                      Lỗi TT · Nhả 10p
+                                    </Badge>
+                                  </button>
+                                  {h.rejectCode && (
+                                    <button
+                                      type="button"
+                                      onClick={() => setActiveTab("lifecycle")}
+                                      title="Xem chi tiết mã Reject trong Vòng đời & Case"
+                                      className="px-1.5 py-0.5 rounded bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 font-mono text-[10px] cursor-pointer"
+                                    >
+                                      {h.rejectCode}
+                                    </button>
+                                  )}
+                                </div>
+                                <div className="text-[11px] text-zinc-400">
                                   {h.resultNote}
                                 </div>
                               </div>
                             ) : (
-                              <div>
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    if (h.autopsyId) {
-                                      setSelectedAutopsyId(h.autopsyId);
-                                    }
-                                    setActiveTab("ai-analytics");
-                                  }}
-                                  className="cursor-pointer"
-                                >
-                                  <Badge
-                                    variant={
-                                      h.status === "rejected"
-                                        ? "danger"
-                                        : "warning"
-                                    }
+                              <div className="space-y-0.5">
+                                <div className="inline-flex flex-wrap items-center justify-end gap-1">
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      if (h.autopsyId) {
+                                        setSelectedAutopsyId(h.autopsyId);
+                                      }
+                                      setActiveTab("ai-analytics");
+                                    }}
+                                    className="cursor-pointer"
                                   >
-                                    {h.status === "rejected"
-                                      ? "Khách từ chối"
-                                      : "Hết hạn 60p"}
-                                  </Badge>
-                                </button>
-                                <div className="text-[11px] text-zinc-400 mt-0.5">
+                                    <Badge
+                                      variant={
+                                        h.status === "rejected"
+                                          ? "danger"
+                                          : "warning"
+                                      }
+                                    >
+                                      {h.status === "rejected"
+                                        ? "Khách từ chối"
+                                        : "Hết hạn 60p"}
+                                    </Badge>
+                                  </button>
+                                  {h.rejectCode && (
+                                    <button
+                                      type="button"
+                                      onClick={() => setActiveTab("lifecycle")}
+                                      title="Xem chi tiết mã Reject trong Vòng đời & Case"
+                                      className="px-1.5 py-0.5 rounded bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200/80 font-mono text-[10px] cursor-pointer"
+                                    >
+                                      {h.rejectCode}
+                                    </button>
+                                  )}
+                                </div>
+                                <div className="text-[11px] text-zinc-400">
                                   {h.resultNote}
                                 </div>
                               </div>
@@ -2029,6 +3196,64 @@ export function App() {
                   </tbody>
                 </table>
               </div>
+
+              {/* Pagination Footer (< 1/N >) */}
+              {filteredHistory.length > 0 && (
+                <div className="px-5 py-3 border-t border-zinc-100 bg-zinc-50/40 flex flex-wrap items-center justify-between gap-3 text-xs">
+                  <div className="text-zinc-500">
+                    Hiển thị{" "}
+                    <span className="font-semibold text-zinc-800 font-mono">
+                      {historyPageStartIdx + 1}–
+                      {Math.min(
+                        historyPageStartIdx + HISTORY_PAGE_SIZE,
+                        filteredHistory.length,
+                      )}
+                    </span>{" "}
+                    trong tổng số{" "}
+                    <span className="font-semibold text-zinc-800 font-mono">
+                      {filteredHistory.length}
+                    </span>{" "}
+                    phiên (tối đa {HISTORY_PAGE_SIZE} phiên/trang)
+                  </div>
+
+                  <div className="inline-flex items-center gap-1 bg-white border border-zinc-200/90 rounded-lg p-1 shadow-2xs">
+                    <button
+                      type="button"
+                      aria-label="Trang trước"
+                      disabled={safeHistoryPage <= 1}
+                      onClick={() =>
+                        setHistoryPage(Math.max(1, safeHistoryPage - 1))
+                      }
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium text-zinc-700 hover:bg-zinc-100 disabled:opacity-40 disabled:pointer-events-none cursor-pointer transition-colors"
+                    >
+                      <ChevronLeft className="w-3.5 h-3.5" />
+                      <span className="hidden sm:inline">Trước</span>
+                    </button>
+
+                    <span
+                      data-testid="history-page-indicator"
+                      className="px-2.5 py-1 font-mono font-semibold text-zinc-900 tabular-nums select-none bg-zinc-50 rounded-md border border-zinc-100"
+                    >
+                      {safeHistoryPage}/{totalHistoryPages}
+                    </span>
+
+                    <button
+                      type="button"
+                      aria-label="Trang sau"
+                      disabled={safeHistoryPage >= totalHistoryPages}
+                      onClick={() =>
+                        setHistoryPage(
+                          Math.min(totalHistoryPages, safeHistoryPage + 1),
+                        )
+                      }
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium text-zinc-700 hover:bg-zinc-100 disabled:opacity-40 disabled:pointer-events-none cursor-pointer transition-colors"
+                    >
+                      <span className="hidden sm:inline">Sau</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </TabsContent>
 
@@ -2556,6 +3781,14 @@ export function App() {
                       className="cursor-pointer"
                     />
                     <Bar
+                      dataKey="paymentHoldRooms"
+                      stackId="rooms"
+                      name="Đang tạm khóa 10p chờ TT"
+                      fill="#f59e0b"
+                      barSize={24}
+                      className="cursor-pointer"
+                    />
+                    <Bar
                       dataKey="vacantRooms"
                       stackId="rooms"
                       name="Phòng trống mở khóa"
@@ -2581,8 +3814,11 @@ export function App() {
                 const auctionBooked = classRooms.filter(
                   (r) => r.status === "booked_auction",
                 ).length;
+                const paymentHold = classRooms.filter(
+                  (r) => r.status === "payment_hold",
+                ).length;
                 const occ = otherBooked + auctionBooked;
-                const vac = Math.max(0, rc.totalRooms - occ);
+                const vac = Math.max(0, rc.totalRooms - occ - paymentHold);
                 const liveJoining = analytics.liveSessions.filter(
                   (s) =>
                     s.remainingSeconds > 0 &&
@@ -2649,13 +3885,24 @@ export function App() {
                             width: `${(auctionBooked / rc.totalRooms) * 100}%`,
                           }}
                         />
+                        <div
+                          className="h-full bg-amber-400"
+                          style={{
+                            width: `${(paymentHold / rc.totalRooms) * 100}%`,
+                          }}
+                        />
                       </div>
 
                       <div className="flex items-center justify-between text-xs pt-0.5">
                         <span className="text-zinc-400">
                           Đã khóa: {occ}/{rc.totalRooms}
+                          {paymentHold > 0 ? ` · Giữ 10p: ${paymentHold}` : ""}
                         </span>
-                        {vac === 0 ? (
+                        {vac === 0 && paymentHold > 0 ? (
+                          <span className="text-amber-700 font-medium">
+                            Đang giữ 10p ({paymentHold})
+                          </span>
+                        ) : vac === 0 ? (
                           <span className="text-rose-600 font-medium">
                             Hết phòng
                           </span>
@@ -2713,7 +3960,8 @@ export function App() {
                   <strong>Click trực tiếp vào bất kỳ ô phòng nào</strong>{" "}
                   để <strong>Khóa / Mở khóa</strong> ngay lập tức (hoặc chuyển sang{" "}
                   <strong>Bảng lịch 14 ngày</strong> và click đúp / dùng nút góc dưới).
-                  Các phòng đã thanh toán 100% được tự động khóa bảo vệ chống bán trùng.
+                  Phòng đang <strong>tạm khóa 10p chờ TT</strong> và phòng đã{" "}
+                  <strong>thanh toán 100%</strong> được tự động bảo vệ chống bán trùng.
                 </p>
               </div>
 
@@ -2732,6 +3980,22 @@ export function App() {
                 onSelectRoomNum={setSelectedRoomNum}
               />
             </div>
+          </TabsContent>
+
+          {/* ================================================================= */}
+          {/* TAB 4: FULL BOOKING LIFECYCLE, MULTI-ENTITY STATES & 18 CASES     */}
+          {/* ================================================================= */}
+          <TabsContent value="lifecycle" className="mt-0 outline-none">
+            <LifecycleStateExplorer
+              bundle={bundle}
+              analytics={analytics}
+              onStartHold10m={handleSimulateGuestStartHold10m}
+              onReleaseHold10m={(session, reasonCode) =>
+                handleReleasePaymentHold(session.id, reasonCode)
+              }
+              onCompleteFullPayment={handleSimulateGuestFullPayment}
+              onJumpToWorkspaceSession={() => setActiveTab("workspace")}
+            />
           </TabsContent>
         </Tabs>
       </main>

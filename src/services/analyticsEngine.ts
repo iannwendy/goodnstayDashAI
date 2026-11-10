@@ -2,6 +2,7 @@ import {
   calcGuestTotalFromBase,
   parseStayDayOffsets,
   type AuctionSessionMasterRecord,
+  type BidStatus,
   type BranchFilter,
   type Calendar14DayPmsRecord,
   type DailyRoomCell,
@@ -12,9 +13,13 @@ import {
   type LossReasonId,
   type MasterDataBundle,
   type MatchBreakdown,
+  type PaymentStatus,
   type PeriodBaselineMeta,
+  type RejectCode,
+  type RequestStatus,
   type RoomCell,
   type RoomClassInventory,
+  type RoomPhysicalStatus,
   type TimeSlotType,
   type TodayOrder,
 } from "@/data";
@@ -343,6 +348,7 @@ export interface ComputedDashboardAnalytics {
   occupiedCount: number;
   otherBookedTotal: number;
   auctionBookedTotal: number;
+  paymentHoldTotal: number;
   vacantCount: number;
   occupancyPct: number;
   checkOutTomorrowCount: number;
@@ -354,6 +360,7 @@ export interface ComputedDashboardAnalytics {
   liveSessions: LiveSession[];
   activeLiveCount: number;
   pendingLiveBidsCount: number;
+  activeHoldSessionsCount: number;
   historySessions: HistorySession[];
   // Tab 1 & Tab 2 Charts & Benchmarks
   benchmarkChartData: BenchmarkRowComputed[];
@@ -697,10 +704,13 @@ function computeSinglePeriod(
       return { maxStep: 8, reasonNote: "Đã thanh toán 100% · Khóa phòng" };
     }
     const resp = s.responseMinutes ?? 5.0;
-    if (s.status === "expired") {
+    if (s.status === "expired" || s.status === "partner_declined") {
       return {
         maxStep: 1,
-        reasonNote: `Quá hạn 60p không tương tác (phản hồi ${resp}p)`,
+        reasonNote:
+          s.status === "partner_declined"
+            ? "KS chủ động bỏ qua phiên Live · Giữ phòng cho kênh khác"
+            : `Quá hạn 60p không tương tác (phản hồi ${resp}p)`,
       };
     }
     if (!s.guestOpenedDetail) {
@@ -715,11 +725,12 @@ function computeSinglePeriod(
         reasonNote: `Độ khớp ${s.matchScore}% · Thiếu đặc quyền mềm (Bữa sáng / Late C/O)`,
       };
     }
-    if (s.lossReasonId === "payment_abandoned") {
+    if (s.status === "payment_failed" || s.lossReasonId === "payment_abandoned") {
       return {
         maxStep: 7,
         reasonNote:
-          "Thoát bước thanh toán trước khi xác nhận · Phòng vẫn mở khóa",
+          s.resultNote ??
+          "Thoát hoặc quá hạn tạm khóa thanh toán 10 phút · Phòng đã tự mở khóa",
       };
     }
     const sysAvg = classSysAvgPriceMap.get(s.matchedRoomClassId) ?? 1_000_000;
@@ -1067,6 +1078,7 @@ export function computeDashboardAnalytics(
   dateRangeKey: DateRangeKey,
   liveCountdownOverrides: Record<string, number>,
   branchFilter: BranchFilter = "all",
+  holdCountdownOverrides: Record<string, number> = {},
 ): ComputedDashboardAnalytics {
   const {
     hotelProfile,
@@ -1076,6 +1088,8 @@ export function computeDashboardAnalytics(
     systemBenchmarks,
     auctionSessions,
   } = bundle;
+
+  const holdTtlDefault = hotelProfile.paymentHoldTtlSeconds ?? 600;
 
   const roomBranchLookup = new Map<
     number,
@@ -1109,11 +1123,97 @@ export function computeDashboardAnalytics(
       )
     : hotelProfile.defaultFloorPrice;
 
+  // Build chain-wide active 10-minute payment_hold map across stayOffsets
+  const allLiveRecords = auctionSessions.filter((s) => s.status === "live");
+  const holdStayMap = new Map<
+    string,
+    {
+      reqId: string;
+      staySpanText: string;
+      holdRemainingSeconds: number;
+      holdTotalSeconds: number;
+    }
+  >();
+
+  allLiveRecords.forEach((ls) => {
+    const sessionRem =
+      liveCountdownOverrides[ls.id] !== undefined
+        ? liveCountdownOverrides[ls.id]
+        : (ls.remainingSeconds ?? hotelProfile.bidTtlSeconds);
+    if (sessionRem <= 0 || ls.holdRoomNumber == null) return;
+
+    const holdRem =
+      holdCountdownOverrides[ls.id] !== undefined
+        ? holdCountdownOverrides[ls.id]
+        : (ls.holdRemainingSeconds ?? 0);
+    if (holdRem <= 0) return;
+
+    const holdTotal = ls.holdTotalSeconds ?? holdTtlDefault;
+    const rawStay = ls.checkInDateRange ?? "06/11 – 07/11 (1 đêm)";
+    const offsets = parseStayDayOffsets(
+      rawStay,
+      hotelProfile.referenceDate,
+      ls.nights,
+    );
+    const cleanSpan =
+      rawStay.split(" (")[0]?.trim() ||
+      `06/11–${String(6 + ls.nights).padStart(2, "0")}/11`;
+    (offsets.length > 0 ? offsets : [0]).forEach((off) => {
+      holdStayMap.set(`${ls.holdRoomNumber}:${off}`, {
+        reqId: ls.id,
+        staySpanText: cleanSpan,
+        holdRemainingSeconds: holdRem,
+        holdTotalSeconds: holdTotal,
+      });
+    });
+  });
+
+  // Effective Day-0 (Tonight) rooms reflecting active/expired 10-minute payment holds
+  const effectiveAllRoomsDay0 = roomsPms.map((r) => {
+    if (r.status === "booked_auction") return r;
+    const activeHold = holdStayMap.get(`${r.roomNumber}:0`);
+    if (activeHold) {
+      return {
+        ...r,
+        status: "payment_hold" as RoomPhysicalStatus,
+        sourceChannel: "Tạm khóa chờ TT 10p",
+        linkedReqId: activeHold.reqId,
+        holdRemainingSeconds: activeHold.holdRemainingSeconds,
+        holdTotalSeconds: activeHold.holdTotalSeconds,
+      };
+    }
+    if (r.status === "payment_hold") {
+      // Check if linked live session exists and had its hold expired/released
+      const linkedLive = r.linkedReqId
+        ? allLiveRecords.find((ls) => ls.id === r.linkedReqId)
+        : undefined;
+      if (linkedLive) {
+        return {
+          ...r,
+          status: "vacant_unlocked" as RoomPhysicalStatus,
+          sourceChannel: "Trống · Mở đấu giá",
+          linkedReqId: null,
+          holdRemainingSeconds: undefined,
+          holdTotalSeconds: undefined,
+        };
+      }
+      return {
+        ...r,
+        holdRemainingSeconds: r.holdRemainingSeconds ?? holdTtlDefault,
+        holdTotalSeconds: r.holdTotalSeconds ?? holdTtlDefault,
+      };
+    }
+    return r;
+  });
+
+  const scopedEffectiveRoomsDay0 =
+    branchFilter === "all"
+      ? effectiveAllRoomsDay0
+      : effectiveAllRoomsDay0.filter((r) => r.branchId === branchFilter);
+
   // 1. Live Sessions (preliminary pass before 14-day room schedule enrichment)
-  const rawLiveRecords = auctionSessions.filter(
-    (s) =>
-      s.status === "live" &&
-      (branchFilter === "all" || s.branchId === branchFilter),
+  const rawLiveRecords = allLiveRecords.filter(
+    (s) => branchFilter === "all" || s.branchId === branchFilter,
   );
 
   const prelimLiveSessions = rawLiveRecords.map((s) => {
@@ -1160,6 +1260,13 @@ export function computeDashboardAnalytics(
         ? liveCountdownOverrides[s.id]
         : (s.remainingSeconds ?? hotelProfile.bidTtlSeconds);
 
+    const rawHoldRem =
+      holdCountdownOverrides[s.id] !== undefined
+        ? holdCountdownOverrides[s.id]
+        : (s.holdRemainingSeconds ?? 0);
+    const hasActiveOwnHold =
+      remainingSeconds > 0 && s.holdRoomNumber != null && rawHoldRem > 0;
+
     return {
       id: s.id,
       branchId: s.branchId ?? "br_mykhe",
@@ -1186,6 +1293,12 @@ export function computeDashboardAnalytics(
       flashDiscountApplied,
       isAutoBidEligible,
       bidSubmitted: s.bidSubmitted,
+      holdRoomNumber: hasActiveOwnHold ? s.holdRoomNumber : null,
+      holdRemainingSeconds: hasActiveOwnHold ? rawHoldRem : 0,
+      holdTotalSeconds: s.holdTotalSeconds ?? holdTtlDefault,
+      rawRequestStatus: s.requestStatus,
+      rawBidStatus: s.bidStatus,
+      rawPaymentStatus: s.paymentStatus,
     };
   });
 
@@ -1197,10 +1310,17 @@ export function computeDashboardAnalytics(
     (s) => s.remainingSeconds > 0 && Boolean(s.bidSubmitted),
   ).length;
 
-  // 2. Completed Bid Sessions (won + rejected + expired; excludes auto_closed sold-out withdrawals)
+  const activeHoldSessionsCount = prelimLiveSessions.filter(
+    (s) => s.remainingSeconds > 0 && s.holdRoomNumber != null && (s.holdRemainingSeconds ?? 0) > 0,
+  ).length;
+
+  // 2. Completed Bid Sessions (won + rejected + expired + payment_failed; excludes auto_closed & partner_declined)
   const allChainCompletedSessions = auctionSessions.filter(
     (s) =>
-      s.status === "won" || s.status === "rejected" || s.status === "expired",
+      s.status === "won" ||
+      s.status === "rejected" ||
+      s.status === "expired" ||
+      s.status === "payment_failed",
   );
   const scopedCompletedSessions =
     branchFilter === "all"
@@ -1265,7 +1385,7 @@ export function computeDashboardAnalytics(
   });
 
   const roomInventory: RoomClassInventory[] = roomClasses.map((rc) => {
-    const pmsOfClass = scopedRoomsPms
+    const pmsOfClass = scopedEffectiveRoomsDay0
       .filter((r) => r.roomClassId === rc.id)
       .sort((a, b) => a.roomNumber - b.roomNumber);
     const otherChannelBooked = pmsOfClass.filter(
@@ -1273,6 +1393,9 @@ export function computeDashboardAnalytics(
     ).length;
     const auctionPaidBooked = pmsOfClass.filter(
       (r) => r.status === "booked_auction",
+    ).length;
+    const paymentHoldCount = pmsOfClass.filter(
+      (r) => r.status === "payment_hold",
     ).length;
     const dynamicRoomRange =
       branchFilter === "all"
@@ -1287,6 +1410,7 @@ export function computeDashboardAnalytics(
       totalRooms: branchFilter === "all" ? rc.totalRooms : pmsOfClass.length,
       otherChannelBooked,
       auctionPaidBooked,
+      paymentHoldCount,
       baseFloorPrice: rc.baseFloorPrice,
       rackRate: rc.rackRate,
     };
@@ -1300,17 +1424,26 @@ export function computeDashboardAnalytics(
     (s, r) => s + r.auctionPaidBooked,
     0,
   );
+  const paymentHoldTotal = roomInventory.reduce(
+    (s, r) => s + r.paymentHoldCount,
+    0,
+  );
   const occupiedCount = otherBookedTotal + auctionBookedTotal;
-  const vacantCount = Math.max(0, scopedTotalRooms - occupiedCount);
+  const vacantCount = Math.max(
+    0,
+    scopedTotalRooms - occupiedCount - paymentHoldTotal,
+  );
   const occupancyPct =
     scopedTotalRooms > 0
       ? Math.round((occupiedCount / scopedTotalRooms) * 100)
       : 0;
-  const checkOutTomorrowCount = scopedRoomsPms.filter(
-    (r) => r.status !== "vacant_unlocked" && r.checkOutTomorrow,
+  const checkOutTomorrowCount = scopedEffectiveRoomsDay0.filter(
+    (r) =>
+      (r.status === "booked_other" || r.status === "booked_auction") &&
+      r.checkOutTomorrow,
   ).length;
 
-  const roomMatrix: RoomCell[] = scopedRoomsPms
+  const roomMatrix: RoomCell[] = scopedEffectiveRoomsDay0
     .slice()
     .sort((a, b) => a.roomNumber - b.roomNumber)
     .map((r) => ({
@@ -1325,6 +1458,8 @@ export function computeDashboardAnalytics(
       status: r.status,
       linkedReqId: r.linkedReqId,
       checkOutTomorrow: r.checkOutTomorrow,
+      holdRemainingSeconds: r.holdRemainingSeconds,
+      holdTotalSeconds: r.holdTotalSeconds,
       activeAuctionCount:
         r.status === "vacant_unlocked"
           ? (activeAuctionCountByClass[r.roomClassId] ?? 0)
@@ -1332,11 +1467,10 @@ export function computeDashboardAnalytics(
     }));
 
   // 5B. Build 14-Day Room-by-Room Schedule across all 30 rooms first for deterministic consistency, then project onto scopedRoomsPms
-  const sortedAllPmsRooms = roomsPms
+  const sortedAllPmsRooms = effectiveAllRoomsDay0
     .slice()
     .sort((a, b) => a.roomNumber - b.roomNumber);
 
-  const allLiveRecords = auctionSessions.filter((s) => s.status === "live");
   const liveByDayAndClassAll: Record<number, Record<string, string[]>> = {};
   allLiveRecords.forEach((ls) => {
     const rem =
@@ -1391,13 +1525,18 @@ export function computeDashboardAnalytics(
     "Lễ tân / Walk-in",
   ];
 
-  const allDay0Other = roomsPms.filter((r) => r.status === "booked_other").length;
-  const allDay0Auction = roomsPms.filter(
+  const allDay0Other = effectiveAllRoomsDay0.filter(
+    (r) => r.status === "booked_other",
+  ).length;
+  const allDay0Auction = effectiveAllRoomsDay0.filter(
     (r) => r.status === "booked_auction",
+  ).length;
+  const allDay0Hold = effectiveAllRoomsDay0.filter(
+    (r) => r.status === "payment_hold",
   ).length;
   const allDay0Vacant = Math.max(
     0,
-    hotelProfile.totalRooms - allDay0Other - allDay0Auction,
+    hotelProfile.totalRooms - allDay0Other - allDay0Auction - allDay0Hold,
   );
 
   const baseCalendar14d: Calendar14DayPmsRecord[] = calendar14dPms.map((d) =>
@@ -1406,6 +1545,7 @@ export function computeDashboardAnalytics(
           ...d,
           otherBooked: allDay0Other,
           auctionBooked: allDay0Auction,
+          paymentHoldRooms: allDay0Hold,
           vacantRooms: allDay0Vacant,
         }
       : d,
@@ -1421,6 +1561,7 @@ export function computeDashboardAnalytics(
       if (d === 0) {
         const roomsDay0: DailyRoomCell[] = sortedAllPmsRooms.map((r) => {
           const wonInfo = wonStayMap.get(`${r.roomNumber}:0`);
+          const holdInfo = holdStayMap.get(`${r.roomNumber}:0`);
           const activeIds =
             r.status === "vacant_unlocked"
               ? (liveByDayAndClassAll[0]?.[r.roomClassId] ?? [])
@@ -1429,13 +1570,15 @@ export function computeDashboardAnalytics(
             r.status === "booked_auction"
               ? (wonInfo?.staySpanText ??
                 (r.checkOutTomorrow ? "05/11–07/11" : "06/11–08/11"))
-              : r.status === "booked_other"
-                ? r.sourceChannel.includes("Khóa tay")
-                  ? `Khóa thủ công ngày ${calDay.dateStr}`
-                  : r.checkOutTomorrow
-                    ? "05/11–07/11 (CO 12:00)"
-                    : "06/11–08/11"
-                : `Trống mở khóa ngày ${calDay.dateStr}`;
+              : r.status === "payment_hold"
+                ? `Tạm giữ 10p (${holdInfo?.staySpanText ?? "06/11–08/11"})`
+                : r.status === "booked_other"
+                  ? r.sourceChannel.includes("Khóa tay")
+                    ? `Khóa thủ công ngày ${calDay.dateStr}`
+                    : r.checkOutTomorrow
+                      ? "05/11–07/11 (CO 12:00)"
+                      : "06/11–08/11"
+                  : `Trống mở khóa ngày ${calDay.dateStr}`;
 
           return {
             roomNumber: r.roomNumber,
@@ -1447,16 +1590,30 @@ export function computeDashboardAnalytics(
             category: r.category,
             status: r.status,
             sourceChannel: r.sourceChannel,
-            linkedReqId: r.linkedReqId ?? wonInfo?.reqId ?? null,
+            linkedReqId:
+              r.linkedReqId ?? holdInfo?.reqId ?? wonInfo?.reqId ?? null,
             staySpanText,
             checkOutTomorrow: r.checkOutTomorrow,
             activeAuctionIds: activeIds,
             activeAuctionCount: activeIds.length,
+            holdRemainingSeconds:
+              r.status === "payment_hold"
+                ? (holdInfo?.holdRemainingSeconds ??
+                  r.holdRemainingSeconds ??
+                  holdTtlDefault)
+                : undefined,
+            holdTotalSeconds:
+              r.status === "payment_hold"
+                ? (holdInfo?.holdTotalSeconds ??
+                  r.holdTotalSeconds ??
+                  holdTtlDefault)
+                : undefined,
           };
         });
 
         return {
           ...calDay,
+          paymentHoldRooms: allDay0Hold,
           rooms: roomsDay0,
         };
       }
@@ -1465,15 +1622,17 @@ export function computeDashboardAnalytics(
       const assigned = new Map<
         number,
         {
-          status: "booked_other" | "booked_auction";
+          status: "booked_other" | "booked_auction" | "payment_hold";
           sourceChannel: string;
           linkedReqId: string | null;
           staySpanText: string;
           checkOutTomorrow: boolean;
+          holdRemainingSeconds?: number;
+          holdTotalSeconds?: number;
         }
       >();
 
-      // A. Place explicit multi-night won auctions covering day d
+      // A1. Place explicit multi-night won auctions covering day d
       sortedAllPmsRooms.forEach((r) => {
         const wonInfo = wonStayMap.get(`${r.roomNumber}:${d}`);
         if (wonInfo) {
@@ -1487,11 +1646,35 @@ export function computeDashboardAnalytics(
         }
       });
 
-      // Reserve at least 1 vacant room per class that has an active live auction on day d
+      // A2. Place active 10-minute payment_hold rooms covering day d
+      let holdCount = 0;
+      sortedAllPmsRooms.forEach((r) => {
+        if (assigned.has(r.roomNumber)) return;
+        const holdInfo = holdStayMap.get(`${r.roomNumber}:${d}`);
+        if (holdInfo) {
+          assigned.set(r.roomNumber, {
+            status: "payment_hold",
+            sourceChannel: "Tạm khóa chờ TT 10p",
+            linkedReqId: holdInfo.reqId,
+            staySpanText: `Tạm giữ 10p (${holdInfo.staySpanText})`,
+            checkOutTomorrow: false,
+            holdRemainingSeconds: holdInfo.holdRemainingSeconds,
+            holdTotalSeconds: holdInfo.holdTotalSeconds,
+          });
+          holdCount++;
+        }
+      });
+
+      // Reserve at least 1 vacant room per class that has an active live auction on day d (unless already represented by an active 10m hold in that class)
       const reservedVacantSet = new Set<number>();
       roomClasses.forEach((rc) => {
         const liveOnDay = liveByDayAndClassAll[d]?.[rc.id] ?? [];
-        if (liveOnDay.length > 0) {
+        const hasHoldInClass = sortedAllPmsRooms.some(
+          (r) =>
+            r.roomClassId === rc.id &&
+            assigned.get(r.roomNumber)?.status === "payment_hold",
+        );
+        if (liveOnDay.length > 0 && !hasHoldInClass) {
           const candidate = sortedAllPmsRooms
             .filter(
               (r) => r.roomClassId === rc.id && !assigned.has(r.roomNumber),
@@ -1502,7 +1685,9 @@ export function computeDashboardAnalytics(
       });
 
       // B. Fill remaining pre-booked auction slots up to calDay.auctionBooked
-      let auctionCount = assigned.size;
+      let auctionCount = Array.from(assigned.values()).filter(
+        (v) => v.status === "booked_auction",
+      ).length;
       const targetAuction = Math.max(auctionCount, calDay.auctionBooked);
       for (let step = 0; step < 30 && auctionCount < targetAuction; step++) {
         const idx = (step * 7 + d * 5 + 5) % sortedAllPmsRooms.length;
@@ -1523,9 +1708,12 @@ export function computeDashboardAnalytics(
         auctionCount++;
       }
 
-      // C. Carry over non-checkout OTA stayovers on d === 1, keep weekend Suite #129 booked on 07/11–08/11 so #130 is sole vacant Ocean Suite, then fill up to calDay.otherBooked
+      // C. Carry over non-checkout OTA stayovers on d === 1, keep weekend Suite #129 booked on 07/11–08/11 so #130 is sole contest Ocean Suite, then fill up to calDay.otherBooked
       let otherCount = 0;
-      const targetOther = Math.min(30 - auctionCount, calDay.otherBooked);
+      const targetOther = Math.min(
+        30 - auctionCount - holdCount,
+        calDay.otherBooked,
+      );
 
       if (d === 1) {
         sortedAllPmsRooms.forEach((r) => {
@@ -1589,8 +1777,8 @@ export function computeDashboardAnalytics(
         const hit = assigned.get(r.roomNumber);
         const manualState = dayOverrides[String(r.roomNumber)];
 
-        // Protect 100% paid auction rooms from manual override
-        if (hit?.status === "booked_auction") {
+        // Protect 100% paid auction rooms AND active 10-minute payment_hold rooms from manual override
+        if (hit?.status === "booked_auction" || hit?.status === "payment_hold") {
           return {
             roomNumber: r.roomNumber,
             floor: r.floor,
@@ -1599,13 +1787,15 @@ export function computeDashboardAnalytics(
             roomClassId: r.roomClassId,
             roomClass: r.roomClass,
             category: r.category,
-            status: "booked_auction",
+            status: hit.status,
             sourceChannel: hit.sourceChannel,
             linkedReqId: hit.linkedReqId,
             staySpanText: hit.staySpanText,
             checkOutTomorrow: hit.checkOutTomorrow,
             activeAuctionIds: [],
             activeAuctionCount: 0,
+            holdRemainingSeconds: hit.holdRemainingSeconds,
+            holdTotalSeconds: hit.holdTotalSeconds,
           };
         }
 
@@ -1672,12 +1862,19 @@ export function computeDashboardAnalytics(
       const finalAuction = roomsForDay.filter(
         (x) => x.status === "booked_auction",
       ).length;
-      const finalVacant = roomsForDay.length - finalOther - finalAuction;
+      const finalHold = roomsForDay.filter(
+        (x) => x.status === "payment_hold",
+      ).length;
+      const finalVacant = Math.max(
+        0,
+        roomsForDay.length - finalOther - finalAuction - finalHold,
+      );
 
       return {
         ...calDay,
         otherBooked: finalOther,
         auctionBooked: finalAuction,
+        paymentHoldRooms: finalHold,
         vacantRooms: finalVacant,
         rooms: roomsForDay,
       };
@@ -1697,15 +1894,19 @@ export function computeDashboardAnalytics(
           const auctionBooked = scopedRooms.filter(
             (r) => r.status === "booked_auction",
           ).length;
+          const paymentHoldRooms = scopedRooms.filter(
+            (r) => r.status === "payment_hold",
+          ).length;
           const vacantRooms = Math.max(
             0,
-            scopedRooms.length - otherBooked - auctionBooked,
+            scopedRooms.length - otherBooked - auctionBooked - paymentHoldRooms,
           );
           return {
             ...sched,
             totalRooms: scopedRooms.length,
             otherBooked,
             auctionBooked,
+            paymentHoldRooms,
             vacantRooms,
             rooms: scopedRooms,
           };
@@ -1716,22 +1917,45 @@ export function computeDashboardAnalytics(
     ({ rooms: _rooms, ...summary }) => summary,
   );
 
-  // Enrich LiveSessions with exact stay-date vacancy & overlapping live contests
+  // Enrich LiveSessions with exact stay-date vacancy, 10-minute seat-lock concurrency & multi-entity statuses
   const liveSessions: LiveSession[] = prelimLiveSessions.map((ls) => {
     const offsets = ls.stayOffsets.length > 0 ? ls.stayOffsets : [0];
-    const vacantCountsAcrossStay = offsets.map((off) => {
+    const heldRoomSet = new Set<number>();
+    const heldByReqSet = new Set<string>();
+
+    const countsPerDay = offsets.map((off) => {
       const sched = dailyRoomSchedules[off];
-      if (!sched) return 0;
-      return sched.rooms.filter(
-        (r) =>
-          r.roomClassId === ls.matchedRoomClassId &&
-          r.status === "vacant_unlocked",
+      if (!sched) return { vacant: 0, hold: 0 };
+      const classCells = sched.rooms.filter(
+        (r) => r.roomClassId === ls.matchedRoomClassId,
+      );
+      const vacant = classCells.filter(
+        (r) => r.status === "vacant_unlocked",
       ).length;
+      const holdCells = classCells.filter((r) => r.status === "payment_hold");
+      holdCells.forEach((hc) => {
+        heldRoomSet.add(hc.roomNumber);
+        if (hc.linkedReqId && hc.linkedReqId !== ls.id) {
+          heldByReqSet.add(hc.linkedReqId);
+        }
+      });
+      return { vacant, hold: holdCells.length };
     });
+
     const vacantForStay =
-      vacantCountsAcrossStay.length > 0
-        ? Math.min(...vacantCountsAcrossStay)
+      countsPerDay.length > 0
+        ? Math.min(...countsPerDay.map((c) => c.vacant))
         : 0;
+    const availableOrHeldMin =
+      countsPerDay.length > 0
+        ? Math.min(...countsPerDay.map((c) => c.vacant + c.hold))
+        : 0;
+    const paymentHoldForStay = Math.max(0, availableOrHeldMin - vacantForStay);
+
+    const hasOwnHold =
+      ls.holdRoomNumber != null && (ls.holdRemainingSeconds ?? 0) > 0;
+    const isBlockedByPaymentHold =
+      !hasOwnHold && vacantForStay === 0 && paymentHoldForStay > 0;
 
     const overlappingLive = prelimLiveSessions.filter(
       (other) =>
@@ -1740,10 +1964,43 @@ export function computeDashboardAnalytics(
         other.stayOffsets.some((o) => offsets.includes(o)),
     ).length;
 
-    const { stayOffsets: _omitOffsets, ...rest } = ls;
+    const requestStatus: RequestStatus = hasOwnHold
+      ? "checkout_hold_10m"
+      : ls.bidSubmitted
+        ? "offers_comparing"
+        : (ls.rawRequestStatus ?? "bidding_open");
+
+    const bidStatus: BidStatus = hasOwnHold
+      ? "payment_hold_10m"
+      : isBlockedByPaymentHold
+        ? "standby_hold_conflict"
+        : ls.bidSubmitted
+          ? "sent_waiting_guest"
+          : (ls.rawBidStatus ?? "pending_quote");
+
+    const paymentStatus: PaymentStatus = hasOwnHold
+      ? "awaiting_hold_10m"
+      : isBlockedByPaymentHold
+        ? "blocked_by_hold"
+        : "not_started";
+
+    const {
+      stayOffsets: _omitOffsets,
+      rawRequestStatus: _rr,
+      rawBidStatus: _rb,
+      rawPaymentStatus: _rp,
+      ...rest
+    } = ls;
     return {
       ...rest,
       vacantForStay,
+      paymentHoldForStay,
+      isBlockedByPaymentHold,
+      heldByReqIds: Array.from(heldByReqSet),
+      heldRoomNumbers: Array.from(heldRoomSet),
+      requestStatus,
+      bidStatus,
+      paymentStatus,
       concurrentForStay: Math.max(1, overlappingLive),
     };
   });
@@ -1770,6 +2027,43 @@ export function computeDashboardAnalytics(
         s.lockedRoomNumber != null
           ? roomBranchLookup.get(s.lockedRoomNumber)
           : undefined;
+
+      const defaultReqStatus: RequestStatus =
+        s.status === "won"
+          ? "confirmed_paid"
+          : "closed_unbooked";
+      const defaultBidStatus: BidStatus =
+        s.status === "won"
+          ? "won_paid_100"
+          : s.status === "payment_failed"
+            ? "release_after_hold"
+            : s.status === "auto_closed"
+              ? "auto_closed"
+              : s.status === "partner_declined"
+                ? "partner_declined"
+                : s.status === "expired"
+                  ? "expired_ttl_60m"
+                  : "lost_to_competitor";
+      const defaultPaymentStatus: PaymentStatus =
+        s.status === "won"
+          ? "paid_escrow_100"
+          : s.status === "payment_failed"
+            ? "expired_hold_10m"
+            : "not_started";
+      const defaultRejectCode: RejectCode | null =
+        s.status === "won"
+          ? null
+          : (s.rejectCode ??
+            (s.status === "payment_failed"
+              ? "REJ_HOLD_EXPIRED_10M"
+              : s.status === "auto_closed"
+                ? "REJ_AUTO_CLOSED_SOLD_OUT"
+                : s.status === "partner_declined"
+                  ? "REJ_PARTNER_SKIPPED_SESSION"
+                  : s.status === "expired"
+                    ? "REJ_NO_GUEST_ACTION_60M"
+                    : "REJ_COMPETITOR_WON_PRICE"));
+
       return {
         id: s.id,
         branchId: roomBr?.branchId ?? s.branchId ?? "br_mykhe",
@@ -1803,17 +2097,25 @@ export function computeDashboardAnalytics(
         closeSpeedText: s.closeSpeedText ?? "04p 00s",
         speedNote: s.speedNote,
         status: s.status as HistorySession["status"],
+        requestStatus: s.requestStatus ?? defaultReqStatus,
+        bidStatus: s.bidStatus ?? defaultBidStatus,
+        paymentStatus: s.paymentStatus ?? defaultPaymentStatus,
+        rejectCode: defaultRejectCode,
+        rejectLabel: s.rejectLabel ?? null,
+        lockedRoomNumber: s.lockedRoomNumber,
         hotelEarnedBase: s.hotelEarnedBase,
         guestPaidTotal: s.guestPaidTotal,
         resultNote:
           s.resultNote ??
           (s.status === "won"
             ? `Đã TT 100%${s.lockedRoomNumber ? ` · Khóa #${s.lockedRoomNumber}` : ""}`
-            : s.status === "rejected"
-              ? "Khách chọn đề xuất khác phù hợp hơn"
-              : s.status === "expired"
-                ? "Quá 60 phút không phát sinh thanh toán"
-                : ""),
+            : s.status === "payment_failed"
+              ? "Quá hạn hoặc lỗi tại bước tạm khóa thanh toán 10 phút · Phòng đã tự mở khóa"
+              : s.status === "rejected"
+                ? "Khách chọn đề xuất khác phù hợp hơn"
+                : s.status === "expired"
+                  ? "Quá 60 phút không phát sinh thanh toán"
+                  : ""),
         autopsyId: s.autopsyId ?? "CRQ-8924",
       };
     });
@@ -2010,6 +2312,7 @@ export function computeDashboardAnalytics(
     occupiedCount,
     otherBookedTotal,
     auctionBookedTotal,
+    paymentHoldTotal,
     vacantCount,
     occupancyPct,
     checkOutTomorrowCount,
@@ -2020,6 +2323,7 @@ export function computeDashboardAnalytics(
     liveSessions,
     activeLiveCount,
     pendingLiveBidsCount,
+    activeHoldSessionsCount,
     historySessions,
     benchmarkChartData,
     dailyRevenueTrend,
@@ -2151,7 +2455,8 @@ export function computeBenchmarkTrendSeries(
     (s) =>
       (s.status === "won" ||
         s.status === "rejected" ||
-        s.status === "expired") &&
+        s.status === "expired" ||
+        s.status === "payment_failed") &&
       s.sessionDate >= activePeriod.startDate &&
       s.sessionDate <= activePeriod.endDate &&
       (branchFilter === "all" || s.branchId === branchFilter),

@@ -14,7 +14,7 @@ test.describe("goodNstay Partner Auction Dashboard v2 — Full Logic & UI Audit"
     await page.getByRole("button", { name: "Reset" }).click();
 
     // --- DEFAULT AFTER RESET: 30 DAYS (08/10 – 06/11/2026) ---
-    await expect(page.getByText("Thực nhận ròng (30 ngày)")).toBeVisible();
+    await expect(page.getByText("Doanh thu (30 ngày)")).toBeVisible();
     await expect(page.getByText("ADR bình quân (30 ngày)")).toBeVisible();
     const adr30dText = await page
       .getByRole("button", { name: /ADR bình quân \(30 ngày\)/ })
@@ -33,22 +33,67 @@ test.describe("goodNstay Partner Auction Dashboard v2 — Full Logic & UI Audit"
       page.getByRole("button", { name: "Tất cả (68)" }),
     ).toBeVisible();
 
-    // Session Log sub-filters work accurately on 30d (including empty state for Tự đóng (0))
+    // Session Log shows max 10 rows per page with <1/7> pagination, search & sort by
+    await expect(page.locator("tbody tr")).toHaveCount(10);
+    await expect(page.getByTestId("history-page-indicator")).toHaveText("1/7");
+    await expect(
+      page.getByRole("button", { name: "Trang trước" }),
+    ).toBeDisabled();
+
+    // Navigate next & prev across pages
+    await page.getByRole("button", { name: "Trang sau" }).click();
+    await expect(page.getByTestId("history-page-indicator")).toHaveText("2/7");
+    await expect(page.locator("tbody tr")).toHaveCount(10);
+    await page.getByRole("button", { name: "Trang trước" }).click();
+    await expect(page.getByTestId("history-page-indicator")).toHaveText("1/7");
+
+    // Sub-filters reset to page 1 and paginate accurately (29 won -> 3 pages: 10 + 10 + 9)
     await page.getByRole("button", { name: /Đã TT 100% \(29\)/ }).click();
-    await expect(page.locator("tbody tr")).toHaveCount(29);
+    await expect(page.locator("tbody tr")).toHaveCount(10);
+    await expect(page.getByTestId("history-page-indicator")).toHaveText("1/3");
+    await page.getByRole("button", { name: "Trang sau" }).click();
+    await page.getByRole("button", { name: "Trang sau" }).click();
+    await expect(page.getByTestId("history-page-indicator")).toHaveText("3/3");
+    await expect(page.locator("tbody tr")).toHaveCount(9);
+    await expect(
+      page.getByRole("button", { name: "Trang sau" }),
+    ).toBeDisabled();
+
     await page.getByRole("button", { name: /Tự đóng \(0\)/ }).click();
     await expect(
       page.getByText(/Không có phiên nào thuộc trạng thái này/),
     ).toBeVisible();
     await page.getByRole("button", { name: "Xem tất cả (68)" }).click();
-    await expect(page.locator("tbody tr")).toHaveCount(68);
+    await expect(page.locator("tbody tr")).toHaveCount(10);
+    await expect(page.getByTestId("history-page-indicator")).toHaveText("1/7");
+
+    // Search by code / Vietnamese keyword (accent-insensitive) & clear
+    const searchInput = page.getByLabel("Tìm kiếm nhật ký phiên đấu giá");
+    await searchInput.fill("CRQ-8940");
+    await expect(page.locator("tbody tr")).toHaveCount(1);
+    await expect(page.getByTestId("history-page-indicator")).toHaveText("1/1");
+    await searchInput.fill("nghi duong cuoi tuan");
+    await expect(page.locator("tbody tr").first()).toContainText("#CRQ-8940");
+    await page.getByRole("button", { name: "Xóa từ khóa tìm kiếm" }).click();
+    await expect(page.getByTestId("history-page-indicator")).toHaveText("1/7");
+
+    // Sort by highest match score & reset back to newest
+    const sortSelect = page.getByLabel("Sắp xếp nhật ký phiên đấu giá");
+    await sortSelect.selectOption("match_desc");
+    const firstMatchScoreText = await page
+      .locator("tbody tr")
+      .first()
+      .innerText();
+    expect(firstMatchScoreText).toContain("%");
+    await sortSelect.selectOption("newest");
+    await expect(page.locator("tbody tr").first()).toContainText("#CRQ-8940");
 
     // Open ADR modal on 30d
     await page.getByText("ADR bình quân (30 ngày)").click();
     const dialog = page.getByRole("dialog");
     await expect(
       dialog.getByText(
-        "ADR Bình Quân & Đơn Đã Thanh Toán (30 ngày • 08/10 – 06/11/2026)",
+        "Giá Bình Quân Đêm (ADR) & Đơn Đã Thanh Toán (30 ngày • 08/10 – 06/11/2026)",
       ),
     ).toBeVisible();
     await expect(
@@ -59,7 +104,7 @@ test.describe("goodNstay Partner Auction Dashboard v2 — Full Logic & UI Audit"
 
     // --- SWITCH TO 7 DAYS (31/10 – 06/11/2026) ---
     await page.getByRole("button", { name: "7 ngày", exact: true }).click();
-    await expect(page.getByText("Thực nhận ròng (7 ngày)")).toBeVisible();
+    await expect(page.getByText("Doanh thu (7 ngày)")).toBeVisible();
     await expect(page.getByText("ADR bình quân (7 ngày)")).toBeVisible();
     const adr7dText = await page
       .getByRole("button", { name: /ADR bình quân \(7 ngày\)/ })
@@ -77,7 +122,7 @@ test.describe("goodNstay Partner Auction Dashboard v2 — Full Logic & UI Audit"
     await page.getByText("ADR bình quân (7 ngày)").click();
     await expect(
       dialog.getByText(
-        "ADR Bình Quân & Đơn Đã Thanh Toán (7 ngày • 31/10 – 06/11/2026)",
+        "Giá Bình Quân Đêm (ADR) & Đơn Đã Thanh Toán (7 ngày • 31/10 – 06/11/2026)",
       ),
     ).toBeVisible();
     await expect(
@@ -88,7 +133,7 @@ test.describe("goodNstay Partner Auction Dashboard v2 — Full Logic & UI Audit"
 
     // --- SWITCH TO TODAY (06/11/2026) ---
     await page.getByRole("button", { name: "Hôm nay", exact: true }).click();
-    await expect(page.getByText("Thực nhận ròng (Hôm nay)")).toBeVisible();
+    await expect(page.getByText("Doanh thu (Hôm nay)")).toBeVisible();
     await expect(page.getByText("ADR bình quân (Hôm nay)")).toBeVisible();
     const adrTodayText = await page
       .getByRole("button", { name: /ADR bình quân \(Hôm nay\)/ })
@@ -111,7 +156,7 @@ test.describe("goodNstay Partner Auction Dashboard v2 — Full Logic & UI Audit"
     await page.getByText("ADR bình quân (Hôm nay)").click();
     await expect(
       dialog.getByText(
-        "ADR Bình Quân & Đơn Đã Thanh Toán (Hôm nay • 06/11/2026)",
+        "Giá Bình Quân Đêm (ADR) & Đơn Đã Thanh Toán (Hôm nay • 06/11/2026)",
       ),
     ).toBeVisible();
     await expect(
@@ -152,7 +197,7 @@ test.describe("goodNstay Partner Auction Dashboard v2 — Full Logic & UI Audit"
     // Initially on 06/11 (Hôm nay): 6 phòng trống, 24/30 đã khóa
     await expect(
       page.getByRole("button", {
-        name: /Quỹ phòng hôm nay \(06\/11\).*6 phòng trống/,
+        name: /Quỹ phòng hôm nay \(06\/11\).*5 phòng trống/,
       }),
     ).toBeVisible();
     await expect(
@@ -164,14 +209,14 @@ test.describe("goodNstay Partner Auction Dashboard v2 — Full Logic & UI Audit"
     const dialog = page.getByRole("dialog");
     await expect(
       dialog.getByText(
-        "Quản Lý Mở Khóa / Khóa Phòng — Ngày 06/11/2026 (Hôm nay)",
+        "Quản Lý Mở Khóa / Khóa Phòng (Tất cả chi nhánh) — Ngày 06/11/2026 (Hôm nay)",
       ),
     ).toBeVisible();
 
     await dialog.getByRole("button", { name: /10\/11/ }).click();
     await expect(
       dialog.getByText(
-        "Quản Lý Mở Khóa / Khóa Phòng — Ngày 10/11/2026 (Thứ 3)",
+        "Quản Lý Mở Khóa / Khóa Phòng (Tất cả chi nhánh) — Ngày 10/11/2026 (Thứ 3)",
       ),
     ).toBeVisible();
 
@@ -194,7 +239,7 @@ test.describe("goodNstay Partner Auction Dashboard v2 — Full Logic & UI Audit"
     await page.getByText("Quỹ phòng 10/11 (Thứ 3)").click();
     await expect(
       dialog.getByText(
-        "Quản Lý Mở Khóa / Khóa Phòng — Ngày 10/11/2026 (Thứ 3)",
+        "Quản Lý Mở Khóa / Khóa Phòng (Tất cả chi nhánh) — Ngày 10/11/2026 (Thứ 3)",
       ),
     ).toBeVisible();
     await page.keyboard.press("Escape");
@@ -206,7 +251,7 @@ test.describe("goodNstay Partner Auction Dashboard v2 — Full Logic & UI Audit"
       .click();
     await expect(
       dialog.getByText(
-        "Lịch 30 Phòng Theo Từng Ngày — Đang chọn: 10/11/2026 (Thứ 3)",
+        "Lịch 30 Phòng (Tất cả chi nhánh) — Đang chọn: 10/11/2026 (Thứ 3)",
       ),
     ).toBeVisible();
     await expect(
@@ -272,7 +317,7 @@ test.describe("goodNstay Partner Auction Dashboard v2 — Full Logic & UI Audit"
       .click();
     await expect(
       page.getByRole("button", {
-        name: /Quỹ phòng hôm nay \(06\/11\).*6 phòng trống/,
+        name: /Quỹ phòng hôm nay \(06\/11\).*5 phòng trống/,
       }),
     ).toBeVisible();
 
@@ -295,7 +340,7 @@ test.describe("goodNstay Partner Auction Dashboard v2 — Full Logic & UI Audit"
     const dialog = page.getByRole("dialog");
     await expect(
       dialog.getByText(
-        "Quản Lý Mở Khóa / Khóa Phòng — Ngày 09/11/2026 (Thứ 2)",
+        "Quản Lý Mở Khóa / Khóa Phòng (Tất cả chi nhánh) — Ngày 09/11/2026 (Thứ 2)",
       ),
     ).toBeVisible();
     await page.keyboard.press("Escape");
@@ -313,14 +358,14 @@ test.describe("goodNstay Partner Auction Dashboard v2 — Full Logic & UI Audit"
       .click();
     await expect(
       page.getByRole("button", {
-        name: /Quỹ phòng hôm nay \(06\/11\).*6 phòng trống/,
+        name: /Quỹ phòng hôm nay \(06\/11\).*5 phòng trống/,
       }),
     ).toBeVisible();
 
     // Formula drawer toggle
     await page.getByRole("button", { name: "Công thức" }).click();
     await expect(
-      page.getByText("1. Thực nhận ròng & ADR (0% phí KS)"),
+      page.getByText("1. Doanh thu & Giá bình quân đêm (ADR)"),
     ).toBeVisible();
     await page.getByRole("button", { name: "Thu gọn" }).click();
 
@@ -388,7 +433,7 @@ test.describe("goodNstay Partner Auction Dashboard v2 — Full Logic & UI Audit"
     await expect(page.getByText("29 đơn TT 100%")).toBeVisible();
     await expect(
       page.getByRole("button", {
-        name: /Quỹ phòng hôm nay \(06\/11\).*6 phòng trống/,
+        name: /Quỹ phòng hôm nay \(06\/11\).*5 phòng trống/,
       }),
     ).toBeVisible();
 
@@ -429,7 +474,7 @@ test.describe("goodNstay Partner Auction Dashboard v2 — Full Logic & UI Audit"
     // Click Slice #8 ("8. TT 100% · Khóa phòng") -> switches detail panel to Step 8 (#CRQ-8932)
     await page
       .getByRole("button", {
-        name: /8\. Xác thực NHN KCP & Thu 100% Khóa Phòng Tức Thì/,
+        name: /8\. Hoàn tất Thanh toán 100% & Khóa Phòng Tức Thì/,
       })
       .click();
     await expect(page.getByText("#CRQ-8932 (")).toBeVisible();
@@ -437,7 +482,7 @@ test.describe("goodNstay Partner Auction Dashboard v2 — Full Logic & UI Audit"
     // Click Slice #8 again -> collapses detail panel cleanly
     await page
       .getByRole("button", {
-        name: /8\. Xác thực NHN KCP & Thu 100% Khóa Phòng Tức Thì/,
+        name: /8\. Hoàn tất Thanh toán 100% & Khóa Phòng Tức Thì/,
       })
       .click();
     await expect(page.getByText("#CRQ-8932 (")).toBeHidden();
@@ -474,6 +519,182 @@ test.describe("goodNstay Partner Auction Dashboard v2 — Full Logic & UI Audit"
     // Restore desktop viewport & clean seed
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.getByRole("button", { name: "Reset" }).click();
+
+    expect(errors).toEqual([]);
+  });
+
+  test("5. Simple Revenue Modal (Day/Week/Month · All Rooms / Per Room / Per Branch) & Topbar Branch Sync with Zero Medical/KCP", async ({
+    page,
+  }) => {
+    const errors: string[] = [];
+    page.on("pageerror", (err) => errors.push(err.message));
+
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/");
+    await page.getByRole("button", { name: "Reset" }).click();
+
+    // Verify main DOM has zero medical / KCP / NHK references
+    const mainText = (await page.locator("body").innerText()).toLowerCase();
+    expect(mainText).not.toContain("y tế");
+    expect(mainText).not.toContain("kcp");
+    expect(mainText).not.toContain("nhk");
+
+    // Open KPI Card #1 (Simple Revenue modal)
+    await page.getByTestId("kpi-card-revenue").click();
+    const dialog = page.getByRole("dialog");
+    await expect(
+      dialog.getByText("Doanh Thu Khách Sạn (08/10 – 06/11/2026)"),
+    ).toBeVisible();
+    await expect(dialog.getByTestId("revenue-modal-primary-total")).toContainText(
+      "66.360.000đ",
+    );
+
+    // Verify modal DOM has zero medical / KCP / NHK / Khách TT sàn reconciliation text
+    const modalText30d = (await dialog.innerText()).toLowerCase();
+    expect(modalText30d).not.toContain("y tế");
+    expect(modalText30d).not.toContain("kcp");
+    expect(modalText30d).not.toContain("nhk");
+    expect(modalText30d).not.toContain("khách tt sàn");
+
+    // Switch time period inside Revenue modal: Theo tháng -> Theo tuần -> Theo ngày
+    await dialog
+      .getByTestId("revenue-time-tabs")
+      .getByRole("button", { name: "Theo tuần" })
+      .click();
+    await expect(
+      dialog.getByText("Doanh Thu Khách Sạn (31/10 – 06/11/2026)"),
+    ).toBeVisible();
+    await expect(dialog.getByTestId("revenue-modal-primary-total")).toContainText(
+      "29.380.000đ",
+    );
+
+    await dialog
+      .getByTestId("revenue-time-tabs")
+      .getByRole("button", { name: "Theo ngày" })
+      .click();
+    await expect(
+      dialog.getByText("Doanh Thu Khách Sạn (06/11/2026)"),
+    ).toBeVisible();
+    await expect(dialog.getByTestId("revenue-modal-primary-total")).toContainText(
+      "11.850.000đ",
+    );
+
+    // Switch back to Theo tháng (30d) for full multi-room & multi-branch breakdown
+    await dialog
+      .getByTestId("revenue-time-tabs")
+      .getByRole("button", { name: "Theo tháng" })
+      .click();
+
+    // Switch Scope -> Từng chi nhánh
+    await dialog
+      .getByTestId("revenue-scope-tabs")
+      .getByRole("button", { name: "Từng chi nhánh" })
+      .click();
+    await expect(dialog.getByText("CN Mỹ Khê").first()).toBeVisible();
+    await expect(dialog.getByText("CN Sông Hàn").first()).toBeVisible();
+    await expect(dialog.getByText("CN An Thượng").first()).toBeVisible();
+
+    // Select Branch "CN Mỹ Khê" inside modal -> synchronizes with Topbar selector!
+    await dialog
+      .getByTestId("revenue-branch-tabs")
+      .getByRole("button", { name: "CN Mỹ Khê" })
+      .click();
+    await expect(page.getByTestId("topbar-branch-select")).toHaveValue(
+      "br_mykhe",
+    );
+
+    // Switch Scope -> Từng phòng & select single room #116
+    await dialog
+      .getByTestId("revenue-scope-tabs")
+      .getByRole("button", { name: "Từng phòng" })
+      .click();
+    await dialog.getByTestId("revenue-room-select").selectOption("116");
+    await expect(dialog.getByText(/Phòng #116/).first()).toBeVisible();
+
+    // Mobile viewport check inside Revenue modal -> zero horizontal overflow
+    await page.setViewportSize({ width: 390, height: 844 });
+    const modalOverflow = await page.evaluate(
+      () => document.documentElement.scrollWidth > window.innerWidth,
+    );
+    expect(modalOverflow).toBe(false);
+
+    // Close modal & reset back to clean seed
+    await page.keyboard.press("Escape");
+    await expect(dialog).toBeHidden();
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.getByTestId("topbar-branch-select").selectOption("all");
+    await page.getByRole("button", { name: "Reset" }).click();
+
+    expect(errors).toEqual([]);
+  });
+
+  test("6. 10-Minute Movie-Seat Payment Hold (#130), Overlapping Standby Conflict (#CRQ-8942), Manual Override Guard, Hold Release & Tab 4 Full Lifecycle Matrix", async ({
+    page,
+  }) => {
+    const errors: string[] = [];
+    page.on("pageerror", (err) => errors.push(err.message));
+
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/");
+    await page.getByRole("button", { name: "Reset" }).click();
+
+    // 1. Seed state: #CRQ-8944 holds Room #130 in 10m payment_hold; in CN Mỹ Khê (#130 is last suite), #CRQ-8942 is in Standby!
+    await expect(page.getByTestId("hold-banner-CRQ-8944")).toBeVisible();
+    await expect(page.getByTestId("hold-banner-CRQ-8944")).toContainText("#130");
+
+    await page.getByTestId("topbar-branch-select").selectOption("br_mykhe");
+    await expect(page.getByTestId("standby-banner-CRQ-8942")).toBeVisible();
+    await expect(page.getByTestId("standby-banner-CRQ-8942")).toContainText(
+      "#CRQ-8944",
+    );
+    await page.getByTestId("topbar-branch-select").selectOption("all");
+
+    // 2. Tab 3 Inventory: Filter "Tạm khóa 10p (1)" -> Room #130 cannot be manually unlocked/overridden while held
+    await page.getByRole("tab", { name: /Quỹ phòng/ }).click();
+    await page
+      .getByRole("button", { name: "Tạm khóa 10p (1)", exact: true })
+      .click();
+    const heldRoomCell = page.locator("button", { hasText: "#130" }).first();
+    await expect(heldRoomCell).toBeVisible();
+    await heldRoomCell.click();
+    await expect(page.getByText(/Đang giữ ghế 10p/)).toBeVisible();
+    await page.getByRole("button", { name: /^Tất cả \(30\)$/ }).click();
+
+    // 3. Return to Tab 1 -> Release 10m hold on #CRQ-8944 -> Room #130 returns to vacant_unlocked (6 phòng trống) & #CRQ-8942 unblocks in CN Mỹ Khê!
+    await page.getByRole("tab", { name: /Đấu giá Live/ }).click();
+    await page.getByTestId("btn-release-hold-CRQ-8944").click();
+    await expect(
+      page.getByRole("button", {
+        name: /Quỹ phòng hôm nay \(06\/11\).*6 phòng trống/,
+      }),
+    ).toBeVisible();
+    await page.getByTestId("topbar-branch-select").selectOption("br_mykhe");
+    await expect(page.getByTestId("standby-banner-CRQ-8942")).toBeHidden();
+    await page.getByTestId("topbar-branch-select").selectOption("all");
+
+    // Session Log filter "Lỗi TT / 10p" records the released session with REJ_HOLD_EXPIRED_10M
+    await page.getByRole("button", { name: /^Lỗi TT \/ 10p \(\d+\)$/ }).click();
+    await expect(page.locator("tbody").first()).toContainText("#CRQ-8944");
+    await expect(page.locator("tbody").first()).toContainText(
+      "REJ_HOLD_EXPIRED_10M",
+    );
+
+    // 4. Tab 4 (Vòng đời & Case): 9 lifecycle stages, multi-entity states, reject catalog & 18 cases render & filter cleanly
+    await page.getByRole("tab", { name: /Vòng đời & Case/ }).click();
+    await expect(page.getByTestId("lifecycle-explorer-root")).toBeVisible();
+    await expect(page.getByText(/CASE-01/).first()).toBeVisible();
+    await expect(
+      page.getByText(/Ma Trận Đầy Đủ 18 Kịch Bản Nghiệp Vụ/),
+    ).toBeVisible();
+
+    // Reset back to clean seed state
+    await page.getByRole("button", { name: "Reset" }).click();
+    await page.getByRole("tab", { name: /Đấu giá Live/ }).click();
+    await expect(
+      page.getByRole("button", {
+        name: /Quỹ phòng hôm nay \(06\/11\).*5 phòng trống/,
+      }),
+    ).toBeVisible();
 
     expect(errors).toEqual([]);
   });

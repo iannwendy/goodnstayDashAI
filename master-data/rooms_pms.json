@@ -8,9 +8,9 @@
     "status": "booked_other",
     "sourceChannel": "Booking.com",
     "linkedReqId": null,
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": true
+    "checkOutTomorrow": true,
+    "branchId": "br_mykhe",
+    "branchName": "CN Mỹ Khê"
   },
   {
     "roomNumber": 102,
@@ -21,9 +21,9 @@
     "status": "booked_other",
     "sourceChannel": "Agoda",
     "linkedReqId": null,
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": false
+    "checkOutTomorrow": false,
+    "branchId": "br_mykhe",
+    "branchName": "CN Mỹ Khê"
   },
   {
     "roomNumber": 103,
@@ -34,9 +34,9 @@
     "status": "booked_other",
     "sourceChannel": "Walk-in / Doanh nghiệp",
     "linkedReqId": null,
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": true
+    "checkOutTomorrow": true,
+    "branchId": "br_songhan",
+    "branchName": "CN Sông Hàn"
   },
   {
     "roomNumber": 104,
@@ -47,9 +47,9 @@
     "status": "booked_other",
     "sourceChannel": "Traveloka",
     "linkedReqId": null,
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": false
+    "checkOutTomorrow": false,
+    "branchId": "br_anthuong",
+    "branchName": "CN An Thượng"
   },
   {
     "roomNumber": 105,
@@ -60,9 +60,9 @@
     "status": "booked_other",
     "sourceChannel": "Booking.com",
     "linkedReqId": null,
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": false
+    "checkOutTomorrow": false,
+    "branchId": "br_anthuong",
+    "branchName": "CN An Thượng"
   },
   {
     "roomNumber": 106,
@@ -73,9 +73,9 @@
     "status": "booked_auction",
     "sourceChannel": "goodNstay (Đã TT 100%)",
     "linkedReqId": "CRQ-8939",
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": false
+    "checkOutTomorrow": false,
+    "branchId": "br_mykhe",
+    "branchName": "CN Mỹ Khê"
   },
   {
     "roomNumber": 107,
@@ -86,9 +86,9 @@
     "status": "booked_auction",
     "sourceChannel": "goodNstay (Đã TT 100%)",
     "linkedReqId": "CRQ-8921",
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": true
+    "checkOutTomorrow": true,
+    "branchId": "br_songhan",
+    "branchName": "CN Sông Hàn"
   },
   {
     "roomNumber": 108,
@@ -99,9 +99,9 @@
     "status": "vacant_unlocked",
     "sourceChannel": "Trống • Mở đấu giá",
     "linkedReqId": null,
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": false
+    "checkOutTomorrow": false,
+    "branchId": "br_mykhe",
+    "branchName": "CN Mỹ Khê"
   },
   {
     "roomNumber": 109,
@@ -112,9 +112,9 @@
     "status": "vacant_unlocked",
     "sourceChannel": "Trống • Mở đấu giá",
     "linkedReqId": null,
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": false
+    "checkOutTomorrow": false,
+    "branchId": "br_songhan",
+    "branchName": "CN Sông Hàn"
   },
   {
     "roomNumber": 110,
@@ -125,9 +125,9 @@
     "status": "vacant_unlocked",
     "sourceChannel": "Trống • Mở đấu giá",
     "linkedReqId": null,
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": false
+    "checkOutTomorrow": false,
+    "branchId": "br_anthuong",
+    "branchName": "CN An Thượng"
   },
   {
     "roomNumber": 111,
@@ -138,9 +138,9 @@
     "status": "booked_other",
     "sourceChannel": "Agoda",
     "linkedReqId": null,
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": false
+    "checkOutTomorrow": false,
+    "branchId": "br_mykhe",
+    "branchName": "CN Mỹ Khê"
   },
   {
     "roomNumber": 112,
@@ -151,9 +151,9 @@
     "status": "booked_other",
     "sourceChannel": "Walk-in / Doanh nghiệp",
     "linkedReqId": null,
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": true
+    "checkOutTomorrow": true,
+    "branchId": "br_mykhe",
+    "branchName": "CN Mỹ Khê"
   },
   {
     "roomNumber": 113,
@@ -164,9 +164,9 @@
     "status": "booked_other",
     "sourceChannel": "Traveloka",
     "linkedReqId": null,
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": false
+    "checkOutTomorrow": false,
+    "branchId": "br_songhan",
+    "branchName": "CN Sông Hàn"
   },
   {
     "roomNumber": 114,
@@ -177,9 +177,9 @@
     "status": "booked_other",
     "sourceChannel": "Booking.com",
     "linkedReqId": null,
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": false
+    "checkOutTomorrow": false,
+    "branchId": "br_songhan",
+    "branchName": "CN Sông Hàn"
   },
   {
     "roomNumber": 115,
@@ -190,9 +190,9 @@
     "status": "booked_other",
     "sourceChannel": "Agoda",
     "linkedReqId": null,
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": true
+    "checkOutTomorrow": true,
+    "branchId": "br_anthuong",
+    "branchName": "CN An Thượng"
   },
   {
     "roomNumber": 116,
@@ -203,9 +203,9 @@
     "status": "booked_auction",
     "sourceChannel": "goodNstay (Đã TT 100%)",
     "linkedReqId": "CRQ-8940",
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": false
+    "checkOutTomorrow": false,
+    "branchId": "br_mykhe",
+    "branchName": "CN Mỹ Khê"
   },
   {
     "roomNumber": 117,
@@ -216,9 +216,9 @@
     "status": "booked_auction",
     "sourceChannel": "goodNstay (Đã TT 100%)",
     "linkedReqId": "CRQ-8936",
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": false
+    "checkOutTomorrow": false,
+    "branchId": "br_songhan",
+    "branchName": "CN Sông Hàn"
   },
   {
     "roomNumber": 118,
@@ -229,9 +229,9 @@
     "status": "booked_auction",
     "sourceChannel": "goodNstay (Đã TT 100%)",
     "linkedReqId": "CRQ-8915",
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": true
+    "checkOutTomorrow": true,
+    "branchId": "br_anthuong",
+    "branchName": "CN An Thượng"
   },
   {
     "roomNumber": 119,
@@ -242,9 +242,9 @@
     "status": "vacant_unlocked",
     "sourceChannel": "Trống • Mở đấu giá",
     "linkedReqId": null,
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": false
+    "checkOutTomorrow": false,
+    "branchId": "br_mykhe",
+    "branchName": "CN Mỹ Khê"
   },
   {
     "roomNumber": 120,
@@ -255,9 +255,9 @@
     "status": "vacant_unlocked",
     "sourceChannel": "Trống • Mở đấu giá",
     "linkedReqId": null,
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": false
+    "checkOutTomorrow": false,
+    "branchId": "br_songhan",
+    "branchName": "CN Sông Hàn"
   },
   {
     "roomNumber": 121,
@@ -268,9 +268,9 @@
     "status": "booked_other",
     "sourceChannel": "Booking.com",
     "linkedReqId": null,
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": true
+    "checkOutTomorrow": true,
+    "branchId": "br_mykhe",
+    "branchName": "CN Mỹ Khê"
   },
   {
     "roomNumber": 122,
@@ -281,9 +281,9 @@
     "status": "booked_other",
     "sourceChannel": "Agoda",
     "linkedReqId": null,
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": false
+    "checkOutTomorrow": false,
+    "branchId": "br_mykhe",
+    "branchName": "CN Mỹ Khê"
   },
   {
     "roomNumber": 123,
@@ -294,9 +294,9 @@
     "status": "booked_other",
     "sourceChannel": "Walk-in / Doanh nghiệp",
     "linkedReqId": null,
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": false
+    "checkOutTomorrow": false,
+    "branchId": "br_songhan",
+    "branchName": "CN Sông Hàn"
   },
   {
     "roomNumber": 124,
@@ -307,9 +307,9 @@
     "status": "booked_other",
     "sourceChannel": "Traveloka",
     "linkedReqId": null,
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": false
+    "checkOutTomorrow": false,
+    "branchId": "br_anthuong",
+    "branchName": "CN An Thượng"
   },
   {
     "roomNumber": 125,
@@ -320,9 +320,9 @@
     "status": "booked_auction",
     "sourceChannel": "goodNstay (Đã TT 100%)",
     "linkedReqId": "CRQ-8938",
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": false
+    "checkOutTomorrow": false,
+    "branchId": "br_anthuong",
+    "branchName": "CN An Thượng"
   },
   {
     "roomNumber": 126,
@@ -333,9 +333,9 @@
     "status": "booked_auction",
     "sourceChannel": "goodNstay (Đã TT 100%)",
     "linkedReqId": "CRQ-8904",
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": true
+    "checkOutTomorrow": true,
+    "branchId": "br_songhan",
+    "branchName": "CN Sông Hàn"
   },
   {
     "roomNumber": 127,
@@ -346,9 +346,9 @@
     "status": "booked_other",
     "sourceChannel": "Booking.com",
     "linkedReqId": null,
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": false
+    "checkOutTomorrow": true,
+    "branchId": "br_songhan",
+    "branchName": "CN Sông Hàn"
   },
   {
     "roomNumber": 128,
@@ -359,9 +359,9 @@
     "status": "booked_other",
     "sourceChannel": "Agoda",
     "linkedReqId": null,
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": false
+    "checkOutTomorrow": false,
+    "branchId": "br_anthuong",
+    "branchName": "CN An Thượng"
   },
   {
     "roomNumber": 129,
@@ -372,9 +372,9 @@
     "status": "booked_auction",
     "sourceChannel": "goodNstay (Đã TT 100%)",
     "linkedReqId": "CRQ-8934",
-    "holdRemainingSeconds": null,
-    "holdTotalSeconds": null,
-    "checkOutTomorrow": true
+    "checkOutTomorrow": false,
+    "branchId": "br_mykhe",
+    "branchName": "CN Mỹ Khê"
   },
   {
     "roomNumber": 130,
@@ -383,10 +383,12 @@
     "roomClass": "Executive Ocean Suite",
     "category": "Executive",
     "status": "payment_hold",
-    "sourceChannel": "Tạm khóa chờ TT (10p)",
+    "sourceChannel": "Tạm khóa chờ TT 10p",
     "linkedReqId": "CRQ-8944",
+    "checkOutTomorrow": false,
     "holdRemainingSeconds": 495,
     "holdTotalSeconds": 600,
-    "checkOutTomorrow": false
+    "branchId": "br_mykhe",
+    "branchName": "CN Mỹ Khê"
   }
 ]

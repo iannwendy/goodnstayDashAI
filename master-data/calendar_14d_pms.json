@@ -10,7 +10,7 @@
     "auctionBooked": 8,
     "paymentHoldRooms": 1,
     "vacantRooms": 5,
-    "policyShort": "Đang tạm khóa #130 chờ TT 10p (#CRQ-8944) • Xả đêm sau 20h00",
+    "policyShort": "Xả phòng đêm sau 20h00 (-15% sàn nếu còn trống)",
     "linkedReqId": "CRQ-8944"
   },
   {
@@ -24,7 +24,7 @@
     "auctionBooked": 6,
     "paymentHoldRooms": 1,
     "vacantRooms": 5,
-    "policyShort": "Đêm 2 giữ tạm #130 (#CRQ-8944) • Cuối tuần cầu cao (+15% sàn)",
+    "policyShort": "Cuối tuần cầu cao • Giữ biên +15% trên giá sàn",
     "linkedReqId": "CRQ-8942"
   },
   {
@@ -39,7 +39,7 @@
     "paymentHoldRooms": 0,
     "vacantRooms": 8,
     "policyShort": "Chủ nhật trả phòng đông • Kèm ưu đãi Late Check-out",
-    "linkedReqId": "CRQ-8942"
+    "linkedReqId": "CRQ-8944"
   },
   {
     "dayOffset": 3,
