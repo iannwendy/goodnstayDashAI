@@ -1,11 +1,14 @@
 {
   "name": "goodnstay-ota-rate-shopping-demo",
-  "version": "1.0.0",
-  "description": "Demo cào giá thực tế theo hạng phòng (Agoda, Booking.com, Trip.com vs goodNstay), tự động điền 8 trường Form goodNstay, bộ lọc 6 tầng (Single / Twin / Double / Multi-bed) và tính % chênh lệch giá",
+  "version": "2.0.0",
+  "description": "goodNstay OTA Rate Shopping, 6-Stage Room Matcher & 8-Field Form Auto-Mapper (shadcn/ui)",
   "private": true,
+  "type": "module",
   "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 4180",
+    "start": "vite --host 0.0.0.0 --port 4180",
+    "build": "tsc -b && vite build",
     "scrape:live": "node src/liveScraper.mjs",
-    "start": "node src/server.mjs",
     "test": "node --test tests/rateShopping.test.mjs"
   }
 }

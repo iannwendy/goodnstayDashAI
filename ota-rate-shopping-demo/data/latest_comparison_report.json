@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-10T04:04:07.284Z",
+  "generatedAt": "2026-11-10T04:27:27.717Z",
   "liveAgodaScrapeStatus": {
     "success": true,
-    "scrapedAt": "2026-11-10T04:04:07.253Z",
-    "sourceUrl": "https://www.agoda.com/muong-thanh-luxury-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=qXnu1HncQPsbfeiY",
+    "scrapedAt": "2026-11-10T04:27:27.683Z",
+    "sourceUrl": "https://www.agoda.com/muong-thanh-luxury-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=LyTDyVneY0FRY9%2BX",
     "pageTitle": "Muong Thanh Luxury Nha Trang Hotel, Nha Trang | 2026 Updated Prices, Deals",
     "masterRoomCountFromLiveAgoda": 9,
     "liveOffersExtractedCount": 18
@@ -123,10 +123,10 @@
           "grossPrice": 1157487,
           "formFields": {
             "uploadPhotos": [
-              "//pix8.agoda.net/property/766807/847589357/73e0df55fc52ddc1e42cc99f7ff09a3d.jpeg?va=1&ce=2&s=1024x768",
-              "//pix8.agoda.net/hotelImages/766807/3936472/a6b089463c5946b327a466c5bbb02915.jpeg?va=1&ce=2&s=1024x768",
-              "//pix8.agoda.net/property/766807/847589357/49323d5003c74dbdfc7c4fe9c96decd9.jpeg?va=1&ce=2&s=1024x768",
-              "//pix8.agoda.net/property/766807/847589357/7b02dd154edf108be45cddbe544aa56f.jpeg?va=1&ce=2&s=1024x768"
+              "//pix8.agoda.net/property/766807/847589357/73e0df55fc52ddc1e42cc99f7ff09a3d.jpeg?ce=2&s=1024x768",
+              "//pix8.agoda.net/hotelImages/766807/3936472/a6b089463c5946b327a466c5bbb02915.jpeg?ce=2&s=1024x768",
+              "//pix8.agoda.net/hotelImages/766807/3936472/57adbea591fdbd6ab27b8f791470f092.jpeg?ce=2&s=1024x768",
+              "//pix8.agoda.net/property/766807/847589357/49323d5003c74dbdfc7c4fe9c96decd9.jpeg?ce=2&s=1024x768"
             ],
             "roomName": "Deluxe Double City View",
             "description": "[Hạng phòng: Deluxe | Diện tích: 32 m² | Hướng nhìn: CITY VIEW | Giường: 1 king bed] — Deluxe Double City View 32sqm with 1 king bed",
@@ -136,7 +136,8 @@
             "amenityTypes": [
               "Minibar",
               "Television",
-              "Free Wi-Fi"
+              "Free Wi-Fi",
+              "Air Conditioner"
             ],
             "roomType": "Deluxe",
             "bedType": "Double (Queen, King)",
@@ -175,8 +176,8 @@
               "Blackout curtains",
               "Mini bar",
               "Private bathroom",
-              "Closet",
-              "Wi-Fi [free]"
+              "Wi-Fi [free]",
+              "Closet"
             ],
             "rawBenefits": [
               "Breakfast",
@@ -392,10 +393,10 @@
           "otaSource": "AGODA",
           "formFields": {
             "uploadPhotos": [
-              "//pix8.agoda.net/property/766807/847589357/73e0df55fc52ddc1e42cc99f7ff09a3d.jpeg?va=1&ce=2&s=1024x768",
-              "//pix8.agoda.net/hotelImages/766807/3936472/a6b089463c5946b327a466c5bbb02915.jpeg?va=1&ce=2&s=1024x768",
-              "//pix8.agoda.net/property/766807/847589357/49323d5003c74dbdfc7c4fe9c96decd9.jpeg?va=1&ce=2&s=1024x768",
-              "//pix8.agoda.net/property/766807/847589357/7b02dd154edf108be45cddbe544aa56f.jpeg?va=1&ce=2&s=1024x768"
+              "//pix8.agoda.net/property/766807/847589357/73e0df55fc52ddc1e42cc99f7ff09a3d.jpeg?ce=2&s=1024x768",
+              "//pix8.agoda.net/hotelImages/766807/3936472/a6b089463c5946b327a466c5bbb02915.jpeg?ce=2&s=1024x768",
+              "//pix8.agoda.net/hotelImages/766807/3936472/57adbea591fdbd6ab27b8f791470f092.jpeg?ce=2&s=1024x768",
+              "//pix8.agoda.net/property/766807/847589357/49323d5003c74dbdfc7c4fe9c96decd9.jpeg?ce=2&s=1024x768"
             ],
             "roomName": "Deluxe Double City View",
             "description": "[Hạng phòng: Deluxe | Diện tích: 32 m² | Hướng nhìn: CITY VIEW | Giường: 1 king bed] — Deluxe Double City View 32sqm with 1 king bed",
@@ -405,7 +406,8 @@
             "amenityTypes": [
               "Minibar",
               "Television",
-              "Free Wi-Fi"
+              "Free Wi-Fi",
+              "Air Conditioner"
             ],
             "roomType": "Deluxe",
             "bedType": "Double (Queen, King)",
@@ -444,8 +446,8 @@
               "Blackout curtains",
               "Mini bar",
               "Private bathroom",
-              "Closet",
-              "Wi-Fi [free]"
+              "Wi-Fi [free]",
+              "Closet"
             ],
             "rawBenefits": [
               "Breakfast",
@@ -775,10 +777,10 @@
           "grossPrice": 1157487,
           "formFields": {
             "uploadPhotos": [
-              "//pix8.agoda.net/property/766807/1377515983/6014cda37f49051e0d1629394dcd0205.jpeg?va=1&ce=3&s=1024x768",
-              "//pix8.agoda.net/property/766807/847589358/09da89f478e4ffbc6df929ca46ca47f6.jpeg?va=1&ce=2&s=1024x768",
-              "//pix8.agoda.net/hotelImages/766807/3538595/e319df21f7810048353b5825894d5f03.jpeg?va=1&s=1024x768",
-              "//pix8.agoda.net/hotelImages/766807/3538595/4e4038b2b0e5c1cf9b16a5236b765d79.jpeg?va=1&ce=2&s=1024x768"
+              "//pix8.agoda.net/property/766807/1377515983/6014cda37f49051e0d1629394dcd0205.jpeg?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/766807/3538595/e319df21f7810048353b5825894d5f03.jpeg?s=1024x768",
+              "//pix8.agoda.net/property/766807/847589358/09da89f478e4ffbc6df929ca46ca47f6.jpeg?ce=2&s=1024x768",
+              "//pix8.agoda.net/hotelImages/766807/3538595/4e4038b2b0e5c1cf9b16a5236b765d79.jpeg?ce=2&s=1024x768"
             ],
             "roomName": "Deluxe Twin City View",
             "description": "[Hạng phòng: Deluxe | Diện tích: 32 m² | Hướng nhìn: CITY VIEW | Giường: 2 semi double beds] — Deluxe Twin Room 32m² with 2 single beds",
@@ -788,7 +790,8 @@
             "amenityTypes": [
               "Minibar",
               "Television",
-              "Free Wi-Fi"
+              "Free Wi-Fi",
+              "Air Conditioner"
             ],
             "roomType": "Deluxe",
             "bedType": "Twin",
@@ -827,8 +830,8 @@
               "Blackout curtains",
               "Mini bar",
               "Private bathroom",
-              "Closet",
-              "Wi-Fi [free]"
+              "Wi-Fi [free]",
+              "Closet"
             ],
             "rawBenefits": [
               "Breakfast",
@@ -1037,10 +1040,10 @@
           "otaSource": "AGODA",
           "formFields": {
             "uploadPhotos": [
-              "//pix8.agoda.net/property/766807/1377515983/6014cda37f49051e0d1629394dcd0205.jpeg?va=1&ce=3&s=1024x768",
-              "//pix8.agoda.net/property/766807/847589358/09da89f478e4ffbc6df929ca46ca47f6.jpeg?va=1&ce=2&s=1024x768",
-              "//pix8.agoda.net/hotelImages/766807/3538595/e319df21f7810048353b5825894d5f03.jpeg?va=1&s=1024x768",
-              "//pix8.agoda.net/hotelImages/766807/3538595/4e4038b2b0e5c1cf9b16a5236b765d79.jpeg?va=1&ce=2&s=1024x768"
+              "//pix8.agoda.net/property/766807/1377515983/6014cda37f49051e0d1629394dcd0205.jpeg?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/766807/3538595/e319df21f7810048353b5825894d5f03.jpeg?s=1024x768",
+              "//pix8.agoda.net/property/766807/847589358/09da89f478e4ffbc6df929ca46ca47f6.jpeg?ce=2&s=1024x768",
+              "//pix8.agoda.net/hotelImages/766807/3538595/4e4038b2b0e5c1cf9b16a5236b765d79.jpeg?ce=2&s=1024x768"
             ],
             "roomName": "Deluxe Twin City View",
             "description": "[Hạng phòng: Deluxe | Diện tích: 32 m² | Hướng nhìn: CITY VIEW | Giường: 2 semi double beds] — Deluxe Twin Room 32m² with 2 single beds",
@@ -1050,7 +1053,8 @@
             "amenityTypes": [
               "Minibar",
               "Television",
-              "Free Wi-Fi"
+              "Free Wi-Fi",
+              "Air Conditioner"
             ],
             "roomType": "Deluxe",
             "bedType": "Twin",
@@ -1089,8 +1093,8 @@
               "Blackout curtains",
               "Mini bar",
               "Private bathroom",
-              "Closet",
-              "Wi-Fi [free]"
+              "Wi-Fi [free]",
+              "Closet"
             ],
             "rawBenefits": [
               "Breakfast",
@@ -1416,10 +1420,10 @@
           "grossPrice": 1331110,
           "formFields": {
             "uploadPhotos": [
-              "//pix8.agoda.net/hotelImages/766807/3538597/9a8b1833d300e69475bb97c95358bd6b.jpeg?va=1&ce=2&s=1024x768",
-              "//pix8.agoda.net/property/766807/1637859598/f2f8fd6b71561b268865beb0a4dfebb0.jpeg?va=1&ce=3&s=1024x768",
-              "//pix8.agoda.net/property/766807/331720555/0f338e90385c1701b4f0bc6bd0cdcde6.jpeg?va=1&s=1024x768",
-              "//pix8.agoda.net/property/766807/1377515985/69d951d6114d28f05340a9593abe8cb2.jpeg?va=1&ce=3&s=1024x768"
+              "//pix8.agoda.net/hotelImages/766807/3538597/9a8b1833d300e69475bb97c95358bd6b.jpeg?ce=2&s=1024x768",
+              "//pix8.agoda.net/property/766807/1637859598/f2f8fd6b71561b268865beb0a4dfebb0.jpeg?ce=3&s=1024x768",
+              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/398546035.jpg?k=727142f94e0ca891a39c5ed8dee4238f33f36cbe29f08d4f49ed6bed1ba31321&o=",
+              "//pix8.agoda.net/property/766807/331720555/0f338e90385c1701b4f0bc6bd0cdcde6.jpeg?s=1024x768"
             ],
             "roomName": "Deluxe Sea View Double Bed",
             "description": "[Hạng phòng: Deluxe | Diện tích: 40 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Deluxe Room 35m² with sea view and 1 king bed",
@@ -1428,7 +1432,9 @@
             "maximumGuests": 2,
             "amenityTypes": [
               "Minibar",
-              "Free Wi-Fi"
+              "Free Wi-Fi",
+              "Air Conditioner",
+              "Television"
             ],
             "roomType": "Deluxe",
             "bedType": "Double (Queen, King)",
@@ -1468,7 +1474,7 @@
               "Blackout curtains",
               "Mini bar",
               "Private bathroom",
-              "Closet"
+              "Wi-Fi [free]"
             ],
             "rawBenefits": [
               "Breakfast",
@@ -1670,10 +1676,10 @@
           "otaSource": "AGODA",
           "formFields": {
             "uploadPhotos": [
-              "//pix8.agoda.net/hotelImages/766807/3538597/9a8b1833d300e69475bb97c95358bd6b.jpeg?va=1&ce=2&s=1024x768",
-              "//pix8.agoda.net/property/766807/1637859598/f2f8fd6b71561b268865beb0a4dfebb0.jpeg?va=1&ce=3&s=1024x768",
-              "//pix8.agoda.net/property/766807/331720555/0f338e90385c1701b4f0bc6bd0cdcde6.jpeg?va=1&s=1024x768",
-              "//pix8.agoda.net/property/766807/1377515985/69d951d6114d28f05340a9593abe8cb2.jpeg?va=1&ce=3&s=1024x768"
+              "//pix8.agoda.net/hotelImages/766807/3538597/9a8b1833d300e69475bb97c95358bd6b.jpeg?ce=2&s=1024x768",
+              "//pix8.agoda.net/property/766807/1637859598/f2f8fd6b71561b268865beb0a4dfebb0.jpeg?ce=3&s=1024x768",
+              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/398546035.jpg?k=727142f94e0ca891a39c5ed8dee4238f33f36cbe29f08d4f49ed6bed1ba31321&o=",
+              "//pix8.agoda.net/property/766807/331720555/0f338e90385c1701b4f0bc6bd0cdcde6.jpeg?s=1024x768"
             ],
             "roomName": "Deluxe Sea View Double Bed",
             "description": "[Hạng phòng: Deluxe | Diện tích: 40 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Deluxe Room 35m² with sea view and 1 king bed",
@@ -1682,7 +1688,9 @@
             "maximumGuests": 2,
             "amenityTypes": [
               "Minibar",
-              "Free Wi-Fi"
+              "Free Wi-Fi",
+              "Air Conditioner",
+              "Television"
             ],
             "roomType": "Deluxe",
             "bedType": "Double (Queen, King)",
@@ -1722,7 +1730,7 @@
               "Blackout curtains",
               "Mini bar",
               "Private bathroom",
-              "Closet"
+              "Wi-Fi [free]"
             ],
             "rawBenefits": [
               "Breakfast",
@@ -4425,10 +4433,10 @@
       "otaSource": "AGODA",
       "formFields": {
         "uploadPhotos": [
-          "//pix8.agoda.net/property/766807/847589357/73e0df55fc52ddc1e42cc99f7ff09a3d.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/hotelImages/766807/3936472/a6b089463c5946b327a466c5bbb02915.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/property/766807/847589357/49323d5003c74dbdfc7c4fe9c96decd9.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/property/766807/847589357/7b02dd154edf108be45cddbe544aa56f.jpeg?va=1&ce=2&s=1024x768"
+          "//pix8.agoda.net/property/766807/847589357/73e0df55fc52ddc1e42cc99f7ff09a3d.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/hotelImages/766807/3936472/a6b089463c5946b327a466c5bbb02915.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/hotelImages/766807/3936472/57adbea591fdbd6ab27b8f791470f092.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/property/766807/847589357/49323d5003c74dbdfc7c4fe9c96decd9.jpeg?ce=2&s=1024x768"
         ],
         "roomName": "Deluxe Double City View",
         "description": "[Hạng phòng: Deluxe | Diện tích: 32 m² | Hướng nhìn: CITY VIEW | Giường: 1 king bed] — Deluxe Double City View 32sqm with 1 king bed",
@@ -4438,7 +4446,8 @@
         "amenityTypes": [
           "Minibar",
           "Television",
-          "Free Wi-Fi"
+          "Free Wi-Fi",
+          "Air Conditioner"
         ],
         "roomType": "Deluxe",
         "bedType": "Double (Queen, King)",
@@ -4477,8 +4486,8 @@
           "Blackout curtains",
           "Mini bar",
           "Private bathroom",
-          "Closet",
-          "Wi-Fi [free]"
+          "Wi-Fi [free]",
+          "Closet"
         ],
         "rawBenefits": [
           "Breakfast",
@@ -4687,10 +4696,10 @@
       "otaSource": "AGODA",
       "formFields": {
         "uploadPhotos": [
-          "//pix8.agoda.net/property/766807/1377515983/6014cda37f49051e0d1629394dcd0205.jpeg?va=1&ce=3&s=1024x768",
-          "//pix8.agoda.net/property/766807/847589358/09da89f478e4ffbc6df929ca46ca47f6.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/hotelImages/766807/3538595/e319df21f7810048353b5825894d5f03.jpeg?va=1&s=1024x768",
-          "//pix8.agoda.net/hotelImages/766807/3538595/4e4038b2b0e5c1cf9b16a5236b765d79.jpeg?va=1&ce=2&s=1024x768"
+          "//pix8.agoda.net/property/766807/1377515983/6014cda37f49051e0d1629394dcd0205.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/766807/3538595/e319df21f7810048353b5825894d5f03.jpeg?s=1024x768",
+          "//pix8.agoda.net/property/766807/847589358/09da89f478e4ffbc6df929ca46ca47f6.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/hotelImages/766807/3538595/4e4038b2b0e5c1cf9b16a5236b765d79.jpeg?ce=2&s=1024x768"
         ],
         "roomName": "Deluxe Twin City View",
         "description": "[Hạng phòng: Deluxe | Diện tích: 32 m² | Hướng nhìn: CITY VIEW | Giường: 2 semi double beds] — Deluxe Twin Room 32m² with 2 single beds",
@@ -4700,7 +4709,8 @@
         "amenityTypes": [
           "Minibar",
           "Television",
-          "Free Wi-Fi"
+          "Free Wi-Fi",
+          "Air Conditioner"
         ],
         "roomType": "Deluxe",
         "bedType": "Twin",
@@ -4739,8 +4749,8 @@
           "Blackout curtains",
           "Mini bar",
           "Private bathroom",
-          "Closet",
-          "Wi-Fi [free]"
+          "Wi-Fi [free]",
+          "Closet"
         ],
         "rawBenefits": [
           "Breakfast",
@@ -4945,10 +4955,10 @@
       "otaSource": "AGODA",
       "formFields": {
         "uploadPhotos": [
-          "//pix8.agoda.net/hotelImages/766807/3538597/9a8b1833d300e69475bb97c95358bd6b.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/property/766807/1637859598/f2f8fd6b71561b268865beb0a4dfebb0.jpeg?va=1&ce=3&s=1024x768",
-          "//pix8.agoda.net/property/766807/331720555/0f338e90385c1701b4f0bc6bd0cdcde6.jpeg?va=1&s=1024x768",
-          "//pix8.agoda.net/property/766807/1377515985/69d951d6114d28f05340a9593abe8cb2.jpeg?va=1&ce=3&s=1024x768"
+          "//pix8.agoda.net/hotelImages/766807/3538597/9a8b1833d300e69475bb97c95358bd6b.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/property/766807/1637859598/f2f8fd6b71561b268865beb0a4dfebb0.jpeg?ce=3&s=1024x768",
+          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/398546035.jpg?k=727142f94e0ca891a39c5ed8dee4238f33f36cbe29f08d4f49ed6bed1ba31321&o=",
+          "//pix8.agoda.net/property/766807/331720555/0f338e90385c1701b4f0bc6bd0cdcde6.jpeg?s=1024x768"
         ],
         "roomName": "Deluxe Sea View Double Bed",
         "description": "[Hạng phòng: Deluxe | Diện tích: 40 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Deluxe Room 35m² with sea view and 1 king bed",
@@ -4957,7 +4967,9 @@
         "maximumGuests": 2,
         "amenityTypes": [
           "Minibar",
-          "Free Wi-Fi"
+          "Free Wi-Fi",
+          "Air Conditioner",
+          "Television"
         ],
         "roomType": "Deluxe",
         "bedType": "Double (Queen, King)",
@@ -4997,7 +5009,7 @@
           "Blackout curtains",
           "Mini bar",
           "Private bathroom",
-          "Closet"
+          "Wi-Fi [free]"
         ],
         "rawBenefits": [
           "Breakfast",
@@ -6096,20 +6108,21 @@
       "otaSource": "AGODA",
       "formFields": {
         "uploadPhotos": [
-          "//pix8.agoda.net/property/766807/847589357/73e0df55fc52ddc1e42cc99f7ff09a3d.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/hotelImages/766807/3936472/a6b089463c5946b327a466c5bbb02915.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/property/766807/847589357/49323d5003c74dbdfc7c4fe9c96decd9.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/property/766807/847589357/7b02dd154edf108be45cddbe544aa56f.jpeg?va=1&ce=2&s=1024x768"
+          "//pix8.agoda.net/property/766807/847589357/73e0df55fc52ddc1e42cc99f7ff09a3d.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/hotelImages/766807/3936472/a6b089463c5946b327a466c5bbb02915.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/hotelImages/766807/3936472/57adbea591fdbd6ab27b8f791470f092.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/property/766807/847589357/49323d5003c74dbdfc7c4fe9c96decd9.jpeg?ce=2&s=1024x768"
         ],
         "roomName": "Deluxe Double City View",
-        "description": "[Hạng phòng: Deluxe | Diện tích: 32 m² | Hướng nhìn: CITY VIEW | Giường: 1 king bed] — Phòng Deluxe Double City View dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Television, Free Wi-Fi.",
+        "description": "[Hạng phòng: Deluxe | Diện tích: 32 m² | Hướng nhìn: CITY VIEW | Giường: 1 king bed] — Phòng Deluxe Double City View dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Television, Free Wi-Fi, Air Conditioner.",
         "pricePerNightVnd": 1157487,
         "pricePerNightKrw": 64819,
         "maximumGuests": 2,
         "amenityTypes": [
           "Minibar",
           "Television",
-          "Free Wi-Fi"
+          "Free Wi-Fi",
+          "Air Conditioner"
         ],
         "roomType": "Deluxe",
         "bedType": "Double (Queen, King)",
@@ -6148,8 +6161,8 @@
           "Blackout curtains",
           "Mini bar",
           "Private bathroom",
-          "Closet",
-          "Wi-Fi [free]"
+          "Wi-Fi [free]",
+          "Closet"
         ],
         "rawBenefits": [
           "Breakfast",
@@ -6165,25 +6178,27 @@
       }
     },
     {
-      "id": "AGODA_3936472_5141209_1",
+      "id": "AGODA_3936472_481007856_1",
       "hotelId": "muong-thanh-luxury-nha-trang",
       "hotelName": "Muong Thanh Luxury Nha Trang Hotel",
       "otaSource": "AGODA",
       "formFields": {
         "uploadPhotos": [
-          "//pix8.agoda.net/property/766807/847589357/73e0df55fc52ddc1e42cc99f7ff09a3d.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/hotelImages/766807/3936472/a6b089463c5946b327a466c5bbb02915.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/property/766807/847589357/49323d5003c74dbdfc7c4fe9c96decd9.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/property/766807/847589357/7b02dd154edf108be45cddbe544aa56f.jpeg?va=1&ce=2&s=1024x768"
+          "//pix8.agoda.net/property/766807/847589357/73e0df55fc52ddc1e42cc99f7ff09a3d.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/hotelImages/766807/3936472/a6b089463c5946b327a466c5bbb02915.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/hotelImages/766807/3936472/57adbea591fdbd6ab27b8f791470f092.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/property/766807/847589357/49323d5003c74dbdfc7c4fe9c96decd9.jpeg?ce=2&s=1024x768"
         ],
         "roomName": "Deluxe Double City View",
-        "description": "[Hạng phòng: Deluxe | Diện tích: 32 m² | Hướng nhìn: CITY VIEW | Giường: 1 king bed] — Phòng Deluxe Double City View dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi.",
-        "pricePerNightVnd": 1568000,
-        "pricePerNightKrw": 87808,
+        "description": "[Hạng phòng: Deluxe | Diện tích: 32 m² | Hướng nhìn: CITY VIEW | Giường: 1 king bed] — Phòng Deluxe Double City View dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
+        "pricePerNightVnd": 1553498,
+        "pricePerNightKrw": 86996,
         "maximumGuests": 2,
         "amenityTypes": [
           "Minibar",
-          "Free Wi-Fi"
+          "Free Wi-Fi",
+          "Air Conditioner",
+          "Television"
         ],
         "roomType": "Deluxe",
         "bedType": "Double (Queen, King)",
@@ -6204,14 +6219,14 @@
         "viewCategory": "CITY_VIEW",
         "areaSqm": 32,
         "areaBucket": "32SQM",
-        "mealPlan": "BB",
-        "mealPlanLabelVi": "Có ăn sáng (BB)",
+        "mealPlan": "RO",
+        "mealPlanLabelVi": "Không ăn sáng (Room Only)",
         "cancelPolicy": "NON_REFUNDABLE",
         "cancelPolicyLabelVi": "Không hoàn tiền",
-        "rateBucket": "BB_NON_REFUNDABLE",
-        "netPrice": 1382716,
-        "taxesAndFees": 185284,
-        "grossPrice": 1568000,
+        "rateBucket": "RO_NON_REFUNDABLE",
+        "netPrice": 1369928,
+        "taxesAndFees": 183570,
+        "grossPrice": 1553498,
         "rawBedText": "1 king bed",
         "rawFeatures": [
           "Room size: 32 m²/344 ft²",
@@ -6222,11 +6237,10 @@
           "Blackout curtains",
           "Mini bar",
           "Private bathroom",
-          "Closet",
-          "Wi-Fi [free]"
+          "Wi-Fi [free]",
+          "Closet"
         ],
         "rawBenefits": [
-          "Breakfast",
           "Parking",
           "Free WiFi"
         ]
@@ -6239,20 +6253,21 @@
       "otaSource": "AGODA",
       "formFields": {
         "uploadPhotos": [
-          "//pix8.agoda.net/property/766807/1377515983/6014cda37f49051e0d1629394dcd0205.jpeg?va=1&ce=3&s=1024x768",
-          "//pix8.agoda.net/property/766807/847589358/09da89f478e4ffbc6df929ca46ca47f6.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/hotelImages/766807/3538595/e319df21f7810048353b5825894d5f03.jpeg?va=1&s=1024x768",
-          "//pix8.agoda.net/hotelImages/766807/3538595/4e4038b2b0e5c1cf9b16a5236b765d79.jpeg?va=1&ce=2&s=1024x768"
+          "//pix8.agoda.net/property/766807/1377515983/6014cda37f49051e0d1629394dcd0205.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/766807/3538595/e319df21f7810048353b5825894d5f03.jpeg?s=1024x768",
+          "//pix8.agoda.net/property/766807/847589358/09da89f478e4ffbc6df929ca46ca47f6.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/hotelImages/766807/3538595/4e4038b2b0e5c1cf9b16a5236b765d79.jpeg?ce=2&s=1024x768"
         ],
         "roomName": "Deluxe Twin City View",
-        "description": "[Hạng phòng: Deluxe | Diện tích: 32 m² | Hướng nhìn: CITY VIEW | Giường: 2 semi double beds] — Phòng Deluxe Twin City View dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Television, Free Wi-Fi.",
+        "description": "[Hạng phòng: Deluxe | Diện tích: 32 m² | Hướng nhìn: CITY VIEW | Giường: 2 semi double beds] — Phòng Deluxe Twin City View dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Television, Free Wi-Fi, Air Conditioner.",
         "pricePerNightVnd": 1157487,
         "pricePerNightKrw": 64819,
         "maximumGuests": 2,
         "amenityTypes": [
           "Minibar",
           "Television",
-          "Free Wi-Fi"
+          "Free Wi-Fi",
+          "Air Conditioner"
         ],
         "roomType": "Deluxe",
         "bedType": "Twin",
@@ -6291,8 +6306,8 @@
           "Blackout curtains",
           "Mini bar",
           "Private bathroom",
-          "Closet",
-          "Wi-Fi [free]"
+          "Wi-Fi [free]",
+          "Closet"
         ],
         "rawBenefits": [
           "Breakfast",
@@ -6314,19 +6329,21 @@
       "otaSource": "AGODA",
       "formFields": {
         "uploadPhotos": [
-          "//pix8.agoda.net/property/766807/1377515983/6014cda37f49051e0d1629394dcd0205.jpeg?va=1&ce=3&s=1024x768",
-          "//pix8.agoda.net/property/766807/847589358/09da89f478e4ffbc6df929ca46ca47f6.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/hotelImages/766807/3538595/e319df21f7810048353b5825894d5f03.jpeg?va=1&s=1024x768",
-          "//pix8.agoda.net/hotelImages/766807/3538595/4e4038b2b0e5c1cf9b16a5236b765d79.jpeg?va=1&ce=2&s=1024x768"
+          "//pix8.agoda.net/property/766807/1377515983/6014cda37f49051e0d1629394dcd0205.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/766807/3538595/e319df21f7810048353b5825894d5f03.jpeg?s=1024x768",
+          "//pix8.agoda.net/property/766807/847589358/09da89f478e4ffbc6df929ca46ca47f6.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/hotelImages/766807/3538595/4e4038b2b0e5c1cf9b16a5236b765d79.jpeg?ce=2&s=1024x768"
         ],
         "roomName": "Deluxe Twin City View",
-        "description": "[Hạng phòng: Deluxe | Diện tích: 32 m² | Hướng nhìn: CITY VIEW | Giường: 2 semi double beds] — Phòng Deluxe Twin City View dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi.",
+        "description": "[Hạng phòng: Deluxe | Diện tích: 32 m² | Hướng nhìn: CITY VIEW | Giường: 2 semi double beds] — Phòng Deluxe Twin City View dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
         "pricePerNightVnd": 1316929,
         "pricePerNightKrw": 73748,
         "maximumGuests": 2,
         "amenityTypes": [
           "Minibar",
-          "Free Wi-Fi"
+          "Free Wi-Fi",
+          "Air Conditioner",
+          "Television"
         ],
         "roomType": "Deluxe",
         "bedType": "Twin",
@@ -6365,8 +6382,8 @@
           "Blackout curtains",
           "Mini bar",
           "Private bathroom",
-          "Closet",
-          "Wi-Fi [free]"
+          "Wi-Fi [free]",
+          "Closet"
         ],
         "rawBenefits": [
           "Breakfast",
@@ -6376,26 +6393,27 @@
       }
     },
     {
-      "id": "AGODA_1440403534_295287164_4",
+      "id": "AGODA_1440403534_1320454564_4",
       "hotelId": "muong-thanh-luxury-nha-trang",
       "hotelName": "Muong Thanh Luxury Nha Trang Hotel",
       "otaSource": "AGODA",
       "formFields": {
         "uploadPhotos": [
-          "//pix8.agoda.net/property/766807/690006524/8bb9a0d7158587638eca4044712e869a.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/property/766807/690006524/18f8719128ed0a63dd5c7f38b237ad3f.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/property/766807/690006524/a48afd6053f5b7d77045a5bd7861aca1.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/property/766807/690006524/a4b37f1b8a63752ac116332d76915c05.jpeg?va=1&ce=2&s=1024x768"
+          "//pix8.agoda.net/property/766807/690006524/8bb9a0d7158587638eca4044712e869a.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/property/766807/690006524/18f8719128ed0a63dd5c7f38b237ad3f.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/property/766807/690006524/a48afd6053f5b7d77045a5bd7861aca1.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/property/766807/690006524/a4b37f1b8a63752ac116332d76915c05.jpeg?ce=2&s=1024x768"
         ],
         "roomName": "Double Deluxe King Bed",
-        "description": "[Hạng phòng: Deluxe | Diện tích: Tiêu chuẩn | Hướng nhìn: CITY VIEW | Giường: 1 double bed] — Phòng Double Deluxe King Bed dành cho tối đa 4 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner.",
-        "pricePerNightVnd": 1258625,
-        "pricePerNightKrw": 70483,
+        "description": "[Hạng phòng: Deluxe | Diện tích: Tiêu chuẩn | Hướng nhìn: CITY VIEW | Giường: 1 double bed] — Phòng Double Deluxe King Bed dành cho tối đa 4 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
+        "pricePerNightVnd": 1267800,
+        "pricePerNightKrw": 70997,
         "maximumGuests": 4,
         "amenityTypes": [
           "Minibar",
           "Free Wi-Fi",
-          "Air Conditioner"
+          "Air Conditioner",
+          "Television"
         ],
         "roomType": "Deluxe",
         "bedType": "Any Bed",
@@ -6421,9 +6439,9 @@
         "cancelPolicy": "NON_REFUNDABLE",
         "cancelPolicyLabelVi": "Không hoàn tiền",
         "rateBucket": "BB_NON_REFUNDABLE",
-        "netPrice": 1109898,
-        "taxesAndFees": 148727,
-        "grossPrice": 1258625,
+        "netPrice": 1117989,
+        "taxesAndFees": 149811,
+        "grossPrice": 1267800,
         "rawBedText": "1 double bed",
         "rawFeatures": [
           "City view",
@@ -6445,26 +6463,27 @@
       }
     },
     {
-      "id": "AGODA_1440403534_295287164_5",
+      "id": "AGODA_1440403534_1320454564_5",
       "hotelId": "muong-thanh-luxury-nha-trang",
       "hotelName": "Muong Thanh Luxury Nha Trang Hotel",
       "otaSource": "AGODA",
       "formFields": {
         "uploadPhotos": [
-          "//pix8.agoda.net/property/766807/690006524/8bb9a0d7158587638eca4044712e869a.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/property/766807/690006524/18f8719128ed0a63dd5c7f38b237ad3f.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/property/766807/690006524/a48afd6053f5b7d77045a5bd7861aca1.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/property/766807/690006524/a4b37f1b8a63752ac116332d76915c05.jpeg?va=1&ce=2&s=1024x768"
+          "//pix8.agoda.net/property/766807/690006524/8bb9a0d7158587638eca4044712e869a.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/property/766807/690006524/18f8719128ed0a63dd5c7f38b237ad3f.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/property/766807/690006524/a48afd6053f5b7d77045a5bd7861aca1.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/property/766807/690006524/a4b37f1b8a63752ac116332d76915c05.jpeg?ce=2&s=1024x768"
         ],
         "roomName": "Double Deluxe King Bed",
-        "description": "[Hạng phòng: Deluxe | Diện tích: Tiêu chuẩn | Hướng nhìn: CITY VIEW | Giường: 1 double bed] — Phòng Double Deluxe King Bed dành cho tối đa 4 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner.",
-        "pricePerNightVnd": 1333416,
-        "pricePerNightKrw": 74671,
+        "description": "[Hạng phòng: Deluxe | Diện tích: Tiêu chuẩn | Hướng nhìn: CITY VIEW | Giường: 1 double bed] — Phòng Double Deluxe King Bed dành cho tối đa 4 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
+        "pricePerNightVnd": 1332601,
+        "pricePerNightKrw": 74626,
         "maximumGuests": 4,
         "amenityTypes": [
           "Minibar",
           "Free Wi-Fi",
-          "Air Conditioner"
+          "Air Conditioner",
+          "Television"
         ],
         "roomType": "Deluxe",
         "bedType": "Any Bed",
@@ -6490,9 +6509,9 @@
         "cancelPolicy": "NON_REFUNDABLE",
         "cancelPolicyLabelVi": "Không hoàn tiền",
         "rateBucket": "BB_NON_REFUNDABLE",
-        "netPrice": 1175851,
-        "taxesAndFees": 157565,
-        "grossPrice": 1333416,
+        "netPrice": 1175133,
+        "taxesAndFees": 157468,
+        "grossPrice": 1332601,
         "rawBedText": "1 double bed",
         "rawFeatures": [
           "City view",
@@ -6520,20 +6539,21 @@
       "otaSource": "AGODA",
       "formFields": {
         "uploadPhotos": [
-          "//pix8.agoda.net/property/766807/1377515983/6014cda37f49051e0d1629394dcd0205.jpeg?va=1&ce=3&s=1024x768",
-          "//pix8.agoda.net/property/766807/1377515983/dcbaa70e2869652f05dfd658a5724b38.jpeg?va=1&ce=3&s=1024x768",
-          "//pix8.agoda.net/property/766807/1377515983/adf8dad056954d62371782a912489083.jpeg?va=1&ce=3&s=1024x768",
-          "//pix8.agoda.net/property/766807/1377515983/577a435eb6365c716cd4558d4449f184.jpeg?va=1&ce=3&s=1024x768"
+          "//pix8.agoda.net/property/766807/1377515983/6014cda37f49051e0d1629394dcd0205.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/766807/1377515983/dcbaa70e2869652f05dfd658a5724b38.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/766807/1377515983/dda52b9a09f03219be98975d0c63ee4b.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/766807/1377515983/adf8dad056954d62371782a912489083.jpeg?ce=3&s=1024x768"
         ],
         "roomName": "Twin Deluxe Two Beds",
-        "description": "[Hạng phòng: Deluxe | Diện tích: Tiêu chuẩn | Hướng nhìn: CITY VIEW | Giường: 2 single beds] — Phòng Twin Deluxe Two Beds dành cho tối đa 4 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner.",
+        "description": "[Hạng phòng: Deluxe | Diện tích: Tiêu chuẩn | Hướng nhìn: CITY VIEW | Giường: 2 single beds] — Phòng Twin Deluxe Two Beds dành cho tối đa 4 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
         "pricePerNightVnd": 1286893,
         "pricePerNightKrw": 72066,
         "maximumGuests": 4,
         "amenityTypes": [
           "Minibar",
           "Free Wi-Fi",
-          "Air Conditioner"
+          "Air Conditioner",
+          "Television"
         ],
         "roomType": "Deluxe",
         "bedType": "Any Bed",
@@ -6589,20 +6609,21 @@
       "otaSource": "AGODA",
       "formFields": {
         "uploadPhotos": [
-          "//pix8.agoda.net/property/766807/1377515983/6014cda37f49051e0d1629394dcd0205.jpeg?va=1&ce=3&s=1024x768",
-          "//pix8.agoda.net/property/766807/1377515983/dcbaa70e2869652f05dfd658a5724b38.jpeg?va=1&ce=3&s=1024x768",
-          "//pix8.agoda.net/property/766807/1377515983/adf8dad056954d62371782a912489083.jpeg?va=1&ce=3&s=1024x768",
-          "//pix8.agoda.net/property/766807/1377515983/577a435eb6365c716cd4558d4449f184.jpeg?va=1&ce=3&s=1024x768"
+          "//pix8.agoda.net/property/766807/1377515983/6014cda37f49051e0d1629394dcd0205.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/766807/1377515983/dcbaa70e2869652f05dfd658a5724b38.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/766807/1377515983/dda52b9a09f03219be98975d0c63ee4b.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/766807/1377515983/adf8dad056954d62371782a912489083.jpeg?ce=3&s=1024x768"
         ],
         "roomName": "Twin Deluxe Two Beds",
-        "description": "[Hạng phòng: Deluxe | Diện tích: Tiêu chuẩn | Hướng nhìn: CITY VIEW | Giường: 2 single beds] — Phòng Twin Deluxe Two Beds dành cho tối đa 4 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner.",
+        "description": "[Hạng phòng: Deluxe | Diện tích: Tiêu chuẩn | Hướng nhìn: CITY VIEW | Giường: 2 single beds] — Phòng Twin Deluxe Two Beds dành cho tối đa 4 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
         "pricePerNightVnd": 1290062,
         "pricePerNightKrw": 72243,
         "maximumGuests": 4,
         "amenityTypes": [
           "Minibar",
           "Free Wi-Fi",
-          "Air Conditioner"
+          "Air Conditioner",
+          "Television"
         ],
         "roomType": "Deluxe",
         "bedType": "Any Bed",
@@ -6658,20 +6679,21 @@
       "otaSource": "AGODA",
       "formFields": {
         "uploadPhotos": [
-          "//pix8.agoda.net/property/766807/1637859431/684369b68322ab89fd103a5f75363e55.jpeg?va=1&ce=3&s=1024x768",
-          "//pix8.agoda.net/property/766807/1637859431/1e3529b310c4c3c5e5d686ec9d7efe50.jpeg?va=1&ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/766807/3936490/2f7ecfce7c8395fbc4549a71041e2b39.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/property/766807/1377515983/577a435eb6365c716cd4558d4449f184.jpeg?va=1&ce=3&s=1024x768"
+          "//pix8.agoda.net/property/766807/1637859431/684369b68322ab89fd103a5f75363e55.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/766807/1637859431/1e3529b310c4c3c5e5d686ec9d7efe50.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/766807/1377515985/1ff9a5dc0d6009f24ebf1b70425c5085.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/766807/3936490/2f7ecfce7c8395fbc4549a71041e2b39.jpeg?ce=2&s=1024x768"
         ],
         "roomName": "Deluxe Ocean View Twin Bed",
-        "description": "[Hạng phòng: Deluxe | Diện tích: 40 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 2 semi double beds] — Phòng Deluxe Ocean View Twin Bed dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Television, Free Wi-Fi.",
+        "description": "[Hạng phòng: Deluxe | Diện tích: 40 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 2 semi double beds] — Phòng Deluxe Ocean View Twin Bed dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Television, Free Wi-Fi, Air Conditioner.",
         "pricePerNightVnd": 1331110,
         "pricePerNightKrw": 74542,
         "maximumGuests": 2,
         "amenityTypes": [
           "Minibar",
           "Television",
-          "Free Wi-Fi"
+          "Free Wi-Fi",
+          "Air Conditioner"
         ],
         "roomType": "Deluxe",
         "bedType": "Twin",
@@ -6711,7 +6733,7 @@
           "Blackout curtains",
           "Mini bar",
           "Private bathroom",
-          "Closet"
+          "Wi-Fi [free]"
         ],
         "rawBenefits": [
           "Breakfast",
@@ -6733,19 +6755,21 @@
       "otaSource": "AGODA",
       "formFields": {
         "uploadPhotos": [
-          "//pix8.agoda.net/property/766807/1637859431/684369b68322ab89fd103a5f75363e55.jpeg?va=1&ce=3&s=1024x768",
-          "//pix8.agoda.net/property/766807/1637859431/1e3529b310c4c3c5e5d686ec9d7efe50.jpeg?va=1&ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/766807/3936490/2f7ecfce7c8395fbc4549a71041e2b39.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/property/766807/1377515983/577a435eb6365c716cd4558d4449f184.jpeg?va=1&ce=3&s=1024x768"
+          "//pix8.agoda.net/property/766807/1637859431/684369b68322ab89fd103a5f75363e55.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/766807/1637859431/1e3529b310c4c3c5e5d686ec9d7efe50.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/766807/1377515985/1ff9a5dc0d6009f24ebf1b70425c5085.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/766807/3936490/2f7ecfce7c8395fbc4549a71041e2b39.jpeg?ce=2&s=1024x768"
         ],
         "roomName": "Deluxe Ocean View Twin Bed",
-        "description": "[Hạng phòng: Deluxe | Diện tích: 40 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 2 semi double beds] — Phòng Deluxe Ocean View Twin Bed dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi.",
+        "description": "[Hạng phòng: Deluxe | Diện tích: 40 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 2 semi double beds] — Phòng Deluxe Ocean View Twin Bed dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
         "pricePerNightVnd": 1566500,
         "pricePerNightKrw": 87724,
         "maximumGuests": 2,
         "amenityTypes": [
           "Minibar",
-          "Free Wi-Fi"
+          "Free Wi-Fi",
+          "Air Conditioner",
+          "Television"
         ],
         "roomType": "Deluxe",
         "bedType": "Twin",
@@ -6785,7 +6809,7 @@
           "Blackout curtains",
           "Mini bar",
           "Private bathroom",
-          "Closet"
+          "Wi-Fi [free]"
         ],
         "rawBenefits": [
           "Parking",
@@ -6800,20 +6824,21 @@
       "otaSource": "AGODA",
       "formFields": {
         "uploadPhotos": [
-          "//pix8.agoda.net/hotelImages/766807/3538597/9a8b1833d300e69475bb97c95358bd6b.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/property/766807/1637859598/f2f8fd6b71561b268865beb0a4dfebb0.jpeg?va=1&ce=3&s=1024x768",
-          "//pix8.agoda.net/property/766807/331720555/0f338e90385c1701b4f0bc6bd0cdcde6.jpeg?va=1&s=1024x768",
-          "//pix8.agoda.net/property/766807/1377515985/69d951d6114d28f05340a9593abe8cb2.jpeg?va=1&ce=3&s=1024x768"
+          "//pix8.agoda.net/hotelImages/766807/3538597/9a8b1833d300e69475bb97c95358bd6b.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/property/766807/1637859598/f2f8fd6b71561b268865beb0a4dfebb0.jpeg?ce=3&s=1024x768",
+          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/398546035.jpg?k=727142f94e0ca891a39c5ed8dee4238f33f36cbe29f08d4f49ed6bed1ba31321&o=",
+          "//pix8.agoda.net/property/766807/331720555/0f338e90385c1701b4f0bc6bd0cdcde6.jpeg?s=1024x768"
         ],
         "roomName": "Deluxe Sea View Double Bed",
-        "description": "[Hạng phòng: Deluxe | Diện tích: 40 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Phòng Deluxe Sea View Double Bed dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Television, Free Wi-Fi.",
+        "description": "[Hạng phòng: Deluxe | Diện tích: 40 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Phòng Deluxe Sea View Double Bed dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Television, Free Wi-Fi, Air Conditioner.",
         "pricePerNightVnd": 1331110,
         "pricePerNightKrw": 74542,
         "maximumGuests": 2,
         "amenityTypes": [
           "Minibar",
           "Television",
-          "Free Wi-Fi"
+          "Free Wi-Fi",
+          "Air Conditioner"
         ],
         "roomType": "Deluxe",
         "bedType": "Double (Queen, King)",
@@ -6853,7 +6878,7 @@
           "Blackout curtains",
           "Mini bar",
           "Private bathroom",
-          "Closet"
+          "Wi-Fi [free]"
         ],
         "rawBenefits": [
           "Breakfast",
@@ -6875,19 +6900,21 @@
       "otaSource": "AGODA",
       "formFields": {
         "uploadPhotos": [
-          "//pix8.agoda.net/hotelImages/766807/3538597/9a8b1833d300e69475bb97c95358bd6b.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/property/766807/1637859598/f2f8fd6b71561b268865beb0a4dfebb0.jpeg?va=1&ce=3&s=1024x768",
-          "//pix8.agoda.net/property/766807/331720555/0f338e90385c1701b4f0bc6bd0cdcde6.jpeg?va=1&s=1024x768",
-          "//pix8.agoda.net/property/766807/1377515985/69d951d6114d28f05340a9593abe8cb2.jpeg?va=1&ce=3&s=1024x768"
+          "//pix8.agoda.net/hotelImages/766807/3538597/9a8b1833d300e69475bb97c95358bd6b.jpeg?ce=2&s=1024x768",
+          "//pix8.agoda.net/property/766807/1637859598/f2f8fd6b71561b268865beb0a4dfebb0.jpeg?ce=3&s=1024x768",
+          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/398546035.jpg?k=727142f94e0ca891a39c5ed8dee4238f33f36cbe29f08d4f49ed6bed1ba31321&o=",
+          "//pix8.agoda.net/property/766807/331720555/0f338e90385c1701b4f0bc6bd0cdcde6.jpeg?s=1024x768"
         ],
         "roomName": "Deluxe Sea View Double Bed",
-        "description": "[Hạng phòng: Deluxe | Diện tích: 40 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Phòng Deluxe Sea View Double Bed dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi.",
+        "description": "[Hạng phòng: Deluxe | Diện tích: 40 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Phòng Deluxe Sea View Double Bed dành cho tối đa 2 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
         "pricePerNightVnd": 1566500,
         "pricePerNightKrw": 87724,
         "maximumGuests": 2,
         "amenityTypes": [
           "Minibar",
-          "Free Wi-Fi"
+          "Free Wi-Fi",
+          "Air Conditioner",
+          "Television"
         ],
         "roomType": "Deluxe",
         "bedType": "Double (Queen, King)",
@@ -6927,7 +6954,7 @@
           "Blackout curtains",
           "Mini bar",
           "Private bathroom",
-          "Closet"
+          "Wi-Fi [free]"
         ],
         "rawBenefits": [
           "Parking",
@@ -6942,17 +6969,18 @@
       "otaSource": "AGODA",
       "formFields": {
         "uploadPhotos": [
-          "//pix8.agoda.net/property/766807/295342093/4d7795645c7533f61500e070f141d03c.jpeg?va=1&ce=2&s=1024x768"
+          "//pix8.agoda.net/property/766807/295342093/4d7795645c7533f61500e070f141d03c.jpeg?ce=2&s=1024x768"
         ],
         "roomName": "Room Deluxe Ocean View",
-        "description": "[Hạng phòng: Deluxe | Diện tích: Tiêu chuẩn | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed & 2 single beds] — Phòng Room Deluxe Ocean View dành cho tối đa 10 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner.",
+        "description": "[Hạng phòng: Deluxe | Diện tích: Tiêu chuẩn | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed & 2 single beds] — Phòng Room Deluxe Ocean View dành cho tối đa 10 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
         "pricePerNightVnd": 1423323,
         "pricePerNightKrw": 79706,
         "maximumGuests": 10,
         "amenityTypes": [
           "Minibar",
           "Free Wi-Fi",
-          "Air Conditioner"
+          "Air Conditioner",
+          "Television"
         ],
         "roomType": "Deluxe",
         "bedType": "Any Bed",
@@ -7002,23 +7030,24 @@
       }
     },
     {
-      "id": "AGODA_1273315885_1344863416_13",
+      "id": "AGODA_1273315885_295288982_13",
       "hotelId": "muong-thanh-luxury-nha-trang",
       "hotelName": "Muong Thanh Luxury Nha Trang Hotel",
       "otaSource": "AGODA",
       "formFields": {
         "uploadPhotos": [
-          "//pix8.agoda.net/property/766807/295342093/4d7795645c7533f61500e070f141d03c.jpeg?va=1&ce=2&s=1024x768"
+          "//pix8.agoda.net/property/766807/295342093/4d7795645c7533f61500e070f141d03c.jpeg?ce=2&s=1024x768"
         ],
         "roomName": "Room Deluxe Ocean View",
-        "description": "[Hạng phòng: Deluxe | Diện tích: Tiêu chuẩn | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed & 2 single beds] — Phòng Room Deluxe Ocean View dành cho tối đa 10 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner.",
-        "pricePerNightVnd": 1509315,
-        "pricePerNightKrw": 84522,
+        "description": "[Hạng phòng: Deluxe | Diện tích: Tiêu chuẩn | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed & 2 single beds] — Phòng Room Deluxe Ocean View dành cho tối đa 10 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
+        "pricePerNightVnd": 1458829,
+        "pricePerNightKrw": 81694,
         "maximumGuests": 10,
         "amenityTypes": [
           "Minibar",
           "Free Wi-Fi",
-          "Air Conditioner"
+          "Air Conditioner",
+          "Television"
         ],
         "roomType": "Deluxe",
         "bedType": "Any Bed",
@@ -7039,14 +7068,14 @@
         "viewCategory": "OCEAN_SEA_VIEW",
         "areaSqm": null,
         "areaBucket": "NA_SQM",
-        "mealPlan": "RO",
-        "mealPlanLabelVi": "Không ăn sáng (Room Only)",
+        "mealPlan": "BB",
+        "mealPlanLabelVi": "Có ăn sáng (BB)",
         "cancelPolicy": "NON_REFUNDABLE",
         "cancelPolicyLabelVi": "Không hoàn tiền",
-        "rateBucket": "RO_NON_REFUNDABLE",
-        "netPrice": 1330966,
-        "taxesAndFees": 178349,
-        "grossPrice": 1509315,
+        "rateBucket": "BB_NON_REFUNDABLE",
+        "netPrice": 1286446,
+        "taxesAndFees": 172383,
+        "grossPrice": 1458829,
         "rawBedText": "1 king bed & 2 single beds",
         "rawFeatures": [
           "1 king bed & 2 single beds",
@@ -7061,6 +7090,7 @@
           "Refrigerator"
         ],
         "rawBenefits": [
+          "Breakfast for 2",
           "Parking",
           "Free WiFi"
         ]
@@ -7073,20 +7103,21 @@
       "otaSource": "AGODA",
       "formFields": {
         "uploadPhotos": [
-          "//pix8.agoda.net/hotelImages/766807/3538599/7fea81b4046fed8dcf390a13e4ce555a.jpeg?va=1&s=1024x768",
-          "//pix8.agoda.net/property/766807/1378458393/d4dc63c834684b29745ed0b46f4bea5d.jpeg?va=1&ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/766807/3538599/7fd6bfee65234b45f418d2cec6582f68.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/property/766807/1377515987/8fa348903aeaa8ae07b8bb8c236743d0.jpeg?va=1&ce=3&s=1024x768"
+          "//pix8.agoda.net/hotelImages/766807/3538599/7fea81b4046fed8dcf390a13e4ce555a.jpeg?s=1024x768",
+          "//pix8.agoda.net/property/766807/1378458393/d4dc63c834684b29745ed0b46f4bea5d.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/766807/1381346760/81c302b7c07ce2580d9b9e29ae202789.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/766807/3538599/7fd6bfee65234b45f418d2cec6582f68.jpeg?ce=2&s=1024x768"
         ],
         "roomName": "Deluxe Family",
-        "description": "[Hạng phòng: Deluxe | Diện tích: 45 m² | Hướng nhìn: CITY VIEW | Giường: 1 double bed and 1 single bed] — Phòng Deluxe Family dành cho tối đa 3 khách. Trang bị đầy đủ: Minibar, Television, Free Wi-Fi.",
+        "description": "[Hạng phòng: Deluxe | Diện tích: 45 m² | Hướng nhìn: CITY VIEW | Giường: 1 double bed and 1 single bed] — Phòng Deluxe Family dành cho tối đa 3 khách. Trang bị đầy đủ: Minibar, Television, Free Wi-Fi, Air Conditioner.",
         "pricePerNightVnd": 1627716,
         "pricePerNightKrw": 91152,
         "maximumGuests": 3,
         "amenityTypes": [
           "Minibar",
           "Television",
-          "Free Wi-Fi"
+          "Free Wi-Fi",
+          "Air Conditioner"
         ],
         "roomType": "Deluxe",
         "bedType": "Any Bed",
@@ -7126,7 +7157,7 @@
           "Blackout curtains",
           "Mini bar",
           "Private bathroom",
-          "Closet"
+          "Wi-Fi [free]"
         ],
         "rawBenefits": [
           "Breakfast",
@@ -7142,25 +7173,27 @@
       }
     },
     {
-      "id": "AGODA_3538599_1025134389_15",
+      "id": "AGODA_3538599_5144721_15",
       "hotelId": "muong-thanh-luxury-nha-trang",
       "hotelName": "Muong Thanh Luxury Nha Trang Hotel",
       "otaSource": "AGODA",
       "formFields": {
         "uploadPhotos": [
-          "//pix8.agoda.net/hotelImages/766807/3538599/7fea81b4046fed8dcf390a13e4ce555a.jpeg?va=1&s=1024x768",
-          "//pix8.agoda.net/property/766807/1378458393/d4dc63c834684b29745ed0b46f4bea5d.jpeg?va=1&ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/766807/3538599/7fd6bfee65234b45f418d2cec6582f68.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/property/766807/1377515987/8fa348903aeaa8ae07b8bb8c236743d0.jpeg?va=1&ce=3&s=1024x768"
+          "//pix8.agoda.net/hotelImages/766807/3538599/7fea81b4046fed8dcf390a13e4ce555a.jpeg?s=1024x768",
+          "//pix8.agoda.net/property/766807/1378458393/d4dc63c834684b29745ed0b46f4bea5d.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/766807/1381346760/81c302b7c07ce2580d9b9e29ae202789.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/766807/3538599/7fd6bfee65234b45f418d2cec6582f68.jpeg?ce=2&s=1024x768"
         ],
         "roomName": "Deluxe Family",
-        "description": "[Hạng phòng: Deluxe | Diện tích: 45 m² | Hướng nhìn: CITY VIEW | Giường: 1 double bed and 1 single bed] — Phòng Deluxe Family dành cho tối đa 3 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi.",
-        "pricePerNightVnd": 1973254,
-        "pricePerNightKrw": 110502,
+        "description": "[Hạng phòng: Deluxe | Diện tích: 45 m² | Hướng nhìn: CITY VIEW | Giường: 1 double bed and 1 single bed] — Phòng Deluxe Family dành cho tối đa 3 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
+        "pricePerNightVnd": 2205000,
+        "pricePerNightKrw": 123480,
         "maximumGuests": 3,
         "amenityTypes": [
           "Minibar",
-          "Free Wi-Fi"
+          "Free Wi-Fi",
+          "Air Conditioner",
+          "Television"
         ],
         "roomType": "Deluxe",
         "bedType": "Any Bed",
@@ -7181,14 +7214,14 @@
         "viewCategory": "CITY_VIEW",
         "areaSqm": 45,
         "areaBucket": "44SQM",
-        "mealPlan": "RO",
-        "mealPlanLabelVi": "Không ăn sáng (Room Only)",
+        "mealPlan": "BB",
+        "mealPlanLabelVi": "Có ăn sáng (BB)",
         "cancelPolicy": "NON_REFUNDABLE",
         "cancelPolicyLabelVi": "Không hoàn tiền",
-        "rateBucket": "RO_NON_REFUNDABLE",
-        "netPrice": 1740083,
-        "taxesAndFees": 233171,
-        "grossPrice": 1973254,
+        "rateBucket": "BB_NON_REFUNDABLE",
+        "netPrice": 1944444,
+        "taxesAndFees": 260556,
+        "grossPrice": 2205000,
         "rawBedText": "1 double bed and 1 single bed",
         "rawFeatures": [
           "Room size: 45 m²/484 ft²",
@@ -7200,9 +7233,10 @@
           "Blackout curtains",
           "Mini bar",
           "Private bathroom",
-          "Closet"
+          "Wi-Fi [free]"
         ],
         "rawBenefits": [
+          "Breakfast",
           "Parking",
           "Free WiFi"
         ]
@@ -7215,19 +7249,20 @@
       "otaSource": "AGODA",
       "formFields": {
         "uploadPhotos": [
-          "//pix8.agoda.net/property/91120201/1440631485/87696d7079b21c6047bcfd258ddc4657.jpeg?va=1&ce=3&s=1024x768",
-          "//pix8.agoda.net/property/91120201/1440631485/859bb8c2b28b2353107d062bf7d4d0c3.jpeg?va=1&ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/766807/3538664/ae0cc56a6d02fb88ccb6f9f53810985a.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/hotelImages/766807/3538664/5ce55b901b99f0efdc9428bb9e1f677f.jpeg?va=1&s=1024x768"
+          "//pix8.agoda.net/property/91120201/1440631485/87696d7079b21c6047bcfd258ddc4657.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/91120201/1440631485/859bb8c2b28b2353107d062bf7d4d0c3.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/766807/3538664/cf7032c7cadc3d13dd0ec410ae87a269.jpeg?s=1024x768",
+          "//pix8.agoda.net/hotelImages/766807/3538664/ae0cc56a6d02fb88ccb6f9f53810985a.jpeg?ce=2&s=1024x768"
         ],
         "roomName": "Executive Suite",
-        "description": "[Hạng phòng: Suite | Diện tích: 75 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 super king bed] — Phòng Executive Suite dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi.",
+        "description": "[Hạng phòng: Suite | Diện tích: 75 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 super king bed] — Phòng Executive Suite dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
         "pricePerNightVnd": 2532003,
         "pricePerNightKrw": 141792,
         "maximumGuests": 2,
         "amenityTypes": [
           "Television",
-          "Free Wi-Fi"
+          "Free Wi-Fi",
+          "Air Conditioner"
         ],
         "roomType": "Suite",
         "bedType": "Double (Queen, King)",
@@ -7289,18 +7324,20 @@
       "otaSource": "AGODA",
       "formFields": {
         "uploadPhotos": [
-          "//pix8.agoda.net/property/91120201/1440631485/87696d7079b21c6047bcfd258ddc4657.jpeg?va=1&ce=3&s=1024x768",
-          "//pix8.agoda.net/property/91120201/1440631485/859bb8c2b28b2353107d062bf7d4d0c3.jpeg?va=1&ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/766807/3538664/ae0cc56a6d02fb88ccb6f9f53810985a.jpeg?va=1&ce=2&s=1024x768",
-          "//pix8.agoda.net/hotelImages/766807/3538664/5ce55b901b99f0efdc9428bb9e1f677f.jpeg?va=1&s=1024x768"
+          "//pix8.agoda.net/property/91120201/1440631485/87696d7079b21c6047bcfd258ddc4657.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/91120201/1440631485/859bb8c2b28b2353107d062bf7d4d0c3.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/766807/3538664/cf7032c7cadc3d13dd0ec410ae87a269.jpeg?s=1024x768",
+          "//pix8.agoda.net/hotelImages/766807/3538664/ae0cc56a6d02fb88ccb6f9f53810985a.jpeg?ce=2&s=1024x768"
         ],
         "roomName": "Executive Suite",
-        "description": "[Hạng phòng: Suite | Diện tích: 75 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 super king bed] — Phòng Executive Suite dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi.",
-        "pricePerNightVnd": 2858433,
-        "pricePerNightKrw": 160072,
+        "description": "[Hạng phòng: Suite | Diện tích: 75 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 super king bed] — Phòng Executive Suite dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
+        "pricePerNightVnd": 2854158,
+        "pricePerNightKrw": 159833,
         "maximumGuests": 2,
         "amenityTypes": [
-          "Free Wi-Fi"
+          "Free Wi-Fi",
+          "Air Conditioner",
+          "Television"
         ],
         "roomType": "Suite",
         "bedType": "Double (Queen, King)",
@@ -7326,9 +7363,9 @@
         "cancelPolicy": "NON_REFUNDABLE",
         "cancelPolicyLabelVi": "Không hoàn tiền",
         "rateBucket": "RO_NON_REFUNDABLE",
-        "netPrice": 2520664,
-        "taxesAndFees": 337769,
-        "grossPrice": 2858433,
+        "netPrice": 2516894,
+        "taxesAndFees": 337264,
+        "grossPrice": 2854158,
         "rawBedText": "1 super king bed",
         "rawFeatures": [
           "Room size: 75 m²/807 ft²",

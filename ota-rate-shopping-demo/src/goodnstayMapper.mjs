@@ -41,7 +41,15 @@ const AMENITY_PATTERNS = {
 /**
  * Trích xuất chính xác mảng Amenity Types cho Form goodNstay
  */
-export function extractGoodNStayAmenities(rawFacilities = [], rawBenefits = [], hotelHasFreeWifi = true) {
+export function extractGoodNStayAmenities(
+  rawFacilities = [],
+  rawBenefits = [],
+  hotelDefaults = { freeWifi: true, airConditioner: true, television: true }
+) {
+  const defaults =
+    typeof hotelDefaults === "object" && hotelDefaults !== null
+      ? hotelDefaults
+      : { freeWifi: Boolean(hotelDefaults), airConditioner: true, television: true };
   const combinedText = [...rawFacilities, ...rawBenefits].join(" | ");
   const selected = [];
 
@@ -51,10 +59,19 @@ export function extractGoodNStayAmenities(rawFacilities = [], rawBenefits = [], 
     }
   }
 
-  if (hotelHasFreeWifi && !selected.includes("Free Wi-Fi")) {
+  if (defaults.freeWifi && !selected.includes("Free Wi-Fi")) {
     selected.push("Free Wi-Fi");
   }
-  // Hầu hết khách sạn 3-5 sao tại VN/KR đều có điều hòa & TV trong phòng tiêu chuẩn nếu danh sách rút gọn bị ẩn
+  if (
+    defaults.airConditioner &&
+    !selected.includes("Air Conditioner") &&
+    !/(?:no\s*air[\s-]?conditioning|fan\s*only|không\s*điều\s*hòa)/i.test(combinedText)
+  ) {
+    selected.push("Air Conditioner");
+  }
+  if (defaults.television && !selected.includes("Television")) {
+    selected.push("Television");
+  }
   return selected;
 }
 

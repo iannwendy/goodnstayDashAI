@@ -19,3 +19,5 @@ skills/system/
 __pycache__/
 *.py[cod]
 .pytest_cache/
+ota-rate-shopping-demo/dist/
+ota-rate-shopping-demo/node_modules
