@@ -16,11 +16,36 @@ import {
 const DATA_FILE = fileURLToPath(
   new URL("./data/latest_comparison_report.json", import.meta.url)
 );
+const REPORTS_DIR = fileURLToPath(
+  new URL("./data/reports", import.meta.url)
+);
 const EVIDENCE_DIR = fileURLToPath(
   new URL("./data/evidence", import.meta.url)
 );
 
-function loadOrInitReport() {
+function loadOrInitReport(requestedHotelKey?: string, requestedCheckIn?: string) {
+  if (requestedHotelKey && requestedCheckIn) {
+    const exactPath = path.join(
+      REPORTS_DIR,
+      `report_${requestedHotelKey}_${requestedCheckIn}.json`
+    );
+    if (fs.existsSync(exactPath)) {
+      return JSON.parse(fs.readFileSync(exactPath, "utf-8"));
+    }
+  }
+  if (requestedHotelKey) {
+    const fallbackHotelPath = path.join(
+      REPORTS_DIR,
+      `report_${requestedHotelKey}_2026-11-20.json`
+    );
+    if (fs.existsSync(fallbackHotelPath)) {
+      const parsed = JSON.parse(fs.readFileSync(fallbackHotelPath, "utf-8"));
+      return {
+        ...parsed,
+        checkIn: requestedCheckIn || parsed.checkIn,
+      };
+    }
+  }
   if (fs.existsSync(DATA_FILE)) {
     return JSON.parse(fs.readFileSync(DATA_FILE, "utf-8"));
   }
@@ -75,7 +100,9 @@ function otaRateShoppingApiPlugin(): Plugin {
 
       server.middlewares.use("/api/report", (req, res) => {
         const url = new URL(req.url || "/", "http://localhost:4180");
-        const report = loadOrInitReport();
+        const requestedHotelKey = url.searchParams.get("hotelKey") || undefined;
+        const requestedCheckIn = url.searchParams.get("checkIn") || undefined;
+        const report = loadOrInitReport(requestedHotelKey, requestedCheckIn);
         const roomType = url.searchParams.get("roomType") || "ALL";
         const detailedBedCategory =
           url.searchParams.get("detailedBedCategory") || "ALL";

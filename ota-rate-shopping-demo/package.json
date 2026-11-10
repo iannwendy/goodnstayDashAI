@@ -9,6 +9,6 @@
     "start": "vite --host 0.0.0.0 --port 4180",
     "build": "tsc -b && vite build",
     "scrape:live": "node src/liveScraper.mjs",
-    "test": "node --test tests/rateShopping.test.mjs"
+    "test": "node --test tests/rateShopping.test.mjs tests/e2e/ui-ux-and-buttons.test.mjs"
   }
 }

@@ -659,6 +659,14 @@ export async function runFullScrapeAndCompare({
     allNormalizedRooms: unifiedRooms,
   };
 
+  const reportsDir = path.join(dataDir, "reports");
+  fs.mkdirSync(reportsDir, { recursive: true });
+  const perHotelDatePath = path.join(
+    reportsDir,
+    `report_${liveData.hotelKey}_${liveData.checkIn}.json`
+  );
+  fs.writeFileSync(perHotelDatePath, JSON.stringify(payload, null, 2), "utf8");
+
   const outPath = path.join(dataDir, "latest_comparison_report.json");
   fs.writeFileSync(outPath, JSON.stringify(payload, null, 2), "utf8");
   return payload;

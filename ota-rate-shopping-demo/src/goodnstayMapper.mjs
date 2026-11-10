@@ -94,36 +94,42 @@ export function extractAreaSqm(rawTextOrFeatures = []) {
  * Trích xuất Hướng nhìn (View Category) để không bao giờ so sánh nhầm City View với Ocean/Sea View
  */
 export function classifyViewCategory(rawRoomName = "", rawFeatures = []) {
-  const text = `${rawRoomName} | ${rawFeatures.join(" | ")}`.toLowerCase();
+  const matchView = (str) => {
+    if (/(?:no\s*window|without\s*window|interior|không có cửa sổ|창문 없음)/.test(str)) {
+      return "NO_WINDOW";
+    }
+    if (/(?:beach[\s-]?front|ocean[\s-]?front|sát biển|trực diện biển|오션프론트)/.test(str)) {
+      return "OCEAN_FRONT";
+    }
+    if (/(?:partial\s*(?:sea|ocean)|sea\s*\(partial\s*view\)|partial\s*view|nhìn một phần biển|góc biển)/.test(str)) {
+      return "PARTIAL_SEA_VIEW";
+    }
+    if (/(?:sea\s*view|ocean\s*view|ocean\s*luxury|ocean\s*2\s*twin|bay\s*view|hướng biển|nhìn ra biển|nhìn ra vịnh|오션뷰|바다 전망)/.test(str)) {
+      return "OCEAN_SEA_VIEW";
+    }
+    if (/(?:river\s*view|lake\s*view|hướng sông|hướng hồ|리버뷰)/.test(str)) {
+      return "RIVER_LAKE_VIEW";
+    }
+    if (/(?:pool\s*view|hướng hồ bơi|nhìn ra hồ bơi|풀뷰)/.test(str)) {
+      return "POOL_VIEW";
+    }
+    if (/(?:garden\s*view|courtyard|hướng vườn|nhìn ra vườn|가든뷰)/.test(str)) {
+      return "GARDEN_VIEW";
+    }
+    if (/(?:city\s*view|town\s*view|urban\s*view|hướng phố|hướng thành phố|nhìn ra thành phố|시티뷰)/.test(str)) {
+      return "CITY_VIEW";
+    }
+    if (/(?:mountain\s*view|hill\s*view|hướng núi|마운틴뷰)/.test(str)) {
+      return "MOUNTAIN_VIEW";
+    }
+    return null;
+  };
 
-  if (/(?:beach[\s-]?front|ocean[\s-]?front|sát biển|trực diện biển|오션프론트)/.test(text)) {
-    return "OCEAN_FRONT";
-  }
-  if (/(?:partial\s*(?:sea|ocean)|sea\s*\(partial\s*view\)|partial\s*view|nhìn một phần biển|góc biển)/.test(text)) {
-    return "PARTIAL_SEA_VIEW";
-  }
-  if (/(?:sea\s*view|ocean\s*view|bay\s*view|hướng biển|nhìn ra biển|nhìn ra vịnh|오션뷰|바다 전망)/.test(text)) {
-    return "OCEAN_SEA_VIEW";
-  }
-  if (/(?:river\s*view|lake\s*view|hướng sông|hướng hồ|리버뷰)/.test(text)) {
-    return "RIVER_LAKE_VIEW";
-  }
-  if (/(?:pool\s*view|hướng hồ bơi|nhìn ra hồ bơi|풀뷰)/.test(text)) {
-    return "POOL_VIEW";
-  }
-  if (/(?:garden\s*view|courtyard|hướng vườn|nhìn ra vườn|가든뷰)/.test(text)) {
-    return "GARDEN_VIEW";
-  }
-  if (/(?:mountain\s*view|hill\s*view|hướng núi|마운틴뷰)/.test(text)) {
-    return "MOUNTAIN_VIEW";
-  }
-  if (/(?:city\s*view|town\s*view|urban\s*view|hướng phố|hướng thành phố|nhìn ra thành phố|시티뷰)/.test(text)) {
-    return "CITY_VIEW";
-  }
-  if (/(?:no\s*window|without\s*window|interior|không có cửa sổ|창문 없음)/.test(text)) {
-    return "NO_WINDOW";
-  }
-  return "STANDARD_VIEW";
+  const fromName = matchView(String(rawRoomName || "").toLowerCase());
+  if (fromName) return fromName;
+
+  const fromFeatures = matchView(rawFeatures.join(" | ").toLowerCase());
+  return fromFeatures || "STANDARD_VIEW";
 }
 
 /**
@@ -181,7 +187,7 @@ export function classifyBedConfiguration(rawBedText = "", rawRoomName = "", maxA
 
   // 3. Kiểm tra cấu hình linh hoạt "1 Double OR 2 Singles" (hoặc "Double or Twin")
   const hasOrKeyword =
-    /\b(double\s*or\s*twin|king\s*or\s*twin|1\s*double\s*or\s*2\s*single|1\s*king\s*or\s*2\s*single|hoặc\s*2\s*giường\s*đơn)\b/.test(
+    /(?:double|king|queen|single|twin)(?:\s*beds?)?\s+or\s+(?:\d+\s*)?(?:double|king|queen|single|twin)|hoặc\s*2\s*giường\s*đơn/.test(
       combined
     );
   if (hasOrKeyword) {
