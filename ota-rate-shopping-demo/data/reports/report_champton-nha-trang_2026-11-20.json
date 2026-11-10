@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-11-10T05:12:09.463Z",
+  "generatedAt": "2026-11-10T05:18:09.636Z",
   "hotelKey": "champton-nha-trang",
   "hotelName": "Champton Nha Trang Hotel",
   "checkIn": "2026-11-20",
   "checkOut": "2026-11-21",
   "liveScrapeProof": {
     "success": true,
-    "scrapedAt": "2026-11-10T05:12:09.437Z",
-    "durationMs": 12605,
-    "sha256Digest": "3ec0d8440b05a2b1edc5754875d948132d9a3c4a0aec577d61dc14d6fdfa7e25",
+    "scrapedAt": "2026-11-10T05:18:09.606Z",
+    "durationMs": 12476,
+    "sha256Digest": "972043929f56f612f55da786b929902b9832290400143753a421513aecb89022",
     "agoda": {
-      "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV",
+      "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1",
       "pageTitle": "Best Price on Champton Nha Trang Hotel in Nha Trang + Reviews!",
-      "searchId": "8c168ad8-9e20-44cc-a0fe-4a9852686c6b",
+      "searchId": "ec7ca74f-b333-46a8-94a5-07094215fb9d",
       "masterRoomCount": 12,
       "screenshotUrl": "/api/evidence/agoda_champton-nha-trang_2026-11-20.png",
       "rawRooms": [
@@ -58,14 +58,14 @@
             "Alcohol",
             "Non-smoking",
             "Private bathroom",
-            "Wi-Fi [free]"
+            "Closet"
           ],
           "bedText": "2 single beds",
           "photos": [
             "//pix8.agoda.net/hotelImages/75836171/1188793531/7ccbc22c5f6f6d79d2b987914a46da49.png?ce=3&s=1024x768",
             "//pix8.agoda.net/property/75836171/1333155726/405d32f0edd79d55dadf2b7b346f60a2.jpeg?ce=3&s=1024x768",
-            "//pix8.agoda.net/property/75836171/1596943144/1f63f326d06a29085f9a88855fe151f5.jpeg?ce=3&s=1024x768",
-            "//pix8.agoda.net/property/75836171/1596943144/6ee94f108540175cf002bd91d9c145e3.jpeg?ce=3&s=1024x768"
+            "//pix8.agoda.net/hotelImages/75836171/1188793531/49d548232ea670879a9d50df10b96d91.png?ce=3&s=1024x768",
+            "//pix8.agoda.net/property/75836171/1596943144/1f63f326d06a29085f9a88855fe151f5.jpeg?ce=3&s=1024x768"
           ],
           "netPrice": 1371998,
           "grossPrice": 1699905,
@@ -102,14 +102,14 @@
             "Alcohol",
             "Non-smoking",
             "Private bathroom",
-            "Wi-Fi [free]"
+            "Closet"
           ],
           "bedText": "1 king bed",
           "photos": [
             "//pix8.agoda.net/hotelImages/75836171/1177983412/ab4fd40d39dc571b3b6ecef7691a20f1.png?ce=3&s=1024x768",
-            "//pix8.agoda.net/hotelImages/75836171/1177983412/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
             "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/820635303.jpg?k=b6a043ccf94034524d13f5f42e6b0fae5129c44a9738ca2a79b893858429df93&o=",
-            "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/776476936.jpg?k=ae8f1a76633da3ccc0ec7cb9e0a33c057bd0896243cab8beace6a4189304e6aa&o="
+            "//pix8.agoda.net/hotelImages/75836171/1177983412/0252a5de98d8627e39ea0cf6259ff1dd.png?ce=3&s=1024x768",
+            "//pix8.agoda.net/hotelImages/75836171/1177983412/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
           ],
           "netPrice": 1371998,
           "grossPrice": 1699905,
@@ -146,14 +146,14 @@
             "High floor",
             "Non-smoking",
             "Private bathroom",
-            "Wi-Fi [free]"
+            "Closet"
           ],
           "bedText": "2 single beds",
           "photos": [
             "//pix8.agoda.net/hotelImages/75836171/1188793772/3ef85cee2251e3b77e2f043a3ceef631.jpg?ce=3&s=1024x768",
             "//pix8.agoda.net/hotelImages/75836171/1188793772/0e90b6da39167f314a310df6bd35fcde.jpg?ce=3&s=1024x768",
-            "//pix8.agoda.net/property/75836171/1596943128/e0017e50ea9eceaec2516b147a1662cd.jpeg?ce=3&s=1024x768",
-            "//pix8.agoda.net/hotelImages/75836171/1188793772/eac8819fdebcc42501e7e46d0935ec22.jpg?ce=3&s=1024x768"
+            "//pix8.agoda.net/property/75836171/1596943128/1e97e3938396d2676c234d68cde13a6f.jpeg?ce=3&s=1024x768",
+            "//pix8.agoda.net/property/75836171/1596943128/e0017e50ea9eceaec2516b147a1662cd.jpeg?ce=3&s=1024x768"
           ],
           "netPrice": 1488193,
           "grossPrice": 1843871,
@@ -190,14 +190,14 @@
             "High floor",
             "Non-smoking",
             "Private bathroom",
-            "Wi-Fi [free]"
+            "Closet"
           ],
           "bedText": "1 king bed",
           "photos": [
             "//pix8.agoda.net/hotelImages/75836171/1183375174/930840599eb4cda87e8abeffa70f92e7.png?ce=3&s=1024x768",
-            "//pix8.agoda.net/hotelImages/75836171/1183375174/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
             "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785141445.jpg?k=7b22aa9c969558e9eb82420694251d28c246f1a5bce798aa7e5eb5f4fb3d8507&o=",
-            "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785141060.jpg?k=5ebd25e22b6a681aa132df12602b2ce287081807a922b45663871e8750ccc2a5&o="
+            "//pix8.agoda.net/hotelImages/75836171/1183375174/f0db8f75043925b3a0ad1371e0e874b8.jpg?ce=3&s=1024x768",
+            "//pix8.agoda.net/hotelImages/75836171/1183375174/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
           ],
           "netPrice": 1488193,
           "grossPrice": 1843871,
@@ -239,9 +239,9 @@
           "bedText": "1 king bed",
           "photos": [
             "//pix8.agoda.net/property/75836171/1333155718/f70d6d79a4e3f571e8763dfc15f19c64.jpeg?ce=3&s=1024x768",
-            "//pix8.agoda.net/hotelImages/75836171/1184380968/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
             "//pix8.agoda.net/hotelImages/75836171/1184380968/2de60e1ce9cb94179e9cfab226428f33.jpg?ce=3&s=1024x768",
-            "//pix8.agoda.net/hotelImages/75836171/1184380968/ca484c6a4a700e377a8d6c1459b7e6eb.jpg?ce=3&s=1024x768"
+            "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785142646.jpg?k=3881d268ca3869eaa0f94c465863a8e2cec130d8e3f1516ef06084a2b7ffb1be&o=",
+            "//pix8.agoda.net/hotelImages/75836171/1184380968/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
           ],
           "netPrice": 1833619,
           "grossPrice": 2271854,
@@ -277,8 +277,8 @@
           "photos": [
             "//pix8.agoda.net/property/75836171/1596943134/ec11a5d18e36f15fd2ab2c094a5735b8.jpeg?ce=3&s=1024x768",
             "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785142388.jpg?k=2bcd6e47a5b9b0c86acee7628177a7f3298552e7c8726f9a79d1991ac9528c15&o=",
-            "//pix8.agoda.net/property/75836171/1596943134/708d8c8a97e0aa0265fccf613b5498b5.jpeg?ce=3&s=1024x768",
-            "//pix8.agoda.net/property/75836171/1596943134/ebfebe82909e74a199adc1296372a939.jpeg?ce=3&s=1024x768"
+            "//pix8.agoda.net/property/75836171/1596943134/98a4524ccc21b903b0a669a6ea77fc46.jpeg?ce=3&s=1024x768",
+            "//pix8.agoda.net/property/75836171/1596943134/708d8c8a97e0aa0265fccf613b5498b5.jpeg?ce=3&s=1024x768"
           ],
           "netPrice": 1833619,
           "grossPrice": 2271854,
@@ -314,8 +314,8 @@
           "photos": [
             "//pix8.agoda.net/hotelImages/75836171/1184429603/523f4f46fd35b880023b5fe9111a5d7b.jpg?ce=3&s=1024x768",
             "//pix8.agoda.net/hotelImages/75836171/1184429603/9a65cfacf800e4b6d8b9f6f8cd722b75.jpg?ce=3&s=1024x768",
-            "//pix8.agoda.net/hotelImages/75836171/1184429603/3f2816c78565f046b0f6c3d30c24fbad.jpg?ce=3&s=1024x768",
-            "//pix8.agoda.net/hotelImages/75836171/1184429603/746ee17134abae89a8314a32c818d2cb.jpg?ce=3&s=1024x768"
+            "//pix8.agoda.net/hotelImages/75836171/1184429603/d021ec198ac600b9631f036b9c7a2d99.png?ce=3&s=1024x768",
+            "//pix8.agoda.net/hotelImages/75836171/1184429603/3f2816c78565f046b0f6c3d30c24fbad.jpg?ce=3&s=1024x768"
           ],
           "netPrice": 1894856,
           "grossPrice": 2347727,
@@ -351,8 +351,8 @@
           "photos": [
             "//pix8.agoda.net/hotelImages/75836171/1184432353/f2f5a084ef0f2b3075b982520efde476.jpeg?ce=3&s=1024x768",
             "//pix8.agoda.net/hotelImages/75836171/1184432353/0a4eee0bf55ecb08a565514d5a2c1b7e.jpeg?ce=3&s=1024x768",
-            "//pix8.agoda.net/hotelImages/75836171/1184432353/56d3686c20cc592d4dc3ca236b29a679.jpg?ce=3&s=1024x768",
-            "//pix8.agoda.net/hotelImages/75836171/1184432353/ee1861fcf28208efa91f8abc5c5742ed.png?ce=3&s=1024x768"
+            "//pix8.agoda.net/hotelImages/75836171/1184432353/7df01cb08882c39311b3fb5f07d11003.png?ce=3&s=1024x768",
+            "//pix8.agoda.net/hotelImages/75836171/1184432353/56d3686c20cc592d4dc3ca236b29a679.jpg?ce=3&s=1024x768"
           ],
           "netPrice": 3413042,
           "grossPrice": 4228759,
@@ -388,8 +388,8 @@
           "photos": [
             "//pix8.agoda.net/hotelImages/75836171/1184453735/fdf293d5b06d82fea05be8b7057bf782.jpg?ce=3&s=1024x768",
             "//pix8.agoda.net/hotelImages/75836171/1184453735/d310404b6f847377903da8ee60ee844b.jpg?ce=3&s=1024x768",
-            "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861935915.jpg?k=5dcec7d8f01692fbc04928b5a084bd953db3ce91b7a945061e62d0b3c538d4dc&o=",
-            "//pix8.agoda.net/hotelImages/75836171/1184453735/9fd97588fb4701340d918b1462569ebd.jpg?ce=3&s=1024x768"
+            "//pix8.agoda.net/hotelImages/75836171/1184453735/28f6ff8a3097a3be16fdb3daa6cf49eb.jpg?ce=3&s=1024x768",
+            "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861935915.jpg?k=5dcec7d8f01692fbc04928b5a084bd953db3ce91b7a945061e62d0b3c538d4dc&o="
           ],
           "netPrice": 5235373,
           "grossPrice": 6486627,
@@ -432,8 +432,8 @@
           "photos": [
             "//pix8.agoda.net/hotelImages/75836171/1225347102/6084eafe76bb9bf9e31e23bdd892924a.jpg?ce=3&s=1024x768",
             "//pix8.agoda.net/hotelImages/75836171/1225347102/596612ba9a95837a88ea2a6932da4117.jpg?ce=3&s=1024x768",
-            "//pix8.agoda.net/hotelImages/75836171/1225347102/824a13cdcdff741197ade5a9a80e8418.jpg?ce=3&s=1024x768",
-            "//pix8.agoda.net/hotelImages/75836171/1225347102/2bc39e3302ca1f4e7a0b219083e1f3ab.jpg?ce=3&s=1024x768"
+            "//pix8.agoda.net/property/75836171/1234335814/5b1837cd47971dcd97d00949023efd65.jpeg?ce=3&s=1024x768",
+            "//pix8.agoda.net/hotelImages/75836171/1225347102/824a13cdcdff741197ade5a9a80e8418.jpg?ce=3&s=1024x768"
           ],
           "netPrice": 6543001,
           "grossPrice": 8106778,
@@ -476,8 +476,8 @@
           "photos": [
             "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941052.jpg?k=9a198828a6e1fc3b28b7c5fc29a725b80993859224d266c72416de4bfad49902&o=",
             "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941143.jpg?k=f4d6a8316a768062b89be1ce32ee2022f6afd018ab36478f73975964ee40296b&o=",
-            "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941123.jpg?k=8cdd06dde8762bb7ca9d527206a60a8535291cc366500e39fae73d54e1b9fc7d&o=",
-            "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941118.jpg?k=2d34cfe6f81bba7723ed13ec73f117343ab42dd34c2ffa53687d2d99da21c8b3&o="
+            "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941128.jpg?k=260a841081bf5b57b8292edfc27169a1d8759888199caf8c1ffed6944b8f652f&o=",
+            "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941123.jpg?k=8cdd06dde8762bb7ca9d527206a60a8535291cc366500e39fae73d54e1b9fc7d&o="
           ],
           "netPrice": 7627333,
           "grossPrice": 8237520,
@@ -821,8 +821,8 @@
   },
   "liveAgodaScrapeStatus": {
     "success": true,
-    "scrapedAt": "2026-11-10T05:12:09.437Z",
-    "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV",
+    "scrapedAt": "2026-11-10T05:18:09.606Z",
+    "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1",
     "pageTitle": "Best Price on Champton Nha Trang Hotel in Nha Trang + Reviews!",
     "masterRoomCountFromLiveAgoda": 12,
     "liveOffersExtractedCount": 22
@@ -933,8 +933,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1188716859",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         "GOODNSTAY": {
@@ -998,7 +998,7 @@
           "liveProof": {
             "isLiveScraped": false,
             "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://goodnstay.com/en-US"
           }
         }
@@ -1068,8 +1068,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1188716859",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         {
@@ -1132,7 +1132,7 @@
           "liveProof": {
             "isLiveScraped": false,
             "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://goodnstay.com/en-US"
           }
         }
@@ -1209,8 +1209,8 @@
         "uploadPhotos": [
           "//pix8.agoda.net/hotelImages/75836171/1188793531/7ccbc22c5f6f6d79d2b987914a46da49.png?ce=3&s=1024x768",
           "//pix8.agoda.net/property/75836171/1333155726/405d32f0edd79d55dadf2b7b346f60a2.jpeg?ce=3&s=1024x768",
-          "//pix8.agoda.net/property/75836171/1596943144/1f63f326d06a29085f9a88855fe151f5.jpeg?ce=3&s=1024x768",
-          "//pix8.agoda.net/property/75836171/1596943144/6ee94f108540175cf002bd91d9c145e3.jpeg?ce=3&s=1024x768"
+          "//pix8.agoda.net/hotelImages/75836171/1188793531/49d548232ea670879a9d50df10b96d91.png?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/75836171/1596943144/1f63f326d06a29085f9a88855fe151f5.jpeg?ce=3&s=1024x768"
         ],
         "roomName": "Deluxe Twin Room",
         "description": "[Hạng phòng: Deluxe | Diện tích: 30 m² | Hướng nhìn: CITY VIEW | Giường: 2 single beds] — Phòng Deluxe Twin Room dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -1237,8 +1237,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1188793531/7ccbc22c5f6f6d79d2b987914a46da49.png?ce=3&s=1024x768",
               "//pix8.agoda.net/property/75836171/1333155726/405d32f0edd79d55dadf2b7b346f60a2.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/property/75836171/1596943144/1f63f326d06a29085f9a88855fe151f5.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/property/75836171/1596943144/6ee94f108540175cf002bd91d9c145e3.jpeg?ce=3&s=1024x768"
+              "//pix8.agoda.net/hotelImages/75836171/1188793531/49d548232ea670879a9d50df10b96d91.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/property/75836171/1596943144/1f63f326d06a29085f9a88855fe151f5.jpeg?ce=3&s=1024x768"
             ],
             "roomName": "Deluxe Twin Room",
             "description": "[Hạng phòng: Deluxe | Diện tích: 30 m² | Hướng nhìn: CITY VIEW | Giường: 2 single beds] — Phòng Deluxe Twin Room dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -1288,7 +1288,7 @@
               "Alcohol",
               "Non-smoking",
               "Private bathroom",
-              "Wi-Fi [free]"
+              "Closet"
             ],
             "rawBenefits": [
               "Breakfast",
@@ -1309,8 +1309,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1188793531",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         "BOOKING": {
@@ -1381,7 +1381,7 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "blockId:1439989410_bbasic_0",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
         },
@@ -1395,8 +1395,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1188793531/7ccbc22c5f6f6d79d2b987914a46da49.png?ce=3&s=1024x768",
               "//pix8.agoda.net/property/75836171/1333155726/405d32f0edd79d55dadf2b7b346f60a2.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/property/75836171/1596943144/1f63f326d06a29085f9a88855fe151f5.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/property/75836171/1596943144/6ee94f108540175cf002bd91d9c145e3.jpeg?ce=3&s=1024x768"
+              "//pix8.agoda.net/hotelImages/75836171/1188793531/49d548232ea670879a9d50df10b96d91.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/property/75836171/1596943144/1f63f326d06a29085f9a88855fe151f5.jpeg?ce=3&s=1024x768"
             ],
             "roomName": "Deluxe Twin Room",
             "description": "[Hạng phòng: Deluxe | Diện tích: 30 m² | Hướng nhìn: CITY VIEW | Giường: 2 single beds] — [Hạng phòng: Deluxe | Diện tích: 30 m² | Hướng nhìn: CITY VIEW | Giường: 2 single beds] — Phòng Deluxe Twin Room dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -1446,7 +1446,7 @@
               "Alcohol",
               "Non-smoking",
               "Private bathroom",
-              "Wi-Fi [free]"
+              "Closet"
             ],
             "rawBenefits": [
               "Breakfast included"
@@ -1455,7 +1455,7 @@
           "liveProof": {
             "isLiveScraped": false,
             "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://goodnstay.com/en-US"
           }
         }
@@ -1470,8 +1470,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1188793531/7ccbc22c5f6f6d79d2b987914a46da49.png?ce=3&s=1024x768",
               "//pix8.agoda.net/property/75836171/1333155726/405d32f0edd79d55dadf2b7b346f60a2.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/property/75836171/1596943144/1f63f326d06a29085f9a88855fe151f5.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/property/75836171/1596943144/6ee94f108540175cf002bd91d9c145e3.jpeg?ce=3&s=1024x768"
+              "//pix8.agoda.net/hotelImages/75836171/1188793531/49d548232ea670879a9d50df10b96d91.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/property/75836171/1596943144/1f63f326d06a29085f9a88855fe151f5.jpeg?ce=3&s=1024x768"
             ],
             "roomName": "Deluxe Twin Room",
             "description": "[Hạng phòng: Deluxe | Diện tích: 30 m² | Hướng nhìn: CITY VIEW | Giường: 2 single beds] — Phòng Deluxe Twin Room dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -1521,7 +1521,7 @@
               "Alcohol",
               "Non-smoking",
               "Private bathroom",
-              "Wi-Fi [free]"
+              "Closet"
             ],
             "rawBenefits": [
               "Breakfast",
@@ -1542,8 +1542,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1188793531",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         {
@@ -1613,7 +1613,7 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "blockId:1439989410_bbasic_0",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
         },
@@ -1626,8 +1626,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1188793531/7ccbc22c5f6f6d79d2b987914a46da49.png?ce=3&s=1024x768",
               "//pix8.agoda.net/property/75836171/1333155726/405d32f0edd79d55dadf2b7b346f60a2.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/property/75836171/1596943144/1f63f326d06a29085f9a88855fe151f5.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/property/75836171/1596943144/6ee94f108540175cf002bd91d9c145e3.jpeg?ce=3&s=1024x768"
+              "//pix8.agoda.net/hotelImages/75836171/1188793531/49d548232ea670879a9d50df10b96d91.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/property/75836171/1596943144/1f63f326d06a29085f9a88855fe151f5.jpeg?ce=3&s=1024x768"
             ],
             "roomName": "Deluxe Twin Room",
             "description": "[Hạng phòng: Deluxe | Diện tích: 30 m² | Hướng nhìn: CITY VIEW | Giường: 2 single beds] — [Hạng phòng: Deluxe | Diện tích: 30 m² | Hướng nhìn: CITY VIEW | Giường: 2 single beds] — Phòng Deluxe Twin Room dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -1677,7 +1677,7 @@
               "Alcohol",
               "Non-smoking",
               "Private bathroom",
-              "Wi-Fi [free]"
+              "Closet"
             ],
             "rawBenefits": [
               "Breakfast included"
@@ -1686,7 +1686,7 @@
           "liveProof": {
             "isLiveScraped": false,
             "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://goodnstay.com/en-US"
           }
         }
@@ -1778,9 +1778,9 @@
       "sampleGoodNStayForm": {
         "uploadPhotos": [
           "//pix8.agoda.net/hotelImages/75836171/1177983412/ab4fd40d39dc571b3b6ecef7691a20f1.png?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1177983412/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
           "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/820635303.jpg?k=b6a043ccf94034524d13f5f42e6b0fae5129c44a9738ca2a79b893858429df93&o=",
-          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/776476936.jpg?k=ae8f1a76633da3ccc0ec7cb9e0a33c057bd0896243cab8beace6a4189304e6aa&o="
+          "//pix8.agoda.net/hotelImages/75836171/1177983412/0252a5de98d8627e39ea0cf6259ff1dd.png?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/75836171/1177983412/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
         ],
         "roomName": "Deluxe Double Room",
         "description": "[Hạng phòng: Deluxe | Diện tích: 30 m² | Hướng nhìn: CITY VIEW | Giường: 1 king bed] — Phòng Deluxe Double Room dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -1806,9 +1806,9 @@
           "formFields": {
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1177983412/ab4fd40d39dc571b3b6ecef7691a20f1.png?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1177983412/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
               "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/820635303.jpg?k=b6a043ccf94034524d13f5f42e6b0fae5129c44a9738ca2a79b893858429df93&o=",
-              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/776476936.jpg?k=ae8f1a76633da3ccc0ec7cb9e0a33c057bd0896243cab8beace6a4189304e6aa&o="
+              "//pix8.agoda.net/hotelImages/75836171/1177983412/0252a5de98d8627e39ea0cf6259ff1dd.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/75836171/1177983412/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
             ],
             "roomName": "Deluxe Double Room",
             "description": "[Hạng phòng: Deluxe | Diện tích: 30 m² | Hướng nhìn: CITY VIEW | Giường: 1 king bed] — Phòng Deluxe Double Room dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -1858,7 +1858,7 @@
               "Alcohol",
               "Non-smoking",
               "Private bathroom",
-              "Wi-Fi [free]"
+              "Closet"
             ],
             "rawBenefits": [
               "Breakfast",
@@ -1879,8 +1879,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1177983412",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         "BOOKING": {
@@ -1980,7 +1980,7 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "blockId:bbasic_0",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
         },
@@ -1993,9 +1993,9 @@
           "formFields": {
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1177983412/ab4fd40d39dc571b3b6ecef7691a20f1.png?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1177983412/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
               "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/820635303.jpg?k=b6a043ccf94034524d13f5f42e6b0fae5129c44a9738ca2a79b893858429df93&o=",
-              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/776476936.jpg?k=ae8f1a76633da3ccc0ec7cb9e0a33c057bd0896243cab8beace6a4189304e6aa&o="
+              "//pix8.agoda.net/hotelImages/75836171/1177983412/0252a5de98d8627e39ea0cf6259ff1dd.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/75836171/1177983412/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
             ],
             "roomName": "Deluxe Double Room",
             "description": "[Hạng phòng: Deluxe | Diện tích: 30 m² | Hướng nhìn: CITY VIEW | Giường: 1 king bed] — [Hạng phòng: Deluxe | Diện tích: 30 m² | Hướng nhìn: CITY VIEW | Giường: 1 king bed] — Phòng Deluxe Double Room dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -2045,7 +2045,7 @@
               "Alcohol",
               "Non-smoking",
               "Private bathroom",
-              "Wi-Fi [free]"
+              "Closet"
             ],
             "rawBenefits": [
               "Breakfast included"
@@ -2054,7 +2054,7 @@
           "liveProof": {
             "isLiveScraped": false,
             "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://goodnstay.com/en-US"
           }
         }
@@ -2068,9 +2068,9 @@
           "formFields": {
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1177983412/ab4fd40d39dc571b3b6ecef7691a20f1.png?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1177983412/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
               "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/820635303.jpg?k=b6a043ccf94034524d13f5f42e6b0fae5129c44a9738ca2a79b893858429df93&o=",
-              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/776476936.jpg?k=ae8f1a76633da3ccc0ec7cb9e0a33c057bd0896243cab8beace6a4189304e6aa&o="
+              "//pix8.agoda.net/hotelImages/75836171/1177983412/0252a5de98d8627e39ea0cf6259ff1dd.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/75836171/1177983412/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
             ],
             "roomName": "Deluxe Double Room",
             "description": "[Hạng phòng: Deluxe | Diện tích: 30 m² | Hướng nhìn: CITY VIEW | Giường: 1 king bed] — Phòng Deluxe Double Room dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -2120,7 +2120,7 @@
               "Alcohol",
               "Non-smoking",
               "Private bathroom",
-              "Wi-Fi [free]"
+              "Closet"
             ],
             "rawBenefits": [
               "Breakfast",
@@ -2141,8 +2141,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1177983412",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         {
@@ -2241,7 +2241,7 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "blockId:bbasic_0",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
         },
@@ -2253,9 +2253,9 @@
           "formFields": {
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1177983412/ab4fd40d39dc571b3b6ecef7691a20f1.png?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1177983412/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
               "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/820635303.jpg?k=b6a043ccf94034524d13f5f42e6b0fae5129c44a9738ca2a79b893858429df93&o=",
-              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/776476936.jpg?k=ae8f1a76633da3ccc0ec7cb9e0a33c057bd0896243cab8beace6a4189304e6aa&o="
+              "//pix8.agoda.net/hotelImages/75836171/1177983412/0252a5de98d8627e39ea0cf6259ff1dd.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/75836171/1177983412/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
             ],
             "roomName": "Deluxe Double Room",
             "description": "[Hạng phòng: Deluxe | Diện tích: 30 m² | Hướng nhìn: CITY VIEW | Giường: 1 king bed] — [Hạng phòng: Deluxe | Diện tích: 30 m² | Hướng nhìn: CITY VIEW | Giường: 1 king bed] — Phòng Deluxe Double Room dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -2305,7 +2305,7 @@
               "Alcohol",
               "Non-smoking",
               "Private bathroom",
-              "Wi-Fi [free]"
+              "Closet"
             ],
             "rawBenefits": [
               "Breakfast included"
@@ -2314,7 +2314,7 @@
           "liveProof": {
             "isLiveScraped": false,
             "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://goodnstay.com/en-US"
           }
         }
@@ -2407,8 +2407,8 @@
         "uploadPhotos": [
           "//pix8.agoda.net/hotelImages/75836171/1188793772/3ef85cee2251e3b77e2f043a3ceef631.jpg?ce=3&s=1024x768",
           "//pix8.agoda.net/hotelImages/75836171/1188793772/0e90b6da39167f314a310df6bd35fcde.jpg?ce=3&s=1024x768",
-          "//pix8.agoda.net/property/75836171/1596943128/e0017e50ea9eceaec2516b147a1662cd.jpeg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1188793772/eac8819fdebcc42501e7e46d0935ec22.jpg?ce=3&s=1024x768"
+          "//pix8.agoda.net/property/75836171/1596943128/1e97e3938396d2676c234d68cde13a6f.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/75836171/1596943128/e0017e50ea9eceaec2516b147a1662cd.jpeg?ce=3&s=1024x768"
         ],
         "roomName": "Premier Deluxe Twin",
         "description": "[Hạng phòng: Deluxe | Diện tích: 34 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Phòng Premier Deluxe Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -2435,8 +2435,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1188793772/3ef85cee2251e3b77e2f043a3ceef631.jpg?ce=3&s=1024x768",
               "//pix8.agoda.net/hotelImages/75836171/1188793772/0e90b6da39167f314a310df6bd35fcde.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/property/75836171/1596943128/e0017e50ea9eceaec2516b147a1662cd.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1188793772/eac8819fdebcc42501e7e46d0935ec22.jpg?ce=3&s=1024x768"
+              "//pix8.agoda.net/property/75836171/1596943128/1e97e3938396d2676c234d68cde13a6f.jpeg?ce=3&s=1024x768",
+              "//pix8.agoda.net/property/75836171/1596943128/e0017e50ea9eceaec2516b147a1662cd.jpeg?ce=3&s=1024x768"
             ],
             "roomName": "Premier Deluxe Twin",
             "description": "[Hạng phòng: Deluxe | Diện tích: 34 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Phòng Premier Deluxe Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -2486,7 +2486,7 @@
               "High floor",
               "Non-smoking",
               "Private bathroom",
-              "Wi-Fi [free]"
+              "Closet"
             ],
             "rawBenefits": [
               "Breakfast",
@@ -2507,8 +2507,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1188793772",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         "BOOKING": {
@@ -2580,7 +2580,7 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "blockId:1439989411_bbasic_0",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
         },
@@ -2594,8 +2594,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1188793772/3ef85cee2251e3b77e2f043a3ceef631.jpg?ce=3&s=1024x768",
               "//pix8.agoda.net/hotelImages/75836171/1188793772/0e90b6da39167f314a310df6bd35fcde.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/property/75836171/1596943128/e0017e50ea9eceaec2516b147a1662cd.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1188793772/eac8819fdebcc42501e7e46d0935ec22.jpg?ce=3&s=1024x768"
+              "//pix8.agoda.net/property/75836171/1596943128/1e97e3938396d2676c234d68cde13a6f.jpeg?ce=3&s=1024x768",
+              "//pix8.agoda.net/property/75836171/1596943128/e0017e50ea9eceaec2516b147a1662cd.jpeg?ce=3&s=1024x768"
             ],
             "roomName": "Premier Deluxe Twin",
             "description": "[Hạng phòng: Deluxe | Diện tích: 34 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — [Hạng phòng: Deluxe | Diện tích: 34 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Phòng Premier Deluxe Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -2645,7 +2645,7 @@
               "High floor",
               "Non-smoking",
               "Private bathroom",
-              "Wi-Fi [free]"
+              "Closet"
             ],
             "rawBenefits": [
               "Breakfast included"
@@ -2654,7 +2654,7 @@
           "liveProof": {
             "isLiveScraped": false,
             "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://goodnstay.com/en-US"
           }
         }
@@ -2669,8 +2669,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1188793772/3ef85cee2251e3b77e2f043a3ceef631.jpg?ce=3&s=1024x768",
               "//pix8.agoda.net/hotelImages/75836171/1188793772/0e90b6da39167f314a310df6bd35fcde.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/property/75836171/1596943128/e0017e50ea9eceaec2516b147a1662cd.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1188793772/eac8819fdebcc42501e7e46d0935ec22.jpg?ce=3&s=1024x768"
+              "//pix8.agoda.net/property/75836171/1596943128/1e97e3938396d2676c234d68cde13a6f.jpeg?ce=3&s=1024x768",
+              "//pix8.agoda.net/property/75836171/1596943128/e0017e50ea9eceaec2516b147a1662cd.jpeg?ce=3&s=1024x768"
             ],
             "roomName": "Premier Deluxe Twin",
             "description": "[Hạng phòng: Deluxe | Diện tích: 34 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Phòng Premier Deluxe Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -2720,7 +2720,7 @@
               "High floor",
               "Non-smoking",
               "Private bathroom",
-              "Wi-Fi [free]"
+              "Closet"
             ],
             "rawBenefits": [
               "Breakfast",
@@ -2741,8 +2741,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1188793772",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         {
@@ -2813,7 +2813,7 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "blockId:1439989411_bbasic_0",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
         },
@@ -2826,8 +2826,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1188793772/3ef85cee2251e3b77e2f043a3ceef631.jpg?ce=3&s=1024x768",
               "//pix8.agoda.net/hotelImages/75836171/1188793772/0e90b6da39167f314a310df6bd35fcde.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/property/75836171/1596943128/e0017e50ea9eceaec2516b147a1662cd.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1188793772/eac8819fdebcc42501e7e46d0935ec22.jpg?ce=3&s=1024x768"
+              "//pix8.agoda.net/property/75836171/1596943128/1e97e3938396d2676c234d68cde13a6f.jpeg?ce=3&s=1024x768",
+              "//pix8.agoda.net/property/75836171/1596943128/e0017e50ea9eceaec2516b147a1662cd.jpeg?ce=3&s=1024x768"
             ],
             "roomName": "Premier Deluxe Twin",
             "description": "[Hạng phòng: Deluxe | Diện tích: 34 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — [Hạng phòng: Deluxe | Diện tích: 34 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Phòng Premier Deluxe Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -2877,7 +2877,7 @@
               "High floor",
               "Non-smoking",
               "Private bathroom",
-              "Wi-Fi [free]"
+              "Closet"
             ],
             "rawBenefits": [
               "Breakfast included"
@@ -2886,7 +2886,7 @@
           "liveProof": {
             "isLiveScraped": false,
             "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://goodnstay.com/en-US"
           }
         }
@@ -2978,9 +2978,9 @@
       "sampleGoodNStayForm": {
         "uploadPhotos": [
           "//pix8.agoda.net/hotelImages/75836171/1183375174/930840599eb4cda87e8abeffa70f92e7.png?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1183375174/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
           "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785141445.jpg?k=7b22aa9c969558e9eb82420694251d28c246f1a5bce798aa7e5eb5f4fb3d8507&o=",
-          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785141060.jpg?k=5ebd25e22b6a681aa132df12602b2ce287081807a922b45663871e8750ccc2a5&o="
+          "//pix8.agoda.net/hotelImages/75836171/1183375174/f0db8f75043925b3a0ad1371e0e874b8.jpg?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/75836171/1183375174/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
         ],
         "roomName": "Premier Deluxe Double",
         "description": "[Hạng phòng: Deluxe | Diện tích: 34 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — Phòng Premier Deluxe Double dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -3006,9 +3006,9 @@
           "formFields": {
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1183375174/930840599eb4cda87e8abeffa70f92e7.png?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1183375174/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
               "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785141445.jpg?k=7b22aa9c969558e9eb82420694251d28c246f1a5bce798aa7e5eb5f4fb3d8507&o=",
-              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785141060.jpg?k=5ebd25e22b6a681aa132df12602b2ce287081807a922b45663871e8750ccc2a5&o="
+              "//pix8.agoda.net/hotelImages/75836171/1183375174/f0db8f75043925b3a0ad1371e0e874b8.jpg?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/75836171/1183375174/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
             ],
             "roomName": "Premier Deluxe Double",
             "description": "[Hạng phòng: Deluxe | Diện tích: 34 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — Phòng Premier Deluxe Double dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -3058,7 +3058,7 @@
               "High floor",
               "Non-smoking",
               "Private bathroom",
-              "Wi-Fi [free]"
+              "Closet"
             ],
             "rawBenefits": [
               "Breakfast",
@@ -3079,8 +3079,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1183375174",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         "BOOKING": {
@@ -3152,7 +3152,7 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "blockId:1439989402_bbasic_0",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
         },
@@ -3165,9 +3165,9 @@
           "formFields": {
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1183375174/930840599eb4cda87e8abeffa70f92e7.png?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1183375174/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
               "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785141445.jpg?k=7b22aa9c969558e9eb82420694251d28c246f1a5bce798aa7e5eb5f4fb3d8507&o=",
-              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785141060.jpg?k=5ebd25e22b6a681aa132df12602b2ce287081807a922b45663871e8750ccc2a5&o="
+              "//pix8.agoda.net/hotelImages/75836171/1183375174/f0db8f75043925b3a0ad1371e0e874b8.jpg?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/75836171/1183375174/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
             ],
             "roomName": "Premier Deluxe Double",
             "description": "[Hạng phòng: Deluxe | Diện tích: 34 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — [Hạng phòng: Deluxe | Diện tích: 34 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — Phòng Premier Deluxe Double dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -3217,7 +3217,7 @@
               "High floor",
               "Non-smoking",
               "Private bathroom",
-              "Wi-Fi [free]"
+              "Closet"
             ],
             "rawBenefits": [
               "Breakfast included"
@@ -3226,7 +3226,7 @@
           "liveProof": {
             "isLiveScraped": false,
             "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://goodnstay.com/en-US"
           }
         }
@@ -3240,9 +3240,9 @@
           "formFields": {
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1183375174/930840599eb4cda87e8abeffa70f92e7.png?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1183375174/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
               "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785141445.jpg?k=7b22aa9c969558e9eb82420694251d28c246f1a5bce798aa7e5eb5f4fb3d8507&o=",
-              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785141060.jpg?k=5ebd25e22b6a681aa132df12602b2ce287081807a922b45663871e8750ccc2a5&o="
+              "//pix8.agoda.net/hotelImages/75836171/1183375174/f0db8f75043925b3a0ad1371e0e874b8.jpg?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/75836171/1183375174/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
             ],
             "roomName": "Premier Deluxe Double",
             "description": "[Hạng phòng: Deluxe | Diện tích: 34 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — Phòng Premier Deluxe Double dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -3292,7 +3292,7 @@
               "High floor",
               "Non-smoking",
               "Private bathroom",
-              "Wi-Fi [free]"
+              "Closet"
             ],
             "rawBenefits": [
               "Breakfast",
@@ -3313,8 +3313,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1183375174",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         {
@@ -3385,7 +3385,7 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "blockId:1439989402_bbasic_0",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
         },
@@ -3397,9 +3397,9 @@
           "formFields": {
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1183375174/930840599eb4cda87e8abeffa70f92e7.png?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1183375174/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
               "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785141445.jpg?k=7b22aa9c969558e9eb82420694251d28c246f1a5bce798aa7e5eb5f4fb3d8507&o=",
-              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785141060.jpg?k=5ebd25e22b6a681aa132df12602b2ce287081807a922b45663871e8750ccc2a5&o="
+              "//pix8.agoda.net/hotelImages/75836171/1183375174/f0db8f75043925b3a0ad1371e0e874b8.jpg?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/75836171/1183375174/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
             ],
             "roomName": "Premier Deluxe Double",
             "description": "[Hạng phòng: Deluxe | Diện tích: 34 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — [Hạng phòng: Deluxe | Diện tích: 34 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — Phòng Premier Deluxe Double dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -3449,7 +3449,7 @@
               "High floor",
               "Non-smoking",
               "Private bathroom",
-              "Wi-Fi [free]"
+              "Closet"
             ],
             "rawBenefits": [
               "Breakfast included"
@@ -3458,7 +3458,7 @@
           "liveProof": {
             "isLiveScraped": false,
             "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://goodnstay.com/en-US"
           }
         }
@@ -3550,9 +3550,9 @@
       "sampleGoodNStayForm": {
         "uploadPhotos": [
           "//pix8.agoda.net/property/75836171/1333155718/f70d6d79a4e3f571e8763dfc15f19c64.jpeg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1184380968/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
           "//pix8.agoda.net/hotelImages/75836171/1184380968/2de60e1ce9cb94179e9cfab226428f33.jpg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1184380968/ca484c6a4a700e377a8d6c1459b7e6eb.jpg?ce=3&s=1024x768"
+          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785142646.jpg?k=3881d268ca3869eaa0f94c465863a8e2cec130d8e3f1516ef06084a2b7ffb1be&o=",
+          "//pix8.agoda.net/hotelImages/75836171/1184380968/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
         ],
         "roomName": "Champa Deluxe Double",
         "description": "[Hạng phòng: Deluxe | Diện tích: 38 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — Phòng Champa Deluxe Double dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -3578,9 +3578,9 @@
           "formFields": {
             "uploadPhotos": [
               "//pix8.agoda.net/property/75836171/1333155718/f70d6d79a4e3f571e8763dfc15f19c64.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184380968/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
               "//pix8.agoda.net/hotelImages/75836171/1184380968/2de60e1ce9cb94179e9cfab226428f33.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184380968/ca484c6a4a700e377a8d6c1459b7e6eb.jpg?ce=3&s=1024x768"
+              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785142646.jpg?k=3881d268ca3869eaa0f94c465863a8e2cec130d8e3f1516ef06084a2b7ffb1be&o=",
+              "//pix8.agoda.net/hotelImages/75836171/1184380968/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
             ],
             "roomName": "Champa Deluxe Double",
             "description": "[Hạng phòng: Deluxe | Diện tích: 38 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — Phòng Champa Deluxe Double dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -3644,8 +3644,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1184380968",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         "BOOKING": {
@@ -3719,7 +3719,7 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "blockId:1439989403_422117175_2_1_0_1172609",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
         },
@@ -3732,9 +3732,9 @@
           "formFields": {
             "uploadPhotos": [
               "//pix8.agoda.net/property/75836171/1333155718/f70d6d79a4e3f571e8763dfc15f19c64.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184380968/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
               "//pix8.agoda.net/hotelImages/75836171/1184380968/2de60e1ce9cb94179e9cfab226428f33.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184380968/ca484c6a4a700e377a8d6c1459b7e6eb.jpg?ce=3&s=1024x768"
+              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785142646.jpg?k=3881d268ca3869eaa0f94c465863a8e2cec130d8e3f1516ef06084a2b7ffb1be&o=",
+              "//pix8.agoda.net/hotelImages/75836171/1184380968/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
             ],
             "roomName": "Champa Deluxe Double",
             "description": "[Hạng phòng: Deluxe | Diện tích: 38 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — [Hạng phòng: Deluxe | Diện tích: 38 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — Phòng Champa Deluxe Double dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -3793,7 +3793,7 @@
           "liveProof": {
             "isLiveScraped": false,
             "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://goodnstay.com/en-US"
           }
         }
@@ -3807,9 +3807,9 @@
           "formFields": {
             "uploadPhotos": [
               "//pix8.agoda.net/property/75836171/1333155718/f70d6d79a4e3f571e8763dfc15f19c64.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184380968/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
               "//pix8.agoda.net/hotelImages/75836171/1184380968/2de60e1ce9cb94179e9cfab226428f33.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184380968/ca484c6a4a700e377a8d6c1459b7e6eb.jpg?ce=3&s=1024x768"
+              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785142646.jpg?k=3881d268ca3869eaa0f94c465863a8e2cec130d8e3f1516ef06084a2b7ffb1be&o=",
+              "//pix8.agoda.net/hotelImages/75836171/1184380968/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
             ],
             "roomName": "Champa Deluxe Double",
             "description": "[Hạng phòng: Deluxe | Diện tích: 38 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — Phòng Champa Deluxe Double dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -3873,8 +3873,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1184380968",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         {
@@ -3947,7 +3947,7 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "blockId:1439989403_422117175_2_1_0_1172609",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
         },
@@ -3959,9 +3959,9 @@
           "formFields": {
             "uploadPhotos": [
               "//pix8.agoda.net/property/75836171/1333155718/f70d6d79a4e3f571e8763dfc15f19c64.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184380968/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
               "//pix8.agoda.net/hotelImages/75836171/1184380968/2de60e1ce9cb94179e9cfab226428f33.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184380968/ca484c6a4a700e377a8d6c1459b7e6eb.jpg?ce=3&s=1024x768"
+              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785142646.jpg?k=3881d268ca3869eaa0f94c465863a8e2cec130d8e3f1516ef06084a2b7ffb1be&o=",
+              "//pix8.agoda.net/hotelImages/75836171/1184380968/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
             ],
             "roomName": "Champa Deluxe Double",
             "description": "[Hạng phòng: Deluxe | Diện tích: 38 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — [Hạng phòng: Deluxe | Diện tích: 38 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — Phòng Champa Deluxe Double dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -4020,7 +4020,7 @@
           "liveProof": {
             "isLiveScraped": false,
             "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://goodnstay.com/en-US"
           }
         }
@@ -4113,8 +4113,8 @@
         "uploadPhotos": [
           "//pix8.agoda.net/property/75836171/1596943134/ec11a5d18e36f15fd2ab2c094a5735b8.jpeg?ce=3&s=1024x768",
           "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785142388.jpg?k=2bcd6e47a5b9b0c86acee7628177a7f3298552e7c8726f9a79d1991ac9528c15&o=",
-          "//pix8.agoda.net/property/75836171/1596943134/708d8c8a97e0aa0265fccf613b5498b5.jpeg?ce=3&s=1024x768",
-          "//pix8.agoda.net/property/75836171/1596943134/ebfebe82909e74a199adc1296372a939.jpeg?ce=3&s=1024x768"
+          "//pix8.agoda.net/property/75836171/1596943134/98a4524ccc21b903b0a669a6ea77fc46.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/75836171/1596943134/708d8c8a97e0aa0265fccf613b5498b5.jpeg?ce=3&s=1024x768"
         ],
         "roomName": "Champa Deluxe Twin",
         "description": "[Hạng phòng: Deluxe | Diện tích: 38 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Phòng Champa Deluxe Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -4141,8 +4141,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/property/75836171/1596943134/ec11a5d18e36f15fd2ab2c094a5735b8.jpeg?ce=3&s=1024x768",
               "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785142388.jpg?k=2bcd6e47a5b9b0c86acee7628177a7f3298552e7c8726f9a79d1991ac9528c15&o=",
-              "//pix8.agoda.net/property/75836171/1596943134/708d8c8a97e0aa0265fccf613b5498b5.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/property/75836171/1596943134/ebfebe82909e74a199adc1296372a939.jpeg?ce=3&s=1024x768"
+              "//pix8.agoda.net/property/75836171/1596943134/98a4524ccc21b903b0a669a6ea77fc46.jpeg?ce=3&s=1024x768",
+              "//pix8.agoda.net/property/75836171/1596943134/708d8c8a97e0aa0265fccf613b5498b5.jpeg?ce=3&s=1024x768"
             ],
             "roomName": "Champa Deluxe Twin",
             "description": "[Hạng phòng: Deluxe | Diện tích: 38 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Phòng Champa Deluxe Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -4206,8 +4206,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1188794611",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         "BOOKING": {
@@ -4281,7 +4281,7 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "blockId:1439989412_422117175_2_1_0_1172609",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
         },
@@ -4295,8 +4295,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/property/75836171/1596943134/ec11a5d18e36f15fd2ab2c094a5735b8.jpeg?ce=3&s=1024x768",
               "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785142388.jpg?k=2bcd6e47a5b9b0c86acee7628177a7f3298552e7c8726f9a79d1991ac9528c15&o=",
-              "//pix8.agoda.net/property/75836171/1596943134/708d8c8a97e0aa0265fccf613b5498b5.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/property/75836171/1596943134/ebfebe82909e74a199adc1296372a939.jpeg?ce=3&s=1024x768"
+              "//pix8.agoda.net/property/75836171/1596943134/98a4524ccc21b903b0a669a6ea77fc46.jpeg?ce=3&s=1024x768",
+              "//pix8.agoda.net/property/75836171/1596943134/708d8c8a97e0aa0265fccf613b5498b5.jpeg?ce=3&s=1024x768"
             ],
             "roomName": "Champa Deluxe Twin",
             "description": "[Hạng phòng: Deluxe | Diện tích: 38 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — [Hạng phòng: Deluxe | Diện tích: 38 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Phòng Champa Deluxe Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -4355,7 +4355,7 @@
           "liveProof": {
             "isLiveScraped": false,
             "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://goodnstay.com/en-US"
           }
         }
@@ -4370,8 +4370,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/property/75836171/1596943134/ec11a5d18e36f15fd2ab2c094a5735b8.jpeg?ce=3&s=1024x768",
               "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785142388.jpg?k=2bcd6e47a5b9b0c86acee7628177a7f3298552e7c8726f9a79d1991ac9528c15&o=",
-              "//pix8.agoda.net/property/75836171/1596943134/708d8c8a97e0aa0265fccf613b5498b5.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/property/75836171/1596943134/ebfebe82909e74a199adc1296372a939.jpeg?ce=3&s=1024x768"
+              "//pix8.agoda.net/property/75836171/1596943134/98a4524ccc21b903b0a669a6ea77fc46.jpeg?ce=3&s=1024x768",
+              "//pix8.agoda.net/property/75836171/1596943134/708d8c8a97e0aa0265fccf613b5498b5.jpeg?ce=3&s=1024x768"
             ],
             "roomName": "Champa Deluxe Twin",
             "description": "[Hạng phòng: Deluxe | Diện tích: 38 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Phòng Champa Deluxe Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -4435,8 +4435,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1188794611",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         {
@@ -4509,7 +4509,7 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "blockId:1439989412_422117175_2_1_0_1172609",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
         },
@@ -4522,8 +4522,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/property/75836171/1596943134/ec11a5d18e36f15fd2ab2c094a5735b8.jpeg?ce=3&s=1024x768",
               "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785142388.jpg?k=2bcd6e47a5b9b0c86acee7628177a7f3298552e7c8726f9a79d1991ac9528c15&o=",
-              "//pix8.agoda.net/property/75836171/1596943134/708d8c8a97e0aa0265fccf613b5498b5.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/property/75836171/1596943134/ebfebe82909e74a199adc1296372a939.jpeg?ce=3&s=1024x768"
+              "//pix8.agoda.net/property/75836171/1596943134/98a4524ccc21b903b0a669a6ea77fc46.jpeg?ce=3&s=1024x768",
+              "//pix8.agoda.net/property/75836171/1596943134/708d8c8a97e0aa0265fccf613b5498b5.jpeg?ce=3&s=1024x768"
             ],
             "roomName": "Champa Deluxe Twin",
             "description": "[Hạng phòng: Deluxe | Diện tích: 38 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — [Hạng phòng: Deluxe | Diện tích: 38 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Phòng Champa Deluxe Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -4582,7 +4582,7 @@
           "liveProof": {
             "isLiveScraped": false,
             "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://goodnstay.com/en-US"
           }
         }
@@ -4675,8 +4675,8 @@
         "uploadPhotos": [
           "//pix8.agoda.net/hotelImages/75836171/1184429603/523f4f46fd35b880023b5fe9111a5d7b.jpg?ce=3&s=1024x768",
           "//pix8.agoda.net/hotelImages/75836171/1184429603/9a65cfacf800e4b6d8b9f6f8cd722b75.jpg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1184429603/3f2816c78565f046b0f6c3d30c24fbad.jpg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1184429603/746ee17134abae89a8314a32c818d2cb.jpg?ce=3&s=1024x768"
+          "//pix8.agoda.net/hotelImages/75836171/1184429603/d021ec198ac600b9631f036b9c7a2d99.png?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/75836171/1184429603/3f2816c78565f046b0f6c3d30c24fbad.jpg?ce=3&s=1024x768"
         ],
         "roomName": "Champa Junior Suite",
         "description": "[Hạng phòng: Suite | Diện tích: 40 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — Phòng Champa Junior Suite dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -4703,8 +4703,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1184429603/523f4f46fd35b880023b5fe9111a5d7b.jpg?ce=3&s=1024x768",
               "//pix8.agoda.net/hotelImages/75836171/1184429603/9a65cfacf800e4b6d8b9f6f8cd722b75.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184429603/3f2816c78565f046b0f6c3d30c24fbad.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184429603/746ee17134abae89a8314a32c818d2cb.jpg?ce=3&s=1024x768"
+              "//pix8.agoda.net/hotelImages/75836171/1184429603/d021ec198ac600b9631f036b9c7a2d99.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/75836171/1184429603/3f2816c78565f046b0f6c3d30c24fbad.jpg?ce=3&s=1024x768"
             ],
             "roomName": "Champa Junior Suite",
             "description": "[Hạng phòng: Suite | Diện tích: 40 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — Phòng Champa Junior Suite dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -4768,8 +4768,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1184429603",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         "BOOKING": {
@@ -4844,7 +4844,7 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "blockId:1439989406_422117175_2_1_0_1172609",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
         },
@@ -4858,8 +4858,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1184429603/523f4f46fd35b880023b5fe9111a5d7b.jpg?ce=3&s=1024x768",
               "//pix8.agoda.net/hotelImages/75836171/1184429603/9a65cfacf800e4b6d8b9f6f8cd722b75.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184429603/3f2816c78565f046b0f6c3d30c24fbad.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184429603/746ee17134abae89a8314a32c818d2cb.jpg?ce=3&s=1024x768"
+              "//pix8.agoda.net/hotelImages/75836171/1184429603/d021ec198ac600b9631f036b9c7a2d99.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/75836171/1184429603/3f2816c78565f046b0f6c3d30c24fbad.jpg?ce=3&s=1024x768"
             ],
             "roomName": "Champa Junior Suite",
             "description": "[Hạng phòng: Suite | Diện tích: 40 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — [Hạng phòng: Suite | Diện tích: 40 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — Phòng Champa Junior Suite dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -4918,7 +4918,7 @@
           "liveProof": {
             "isLiveScraped": false,
             "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://goodnstay.com/en-US"
           }
         }
@@ -4933,8 +4933,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1184429603/523f4f46fd35b880023b5fe9111a5d7b.jpg?ce=3&s=1024x768",
               "//pix8.agoda.net/hotelImages/75836171/1184429603/9a65cfacf800e4b6d8b9f6f8cd722b75.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184429603/3f2816c78565f046b0f6c3d30c24fbad.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184429603/746ee17134abae89a8314a32c818d2cb.jpg?ce=3&s=1024x768"
+              "//pix8.agoda.net/hotelImages/75836171/1184429603/d021ec198ac600b9631f036b9c7a2d99.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/75836171/1184429603/3f2816c78565f046b0f6c3d30c24fbad.jpg?ce=3&s=1024x768"
             ],
             "roomName": "Champa Junior Suite",
             "description": "[Hạng phòng: Suite | Diện tích: 40 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — Phòng Champa Junior Suite dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -4998,8 +4998,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1184429603",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         {
@@ -5073,7 +5073,7 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "blockId:1439989405_422117175_2_1_0_1172609",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
         },
@@ -5150,7 +5150,7 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "blockId:1439989406_422117175_2_1_0_1172609",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
         },
@@ -5163,8 +5163,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1184429603/523f4f46fd35b880023b5fe9111a5d7b.jpg?ce=3&s=1024x768",
               "//pix8.agoda.net/hotelImages/75836171/1184429603/9a65cfacf800e4b6d8b9f6f8cd722b75.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184429603/3f2816c78565f046b0f6c3d30c24fbad.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184429603/746ee17134abae89a8314a32c818d2cb.jpg?ce=3&s=1024x768"
+              "//pix8.agoda.net/hotelImages/75836171/1184429603/d021ec198ac600b9631f036b9c7a2d99.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/75836171/1184429603/3f2816c78565f046b0f6c3d30c24fbad.jpg?ce=3&s=1024x768"
             ],
             "roomName": "Champa Junior Suite",
             "description": "[Hạng phòng: Suite | Diện tích: 40 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — [Hạng phòng: Suite | Diện tích: 40 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — Phòng Champa Junior Suite dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -5223,7 +5223,7 @@
           "liveProof": {
             "isLiveScraped": false,
             "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://goodnstay.com/en-US"
           }
         }
@@ -5316,8 +5316,8 @@
         "uploadPhotos": [
           "//pix8.agoda.net/hotelImages/75836171/1184432353/f2f5a084ef0f2b3075b982520efde476.jpeg?ce=3&s=1024x768",
           "//pix8.agoda.net/hotelImages/75836171/1184432353/0a4eee0bf55ecb08a565514d5a2c1b7e.jpeg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1184432353/56d3686c20cc592d4dc3ca236b29a679.jpg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1184432353/ee1861fcf28208efa91f8abc5c5742ed.png?ce=3&s=1024x768"
+          "//pix8.agoda.net/hotelImages/75836171/1184432353/7df01cb08882c39311b3fb5f07d11003.png?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/75836171/1184432353/56d3686c20cc592d4dc3ca236b29a679.jpg?ce=3&s=1024x768"
         ],
         "roomName": "Terrace Suite",
         "description": "[Hạng phòng: Suite | Diện tích: 60 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Phòng Terrace Suite dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -5344,8 +5344,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1184432353/f2f5a084ef0f2b3075b982520efde476.jpeg?ce=3&s=1024x768",
               "//pix8.agoda.net/hotelImages/75836171/1184432353/0a4eee0bf55ecb08a565514d5a2c1b7e.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184432353/56d3686c20cc592d4dc3ca236b29a679.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184432353/ee1861fcf28208efa91f8abc5c5742ed.png?ce=3&s=1024x768"
+              "//pix8.agoda.net/hotelImages/75836171/1184432353/7df01cb08882c39311b3fb5f07d11003.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/75836171/1184432353/56d3686c20cc592d4dc3ca236b29a679.jpg?ce=3&s=1024x768"
             ],
             "roomName": "Terrace Suite",
             "description": "[Hạng phòng: Suite | Diện tích: 60 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Phòng Terrace Suite dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -5409,8 +5409,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1184432353",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         "GOODNSTAY": {
@@ -5423,8 +5423,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1184432353/f2f5a084ef0f2b3075b982520efde476.jpeg?ce=3&s=1024x768",
               "//pix8.agoda.net/hotelImages/75836171/1184432353/0a4eee0bf55ecb08a565514d5a2c1b7e.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184432353/56d3686c20cc592d4dc3ca236b29a679.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184432353/ee1861fcf28208efa91f8abc5c5742ed.png?ce=3&s=1024x768"
+              "//pix8.agoda.net/hotelImages/75836171/1184432353/7df01cb08882c39311b3fb5f07d11003.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/75836171/1184432353/56d3686c20cc592d4dc3ca236b29a679.jpg?ce=3&s=1024x768"
             ],
             "roomName": "Terrace Suite",
             "description": "[Hạng phòng: Suite | Diện tích: 60 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — [Hạng phòng: Suite | Diện tích: 60 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Phòng Terrace Suite dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -5483,7 +5483,7 @@
           "liveProof": {
             "isLiveScraped": false,
             "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://goodnstay.com/en-US"
           }
         }
@@ -5498,8 +5498,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1184432353/f2f5a084ef0f2b3075b982520efde476.jpeg?ce=3&s=1024x768",
               "//pix8.agoda.net/hotelImages/75836171/1184432353/0a4eee0bf55ecb08a565514d5a2c1b7e.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184432353/56d3686c20cc592d4dc3ca236b29a679.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184432353/ee1861fcf28208efa91f8abc5c5742ed.png?ce=3&s=1024x768"
+              "//pix8.agoda.net/hotelImages/75836171/1184432353/7df01cb08882c39311b3fb5f07d11003.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/75836171/1184432353/56d3686c20cc592d4dc3ca236b29a679.jpg?ce=3&s=1024x768"
             ],
             "roomName": "Terrace Suite",
             "description": "[Hạng phòng: Suite | Diện tích: 60 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Phòng Terrace Suite dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -5563,8 +5563,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1184432353",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         {
@@ -5576,8 +5576,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1184432353/f2f5a084ef0f2b3075b982520efde476.jpeg?ce=3&s=1024x768",
               "//pix8.agoda.net/hotelImages/75836171/1184432353/0a4eee0bf55ecb08a565514d5a2c1b7e.jpeg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184432353/56d3686c20cc592d4dc3ca236b29a679.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1184432353/ee1861fcf28208efa91f8abc5c5742ed.png?ce=3&s=1024x768"
+              "//pix8.agoda.net/hotelImages/75836171/1184432353/7df01cb08882c39311b3fb5f07d11003.png?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/75836171/1184432353/56d3686c20cc592d4dc3ca236b29a679.jpg?ce=3&s=1024x768"
             ],
             "roomName": "Terrace Suite",
             "description": "[Hạng phòng: Suite | Diện tích: 60 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — [Hạng phòng: Suite | Diện tích: 60 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Phòng Terrace Suite dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -5636,7 +5636,7 @@
           "liveProof": {
             "isLiveScraped": false,
             "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://goodnstay.com/en-US"
           }
         }
@@ -5713,8 +5713,8 @@
         "uploadPhotos": [
           "//pix8.agoda.net/hotelImages/75836171/1184453735/fdf293d5b06d82fea05be8b7057bf782.jpg?ce=3&s=1024x768",
           "//pix8.agoda.net/hotelImages/75836171/1184453735/d310404b6f847377903da8ee60ee844b.jpg?ce=3&s=1024x768",
-          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861935915.jpg?k=5dcec7d8f01692fbc04928b5a084bd953db3ce91b7a945061e62d0b3c538d4dc&o=",
-          "//pix8.agoda.net/hotelImages/75836171/1184453735/9fd97588fb4701340d918b1462569ebd.jpg?ce=3&s=1024x768"
+          "//pix8.agoda.net/hotelImages/75836171/1184453735/28f6ff8a3097a3be16fdb3daa6cf49eb.jpg?ce=3&s=1024x768",
+          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861935915.jpg?k=5dcec7d8f01692fbc04928b5a084bd953db3ce91b7a945061e62d0b3c538d4dc&o="
         ],
         "roomName": "Family Suite",
         "description": "[Hạng phòng: Suite | Diện tích: 100 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds & 1 king bed] — Phòng Family Suite dành cho tối đa 4 khách. Trang bị đầy đủ: Minibar, Television, Free Wi-Fi, Air Conditioner.",
@@ -5742,8 +5742,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1184453735/fdf293d5b06d82fea05be8b7057bf782.jpg?ce=3&s=1024x768",
               "//pix8.agoda.net/hotelImages/75836171/1184453735/d310404b6f847377903da8ee60ee844b.jpg?ce=3&s=1024x768",
-              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861935915.jpg?k=5dcec7d8f01692fbc04928b5a084bd953db3ce91b7a945061e62d0b3c538d4dc&o=",
-              "//pix8.agoda.net/hotelImages/75836171/1184453735/9fd97588fb4701340d918b1462569ebd.jpg?ce=3&s=1024x768"
+              "//pix8.agoda.net/hotelImages/75836171/1184453735/28f6ff8a3097a3be16fdb3daa6cf49eb.jpg?ce=3&s=1024x768",
+              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861935915.jpg?k=5dcec7d8f01692fbc04928b5a084bd953db3ce91b7a945061e62d0b3c538d4dc&o="
             ],
             "roomName": "Family Suite",
             "description": "[Hạng phòng: Suite | Diện tích: 100 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds & 1 king bed] — Phòng Family Suite dành cho tối đa 4 khách. Trang bị đầy đủ: Minibar, Television, Free Wi-Fi, Air Conditioner.",
@@ -5815,8 +5815,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1225347102",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         "GOODNSTAY": {
@@ -5829,8 +5829,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1184453735/fdf293d5b06d82fea05be8b7057bf782.jpg?ce=3&s=1024x768",
               "//pix8.agoda.net/hotelImages/75836171/1184453735/d310404b6f847377903da8ee60ee844b.jpg?ce=3&s=1024x768",
-              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861935915.jpg?k=5dcec7d8f01692fbc04928b5a084bd953db3ce91b7a945061e62d0b3c538d4dc&o=",
-              "//pix8.agoda.net/hotelImages/75836171/1184453735/9fd97588fb4701340d918b1462569ebd.jpg?ce=3&s=1024x768"
+              "//pix8.agoda.net/hotelImages/75836171/1184453735/28f6ff8a3097a3be16fdb3daa6cf49eb.jpg?ce=3&s=1024x768",
+              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861935915.jpg?k=5dcec7d8f01692fbc04928b5a084bd953db3ce91b7a945061e62d0b3c538d4dc&o="
             ],
             "roomName": "Family Suite",
             "description": "[Hạng phòng: Suite | Diện tích: 100 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds & 1 king bed] — [Hạng phòng: Suite | Diện tích: 100 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds & 1 king bed] — Phòng Family Suite dành cho tối đa 4 khách. Trang bị đầy đủ: Minibar, Television, Free Wi-Fi, Air Conditioner.",
@@ -5890,7 +5890,7 @@
           "liveProof": {
             "isLiveScraped": false,
             "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://goodnstay.com/en-US"
           }
         }
@@ -5905,8 +5905,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1184453735/fdf293d5b06d82fea05be8b7057bf782.jpg?ce=3&s=1024x768",
               "//pix8.agoda.net/hotelImages/75836171/1184453735/d310404b6f847377903da8ee60ee844b.jpg?ce=3&s=1024x768",
-              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861935915.jpg?k=5dcec7d8f01692fbc04928b5a084bd953db3ce91b7a945061e62d0b3c538d4dc&o=",
-              "//pix8.agoda.net/hotelImages/75836171/1184453735/9fd97588fb4701340d918b1462569ebd.jpg?ce=3&s=1024x768"
+              "//pix8.agoda.net/hotelImages/75836171/1184453735/28f6ff8a3097a3be16fdb3daa6cf49eb.jpg?ce=3&s=1024x768",
+              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861935915.jpg?k=5dcec7d8f01692fbc04928b5a084bd953db3ce91b7a945061e62d0b3c538d4dc&o="
             ],
             "roomName": "Family Suite",
             "description": "[Hạng phòng: Suite | Diện tích: 100 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds & 1 king bed] — Phòng Family Suite dành cho tối đa 4 khách. Trang bị đầy đủ: Minibar, Television, Free Wi-Fi, Air Conditioner.",
@@ -5978,8 +5978,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1184453735",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         {
@@ -5991,8 +5991,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1225347102/6084eafe76bb9bf9e31e23bdd892924a.jpg?ce=3&s=1024x768",
               "//pix8.agoda.net/hotelImages/75836171/1225347102/596612ba9a95837a88ea2a6932da4117.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1225347102/824a13cdcdff741197ade5a9a80e8418.jpg?ce=3&s=1024x768",
-              "//pix8.agoda.net/hotelImages/75836171/1225347102/2bc39e3302ca1f4e7a0b219083e1f3ab.jpg?ce=3&s=1024x768"
+              "//pix8.agoda.net/property/75836171/1234335814/5b1837cd47971dcd97d00949023efd65.jpeg?ce=3&s=1024x768",
+              "//pix8.agoda.net/hotelImages/75836171/1225347102/824a13cdcdff741197ade5a9a80e8418.jpg?ce=3&s=1024x768"
             ],
             "roomName": "Execuitve Suite",
             "description": "[Hạng phòng: Suite | Diện tích: 120 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds & 1 king bed] — Phòng Execuitve Suite dành cho tối đa 4 khách. Trang bị đầy đủ: Minibar, Television, Free Wi-Fi, Air Conditioner.",
@@ -6064,8 +6064,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1225347102",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         {
@@ -6077,8 +6077,8 @@
             "uploadPhotos": [
               "//pix8.agoda.net/hotelImages/75836171/1184453735/fdf293d5b06d82fea05be8b7057bf782.jpg?ce=3&s=1024x768",
               "//pix8.agoda.net/hotelImages/75836171/1184453735/d310404b6f847377903da8ee60ee844b.jpg?ce=3&s=1024x768",
-              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861935915.jpg?k=5dcec7d8f01692fbc04928b5a084bd953db3ce91b7a945061e62d0b3c538d4dc&o=",
-              "//pix8.agoda.net/hotelImages/75836171/1184453735/9fd97588fb4701340d918b1462569ebd.jpg?ce=3&s=1024x768"
+              "//pix8.agoda.net/hotelImages/75836171/1184453735/28f6ff8a3097a3be16fdb3daa6cf49eb.jpg?ce=3&s=1024x768",
+              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861935915.jpg?k=5dcec7d8f01692fbc04928b5a084bd953db3ce91b7a945061e62d0b3c538d4dc&o="
             ],
             "roomName": "Family Suite",
             "description": "[Hạng phòng: Suite | Diện tích: 100 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds & 1 king bed] — [Hạng phòng: Suite | Diện tích: 100 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds & 1 king bed] — Phòng Family Suite dành cho tối đa 4 khách. Trang bị đầy đủ: Minibar, Television, Free Wi-Fi, Air Conditioner.",
@@ -6138,7 +6138,7 @@
           "liveProof": {
             "isLiveScraped": false,
             "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://goodnstay.com/en-US"
           }
         }
@@ -6215,8 +6215,8 @@
         "uploadPhotos": [
           "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941052.jpg?k=9a198828a6e1fc3b28b7c5fc29a725b80993859224d266c72416de4bfad49902&o=",
           "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941143.jpg?k=f4d6a8316a768062b89be1ce32ee2022f6afd018ab36478f73975964ee40296b&o=",
-          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941123.jpg?k=8cdd06dde8762bb7ca9d527206a60a8535291cc366500e39fae73d54e1b9fc7d&o=",
-          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941118.jpg?k=2d34cfe6f81bba7723ed13ec73f117343ab42dd34c2ffa53687d2d99da21c8b3&o="
+          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941128.jpg?k=260a841081bf5b57b8292edfc27169a1d8759888199caf8c1ffed6944b8f652f&o=",
+          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941123.jpg?k=8cdd06dde8762bb7ca9d527206a60a8535291cc366500e39fae73d54e1b9fc7d&o="
         ],
         "roomName": "Executive Suite With Two Bedrooms And Living Room",
         "description": "[Hạng phòng: Suite | Diện tích: 120 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed & 2 single beds] — Phòng Executive Suite With Two Bedrooms And Living Room dành cho tối đa 7 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
@@ -6244,8 +6244,8 @@
             "uploadPhotos": [
               "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941052.jpg?k=9a198828a6e1fc3b28b7c5fc29a725b80993859224d266c72416de4bfad49902&o=",
               "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941143.jpg?k=f4d6a8316a768062b89be1ce32ee2022f6afd018ab36478f73975964ee40296b&o=",
-              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941123.jpg?k=8cdd06dde8762bb7ca9d527206a60a8535291cc366500e39fae73d54e1b9fc7d&o=",
-              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941118.jpg?k=2d34cfe6f81bba7723ed13ec73f117343ab42dd34c2ffa53687d2d99da21c8b3&o="
+              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941128.jpg?k=260a841081bf5b57b8292edfc27169a1d8759888199caf8c1ffed6944b8f652f&o=",
+              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941123.jpg?k=8cdd06dde8762bb7ca9d527206a60a8535291cc366500e39fae73d54e1b9fc7d&o="
             ],
             "roomName": "Executive Suite With Two Bedrooms And Living Room",
             "description": "[Hạng phòng: Suite | Diện tích: 120 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed & 2 single beds] — Phòng Executive Suite With Two Bedrooms And Living Room dành cho tối đa 7 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
@@ -6309,8 +6309,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1223787285",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         "BOOKING": {
@@ -6385,7 +6385,7 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "blockId:1439989413_422117175_4_1_0_1172609",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
         },
@@ -6399,8 +6399,8 @@
             "uploadPhotos": [
               "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941052.jpg?k=9a198828a6e1fc3b28b7c5fc29a725b80993859224d266c72416de4bfad49902&o=",
               "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941143.jpg?k=f4d6a8316a768062b89be1ce32ee2022f6afd018ab36478f73975964ee40296b&o=",
-              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941123.jpg?k=8cdd06dde8762bb7ca9d527206a60a8535291cc366500e39fae73d54e1b9fc7d&o=",
-              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941118.jpg?k=2d34cfe6f81bba7723ed13ec73f117343ab42dd34c2ffa53687d2d99da21c8b3&o="
+              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941128.jpg?k=260a841081bf5b57b8292edfc27169a1d8759888199caf8c1ffed6944b8f652f&o=",
+              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941123.jpg?k=8cdd06dde8762bb7ca9d527206a60a8535291cc366500e39fae73d54e1b9fc7d&o="
             ],
             "roomName": "Executive Suite With Two Bedrooms And Living Room",
             "description": "[Hạng phòng: Suite | Diện tích: 120 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed & 2 single beds] — [Hạng phòng: Suite | Diện tích: 120 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed & 2 single beds] — Phòng Executive Suite With Two Bedrooms And Living Room dành cho tối đa 7 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
@@ -6460,7 +6460,7 @@
           "liveProof": {
             "isLiveScraped": false,
             "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://goodnstay.com/en-US"
           }
         }
@@ -6475,8 +6475,8 @@
             "uploadPhotos": [
               "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941052.jpg?k=9a198828a6e1fc3b28b7c5fc29a725b80993859224d266c72416de4bfad49902&o=",
               "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941143.jpg?k=f4d6a8316a768062b89be1ce32ee2022f6afd018ab36478f73975964ee40296b&o=",
-              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941123.jpg?k=8cdd06dde8762bb7ca9d527206a60a8535291cc366500e39fae73d54e1b9fc7d&o=",
-              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941118.jpg?k=2d34cfe6f81bba7723ed13ec73f117343ab42dd34c2ffa53687d2d99da21c8b3&o="
+              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941128.jpg?k=260a841081bf5b57b8292edfc27169a1d8759888199caf8c1ffed6944b8f652f&o=",
+              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941123.jpg?k=8cdd06dde8762bb7ca9d527206a60a8535291cc366500e39fae73d54e1b9fc7d&o="
             ],
             "roomName": "Executive Suite With Two Bedrooms And Living Room",
             "description": "[Hạng phòng: Suite | Diện tích: 120 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed & 2 single beds] — Phòng Executive Suite With Two Bedrooms And Living Room dành cho tối đa 7 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
@@ -6540,8 +6540,8 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "masterRoomId:1223787285",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
-            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
+            "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
           }
         },
         {
@@ -6615,7 +6615,7 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "blockId:1439989407_422117175_4_1_0_1172609",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
         },
@@ -6691,7 +6691,7 @@
           "liveProof": {
             "isLiveScraped": true,
             "externalNativeId": "blockId:1439989413_422117175_4_1_0_1172609",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
           }
         },
@@ -6704,8 +6704,8 @@
             "uploadPhotos": [
               "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941052.jpg?k=9a198828a6e1fc3b28b7c5fc29a725b80993859224d266c72416de4bfad49902&o=",
               "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941143.jpg?k=f4d6a8316a768062b89be1ce32ee2022f6afd018ab36478f73975964ee40296b&o=",
-              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941123.jpg?k=8cdd06dde8762bb7ca9d527206a60a8535291cc366500e39fae73d54e1b9fc7d&o=",
-              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941118.jpg?k=2d34cfe6f81bba7723ed13ec73f117343ab42dd34c2ffa53687d2d99da21c8b3&o="
+              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941128.jpg?k=260a841081bf5b57b8292edfc27169a1d8759888199caf8c1ffed6944b8f652f&o=",
+              "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941123.jpg?k=8cdd06dde8762bb7ca9d527206a60a8535291cc366500e39fae73d54e1b9fc7d&o="
             ],
             "roomName": "Executive Suite With Two Bedrooms And Living Room",
             "description": "[Hạng phòng: Suite | Diện tích: 120 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed & 2 single beds] — [Hạng phòng: Suite | Diện tích: 120 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed & 2 single beds] — Phòng Executive Suite With Two Bedrooms And Living Room dành cho tối đa 7 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
@@ -6765,7 +6765,7 @@
           "liveProof": {
             "isLiveScraped": false,
             "externalNativeId": "goodNstay Reference BAR",
-            "scrapedAt": "2026-11-10T05:12:09.437Z",
+            "scrapedAt": "2026-11-10T05:18:09.606Z",
             "sourceUrl": "https://goodnstay.com/en-US"
           }
         }
@@ -6901,8 +6901,8 @@
       "liveProof": {
         "isLiveScraped": true,
         "externalNativeId": "masterRoomId:1188716859",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
-        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
+        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
       }
     },
     {
@@ -6914,8 +6914,8 @@
         "uploadPhotos": [
           "//pix8.agoda.net/hotelImages/75836171/1188793531/7ccbc22c5f6f6d79d2b987914a46da49.png?ce=3&s=1024x768",
           "//pix8.agoda.net/property/75836171/1333155726/405d32f0edd79d55dadf2b7b346f60a2.jpeg?ce=3&s=1024x768",
-          "//pix8.agoda.net/property/75836171/1596943144/1f63f326d06a29085f9a88855fe151f5.jpeg?ce=3&s=1024x768",
-          "//pix8.agoda.net/property/75836171/1596943144/6ee94f108540175cf002bd91d9c145e3.jpeg?ce=3&s=1024x768"
+          "//pix8.agoda.net/hotelImages/75836171/1188793531/49d548232ea670879a9d50df10b96d91.png?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/75836171/1596943144/1f63f326d06a29085f9a88855fe151f5.jpeg?ce=3&s=1024x768"
         ],
         "roomName": "Deluxe Twin Room",
         "description": "[Hạng phòng: Deluxe | Diện tích: 30 m² | Hướng nhìn: CITY VIEW | Giường: 2 single beds] — Phòng Deluxe Twin Room dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -6965,7 +6965,7 @@
           "Alcohol",
           "Non-smoking",
           "Private bathroom",
-          "Wi-Fi [free]"
+          "Closet"
         ],
         "rawBenefits": [
           "Breakfast",
@@ -6986,8 +6986,8 @@
       "liveProof": {
         "isLiveScraped": true,
         "externalNativeId": "masterRoomId:1188793531",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
-        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
+        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
       }
     },
     {
@@ -6998,9 +6998,9 @@
       "formFields": {
         "uploadPhotos": [
           "//pix8.agoda.net/hotelImages/75836171/1177983412/ab4fd40d39dc571b3b6ecef7691a20f1.png?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1177983412/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
           "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/820635303.jpg?k=b6a043ccf94034524d13f5f42e6b0fae5129c44a9738ca2a79b893858429df93&o=",
-          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/776476936.jpg?k=ae8f1a76633da3ccc0ec7cb9e0a33c057bd0896243cab8beace6a4189304e6aa&o="
+          "//pix8.agoda.net/hotelImages/75836171/1177983412/0252a5de98d8627e39ea0cf6259ff1dd.png?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/75836171/1177983412/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
         ],
         "roomName": "Deluxe Double Room",
         "description": "[Hạng phòng: Deluxe | Diện tích: 30 m² | Hướng nhìn: CITY VIEW | Giường: 1 king bed] — Phòng Deluxe Double Room dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -7050,7 +7050,7 @@
           "Alcohol",
           "Non-smoking",
           "Private bathroom",
-          "Wi-Fi [free]"
+          "Closet"
         ],
         "rawBenefits": [
           "Breakfast",
@@ -7071,8 +7071,8 @@
       "liveProof": {
         "isLiveScraped": true,
         "externalNativeId": "masterRoomId:1177983412",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
-        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
+        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
       }
     },
     {
@@ -7084,8 +7084,8 @@
         "uploadPhotos": [
           "//pix8.agoda.net/hotelImages/75836171/1188793772/3ef85cee2251e3b77e2f043a3ceef631.jpg?ce=3&s=1024x768",
           "//pix8.agoda.net/hotelImages/75836171/1188793772/0e90b6da39167f314a310df6bd35fcde.jpg?ce=3&s=1024x768",
-          "//pix8.agoda.net/property/75836171/1596943128/e0017e50ea9eceaec2516b147a1662cd.jpeg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1188793772/eac8819fdebcc42501e7e46d0935ec22.jpg?ce=3&s=1024x768"
+          "//pix8.agoda.net/property/75836171/1596943128/1e97e3938396d2676c234d68cde13a6f.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/75836171/1596943128/e0017e50ea9eceaec2516b147a1662cd.jpeg?ce=3&s=1024x768"
         ],
         "roomName": "Premier Deluxe Twin",
         "description": "[Hạng phòng: Deluxe | Diện tích: 34 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Phòng Premier Deluxe Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -7135,7 +7135,7 @@
           "High floor",
           "Non-smoking",
           "Private bathroom",
-          "Wi-Fi [free]"
+          "Closet"
         ],
         "rawBenefits": [
           "Breakfast",
@@ -7156,8 +7156,8 @@
       "liveProof": {
         "isLiveScraped": true,
         "externalNativeId": "masterRoomId:1188793772",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
-        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
+        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
       }
     },
     {
@@ -7168,9 +7168,9 @@
       "formFields": {
         "uploadPhotos": [
           "//pix8.agoda.net/hotelImages/75836171/1183375174/930840599eb4cda87e8abeffa70f92e7.png?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1183375174/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
           "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785141445.jpg?k=7b22aa9c969558e9eb82420694251d28c246f1a5bce798aa7e5eb5f4fb3d8507&o=",
-          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785141060.jpg?k=5ebd25e22b6a681aa132df12602b2ce287081807a922b45663871e8750ccc2a5&o="
+          "//pix8.agoda.net/hotelImages/75836171/1183375174/f0db8f75043925b3a0ad1371e0e874b8.jpg?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/75836171/1183375174/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
         ],
         "roomName": "Premier Deluxe Double",
         "description": "[Hạng phòng: Deluxe | Diện tích: 34 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — Phòng Premier Deluxe Double dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -7220,7 +7220,7 @@
           "High floor",
           "Non-smoking",
           "Private bathroom",
-          "Wi-Fi [free]"
+          "Closet"
         ],
         "rawBenefits": [
           "Breakfast",
@@ -7241,8 +7241,8 @@
       "liveProof": {
         "isLiveScraped": true,
         "externalNativeId": "masterRoomId:1183375174",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
-        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
+        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
       }
     },
     {
@@ -7253,9 +7253,9 @@
       "formFields": {
         "uploadPhotos": [
           "//pix8.agoda.net/property/75836171/1333155718/f70d6d79a4e3f571e8763dfc15f19c64.jpeg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1184380968/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
           "//pix8.agoda.net/hotelImages/75836171/1184380968/2de60e1ce9cb94179e9cfab226428f33.jpg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1184380968/ca484c6a4a700e377a8d6c1459b7e6eb.jpg?ce=3&s=1024x768"
+          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785142646.jpg?k=3881d268ca3869eaa0f94c465863a8e2cec130d8e3f1516ef06084a2b7ffb1be&o=",
+          "//pix8.agoda.net/hotelImages/75836171/1184380968/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
         ],
         "roomName": "Champa Deluxe Double",
         "description": "[Hạng phòng: Deluxe | Diện tích: 38 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — Phòng Champa Deluxe Double dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -7319,8 +7319,8 @@
       "liveProof": {
         "isLiveScraped": true,
         "externalNativeId": "masterRoomId:1184380968",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
-        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
+        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
       }
     },
     {
@@ -7332,8 +7332,8 @@
         "uploadPhotos": [
           "//pix8.agoda.net/property/75836171/1596943134/ec11a5d18e36f15fd2ab2c094a5735b8.jpeg?ce=3&s=1024x768",
           "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785142388.jpg?k=2bcd6e47a5b9b0c86acee7628177a7f3298552e7c8726f9a79d1991ac9528c15&o=",
-          "//pix8.agoda.net/property/75836171/1596943134/708d8c8a97e0aa0265fccf613b5498b5.jpeg?ce=3&s=1024x768",
-          "//pix8.agoda.net/property/75836171/1596943134/ebfebe82909e74a199adc1296372a939.jpeg?ce=3&s=1024x768"
+          "//pix8.agoda.net/property/75836171/1596943134/98a4524ccc21b903b0a669a6ea77fc46.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/75836171/1596943134/708d8c8a97e0aa0265fccf613b5498b5.jpeg?ce=3&s=1024x768"
         ],
         "roomName": "Champa Deluxe Twin",
         "description": "[Hạng phòng: Deluxe | Diện tích: 38 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Phòng Champa Deluxe Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -7397,8 +7397,8 @@
       "liveProof": {
         "isLiveScraped": true,
         "externalNativeId": "masterRoomId:1188794611",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
-        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
+        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
       }
     },
     {
@@ -7410,8 +7410,8 @@
         "uploadPhotos": [
           "//pix8.agoda.net/hotelImages/75836171/1184429603/523f4f46fd35b880023b5fe9111a5d7b.jpg?ce=3&s=1024x768",
           "//pix8.agoda.net/hotelImages/75836171/1184429603/9a65cfacf800e4b6d8b9f6f8cd722b75.jpg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1184429603/3f2816c78565f046b0f6c3d30c24fbad.jpg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1184429603/746ee17134abae89a8314a32c818d2cb.jpg?ce=3&s=1024x768"
+          "//pix8.agoda.net/hotelImages/75836171/1184429603/d021ec198ac600b9631f036b9c7a2d99.png?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/75836171/1184429603/3f2816c78565f046b0f6c3d30c24fbad.jpg?ce=3&s=1024x768"
         ],
         "roomName": "Champa Junior Suite",
         "description": "[Hạng phòng: Suite | Diện tích: 40 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — Phòng Champa Junior Suite dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -7475,8 +7475,8 @@
       "liveProof": {
         "isLiveScraped": true,
         "externalNativeId": "masterRoomId:1184429603",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
-        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
+        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
       }
     },
     {
@@ -7488,8 +7488,8 @@
         "uploadPhotos": [
           "//pix8.agoda.net/hotelImages/75836171/1184432353/f2f5a084ef0f2b3075b982520efde476.jpeg?ce=3&s=1024x768",
           "//pix8.agoda.net/hotelImages/75836171/1184432353/0a4eee0bf55ecb08a565514d5a2c1b7e.jpeg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1184432353/56d3686c20cc592d4dc3ca236b29a679.jpg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1184432353/ee1861fcf28208efa91f8abc5c5742ed.png?ce=3&s=1024x768"
+          "//pix8.agoda.net/hotelImages/75836171/1184432353/7df01cb08882c39311b3fb5f07d11003.png?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/75836171/1184432353/56d3686c20cc592d4dc3ca236b29a679.jpg?ce=3&s=1024x768"
         ],
         "roomName": "Terrace Suite",
         "description": "[Hạng phòng: Suite | Diện tích: 60 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Phòng Terrace Suite dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -7553,8 +7553,8 @@
       "liveProof": {
         "isLiveScraped": true,
         "externalNativeId": "masterRoomId:1184432353",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
-        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
+        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
       }
     },
     {
@@ -7566,8 +7566,8 @@
         "uploadPhotos": [
           "//pix8.agoda.net/hotelImages/75836171/1184453735/fdf293d5b06d82fea05be8b7057bf782.jpg?ce=3&s=1024x768",
           "//pix8.agoda.net/hotelImages/75836171/1184453735/d310404b6f847377903da8ee60ee844b.jpg?ce=3&s=1024x768",
-          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861935915.jpg?k=5dcec7d8f01692fbc04928b5a084bd953db3ce91b7a945061e62d0b3c538d4dc&o=",
-          "//pix8.agoda.net/hotelImages/75836171/1184453735/9fd97588fb4701340d918b1462569ebd.jpg?ce=3&s=1024x768"
+          "//pix8.agoda.net/hotelImages/75836171/1184453735/28f6ff8a3097a3be16fdb3daa6cf49eb.jpg?ce=3&s=1024x768",
+          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861935915.jpg?k=5dcec7d8f01692fbc04928b5a084bd953db3ce91b7a945061e62d0b3c538d4dc&o="
         ],
         "roomName": "Family Suite",
         "description": "[Hạng phòng: Suite | Diện tích: 100 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds & 1 king bed] — Phòng Family Suite dành cho tối đa 4 khách. Trang bị đầy đủ: Minibar, Television, Free Wi-Fi, Air Conditioner.",
@@ -7639,8 +7639,8 @@
       "liveProof": {
         "isLiveScraped": true,
         "externalNativeId": "masterRoomId:1184453735",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
-        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
+        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
       }
     },
     {
@@ -7652,8 +7652,8 @@
         "uploadPhotos": [
           "//pix8.agoda.net/hotelImages/75836171/1225347102/6084eafe76bb9bf9e31e23bdd892924a.jpg?ce=3&s=1024x768",
           "//pix8.agoda.net/hotelImages/75836171/1225347102/596612ba9a95837a88ea2a6932da4117.jpg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1225347102/824a13cdcdff741197ade5a9a80e8418.jpg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1225347102/2bc39e3302ca1f4e7a0b219083e1f3ab.jpg?ce=3&s=1024x768"
+          "//pix8.agoda.net/property/75836171/1234335814/5b1837cd47971dcd97d00949023efd65.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/75836171/1225347102/824a13cdcdff741197ade5a9a80e8418.jpg?ce=3&s=1024x768"
         ],
         "roomName": "Execuitve Suite",
         "description": "[Hạng phòng: Suite | Diện tích: 120 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds & 1 king bed] — Phòng Execuitve Suite dành cho tối đa 4 khách. Trang bị đầy đủ: Minibar, Television, Free Wi-Fi, Air Conditioner.",
@@ -7725,8 +7725,8 @@
       "liveProof": {
         "isLiveScraped": true,
         "externalNativeId": "masterRoomId:1225347102",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
-        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
+        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
       }
     },
     {
@@ -7738,8 +7738,8 @@
         "uploadPhotos": [
           "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941052.jpg?k=9a198828a6e1fc3b28b7c5fc29a725b80993859224d266c72416de4bfad49902&o=",
           "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941143.jpg?k=f4d6a8316a768062b89be1ce32ee2022f6afd018ab36478f73975964ee40296b&o=",
-          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941123.jpg?k=8cdd06dde8762bb7ca9d527206a60a8535291cc366500e39fae73d54e1b9fc7d&o=",
-          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941118.jpg?k=2d34cfe6f81bba7723ed13ec73f117343ab42dd34c2ffa53687d2d99da21c8b3&o="
+          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941128.jpg?k=260a841081bf5b57b8292edfc27169a1d8759888199caf8c1ffed6944b8f652f&o=",
+          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941123.jpg?k=8cdd06dde8762bb7ca9d527206a60a8535291cc366500e39fae73d54e1b9fc7d&o="
         ],
         "roomName": "Executive Suite With Two Bedrooms And Living Room",
         "description": "[Hạng phòng: Suite | Diện tích: 120 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed & 2 single beds] — Phòng Executive Suite With Two Bedrooms And Living Room dành cho tối đa 7 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
@@ -7803,8 +7803,8 @@
       "liveProof": {
         "isLiveScraped": true,
         "externalNativeId": "masterRoomId:1223787285",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
-        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=sDMSFYFHfLtqNWNV"
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
+        "sourceUrl": "https://www.agoda.com/champton-nha-trang-hotel/hotel/nha-trang-vn.html?checkIn=2026-11-20&los=1&adults=2&rooms=1&currencyCode=VND&ds=v22Vr1nCXx9kjKJ1"
       }
     },
     {
@@ -7903,7 +7903,7 @@
       "liveProof": {
         "isLiveScraped": true,
         "externalNativeId": "blockId:bbasic_0",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
         "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
       }
     },
@@ -7974,7 +7974,7 @@
       "liveProof": {
         "isLiveScraped": true,
         "externalNativeId": "blockId:1439989410_bbasic_0",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
         "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
       }
     },
@@ -8046,7 +8046,7 @@
       "liveProof": {
         "isLiveScraped": true,
         "externalNativeId": "blockId:1439989402_bbasic_0",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
         "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
       }
     },
@@ -8118,7 +8118,7 @@
       "liveProof": {
         "isLiveScraped": true,
         "externalNativeId": "blockId:1439989411_bbasic_0",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
         "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
       }
     },
@@ -8192,7 +8192,7 @@
       "liveProof": {
         "isLiveScraped": true,
         "externalNativeId": "blockId:1439989403_422117175_2_1_0_1172609",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
         "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
       }
     },
@@ -8267,7 +8267,7 @@
       "liveProof": {
         "isLiveScraped": true,
         "externalNativeId": "blockId:1439989405_422117175_2_1_0_1172609",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
         "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
       }
     },
@@ -8341,7 +8341,7 @@
       "liveProof": {
         "isLiveScraped": true,
         "externalNativeId": "blockId:1439989412_422117175_2_1_0_1172609",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
         "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
       }
     },
@@ -8418,7 +8418,7 @@
       "liveProof": {
         "isLiveScraped": true,
         "externalNativeId": "blockId:1439989406_422117175_2_1_0_1172609",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
         "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
       }
     },
@@ -8493,7 +8493,7 @@
       "liveProof": {
         "isLiveScraped": true,
         "externalNativeId": "blockId:1439989407_422117175_4_1_0_1172609",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
         "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
       }
     },
@@ -8569,7 +8569,7 @@
       "liveProof": {
         "isLiveScraped": true,
         "externalNativeId": "blockId:1439989413_422117175_4_1_0_1172609",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
         "sourceUrl": "https://www.booking.com/hotel/vn/champton-nha-trang.en-gb.html?checkin=2026-11-20&checkout=2026-11-21&group_adults=2&no_rooms=1&selected_currency=VND"
       }
     },
@@ -8633,7 +8633,7 @@
       "liveProof": {
         "isLiveScraped": false,
         "externalNativeId": "goodNstay Reference BAR",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
         "sourceUrl": "https://goodnstay.com/en-US"
       }
     },
@@ -8646,8 +8646,8 @@
         "uploadPhotos": [
           "//pix8.agoda.net/hotelImages/75836171/1188793531/7ccbc22c5f6f6d79d2b987914a46da49.png?ce=3&s=1024x768",
           "//pix8.agoda.net/property/75836171/1333155726/405d32f0edd79d55dadf2b7b346f60a2.jpeg?ce=3&s=1024x768",
-          "//pix8.agoda.net/property/75836171/1596943144/1f63f326d06a29085f9a88855fe151f5.jpeg?ce=3&s=1024x768",
-          "//pix8.agoda.net/property/75836171/1596943144/6ee94f108540175cf002bd91d9c145e3.jpeg?ce=3&s=1024x768"
+          "//pix8.agoda.net/hotelImages/75836171/1188793531/49d548232ea670879a9d50df10b96d91.png?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/75836171/1596943144/1f63f326d06a29085f9a88855fe151f5.jpeg?ce=3&s=1024x768"
         ],
         "roomName": "Deluxe Twin Room",
         "description": "[Hạng phòng: Deluxe | Diện tích: 30 m² | Hướng nhìn: CITY VIEW | Giường: 2 single beds] — [Hạng phòng: Deluxe | Diện tích: 30 m² | Hướng nhìn: CITY VIEW | Giường: 2 single beds] — Phòng Deluxe Twin Room dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -8697,7 +8697,7 @@
           "Alcohol",
           "Non-smoking",
           "Private bathroom",
-          "Wi-Fi [free]"
+          "Closet"
         ],
         "rawBenefits": [
           "Breakfast included"
@@ -8706,7 +8706,7 @@
       "liveProof": {
         "isLiveScraped": false,
         "externalNativeId": "goodNstay Reference BAR",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
         "sourceUrl": "https://goodnstay.com/en-US"
       }
     },
@@ -8718,9 +8718,9 @@
       "formFields": {
         "uploadPhotos": [
           "//pix8.agoda.net/hotelImages/75836171/1177983412/ab4fd40d39dc571b3b6ecef7691a20f1.png?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1177983412/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
           "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/820635303.jpg?k=b6a043ccf94034524d13f5f42e6b0fae5129c44a9738ca2a79b893858429df93&o=",
-          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/776476936.jpg?k=ae8f1a76633da3ccc0ec7cb9e0a33c057bd0896243cab8beace6a4189304e6aa&o="
+          "//pix8.agoda.net/hotelImages/75836171/1177983412/0252a5de98d8627e39ea0cf6259ff1dd.png?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/75836171/1177983412/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
         ],
         "roomName": "Deluxe Double Room",
         "description": "[Hạng phòng: Deluxe | Diện tích: 30 m² | Hướng nhìn: CITY VIEW | Giường: 1 king bed] — [Hạng phòng: Deluxe | Diện tích: 30 m² | Hướng nhìn: CITY VIEW | Giường: 1 king bed] — Phòng Deluxe Double Room dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -8770,7 +8770,7 @@
           "Alcohol",
           "Non-smoking",
           "Private bathroom",
-          "Wi-Fi [free]"
+          "Closet"
         ],
         "rawBenefits": [
           "Breakfast included"
@@ -8779,7 +8779,7 @@
       "liveProof": {
         "isLiveScraped": false,
         "externalNativeId": "goodNstay Reference BAR",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
         "sourceUrl": "https://goodnstay.com/en-US"
       }
     },
@@ -8792,8 +8792,8 @@
         "uploadPhotos": [
           "//pix8.agoda.net/hotelImages/75836171/1188793772/3ef85cee2251e3b77e2f043a3ceef631.jpg?ce=3&s=1024x768",
           "//pix8.agoda.net/hotelImages/75836171/1188793772/0e90b6da39167f314a310df6bd35fcde.jpg?ce=3&s=1024x768",
-          "//pix8.agoda.net/property/75836171/1596943128/e0017e50ea9eceaec2516b147a1662cd.jpeg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1188793772/eac8819fdebcc42501e7e46d0935ec22.jpg?ce=3&s=1024x768"
+          "//pix8.agoda.net/property/75836171/1596943128/1e97e3938396d2676c234d68cde13a6f.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/75836171/1596943128/e0017e50ea9eceaec2516b147a1662cd.jpeg?ce=3&s=1024x768"
         ],
         "roomName": "Premier Deluxe Twin",
         "description": "[Hạng phòng: Deluxe | Diện tích: 34 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — [Hạng phòng: Deluxe | Diện tích: 34 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Phòng Premier Deluxe Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -8843,7 +8843,7 @@
           "High floor",
           "Non-smoking",
           "Private bathroom",
-          "Wi-Fi [free]"
+          "Closet"
         ],
         "rawBenefits": [
           "Breakfast included"
@@ -8852,7 +8852,7 @@
       "liveProof": {
         "isLiveScraped": false,
         "externalNativeId": "goodNstay Reference BAR",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
         "sourceUrl": "https://goodnstay.com/en-US"
       }
     },
@@ -8864,9 +8864,9 @@
       "formFields": {
         "uploadPhotos": [
           "//pix8.agoda.net/hotelImages/75836171/1183375174/930840599eb4cda87e8abeffa70f92e7.png?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1183375174/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
           "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785141445.jpg?k=7b22aa9c969558e9eb82420694251d28c246f1a5bce798aa7e5eb5f4fb3d8507&o=",
-          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785141060.jpg?k=5ebd25e22b6a681aa132df12602b2ce287081807a922b45663871e8750ccc2a5&o="
+          "//pix8.agoda.net/hotelImages/75836171/1183375174/f0db8f75043925b3a0ad1371e0e874b8.jpg?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/75836171/1183375174/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
         ],
         "roomName": "Premier Deluxe Double",
         "description": "[Hạng phòng: Deluxe | Diện tích: 34 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — [Hạng phòng: Deluxe | Diện tích: 34 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — Phòng Premier Deluxe Double dành cho tối đa 2 khách. Trang bị đầy đủ: Television, Free Wi-Fi, Air Conditioner.",
@@ -8916,7 +8916,7 @@
           "High floor",
           "Non-smoking",
           "Private bathroom",
-          "Wi-Fi [free]"
+          "Closet"
         ],
         "rawBenefits": [
           "Breakfast included"
@@ -8925,7 +8925,7 @@
       "liveProof": {
         "isLiveScraped": false,
         "externalNativeId": "goodNstay Reference BAR",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
         "sourceUrl": "https://goodnstay.com/en-US"
       }
     },
@@ -8937,9 +8937,9 @@
       "formFields": {
         "uploadPhotos": [
           "//pix8.agoda.net/property/75836171/1333155718/f70d6d79a4e3f571e8763dfc15f19c64.jpeg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1184380968/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768",
           "//pix8.agoda.net/hotelImages/75836171/1184380968/2de60e1ce9cb94179e9cfab226428f33.jpg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1184380968/ca484c6a4a700e377a8d6c1459b7e6eb.jpg?ce=3&s=1024x768"
+          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785142646.jpg?k=3881d268ca3869eaa0f94c465863a8e2cec130d8e3f1516ef06084a2b7ffb1be&o=",
+          "//pix8.agoda.net/hotelImages/75836171/1184380968/97b75521f7eccb5eb57b98f88afe8504.jpg?ce=3&s=1024x768"
         ],
         "roomName": "Champa Deluxe Double",
         "description": "[Hạng phòng: Deluxe | Diện tích: 38 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — [Hạng phòng: Deluxe | Diện tích: 38 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — Phòng Champa Deluxe Double dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -8998,7 +8998,7 @@
       "liveProof": {
         "isLiveScraped": false,
         "externalNativeId": "goodNstay Reference BAR",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
         "sourceUrl": "https://goodnstay.com/en-US"
       }
     },
@@ -9011,8 +9011,8 @@
         "uploadPhotos": [
           "//pix8.agoda.net/property/75836171/1596943134/ec11a5d18e36f15fd2ab2c094a5735b8.jpeg?ce=3&s=1024x768",
           "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/785142388.jpg?k=2bcd6e47a5b9b0c86acee7628177a7f3298552e7c8726f9a79d1991ac9528c15&o=",
-          "//pix8.agoda.net/property/75836171/1596943134/708d8c8a97e0aa0265fccf613b5498b5.jpeg?ce=3&s=1024x768",
-          "//pix8.agoda.net/property/75836171/1596943134/ebfebe82909e74a199adc1296372a939.jpeg?ce=3&s=1024x768"
+          "//pix8.agoda.net/property/75836171/1596943134/98a4524ccc21b903b0a669a6ea77fc46.jpeg?ce=3&s=1024x768",
+          "//pix8.agoda.net/property/75836171/1596943134/708d8c8a97e0aa0265fccf613b5498b5.jpeg?ce=3&s=1024x768"
         ],
         "roomName": "Champa Deluxe Twin",
         "description": "[Hạng phòng: Deluxe | Diện tích: 38 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — [Hạng phòng: Deluxe | Diện tích: 38 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds] — Phòng Champa Deluxe Twin dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -9071,7 +9071,7 @@
       "liveProof": {
         "isLiveScraped": false,
         "externalNativeId": "goodNstay Reference BAR",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
         "sourceUrl": "https://goodnstay.com/en-US"
       }
     },
@@ -9084,8 +9084,8 @@
         "uploadPhotos": [
           "//pix8.agoda.net/hotelImages/75836171/1184429603/523f4f46fd35b880023b5fe9111a5d7b.jpg?ce=3&s=1024x768",
           "//pix8.agoda.net/hotelImages/75836171/1184429603/9a65cfacf800e4b6d8b9f6f8cd722b75.jpg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1184429603/3f2816c78565f046b0f6c3d30c24fbad.jpg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1184429603/746ee17134abae89a8314a32c818d2cb.jpg?ce=3&s=1024x768"
+          "//pix8.agoda.net/hotelImages/75836171/1184429603/d021ec198ac600b9631f036b9c7a2d99.png?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/75836171/1184429603/3f2816c78565f046b0f6c3d30c24fbad.jpg?ce=3&s=1024x768"
         ],
         "roomName": "Champa Junior Suite",
         "description": "[Hạng phòng: Suite | Diện tích: 40 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — [Hạng phòng: Suite | Diện tích: 40 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 1 king bed] — Phòng Champa Junior Suite dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -9144,7 +9144,7 @@
       "liveProof": {
         "isLiveScraped": false,
         "externalNativeId": "goodNstay Reference BAR",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
         "sourceUrl": "https://goodnstay.com/en-US"
       }
     },
@@ -9157,8 +9157,8 @@
         "uploadPhotos": [
           "//pix8.agoda.net/hotelImages/75836171/1184432353/f2f5a084ef0f2b3075b982520efde476.jpeg?ce=3&s=1024x768",
           "//pix8.agoda.net/hotelImages/75836171/1184432353/0a4eee0bf55ecb08a565514d5a2c1b7e.jpeg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1184432353/56d3686c20cc592d4dc3ca236b29a679.jpg?ce=3&s=1024x768",
-          "//pix8.agoda.net/hotelImages/75836171/1184432353/ee1861fcf28208efa91f8abc5c5742ed.png?ce=3&s=1024x768"
+          "//pix8.agoda.net/hotelImages/75836171/1184432353/7df01cb08882c39311b3fb5f07d11003.png?ce=3&s=1024x768",
+          "//pix8.agoda.net/hotelImages/75836171/1184432353/56d3686c20cc592d4dc3ca236b29a679.jpg?ce=3&s=1024x768"
         ],
         "roomName": "Terrace Suite",
         "description": "[Hạng phòng: Suite | Diện tích: 60 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — [Hạng phòng: Suite | Diện tích: 60 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed] — Phòng Terrace Suite dành cho tối đa 2 khách. Trang bị đầy đủ: Free Wi-Fi, Air Conditioner, Television.",
@@ -9217,7 +9217,7 @@
       "liveProof": {
         "isLiveScraped": false,
         "externalNativeId": "goodNstay Reference BAR",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
         "sourceUrl": "https://goodnstay.com/en-US"
       }
     },
@@ -9230,8 +9230,8 @@
         "uploadPhotos": [
           "//pix8.agoda.net/hotelImages/75836171/1184453735/fdf293d5b06d82fea05be8b7057bf782.jpg?ce=3&s=1024x768",
           "//pix8.agoda.net/hotelImages/75836171/1184453735/d310404b6f847377903da8ee60ee844b.jpg?ce=3&s=1024x768",
-          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861935915.jpg?k=5dcec7d8f01692fbc04928b5a084bd953db3ce91b7a945061e62d0b3c538d4dc&o=",
-          "//pix8.agoda.net/hotelImages/75836171/1184453735/9fd97588fb4701340d918b1462569ebd.jpg?ce=3&s=1024x768"
+          "//pix8.agoda.net/hotelImages/75836171/1184453735/28f6ff8a3097a3be16fdb3daa6cf49eb.jpg?ce=3&s=1024x768",
+          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861935915.jpg?k=5dcec7d8f01692fbc04928b5a084bd953db3ce91b7a945061e62d0b3c538d4dc&o="
         ],
         "roomName": "Family Suite",
         "description": "[Hạng phòng: Suite | Diện tích: 100 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds & 1 king bed] — [Hạng phòng: Suite | Diện tích: 100 m² | Hướng nhìn: PARTIAL SEA VIEW | Giường: 2 single beds & 1 king bed] — Phòng Family Suite dành cho tối đa 4 khách. Trang bị đầy đủ: Minibar, Television, Free Wi-Fi, Air Conditioner.",
@@ -9291,7 +9291,7 @@
       "liveProof": {
         "isLiveScraped": false,
         "externalNativeId": "goodNstay Reference BAR",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
         "sourceUrl": "https://goodnstay.com/en-US"
       }
     },
@@ -9304,8 +9304,8 @@
         "uploadPhotos": [
           "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941052.jpg?k=9a198828a6e1fc3b28b7c5fc29a725b80993859224d266c72416de4bfad49902&o=",
           "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941143.jpg?k=f4d6a8316a768062b89be1ce32ee2022f6afd018ab36478f73975964ee40296b&o=",
-          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941123.jpg?k=8cdd06dde8762bb7ca9d527206a60a8535291cc366500e39fae73d54e1b9fc7d&o=",
-          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941118.jpg?k=2d34cfe6f81bba7723ed13ec73f117343ab42dd34c2ffa53687d2d99da21c8b3&o="
+          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941128.jpg?k=260a841081bf5b57b8292edfc27169a1d8759888199caf8c1ffed6944b8f652f&o=",
+          "//q-xx.bstatic.com/xdata/images/hotel/max1024x768/861941123.jpg?k=8cdd06dde8762bb7ca9d527206a60a8535291cc366500e39fae73d54e1b9fc7d&o="
         ],
         "roomName": "Executive Suite With Two Bedrooms And Living Room",
         "description": "[Hạng phòng: Suite | Diện tích: 120 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed & 2 single beds] — [Hạng phòng: Suite | Diện tích: 120 m² | Hướng nhìn: OCEAN SEA VIEW | Giường: 1 king bed & 2 single beds] — Phòng Executive Suite With Two Bedrooms And Living Room dành cho tối đa 7 khách. Trang bị đầy đủ: Minibar, Free Wi-Fi, Air Conditioner, Television.",
@@ -9365,7 +9365,7 @@
       "liveProof": {
         "isLiveScraped": false,
         "externalNativeId": "goodNstay Reference BAR",
-        "scrapedAt": "2026-11-10T05:12:09.437Z",
+        "scrapedAt": "2026-11-10T05:18:09.606Z",
         "sourceUrl": "https://goodnstay.com/en-US"
       }
     }
