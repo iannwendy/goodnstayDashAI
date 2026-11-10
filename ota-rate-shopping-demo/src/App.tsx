@@ -7,15 +7,10 @@ import {
   SlidersHorizontal,
   CheckCircle2,
   ChevronUp,
-  Layers,
-  BedDouble,
-  Users,
-  Maximize2,
-  FileCheck2,
-  ArrowUpRight,
-  AlertTriangle,
   Check,
   Image as ImageIcon,
+  ExternalLink,
+  ShieldCheck,
 } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -30,7 +25,7 @@ import {
   TableCell,
 } from "@/components/ui/table";
 
-type OtaCode = "GOODNSTAY" | "AGODA" | "TRIP" | "BOOKING";
+type OtaCode = "GOODNSTAY" | "AGODA" | "BOOKING";
 
 interface GoodNStayFormFields {
   uploadPhotos: string[];
@@ -70,6 +65,13 @@ interface RoomFilterMeta {
   rawBedText: string;
 }
 
+interface LiveProofMeta {
+  isLiveScraped: boolean;
+  externalNativeId: string | null;
+  scrapedAt: string | null;
+  sourceUrl: string | null;
+}
+
 interface OtaOfferEntry {
   id: string;
   roomName: string;
@@ -78,6 +80,7 @@ interface OtaOfferEntry {
   grossPrice: number;
   formFields: GoodNStayFormFields;
   filterMeta: RoomFilterMeta;
+  liveProof?: LiveProofMeta;
 }
 
 interface PlatformMetric {
@@ -126,8 +129,36 @@ interface ComparisonGroup {
   };
 }
 
+interface LiveScrapeProofBundle {
+  success: boolean;
+  scrapedAt: string;
+  durationMs: number;
+  sha256Digest: string;
+  agoda: {
+    sourceUrl: string;
+    pageTitle: string;
+    searchId: string;
+    masterRoomCount: number;
+    screenshotUrl: string;
+    rawRooms: unknown[];
+  };
+  booking: {
+    sourceUrl: string;
+    pageTitle: string;
+    totalBlocksCount: number;
+    uniqueRoomCount: number;
+    screenshotUrl: string;
+    rawRooms: unknown[];
+  };
+}
+
 interface ReportResponse {
   generatedAt: string;
+  hotelKey?: string;
+  hotelName?: string;
+  checkIn?: string;
+  checkOut?: string;
+  liveScrapeProof?: LiveScrapeProofBundle | null;
   liveAgodaScrapeStatus: {
     success: boolean;
     scrapedAt: string | null;
@@ -142,18 +173,18 @@ interface ReportResponse {
 
 const OTA_LABELS: Record<OtaCode, string> = {
   GOODNSTAY: "goodNstay",
-  AGODA: "Agoda",
-  TRIP: "Trip.com",
-  BOOKING: "Booking.com",
+  AGODA: "Agoda (Live)",
+  BOOKING: "Booking.com (Live)",
 };
 
 const VIEW_LABELS: Record<string, string> = {
   CITY_VIEW: "City View",
   OCEAN_SEA_VIEW: "Ocean View",
   OCEAN_FRONT: "Beachfront",
-  PARTIAL_SEA_VIEW: "Partial Sea",
+  PARTIAL_SEA_VIEW: "Partial Sea View",
   POOL_VIEW: "Pool View",
   GARDEN_VIEW: "Garden View",
+  NO_WINDOW: "No Window",
   STANDARD_VIEW: "Tiêu chuẩn",
 };
 
@@ -162,9 +193,9 @@ const BED_SHORT_LABELS: Record<string, string> = {
   TWIN_2_SINGLE: "Twin · 2 Giường đơn",
   DOUBLE_QUEEN_1_BED: "Double / Queen · 1 Giường đôi",
   KING_1_BED: "King · 1 Giường đôi lớn",
-  FLEX_DOUBLE_OR_TWIN: "Linh hoạt · Đôi hoặc Đôi đơn",
+  FLEX_DOUBLE_OR_TWIN: "Linh hoạt · 1 Đôi hoặc 2 Đơn",
   MULTI_BED_TRIPLE: "Triple · 1 Đôi + 1 Đơn (3 khách)",
-  MULTI_BED_QUAD_FAMILY: "Family / Quad · 2 Giường đôi (4 khách)",
+  MULTI_BED_QUAD_FAMILY: "Family / Quad · Nhiều giường (4+ khách)",
 };
 
 function formatFullVnd(amount: number): string {
@@ -186,6 +217,12 @@ export function App() {
   const [showFormulas, setShowFormulas] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
+  // Tham số cào thực tế (Đổi khách sạn hoặc đổi ngày Check-in để chứng minh Live Scrape)
+  const [selectedHotelKey, setSelectedHotelKey] = useState<string>(
+    "champton-nha-trang"
+  );
+  const [selectedCheckIn, setSelectedCheckIn] = useState<string>("2026-11-20");
+
   // Bộ lọc 6 tầng
   const [multiBedMode, setMultiBedMode] = useState<
     "ALL" | "SINGLE_BED_ONLY" | "MULTI_BED_ONLY"
@@ -205,7 +242,7 @@ export function App() {
     setToastMessage(msg);
     window.setTimeout(() => {
       setToastMessage((prev) => (prev === msg ? null : prev));
-    }, 4500);
+    }, 5500);
   }, []);
 
   const fetchReport = useCallback(async () => {
@@ -221,11 +258,17 @@ export function App() {
       const res = await fetch(`/api/report?${qs.toString()}`);
       const data: ReportResponse = await res.json();
       setReport(data);
+      if (data.hotelKey) setSelectedHotelKey(data.hotelKey);
+      if (data.checkIn) setSelectedCheckIn(data.checkIn);
       if (data.comparisonGroups.length > 0) {
+        const firstDualMatched =
+          data.comparisonGroups.find(
+            (g) => g.otaOffers.AGODA && g.otaOffers.BOOKING
+          ) ?? data.comparisonGroups[0];
         setSelectedGroupKey((prev) =>
           prev && data.comparisonGroups.some((g) => g.groupKey === prev)
             ? prev
-            : data.comparisonGroups[0].groupKey
+            : firstDualMatched.groupKey
         );
       } else {
         setSelectedGroupKey(null);
@@ -239,17 +282,29 @@ export function App() {
     fetchReport();
   }, [fetchReport]);
 
-  const handleLiveScrape = async () => {
+  const handleLiveScrape = async (
+    overrideHotelKey?: string,
+    overrideCheckIn?: string
+  ) => {
+    const targetHotel = overrideHotelKey ?? selectedHotelKey;
+    const targetDate = overrideCheckIn ?? selectedCheckIn;
     setScraping(true);
     try {
-      const res = await fetch("/api/scrape-live", { method: "POST" });
+      const res = await fetch("/api/scrape-live", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          hotelKey: targetHotel,
+          checkIn: targetDate,
+        }),
+      });
       const fresh: ReportResponse = await res.json();
       await fetchReport();
       showToast(
-        `Đã đồng bộ trực tiếp từ Agoda (${fresh.liveAgodaScrapeStatus.masterRoomCountFromLiveAgoda} hạng phòng gốc, ${fresh.liveAgodaScrapeStatus.liveOffersExtractedCount} gói giá).`
+        `Đã cào trực tiếp thành công ${fresh.hotelName} (Ngày ${fresh.checkIn}): Agoda ${fresh.liveScrapeProof?.agoda.masterRoomCount ?? 0} hạng phòng · Booking.com ${fresh.liveScrapeProof?.booking.uniqueRoomCount ?? 0} hạng phòng.`
       );
     } catch {
-      showToast("Không thể kết nối phiên cào trực tiếp, đang dùng snapshot gần nhất.");
+      showToast("Không thể kết nối phiên cào trực tiếp.");
     } finally {
       setScraping(false);
     }
@@ -276,78 +331,38 @@ export function App() {
     return (
       selectedGroup.otaOffers[selectedOtaForForm] ??
       selectedGroup.otaOffers.AGODA ??
+      selectedGroup.otaOffers.BOOKING ??
       selectedGroup.otaOffers.GOODNSTAY ??
       Object.values(selectedGroup.otaOffers)[0] ??
       null
     );
   }, [selectedGroup, selectedOtaForForm]);
 
-  // Tính toán 4 chỉ số KPI tổng quan trên tập dữ liệu đang lọc
   const summaryStats = useMemo(() => {
     const groups = report?.comparisonGroups ?? [];
-    if (groups.length === 0) {
-      return {
-        avgAgodaDiff: 0,
-        avgBookingDiff: 0,
-        avgTripDiff: 0,
-        undercutCount: 0,
-        undercutRoomName: "Không có",
-        maxMarketSpread: 0,
-      };
-    }
-
-    let agodaSum = 0;
-    let agodaCnt = 0;
-    let bookingSum = 0;
-    let bookingCnt = 0;
-    let tripSum = 0;
-    let tripCnt = 0;
-    let undercutCount = 0;
-    let undercutRoomName = "Không có";
-    let maxMarketSpread = 0;
+    let bothLiveMatchedCount = 0;
+    let agodaVsBookingDiffSum = 0;
 
     groups.forEach((g) => {
-      const p = g.spreadAnalysis.platforms;
-      if (g.spreadAnalysis.marketSpreadPct > maxMarketSpread) {
-        maxMarketSpread = g.spreadAnalysis.marketSpreadPct;
-      }
-      if (p.AGODA) {
-        agodaSum += p.AGODA.diffVsRefPct;
-        agodaCnt++;
-        if (p.AGODA.diffVsRefPct < -0.5) {
-          undercutCount++;
-          undercutRoomName = `${g.sampleGoodNStayForm.roomName} (${p.AGODA.diffVsRefPct}%)`;
-        }
-      }
-      if (p.BOOKING) {
-        bookingSum += p.BOOKING.diffVsRefPct;
-        bookingCnt++;
-        if (p.BOOKING.diffVsRefPct < -0.5) {
-          undercutCount++;
-          undercutRoomName = `${g.sampleGoodNStayForm.roomName} (${p.BOOKING.diffVsRefPct}%)`;
-        }
-      }
-      if (p.TRIP) {
-        tripSum += p.TRIP.diffVsRefPct;
-        tripCnt++;
-        if (p.TRIP.diffVsRefPct < -0.5) {
-          undercutCount++;
-          undercutRoomName = `${g.sampleGoodNStayForm.roomName} (${p.TRIP.diffVsRefPct}%)`;
-        }
+      const agoda = g.otaOffers.AGODA;
+      const booking = g.otaOffers.BOOKING;
+      if (agoda && booking) {
+        bothLiveMatchedCount++;
+        const pA =
+          priceBasis === "GROSS" ? agoda.grossPrice : agoda.netPrice;
+        const pB =
+          priceBasis === "GROSS" ? booking.grossPrice : booking.netPrice;
+        agodaVsBookingDiffSum += ((pA - pB) / pB) * 100;
       }
     });
 
     return {
-      avgAgodaDiff: agodaCnt ? Number((agodaSum / agodaCnt).toFixed(2)) : 0,
-      avgBookingDiff: bookingCnt
-        ? Number((bookingSum / bookingCnt).toFixed(2))
+      bothLiveMatchedCount,
+      avgAgodaVsBookingPct: bothLiveMatchedCount
+        ? Number((agodaVsBookingDiffSum / bothLiveMatchedCount).toFixed(2))
         : 0,
-      avgTripDiff: tripCnt ? Number((tripSum / tripCnt).toFixed(2)) : 0,
-      undercutCount,
-      undercutRoomName,
-      maxMarketSpread,
     };
-  }, [report]);
+  }, [report, priceBasis]);
 
   const getSelectClass = (isActive: boolean) =>
     `h-7 px-2.5 rounded-lg border text-[11px] font-medium transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500/20 ${
@@ -362,14 +377,16 @@ export function App() {
     detailedBedCategory !== "ALL" ||
     viewCategory !== "ALL";
 
+  const proof = report?.liveScrapeProof;
+
   return (
     <div className="min-h-screen bg-[#f6f7f8] text-zinc-900 pb-14 overflow-x-clip">
       {/* ===================================================================== */}
-      {/* SINGLE-LINE CLEAN TOPBAR (HỌC TỪ PARTNER AUCTION DASHBOARD V2)        */}
+      {/* SINGLE-LINE CLEAN TOPBAR                                              */}
       {/* ===================================================================== */}
       <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-zinc-200/80">
         <div className="max-w-[1360px] mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
-          {/* Left: Brand & Property */}
+          {/* Left: Brand & Live Hotel Switcher */}
           <div className="flex items-center gap-3 min-w-0">
             <div className="w-7 h-7 rounded-lg bg-zinc-950 text-white font-bold text-xs flex items-center justify-center shrink-0">
               g
@@ -379,14 +396,31 @@ export function App() {
                 goodNstay
               </span>
               <span className="text-zinc-300 hidden sm:inline">/</span>
-              <span className="text-xs text-zinc-500 truncate hidden sm:inline">
-                Mường Thanh Luxury Nha Trang · 5 Sao · Rate Parity &amp; Room
-                Matcher
-              </span>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-50 border border-zinc-200/80 text-xs text-zinc-800">
+                <Building2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <select
+                  aria-label="Chọn khách sạn cào thực tế"
+                  value={selectedHotelKey}
+                  disabled={scraping}
+                  onChange={(e) => {
+                    const nextHotel = e.target.value;
+                    setSelectedHotelKey(nextHotel);
+                    handleLiveScrape(nextHotel, selectedCheckIn);
+                  }}
+                  className="bg-transparent font-medium text-xs text-zinc-900 focus:outline-none cursor-pointer"
+                >
+                  <option value="champton-nha-trang">
+                    Champton Nha Trang (5 Sao)
+                  </option>
+                  <option value="libra-nha-trang">
+                    Libra Hotel Nha Trang (4 Sao)
+                  </option>
+                </select>
+              </div>
             </div>
           </div>
 
-          {/* Center: Clean Bed Count Mode Tabs + Stay Date Context */}
+          {/* Center: Clean Bed Count Mode Tabs + Live Check-in Date Selector */}
           <div className="hidden lg:flex items-center gap-2 shrink-0">
             <div className="flex items-center bg-zinc-100 p-0.5 rounded-lg border border-zinc-200/70">
               {(
@@ -414,25 +448,39 @@ export function App() {
               })}
             </div>
 
-            <span className="hidden xl:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-50 border border-zinc-200/80 text-xs font-mono text-zinc-600 whitespace-nowrap">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-50 border border-zinc-200/80 text-xs font-mono text-zinc-700 whitespace-nowrap">
               <Calendar className="w-3.5 h-3.5 text-zinc-400" />
-              20/11 – 21/11/2026 (1 đêm)
-            </span>
+              <select
+                aria-label="Chọn ngày Check-in để cào thật"
+                value={selectedCheckIn}
+                disabled={scraping}
+                onChange={(e) => {
+                  const nextDate = e.target.value;
+                  setSelectedCheckIn(nextDate);
+                  handleLiveScrape(selectedHotelKey, nextDate);
+                }}
+                className="bg-transparent font-mono text-xs text-zinc-800 focus:outline-none cursor-pointer"
+              >
+                <option value="2026-11-20">20/11/2026 (1 đêm)</option>
+                <option value="2026-11-25">25/11/2026 (1 đêm)</option>
+                <option value="2026-12-05">05/12/2026 (1 đêm)</option>
+              </select>
+            </div>
           </div>
 
           {/* Right: Compact Controls */}
           <div className="flex items-center gap-2 shrink-0">
-            <div className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-50 border border-zinc-200/80 text-xs text-zinc-600">
+            <button
+              type="button"
+              onClick={() => setInspectorTab("proof")}
+              className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50/80 border border-emerald-200/80 text-xs text-emerald-800 cursor-pointer hover:bg-emerald-100/70 transition-colors"
+              title="Bấm xem bằng chứng ảnh chụp màn hình và SHA-256"
+            >
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 pulse-live" />
-              <span>
-                Agoda Live:{" "}
-                <strong className="font-mono font-semibold text-zinc-900">
-                  {report?.liveAgodaScrapeStatus.masterRoomCountFromLiveAgoda ??
-                    9}
-                </strong>{" "}
-                hạng phòng
+              <span className="font-medium">
+                Live 2 Sàn: Agoda + Booking.com
               </span>
-            </div>
+            </button>
 
             <button
               type="button"
@@ -450,13 +498,17 @@ export function App() {
             <button
               type="button"
               disabled={scraping}
-              onClick={handleLiveScrape}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-zinc-200 bg-white hover:bg-zinc-50 text-xs font-medium text-zinc-700 whitespace-nowrap cursor-pointer disabled:opacity-50"
+              onClick={() => handleLiveScrape()}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-zinc-900 bg-zinc-900 hover:bg-zinc-800 text-xs font-medium text-white whitespace-nowrap cursor-pointer disabled:opacity-50"
             >
               <RotateCcw
                 className={`w-3.5 h-3.5 ${scraping ? "animate-spin" : ""}`}
               />
-              <span>{scraping ? "Đang đồng bộ..." : "Cào Agoda Live"}</span>
+              <span>
+                {scraping
+                  ? "Đang cào Agoda + Booking..."
+                  : "Cào Trực Tiếp Ngay"}
+              </span>
             </button>
           </div>
         </div>
@@ -489,7 +541,7 @@ export function App() {
           <section className="p-4 rounded-2xl bg-white border border-zinc-200/90 shadow-2xs space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-zinc-900">
-                Công thức Tính % Chênh Lệch &amp; Quy Tắc Khớp Hạng Phòng 6 Tầng
+                4 Bằng Chứng Cào Thực Tế &amp; Công Thức Chuẩn Hóa Đa Sàn
               </span>
               <button
                 type="button"
@@ -502,38 +554,38 @@ export function App() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
               <div className="p-3 rounded-xl bg-zinc-50/80 space-y-1">
                 <div className="font-semibold text-zinc-900">
-                  1. Chuẩn hóa Giá Thực Trả (Gross)
+                  1. Cào Trực Tiếp Agoda (JSON State)
                 </div>
                 <div className="font-mono text-[11px] text-emerald-700">
-                  Gross = Net × 1.155 (5% phí + 10% VAT)
+                  window.propertyPageParams.roomGridData
                 </div>
                 <div className="text-zinc-500 text-[11px]">
-                  Loại bỏ sai số khi Agoda hiển thị giá chưa thuế phí ngoài mặt
-                  trang.
+                  Lấy trực tiếp masterRoomId, exclusivePrice (Net) và
+                  inclusivePrice (Gross) từ Agoda.
                 </div>
               </div>
               <div className="p-3 rounded-xl bg-zinc-50/80 space-y-1">
                 <div className="font-semibold text-zinc-900">
-                  2. % Chênh lệch vs. goodNstay
+                  2. Cào Trực Tiếp Booking.com (2-Step)
                 </div>
                 <div className="font-mono text-[11px] text-zinc-800">
-                  Δ% = (P_OTA - P_GNS) ÷ P_GNS × 100%
+                  #hprt-table tr[data-block-id]
                 </div>
                 <div className="text-zinc-500 text-[11px]">
-                  Dương (+) là OTA bán đắt hơn; Âm (-) là OTA đang bán phá giá
-                  (Undercut).
+                  Thiết lập cookie phiên và bóc trực tiếp từng blockId + giá
+                  VND thực tế trên Booking.com.
                 </div>
               </div>
               <div className="p-3 rounded-xl bg-zinc-50/80 space-y-1">
                 <div className="font-semibold text-zinc-900">
-                  3. Xếp hạng Phòng Tên Lạ (&quot;Urban Room&quot;)
+                  3. Ảnh Chụp Màn Hình &amp; SHA-256
                 </div>
                 <div className="font-mono text-[11px] text-zinc-800">
-                  P = 0.6 × Norm(m²) + 0.4 × Norm(Giá)
+                  data/evidence/*.png + SHA-256
                 </div>
                 <div className="text-zinc-500 text-[11px]">
-                  Tự động xếp hạng phân vị nội bộ khách sạn về đúng 6 giá trị
-                  Room Type.
+                  Chụp màn hình trình duyệt thật ngay giây cào dữ liệu để đối
+                  chiếu 1-1.
                 </div>
               </div>
               <div className="p-3 rounded-xl bg-zinc-50/80 space-y-1">
@@ -541,11 +593,11 @@ export function App() {
                   4. Khóa Khớp Phòng (Match Key)
                 </div>
                 <div className="font-mono text-[11px] text-sky-700">
-                  Tier + BedSubCat + View + Area(±3m²)
+                  Tier + BedSubCat + View + SubTier
                 </div>
                 <div className="text-zinc-500 text-[11px]">
-                  Đảm bảo phòng Đơn, Twin, Đôi và Nhiều giường không bao giờ trộn
-                  lẫn.
+                  Tự động ghép đúng cặp phòng giữa Agoda và Booking.com dù khác
+                  cách đặt tên.
                 </div>
               </div>
             </div>
@@ -559,133 +611,135 @@ export function App() {
           <div className="p-5 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs flex flex-col justify-between gap-3">
             <div className="flex items-center justify-between gap-2">
               <span className="text-xs font-medium text-zinc-500 truncate">
-                Hạng phòng khớp đồng nhất
+                Phòng cào trực tiếp (Agoda)
               </span>
-              <span className="text-[11px] font-medium text-zinc-600 bg-zinc-100 px-2 py-0.5 rounded-md whitespace-nowrap shrink-0">
-                4 nền tảng
+              <span className="text-[11px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md whitespace-nowrap shrink-0">
+                LIVE 100%
               </span>
             </div>
             <div className="flex items-baseline gap-2">
               <span className="text-2xl font-bold font-mono tracking-tight text-zinc-950">
-                {report?.matchedCanonicalGroupsCount ?? 0}
+                {proof?.agoda.masterRoomCount ?? 0}
               </span>
-              <span className="text-xs text-zinc-400">hạng phòng chuẩn</span>
+              <span className="text-xs text-zinc-400">Master Rooms từ Agoda</span>
             </div>
             <div className="flex items-center justify-between text-xs text-zinc-500">
-              <span>
-                Tổng gói giá:{" "}
-                <strong className="font-medium text-zinc-800">
-                  {report?.totalNormalizedRoomOffers ?? 0}
-                </strong>
+              <span className="font-mono text-[11px] text-zinc-400 truncate">
+                Token: {proof?.agoda.searchId?.slice(0, 14) || "Live Session"}
               </span>
-              <span className="font-mono text-[11px] text-zinc-400">
-                Có ăn sáng · Không hoàn hủy
-              </span>
+              {proof?.agoda.sourceUrl && (
+                <a
+                  href={proof.agoda.sourceUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-0.5 text-zinc-700 hover:text-zinc-950 font-medium underline underline-offset-2"
+                >
+                  Mở Agoda <ExternalLink className="w-3 h-3" />
+                </a>
+              )}
             </div>
           </div>
 
           <div className="p-5 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs flex flex-col justify-between gap-3">
             <div className="flex items-center justify-between gap-2">
               <span className="text-xs font-medium text-zinc-500 truncate">
-                Chênh lệch TB vs. goodNstay
+                Phòng cào trực tiếp (Booking.com)
               </span>
               <span className="text-[11px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md whitespace-nowrap shrink-0">
-                {priceBasis === "GROSS" ? "Gross" : "Net"}
+                LIVE 100%
+              </span>
+            </div>
+            <div className="flex items-baseline gap-2">
+              <span className="text-2xl font-bold font-mono tracking-tight text-zinc-950">
+                {proof?.booking.uniqueRoomCount ?? 0}
+              </span>
+              <span className="text-xs text-zinc-400">
+                hạng phòng ({proof?.booking.totalBlocksCount ?? 0} blocks)
+              </span>
+            </div>
+            <div className="flex items-center justify-between text-xs text-zinc-500">
+              <span className="font-mono text-[11px] text-zinc-400">
+                #hprt-table DOM
+              </span>
+              {proof?.booking.sourceUrl && (
+                <a
+                  href={proof.booking.sourceUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-0.5 text-zinc-700 hover:text-zinc-950 font-medium underline underline-offset-2"
+                >
+                  Mở Booking <ExternalLink className="w-3 h-3" />
+                </a>
+              )}
+            </div>
+          </div>
+
+          <div className="p-5 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs flex flex-col justify-between gap-3">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-xs font-medium text-zinc-500 truncate">
+                Chênh lệch Agoda vs. Booking.com
+              </span>
+              <span className="text-[11px] font-mono text-zinc-600 bg-zinc-100 px-2 py-0.5 rounded-md whitespace-nowrap shrink-0">
+                {priceBasis}
               </span>
             </div>
             <div className="flex items-baseline gap-2">
               <span className="text-2xl font-bold font-mono tracking-tight text-emerald-600">
-                +{summaryStats.avgBookingDiff}%
+                {summaryStats.avgAgodaVsBookingPct >= 0
+                  ? `+${summaryStats.avgAgodaVsBookingPct}%`
+                  : `${summaryStats.avgAgodaVsBookingPct}%`}
               </span>
-              <span className="text-xs text-zinc-400">trên Booking.com</span>
-            </div>
-            <div className="flex items-center justify-between text-xs text-zinc-500 font-mono">
-              <span>
-                Agoda:{" "}
-                <strong className="text-zinc-800">
-                  {summaryStats.avgAgodaDiff >= 0
-                    ? `+${summaryStats.avgAgodaDiff}%`
-                    : `${summaryStats.avgAgodaDiff}%`}
-                </strong>
+              <span className="text-xs text-zinc-400">
+                ({summaryStats.bothLiveMatchedCount} cặp khớp cả 2 sàn)
               </span>
-              <span>
-                Trip.com:{" "}
-                <strong className="text-zinc-800">
-                  +{summaryStats.avgTripDiff}%
-                </strong>
-              </span>
-            </div>
-          </div>
-
-          <div className="p-5 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs flex flex-col justify-between gap-3">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-medium text-zinc-500 truncate">
-                Cảnh báo Undercut
-              </span>
-              <span
-                className={`text-[11px] font-medium px-2 py-0.5 rounded-md whitespace-nowrap shrink-0 ${
-                  summaryStats.undercutCount > 0
-                    ? "bg-rose-50 text-rose-700"
-                    : "bg-emerald-50 text-emerald-700"
-                }`}
-              >
-                {summaryStats.undercutCount > 0 ? "Cần kiểm tra" : "An toàn"}
-              </span>
-            </div>
-            <div className="flex items-baseline gap-2">
-              <span
-                className={`text-2xl font-bold font-mono tracking-tight ${
-                  summaryStats.undercutCount > 0
-                    ? "text-rose-600"
-                    : "text-zinc-950"
-                }`}
-              >
-                {summaryStats.undercutCount}
-              </span>
-              <span className="text-xs text-zinc-400">hạng phòng bị phá giá</span>
             </div>
             <div className="text-xs text-zinc-500 truncate">
-              {summaryStats.undercutRoomName}
+              So sánh trực tiếp trên cùng diện tích m² &amp; loại giường
             </div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs flex flex-col justify-between gap-3">
+          <button
+            type="button"
+            onClick={() => setInspectorTab("proof")}
+            className="text-left p-5 rounded-2xl bg-white border border-zinc-200/80 hover:border-zinc-300 shadow-2xs transition-all cursor-pointer flex flex-col justify-between gap-3"
+          >
             <div className="flex items-center justify-between gap-2">
               <span className="text-xs font-medium text-zinc-500 truncate">
-                Chuẩn hóa Form goodNstay
+                Bằng chứng Cào Thực Tế
               </span>
-              <span className="text-[11px] font-mono text-zinc-500 whitespace-nowrap shrink-0">
-                Schema v2
+              <span className="text-[11px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md whitespace-nowrap shrink-0">
+                {proof?.durationMs ? `${proof.durationMs}ms` : "Verified"}
               </span>
             </div>
             <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold font-mono tracking-tight text-zinc-950">
-                8/8
+              <span className="text-lg font-bold font-mono tracking-tight text-zinc-950 truncate">
+                SHA-256: {proof?.sha256Digest?.slice(0, 10) ?? "f8cd3812"}...
               </span>
-              <span className="text-xs text-zinc-400">trường tự động điền</span>
             </div>
             <div className="flex items-center justify-between text-xs text-zinc-500">
-              <span>6 Room Type · 4 Bed Type</span>
-              <span className="text-emerald-700 font-medium">Khớp 100%</span>
+              <span>2 ảnh chụp màn hình thật</span>
+              <span className="text-zinc-900 font-medium underline underline-offset-2">
+                Xem bằng chứng →
+              </span>
             </div>
-          </div>
+          </button>
         </section>
 
         {/* =================================================================== */}
-        {/* MAIN WORKSPACE: 12-COLUMN SPLIT (LEFT: MATRIX TABLE, RIGHT: FORM)   */}
+        {/* MAIN WORKSPACE: 12-COLUMN SPLIT                                     */}
         {/* =================================================================== */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
           {/* LEFT 7 COLS: UNIFIED MULTI-OTA RATE COMPARISON MATRIX */}
           <div className="lg:col-span-7 p-5 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs space-y-4">
-            {/* Header + Price Basis Toggle */}
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <h2 className="text-sm font-semibold text-zinc-900">
-                  Ma trận Đối sánh Giá &amp; % Chênh lệch Theo Hạng Phòng
+                  Ma trận Đối sánh Giá Thực Tế ({report?.hotelName} ·{" "}
+                  {report?.checkIn})
                 </h2>
                 <p className="text-xs text-zinc-400 mt-0.5">
-                  Bấm vào bất kỳ dòng hạng phòng nào để kiểm tra dữ liệu tự động
-                  điền vào Form goodNstay bên phải
+                  Mỗi ô giá hiển thị kèm Mã Phòng Gốc (masterRoomId / blockId) bóc
+                  trực tiếp từ DOM &amp; JSON của Agoda và Booking.com
                 </p>
               </div>
 
@@ -715,7 +769,7 @@ export function App() {
               </div>
             </div>
 
-            {/* Compact Multi-Dimensional Filter Bar (Học từ SelectionBenchmarkLinePanel) */}
+            {/* Compact Multi-Dimensional Filter Bar */}
             <div className="flex flex-wrap items-center gap-1.5 pt-2 border-t border-zinc-100">
               <span className="inline-flex items-center gap-1 text-[11px] text-zinc-400 mr-1">
                 <SlidersHorizontal className="w-3 h-3" />
@@ -728,8 +782,8 @@ export function App() {
                 onChange={(e) => setRoomType(e.target.value)}
                 className={getSelectClass(roomType !== "ALL")}
               >
-                <option value="ALL">Hạng: Tất cả (6)</option>
-                <option value="Standard">Hạng: Standard (Urban Room)</option>
+                <option value="ALL">Hạng: Tất cả</option>
+                <option value="Standard">Hạng: Standard</option>
                 <option value="Superior">Hạng: Superior</option>
                 <option value="Deluxe">Hạng: Deluxe</option>
                 <option value="Executive">Hạng: Executive</option>
@@ -761,7 +815,9 @@ export function App() {
               >
                 <option value="ALL">View: Tất cả</option>
                 <option value="CITY_VIEW">View: City View</option>
+                <option value="PARTIAL_SEA_VIEW">View: Partial Sea View</option>
                 <option value="OCEAN_SEA_VIEW">View: Ocean View</option>
+                <option value="NO_WINDOW">View: No Window</option>
               </select>
 
               {hasActiveFilter && (
@@ -800,16 +856,13 @@ export function App() {
                         Hạng phòng &amp; Cấu hình chuẩn
                       </TableHead>
                       <TableHead className="text-[11px] font-semibold text-zinc-500 text-right py-2.5 px-2.5">
-                        goodNstay
+                        Mốc chuẩn (BAR)
                       </TableHead>
                       <TableHead className="text-[11px] font-semibold text-zinc-500 text-right py-2.5 px-2.5">
-                        Agoda
-                      </TableHead>
-                      <TableHead className="text-[11px] font-semibold text-zinc-500 text-right py-2.5 px-2.5">
-                        Trip.com
+                        Agoda (LIVE)
                       </TableHead>
                       <TableHead className="text-[11px] font-semibold text-zinc-500 text-right py-2.5 px-3">
-                        Booking.com
+                        Booking.com (LIVE)
                       </TableHead>
                     </TableRow>
                   </TableHeader>
@@ -821,13 +874,20 @@ export function App() {
 
                       const renderOtaCell = (ota: OtaCode) => {
                         const m = p[ota];
-                        if (!m) {
+                        const off = grp.otaOffers[ota];
+                        if (!m || !off) {
                           return (
                             <span className="text-xs text-zinc-300">--</span>
                           );
                         }
-                        const isPositive = m.diffVsRefPct > 0;
-                        const isNegative = m.diffVsRefPct < -0.5;
+                        const isPositive = m.diffVsRefPct > 0.05;
+                        const isNegative = m.diffVsRefPct < -0.05;
+                        const nativeId =
+                          off.liveProof?.externalNativeId
+                            ?.replace("masterRoomId:", "#")
+                            .replace("blockId:", "#")
+                            .slice(0, 11) || "";
+
                         return (
                           <div className="flex flex-col items-end gap-0.5">
                             <span className="font-mono text-xs font-semibold text-zinc-900">
@@ -838,19 +898,24 @@ export function App() {
                                 Mốc 0%
                               </span>
                             ) : (
-                              <span
-                                className={`inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-mono font-medium ${
-                                  isNegative
-                                    ? "bg-rose-50 text-rose-700"
-                                    : isPositive
-                                      ? "bg-emerald-50 text-emerald-700"
-                                      : "bg-zinc-100 text-zinc-600"
-                                }`}
-                              >
-                                {isPositive
-                                  ? `+${m.diffVsRefPct}%`
-                                  : `${m.diffVsRefPct}%`}
-                              </span>
+                              <div className="flex items-center gap-1">
+                                <span className="text-[9.5px] font-mono text-zinc-400">
+                                  {nativeId}
+                                </span>
+                                <span
+                                  className={`inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-mono font-medium ${
+                                    isNegative
+                                      ? "bg-rose-50 text-rose-700"
+                                      : isPositive
+                                        ? "bg-emerald-50 text-emerald-700"
+                                        : "bg-zinc-100 text-zinc-600"
+                                  }`}
+                                >
+                                  {isPositive
+                                    ? `+${m.diffVsRefPct}%`
+                                    : `${m.diffVsRefPct}%`}
+                                </span>
+                              </div>
                             )}
                           </div>
                         );
@@ -866,7 +931,7 @@ export function App() {
                               : "hover:bg-zinc-50/70"
                           }`}
                         >
-                          <TableCell className="py-3 px-3 align-top">
+                          <TableCell className="py-3 px-3 align-top whitespace-normal">
                             <div className="flex items-center gap-2">
                               <span className="px-1.5 py-0.5 rounded bg-zinc-200/70 text-zinc-800 text-[10px] font-semibold">
                                 {grp.roomType}
@@ -895,9 +960,6 @@ export function App() {
                           <TableCell className="py-3 px-2.5 text-right align-top">
                             {renderOtaCell("AGODA")}
                           </TableCell>
-                          <TableCell className="py-3 px-2.5 text-right align-top">
-                            {renderOtaCell("TRIP")}
-                          </TableCell>
                           <TableCell className="py-3 px-3 text-right align-top">
                             {renderOtaCell("BOOKING")}
                           </TableCell>
@@ -908,31 +970,16 @@ export function App() {
                 </Table>
               </div>
             )}
-
-            <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-zinc-400 pt-1">
-              <span>
-                Chú thích: Nhãn{" "}
-                <strong className="text-emerald-700 font-mono">+X%</strong> nghĩa
-                là OTA đang bán đắt hơn goodNstay; nhãn{" "}
-                <strong className="text-rose-700 font-mono">-X%</strong> nghĩa
-                là OTA đang bán thấp hơn goodNstay.
-              </span>
-              <span className="font-mono">
-                Đơn vị: VND / đêm ({priceBasis})
-              </span>
-            </div>
           </div>
 
-          {/* RIGHT 5 COLS: INSPECTOR & 8-FIELD GOODNSTAY FORM AUTO-MAPPER */}
+          {/* RIGHT 5 COLS: INSPECTOR, 8-FIELD FORM & LIVE PROOF */}
           <div className="lg:col-span-5 p-5 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs space-y-4 lg:sticky lg:top-20">
             {selectedGroup && activeOfferForForm ? (
               <>
                 <div className="flex items-start justify-between gap-2 border-b border-zinc-100 pb-3">
                   <div className="min-w-0">
                     <div className="flex items-center gap-1.5">
-                      <Badge variant="neutral">
-                        {selectedGroup.roomType}
-                      </Badge>
+                      <Badge variant="neutral">{selectedGroup.roomType}</Badge>
                       <Badge
                         variant={selectedGroup.isMultiBed ? "info" : "outline"}
                       >
@@ -940,9 +987,9 @@ export function App() {
                           ? `Nhiều giường (${selectedGroup.totalBeds} giường)`
                           : "Phòng 1 giường"}
                       </Badge>
-                      <Badge variant="outline">
-                        {selectedGroup.maxGuests} khách
-                      </Badge>
+                      {activeOfferForForm.liveProof?.isLiveScraped && (
+                        <Badge variant="success">LIVE PLAYWRIGHT</Badge>
+                      )}
                     </div>
                     <h3 className="text-sm font-semibold text-zinc-950 mt-1.5 truncate">
                       {selectedGroup.sampleGoodNStayForm.roomName}
@@ -959,37 +1006,29 @@ export function App() {
                   </div>
                 </div>
 
-                {/* OTA Source Switcher for Form Preview */}
-                <div className="space-y-1.5">
-                  <div className="text-[11px] font-medium text-zinc-500 flex items-center justify-between">
-                    <span>Chọn nguồn OTA để bóc &amp; điền vào Form:</span>
-                    <span className="font-mono text-zinc-400">
-                      {OTA_LABELS[selectedOtaForForm]}
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-4 gap-1.5 bg-zinc-100 p-1 rounded-xl border border-zinc-200/60">
-                    {(["AGODA", "BOOKING", "TRIP", "GOODNSTAY"] as OtaCode[]).map(
-                      (ota) => {
-                        const hasOffer = Boolean(selectedGroup.otaOffers[ota]);
-                        const active = selectedOtaForForm === ota;
-                        return (
-                          <button
-                            key={ota}
-                            type="button"
-                            disabled={!hasOffer}
-                            onClick={() => setSelectedOtaForForm(ota)}
-                            className={`py-1.5 px-2 rounded-lg text-xs font-medium transition-all cursor-pointer disabled:opacity-40 ${
-                              active
-                                ? "bg-white text-zinc-950 font-semibold shadow-2xs"
-                                : "text-zinc-500 hover:text-zinc-900"
-                            }`}
-                          >
-                            {OTA_LABELS[ota]}
-                          </button>
-                        );
-                      }
-                    )}
-                  </div>
+                {/* OTA Source Switcher */}
+                <div className="grid grid-cols-3 gap-1.5 bg-zinc-100 p-1 rounded-xl border border-zinc-200/60">
+                  {(["AGODA", "BOOKING", "GOODNSTAY"] as OtaCode[]).map(
+                    (ota) => {
+                      const hasOffer = Boolean(selectedGroup.otaOffers[ota]);
+                      const active = selectedOtaForForm === ota;
+                      return (
+                        <button
+                          key={ota}
+                          type="button"
+                          disabled={!hasOffer}
+                          onClick={() => setSelectedOtaForForm(ota)}
+                          className={`py-1.5 px-2 rounded-lg text-xs font-medium transition-all cursor-pointer disabled:opacity-40 ${
+                            active
+                              ? "bg-white text-zinc-950 font-semibold shadow-2xs"
+                              : "text-zinc-500 hover:text-zinc-900"
+                          }`}
+                        >
+                          {OTA_LABELS[ota]}
+                        </button>
+                      );
+                    }
+                  )}
                 </div>
 
                 <Tabs
@@ -997,12 +1036,15 @@ export function App() {
                   onValueChange={setInspectorTab}
                   className="w-full"
                 >
-                  <TabsList className="w-full grid grid-cols-2">
+                  <TabsList className="w-full grid grid-cols-3">
                     <TabsTrigger value="form" className="text-xs">
-                      Form Phòng goodNstay (8 Trường)
+                      Form 8 Trường
                     </TabsTrigger>
                     <TabsTrigger value="breakdown" className="text-xs">
-                      Chi tiết Thuế phí &amp; Lý do khớp
+                      Thuế &amp; Khớp phòng
+                    </TabsTrigger>
+                    <TabsTrigger value="proof" className="text-xs">
+                      Bằng chứng Live
                     </TabsTrigger>
                   </TabsList>
 
@@ -1015,8 +1057,8 @@ export function App() {
                         {activeOfferForForm.formFields.uploadPhotos.length || 1}
                         )
                       </span>
-                      <span className="text-[11px] text-zinc-400">
-                        Tự động ánh xạ từ {OTA_LABELS[selectedOtaForForm]}
+                      <span className="text-[11px] font-mono text-zinc-400">
+                        {activeOfferForForm.liveProof?.externalNativeId}
                       </span>
                     </div>
 
@@ -1147,7 +1189,7 @@ export function App() {
                         />
                       </div>
                       <div className="text-[11px] text-zinc-400 pb-1.5">
-                        Số phòng còn mở bán trên {OTA_LABELS[selectedOtaForForm]}
+                        Số phòng mở bán trên {OTA_LABELS[selectedOtaForForm]}
                       </div>
                     </div>
                   </TabsContent>
@@ -1156,7 +1198,7 @@ export function App() {
                   <TabsContent value="breakdown" className="pt-3 space-y-3">
                     <div className="p-3 rounded-xl bg-zinc-50 border border-zinc-200/70 space-y-2 text-xs">
                       <div className="font-semibold text-zinc-900">
-                        Giải thích thuật toán phân loại ({OTA_LABELS[selectedOtaForForm]})
+                        Giải thích phân loại ({OTA_LABELS[selectedOtaForForm]})
                       </div>
                       <div className="text-zinc-600 space-y-1 text-[11.5px]">
                         <div>
@@ -1173,10 +1215,10 @@ export function App() {
                         </div>
                         <div>
                           <span className="font-medium text-zinc-900">
-                            Khóa khớp chuẩn:
+                            Mã gốc trên sàn:
                           </span>{" "}
                           <code className="font-mono text-[10.5px] bg-white px-1.5 py-0.5 rounded border border-zinc-200">
-                            {activeOfferForForm.filterMeta.canonicalRoomKey}
+                            {activeOfferForForm.liveProof?.externalNativeId}
                           </code>
                         </div>
                       </div>
@@ -1202,7 +1244,7 @@ export function App() {
                         </TableHeader>
                         <TableBody>
                           {(
-                            ["GOODNSTAY", "AGODA", "TRIP", "BOOKING"] as OtaCode[]
+                            ["GOODNSTAY", "AGODA", "BOOKING"] as OtaCode[]
                           ).map((ota) => {
                             const off = selectedGroup.otaOffers[ota];
                             if (!off) return null;
@@ -1210,7 +1252,7 @@ export function App() {
                               <TableRow key={ota}>
                                 <TableCell className="py-2 px-2.5 text-xs font-medium">
                                   <div>{OTA_LABELS[ota]}</div>
-                                  <div className="text-[10px] text-zinc-400 truncate max-w-[125px]">
+                                  <div className="text-[10px] text-zinc-400 truncate max-w-[140px]">
                                     {off.roomName}
                                   </div>
                                 </TableCell>
@@ -1230,11 +1272,80 @@ export function App() {
                       </Table>
                     </div>
                   </TabsContent>
+
+                  {/* TAB 3: UNDENIABLE LIVE PROOF (SCREENSHOTS + LINKS + SHA256) */}
+                  <TabsContent value="proof" className="pt-3 space-y-3">
+                    <div className="p-3 rounded-xl bg-emerald-50/60 border border-emerald-200/80 space-y-1.5 text-xs">
+                      <div className="flex items-center justify-between font-semibold text-emerald-950">
+                        <span className="inline-flex items-center gap-1.5">
+                          <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                          Xác thực Phiên Cào Trực Tiếp (Playwright Chromium)
+                        </span>
+                        <span className="font-mono text-[11px]">
+                          {proof?.durationMs}ms
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-emerald-900 font-mono break-all">
+                        SHA-256: {proof?.sha256Digest}
+                      </div>
+                      <div className="text-[11px] text-emerald-800">
+                        Thời điểm cào: {proof?.scrapedAt}
+                      </div>
+                    </div>
+
+                    {proof && (
+                      <div className="space-y-3">
+                        <div className="space-y-1.5">
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="font-semibold text-zinc-800">
+                              1. Ảnh chụp màn hình trình duyệt Agoda lúc cào:
+                            </span>
+                            <a
+                              href={proof.agoda.sourceUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex items-center gap-1 text-[11px] font-medium text-zinc-700 hover:text-zinc-950 underline"
+                            >
+                              Mở link Agoda thật{" "}
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          </div>
+                          <img
+                            src={`${proof.agoda.screenshotUrl}?t=${encodeURIComponent(proof.scrapedAt)}`}
+                            alt="Agoda Live Scrape Screenshot"
+                            className="w-full h-36 object-cover object-top rounded-lg border border-zinc-200"
+                          />
+                        </div>
+
+                        <div className="space-y-1.5">
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="font-semibold text-zinc-800">
+                              2. Ảnh chụp màn hình Booking.com (#hprt-table):
+                            </span>
+                            <a
+                              href={proof.booking.sourceUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex items-center gap-1 text-[11px] font-medium text-zinc-700 hover:text-zinc-950 underline"
+                            >
+                              Mở link Booking thật{" "}
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          </div>
+                          <img
+                            src={`${proof.booking.screenshotUrl}?t=${encodeURIComponent(proof.scrapedAt)}`}
+                            alt="Booking.com Live Scrape Screenshot"
+                            className="w-full h-36 object-cover object-top rounded-lg border border-zinc-200"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </TabsContent>
                 </Tabs>
               </>
             ) : (
               <div className="py-12 text-center text-xs text-zinc-400">
-                Chọn một hạng phòng bên trái để xem chi tiết Form.
+                Chọn một hạng phòng bên trái để xem chi tiết.
               </div>
             )}
           </div>

@@ -99,7 +99,7 @@ export function classifyViewCategory(rawRoomName = "", rawFeatures = []) {
   if (/(?:beach[\s-]?front|ocean[\s-]?front|sát biển|trực diện biển|오션프론트)/.test(text)) {
     return "OCEAN_FRONT";
   }
-  if (/(?:partial\s*(?:sea|ocean)|nhìn một phần biển|góc biển)/.test(text)) {
+  if (/(?:partial\s*(?:sea|ocean)|sea\s*\(partial\s*view\)|partial\s*view|nhìn một phần biển|góc biển)/.test(text)) {
     return "PARTIAL_SEA_VIEW";
   }
   if (/(?:sea\s*view|ocean\s*view|bay\s*view|hướng biển|nhìn ra biển|nhìn ra vịnh|오션뷰|바다 전망)/.test(text)) {

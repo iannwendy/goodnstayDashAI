@@ -16,18 +16,26 @@ import {
 const DATA_FILE = fileURLToPath(
   new URL("./data/latest_comparison_report.json", import.meta.url)
 );
+const EVIDENCE_DIR = fileURLToPath(
+  new URL("./data/evidence", import.meta.url)
+);
 
 function loadOrInitReport() {
   if (fs.existsSync(DATA_FILE)) {
     return JSON.parse(fs.readFileSync(DATA_FILE, "utf-8"));
   }
-  const normalizedRooms = buildMultiPlatformReferenceDataset([]);
+  const normalizedRooms = buildMultiPlatformReferenceDataset();
   const comparisonGroups = buildMatchedRoomComparisonGroups(normalizedRooms, {
     rateBucket: "BB_NON_REFUNDABLE",
     priceBasis: "GROSS",
   });
   return {
     generatedAt: new Date().toISOString(),
+    hotelKey: "champton-nha-trang",
+    hotelName: "Champton Nha Trang Hotel",
+    checkIn: "2026-11-20",
+    checkOut: "2026-11-21",
+    liveScrapeProof: null,
     liveAgodaScrapeStatus: {
       success: false,
       scrapedAt: null,
@@ -38,7 +46,6 @@ function loadOrInitReport() {
     matchedCanonicalGroupsCount: comparisonGroups.length,
     comparisonGroups,
     allNormalizedRooms: normalizedRooms,
-    rawLiveAgodaRooms: [],
   };
 }
 
@@ -46,6 +53,26 @@ function otaRateShoppingApiPlugin(): Plugin {
   return {
     name: "ota-rate-shopping-api",
     configureServer(server) {
+      // Phục vụ ảnh chụp màn hình bằng chứng cào thực tế
+      server.middlewares.use("/api/evidence", (req, res, next) => {
+        const rel = decodeURIComponent((req.url || "/").split("?")[0]).replace(
+          /^\/+/,
+          ""
+        );
+        const fullPath = path.resolve(EVIDENCE_DIR, rel);
+        if (
+          fullPath.startsWith(EVIDENCE_DIR) &&
+          fs.existsSync(fullPath) &&
+          fs.statSync(fullPath).isFile()
+        ) {
+          res.setHeader("Content-Type", "image/png");
+          res.statusCode = 200;
+          res.end(fs.readFileSync(fullPath));
+          return;
+        }
+        next();
+      });
+
       server.middlewares.use("/api/report", (req, res) => {
         const url = new URL(req.url || "/", "http://localhost:4180");
         const report = loadOrInitReport();
@@ -70,6 +97,14 @@ function otaRateShoppingApiPlugin(): Plugin {
           }
         );
 
+        for (const grp of filteredGroups) {
+          for (const item of grp.rawItems) {
+            if (grp.otaOffers[item.otaSource] && item.liveProof) {
+              grp.otaOffers[item.otaSource].liveProof = item.liveProof;
+            }
+          }
+        }
+
         res.setHeader("Content-Type", "application/json; charset=utf-8");
         res.statusCode = 200;
         res.end(
@@ -88,49 +123,29 @@ function otaRateShoppingApiPlugin(): Plugin {
         );
       });
 
-      server.middlewares.use("/api/scrape-live", async (req, res) => {
+      server.middlewares.use("/api/scrape-live", (req, res) => {
         if (req.method !== "POST") {
           res.statusCode = 405;
           res.end(JSON.stringify({ error: "Method Not Allowed" }));
           return;
         }
-        try {
-          const fresh = await runFullScrapeAndCompare();
-          res.setHeader("Content-Type", "application/json; charset=utf-8");
-          res.statusCode = 200;
-          res.end(JSON.stringify(fresh));
-        } catch (err) {
-          res.setHeader("Content-Type", "application/json; charset=utf-8");
-          res.statusCode = 500;
-          res.end(
-            JSON.stringify({
-              error: err instanceof Error ? err.message : "Scrape error",
-            })
-          );
-        }
-      });
-
-      server.middlewares.use("/api/normalize-custom", (req, res) => {
         let body = "";
         req.on("data", (chunk) => (body += chunk));
-        req.on("end", () => {
+        req.on("end", async () => {
           try {
-            const input = JSON.parse(body || "{}");
-            const report = loadOrInitReport();
-            const hotelContext = report.allNormalizedRooms.map((r: any) => ({
-              roomName: r.formFields.roomName,
-              areaSqm: r.filterMeta.areaSqm || 30,
-              basePrice: r.filterMeta.grossPrice,
-            }));
-            const normalized = normalizeRawOtaRoom(input, hotelContext);
+            const parsed = body ? JSON.parse(body) : {};
+            const hotelKey = parsed.hotelKey || "champton-nha-trang";
+            const checkIn = parsed.checkIn || "2026-11-20";
+            const fresh = await runFullScrapeAndCompare({ hotelKey, checkIn });
             res.setHeader("Content-Type", "application/json; charset=utf-8");
             res.statusCode = 200;
-            res.end(JSON.stringify(normalized));
+            res.end(JSON.stringify(fresh));
           } catch (err) {
-            res.statusCode = 400;
+            res.setHeader("Content-Type", "application/json; charset=utf-8");
+            res.statusCode = 500;
             res.end(
               JSON.stringify({
-                error: err instanceof Error ? err.message : "Invalid payload",
+                error: err instanceof Error ? err.message : "Scrape error",
               })
             );
           }
@@ -151,5 +166,8 @@ export default defineConfig({
     host: "0.0.0.0",
     port: 4180,
     strictPort: true,
+    watch: {
+      ignored: ["**/data/**"],
+    },
   },
 });
