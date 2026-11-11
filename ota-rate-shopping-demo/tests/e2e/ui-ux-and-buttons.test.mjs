@@ -144,6 +144,109 @@ test("E2E-1: Topbar không bị lấp chữ (0px overlap) và không tràn ngang
         true,
         `[${vp.name}] Ô chọn khách sạn bị phần tử khác đè lên vùng bấm: ${JSON.stringify(selectHitTest)}`
       );
+
+      // 4. Kiểm tra TOÀN BỘ các ô trong Bảng Ma trận Đối sánh Giá:
+      // - Không có bất kỳ chữ/badge/link nào tràn ra ngoài ranh giới trái/phải của ô <td> chứa nó
+      // - Không có bất kỳ 2 phần tử chữ/link nào đè lên nhau (0px overlap)
+      const tableCellCollisionCheck = await page.evaluate(() => {
+        const rows = Array.from(
+          document.querySelectorAll("[data-testid='comparison-row']")
+        );
+        const overflows = [];
+        const overlaps = [];
+
+        rows.forEach((row, rIdx) => {
+          const cells = Array.from(row.querySelectorAll("td"));
+          const rowLeafRects = [];
+
+          cells.forEach((td, cIdx) => {
+            const tdRect = td.getBoundingClientRect();
+            const leaves = Array.from(td.querySelectorAll("span, a, code")).filter(
+              (el) => {
+                if (el.classList.contains("sr-only")) return false;
+                if (el.closest("a") && el.tagName !== "A") return false;
+                if (el.children.length > 0 && el.tagName !== "A") return false;
+                const st = window.getComputedStyle(el);
+                if (st.display === "none" || st.visibility === "hidden") {
+                  return false;
+                }
+                const r = el.getBoundingClientRect();
+                return r.width > 0 && r.height > 0;
+              }
+            );
+
+            leaves.forEach((leaf) => {
+              const r = leaf.getBoundingClientRect();
+              const text = (leaf.textContent || "").trim();
+              if (r.left < tdRect.left - 1.5 || r.right > tdRect.right + 1.5) {
+                overflows.push({
+                  row: rIdx + 1,
+                  col: cIdx + 1,
+                  text,
+                  leafLeft: Math.round(r.left),
+                  leafRight: Math.round(r.right),
+                  tdLeft: Math.round(tdRect.left),
+                  tdRight: Math.round(tdRect.right),
+                });
+              }
+              rowLeafRects.push({
+                col: cIdx + 1,
+                text,
+                left: r.left,
+                top: r.top,
+                right: r.right,
+                bottom: r.bottom,
+              });
+            });
+          });
+
+          for (let i = 0; i < rowLeafRects.length; i++) {
+            for (let j = i + 1; j < rowLeafRects.length; j++) {
+              const a = rowLeafRects[i];
+              const b = rowLeafRects[j];
+              const xOverlap = Math.max(
+                0,
+                Math.min(a.right, b.right) - Math.max(a.left, b.left)
+              );
+              const yOverlap = Math.max(
+                0,
+                Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top)
+              );
+              if (xOverlap * yOverlap > 1) {
+                overlaps.push({
+                  row: rIdx + 1,
+                  a: `${a.text} (col ${a.col})`,
+                  b: `${b.text} (col ${b.col})`,
+                  area: Math.round(xOverlap * yOverlap),
+                });
+              }
+            }
+          }
+        });
+
+        return { overflows, overlaps };
+      });
+
+      assert.equal(
+        tableCellCollisionCheck.overflows.length,
+        0,
+        `[${vp.name}] Phát hiện chữ/link tràn khỏi ô <td>: ${JSON.stringify(tableCellCollisionCheck.overflows)}`
+      );
+      assert.equal(
+        tableCellCollisionCheck.overlaps.length,
+        0,
+        `[${vp.name}] Phát hiện 2 phần tử chữ/link đè lên nhau trong bảng: ${JSON.stringify(tableCellCollisionCheck.overlaps)}`
+      );
+
+      if (vp.width === 1440) {
+        const scratchDir =
+          "/Users/iannwendy/.gemini/antigravity-cli/brain/45906418-cae3-488f-9e72-08a51bd942c7/scratch";
+        fs.mkdirSync(scratchDir, { recursive: true });
+        await page.screenshot({
+          path: path.join(scratchDir, "verified-ui-after-fix.png"),
+          fullPage: true,
+        });
+      }
     }
   } finally {
     await browser.close();
@@ -238,15 +341,19 @@ test("E2E-3: Kiểm tra toàn bộ nút bấm Bộ lọc 6 tầng, Chuyển đ�
     await page.getByRole("button", { name: /Thu gọn/i }).click();
 
     // 2. Chuyển đổi 3 chế độ Giá: Khớp UI Web (Mặt trang) <-> Sau thuế (Gross) <-> Trước thuế (Net)
-    // Mặc định mở trang là "Khớp UI Web (Mặt trang)" -> Giá chính cột Agoda là 1.371.998đ, cột Booking là 1.719.200đ
+    // Mặc định mở trang là "Khớp UI Web (Mặt trang)" -> Giá chính cột Agoda là 1.371.998đ, Booking 1.719.200đ, Expedia 1.516.050đ, Trip.com 1.506.574đ
     await page.getByText("1.371.998đ").first().waitFor({ timeout: 3000 });
     await page.getByText("1.719.200đ").first().waitFor({ timeout: 3000 });
+    await page.getByText("1.516.050đ").first().waitFor({ timeout: 3000 });
+    await page.getByText("1.506.574đ").first().waitFor({ timeout: 3000 });
 
     await page.getByTestId("basis-GROSS").click();
     await page.getByText("1.699.905đ").first().waitFor({ timeout: 3000 });
+    await page.getByText("1.627.100đ").first().waitFor({ timeout: 3000 });
 
     await page.getByTestId("basis-NET").click();
-    await page.getByText("1.488.485đ").first().waitFor({ timeout: 3000 });
+    await page.getByText("1.516.050đ").first().waitFor({ timeout: 3000 });
+    await page.getByText("1.506.574đ").first().waitFor({ timeout: 3000 });
 
     await page.getByTestId("basis-UI_WEB").click();
     await page.getByText("1.371.998đ").first().waitFor({ timeout: 3000 });
@@ -329,6 +436,43 @@ test("E2E-3: Kiểm tra toàn bộ nút bấm Bộ lọc 6 tầng, Chuyển đ�
       .getByTestId("json-mapping-contract-panel")
       .waitFor({ timeout: 3000 });
 
+    // Kiểm tra độ cân đối bố cục: Cột 1 "Hạng phòng" rộng rãi (>= 180px), chiều cao dòng gọn (<= 80px), bảng Thuế & Phí không bị lẹm chữ "Gross", 6 nút JSON Mapping nằm trên 1 hàng ngang
+    const balanceMetrics = await page.evaluate(() => {
+      const firstRow = document.querySelector("[data-testid='comparison-row']");
+      const firstColCell = firstRow?.querySelector("td");
+      const col1Rect = firstColCell?.getBoundingClientRect();
+      const rowRect = firstRow?.getBoundingClientRect();
+
+      const mappingBtns = Array.from(
+        document.querySelectorAll("[data-testid^='mapping-ota-']")
+      );
+      const mappingTops = mappingBtns.map((b) =>
+        Math.round(b.getBoundingClientRect().top)
+      );
+      const mappingSingleRow =
+        mappingTops.length === 6 &&
+        Math.max(...mappingTops) - Math.min(...mappingTops) <= 3;
+
+      return {
+        col1Width: col1Rect ? Math.round(col1Rect.width) : 0,
+        rowHeight: rowRect ? Math.round(rowRect.height) : 999,
+        mappingSingleRow,
+      };
+    });
+    assert.ok(
+      balanceMetrics.col1Width >= 180,
+      `Cột 'Hạng phòng' quá hẹp (${balanceMetrics.col1Width}px < 180px) gây gãy dòng dọc`
+    );
+    assert.ok(
+      balanceMetrics.rowHeight <= 80,
+      `Dòng bảng so sánh quá cao (${balanceMetrics.rowHeight}px > 80px) gây mất cân đối`
+    );
+    assert.equal(
+      balanceMetrics.mappingSingleRow,
+      true,
+      "6 nút chọn sàn trong JSON Mapping phải nằm gọn trên 1 hàng ngang cân đối"
+    );
+
     const jsonCodeEl = page.getByTestId("json-mapping-code");
     await jsonCodeEl.waitFor({ timeout: 3000 });
     const bookingContract = JSON.parse(await jsonCodeEl.innerText());
@@ -353,7 +497,7 @@ test("E2E-3: Kiểm tra toàn bộ nút bấm Bộ lọc 6 tầng, Chuyển đ�
     await page.getByTestId("mapping-ota-EXPEDIA").click();
     const expediaContract = JSON.parse(await jsonCodeEl.innerText());
     assert.equal(expediaContract.ota, "EXPEDIA");
-    assert.equal(expediaContract.externalProperty.propertyId, "104829512");
+    assert.equal(expediaContract.externalProperty.propertyId, "118398809");
     assert.equal(expediaContract.matching.status, "VERIFIED");
     assert.equal(expediaContract.source.type, "EXTERNAL_CATALOG");
     assert.equal(
@@ -365,7 +509,7 @@ test("E2E-3: Kiểm tra toàn bộ nút bấm Bộ lọc 6 tầng, Chuyển đ�
     await page.getByTestId("mapping-ota-TRIP_COM").click();
     const tripContract = JSON.parse(await jsonCodeEl.innerText());
     assert.equal(tripContract.ota, "TRIP_COM");
-    assert.equal(tripContract.externalProperty.propertyId, "108549210");
+    assert.equal(tripContract.externalProperty.propertyId, "130225119");
     assert.equal(tripContract.matching.status, "VERIFIED");
     assert.equal(tripContract.source.type, "EXTERNAL_CATALOG");
     assert.equal(
@@ -377,7 +521,7 @@ test("E2E-3: Kiểm tra toàn bộ nút bấm Bộ lọc 6 tầng, Chuyển đ�
     await page.getByTestId("mapping-ota-HOTELS_COM").click();
     const hotelsComContract = JSON.parse(await jsonCodeEl.innerText());
     assert.equal(hotelsComContract.ota, "HOTELS_COM");
-    assert.equal(hotelsComContract.externalProperty.propertyId, "ho3354644384");
+    assert.equal(hotelsComContract.externalProperty.propertyId, "ho3789761888");
     assert.equal(
       hotelsComContract.source.type,
       "EXPEDIA_EPS_SHARED_CATALOG"
@@ -600,6 +744,12 @@ test("E2E-5: Phân trang Lazy Top-5 (bấm tiếp mới load tiếp) & Deep Link
       const bookingLinks = Array.from(
         document.querySelectorAll("[data-testid='room-proof-link-BOOKING']")
       );
+      const expediaLinks = Array.from(
+        document.querySelectorAll("[data-testid='room-proof-link-EXPEDIA']")
+      );
+      const tripLinks = Array.from(
+        document.querySelectorAll("[data-testid='room-proof-link-TRIP']")
+      );
       const uiWebPrices = Array.from(
         document.querySelectorAll("[data-testid^='ui-web-price-']")
       );
@@ -608,6 +758,10 @@ test("E2E-5: Phân trang Lazy Top-5 (bấm tiếp mới load tiếp) & Deep Link
         agodaHrefs: agodaLinks.map((a) => a.getAttribute("href")),
         bookingIds: bookingLinks.map((a) => a.textContent?.trim()),
         bookingHrefs: bookingLinks.map((a) => a.getAttribute("href")),
+        expediaIds: expediaLinks.map((a) => a.textContent?.trim()),
+        expediaHrefs: expediaLinks.map((a) => a.getAttribute("href")),
+        tripIds: tripLinks.map((a) => a.textContent?.trim()),
+        tripHrefs: tripLinks.map((a) => a.getAttribute("href")),
         uiWebPriceCount: uiWebPrices.length,
       };
     });
@@ -622,10 +776,22 @@ test("E2E-5: Phân trang Lazy Top-5 (bấm tiếp mới load tiếp) & Deep Link
       5,
       "Cả 5 phòng Top 1–5 trên Trang 1 đều phải có mã phòng Booking.com đầy đủ"
     );
-    // Đảm bảo mã phòng là số đầy đủ >= 8 chữ số (ví dụ #1188793531, #1439989410, #1439989401), không trùng nhau và không có bbasic_0
+    assert.equal(
+      deepLinkAudit.expediaIds.length,
+      5,
+      "Cả 5 phòng Top 1–5 trên Trang 1 đều phải có mã phòng Expedia đầy đủ"
+    );
+    assert.equal(
+      deepLinkAudit.tripIds.length,
+      5,
+      "Cả 5 phòng Top 1–5 trên Trang 1 đều phải có mã phòng Trip.com thật (baseRoomId) đầy đủ"
+    );
+    // Đảm bảo mã phòng là số đầy đủ >= 8 chữ số (ví dụ #1188793531, #1439989410, #532812402, #531550477), không trùng nhau và không có bbasic_0
     for (const id of [
       ...deepLinkAudit.agodaIds,
       ...deepLinkAudit.bookingIds,
+      ...deepLinkAudit.expediaIds,
+      ...deepLinkAudit.tripIds,
     ]) {
       assert.match(
         id || "",
@@ -638,16 +804,64 @@ test("E2E-5: Phân trang Lazy Top-5 (bấm tiếp mới load tiếp) & Deep Link
       5,
       `5 hạng phòng trên Booking.com phải có 5 RoomID riêng biệt, thực tế: ${JSON.stringify(deepLinkAudit.bookingIds)}`
     );
+    assert.equal(
+      new Set(deepLinkAudit.tripIds).size,
+      5,
+      `5 hạng phòng trên Trip.com phải có 5 baseRoomId thật riêng biệt (VD: #532812402, #531550477...), thực tế: ${JSON.stringify(deepLinkAudit.tripIds)}`
+    );
     for (const href of [
       ...deepLinkAudit.agodaHrefs,
       ...deepLinkAudit.bookingHrefs,
+      ...deepLinkAudit.expediaHrefs,
+      ...deepLinkAudit.tripHrefs,
     ]) {
       assert.match(
         href || "",
-        /#:~:text=/,
-        `Link bằng chứng phải chứa neo nhảy thẳng tới phòng (#:~:text=): ${href}`
+        /(?:#:~:text=|#room_type_id_)/,
+        `Link bằng chứng phải chứa neo nhảy thẳng tới phòng (#:~:text= hoặc #room_type_id_): ${href}`
       );
     }
+    for (const expHref of deepLinkAudit.expediaHrefs) {
+      assert.match(
+        expHref || "",
+        /expedia\.com\.vn\/.*h118398809\.Thong-tin-khach-san\?chkin=2026-11-20&chkout=2026-11-21/,
+        `Link Expedia phải trỏ tới đúng Property ID thật h118398809 kèm ngày chkin/chkout: ${expHref}`
+      );
+    }
+    for (const tripHref of deepLinkAudit.tripHrefs) {
+      assert.match(
+        tripHref || "",
+        /vn\.trip\.com\/hotels\/detail\/\?hotelId=130225119&checkIn=2026-11-20&checkOut=2026-11-21.*&roomId=\d{8,10}#:~:text=/,
+        `Link Trip.com phải trỏ tới đúng Property ID thật 130225119 kèm checkIn/checkOut và roomId thật: ${tripHref}`
+      );
+    }
+
+    // Kiểm tra khớp chính xác 100% giá mặt web (UI Web) của cả 4 sàn trên dòng #1 Deluxe Twin Room
+    const firstRowPrices = await page.evaluate(() => {
+      const row = document.querySelector("[data-testid='comparison-row']");
+      if (!row) return null;
+      return {
+        agoda: row
+          .querySelector("[data-testid='price-value-AGODA']")
+          ?.textContent?.trim(),
+        booking: row
+          .querySelector("[data-testid='price-value-BOOKING']")
+          ?.textContent?.trim(),
+        expedia: row
+          .querySelector("[data-testid='price-value-EXPEDIA']")
+          ?.textContent?.trim(),
+        trip: row
+          .querySelector("[data-testid='price-value-TRIP']")
+          ?.textContent?.trim(),
+      };
+    });
+    assert.deepEqual(firstRowPrices, {
+      agoda: "1.371.998đ",
+      booking: "1.719.200đ",
+      expedia: "1.516.050đ",
+      trip: "1.506.574đ",
+    });
+
     assert.equal(
       deepLinkAudit.uiWebPriceCount,
       20,
@@ -659,7 +873,7 @@ test("E2E-5: Phân trang Lazy Top-5 (bấm tiếp mới load tiếp) & Deep Link
     await page.getByText(/Hiển thị Top 6–10/).waitFor({ timeout: 3000 });
     await page.getByText("Champa Deluxe Twin").first().waitFor({ timeout: 3000 });
 
-    // 4. Bấm sang Trang 3 (Top 11–12) rồi quay về Trang 1 (Top 1–5)
+    // 4. Bấm sang Trang 3 (Top 11–11) rồi quay về Trang 1 (Top 1–5)
     await page.getByTestId("btn-page-3").click();
     await page.getByText(/Hiển thị Top 11–/).waitFor({ timeout: 3000 });
     await page.getByTestId("btn-page-1").click();
@@ -681,7 +895,7 @@ test("E2E-5: Phân trang Lazy Top-5 (bấm tiếp mới load tiếp) & Deep Link
       .getByTestId("inspector-deep-jump-TRIP")
       .getAttribute("href");
     assert.match(agodaJumpHref || "", /#:~:text=/);
-    assert.match(bookingJumpHref || "", /#:~:text=/);
+    assert.match(bookingJumpHref || "", /#room_type_id_/);
     assert.match(expediaJumpHref || "", /selectedRoomType=/);
     assert.match(tripJumpHref || "", /roomId=/);
 

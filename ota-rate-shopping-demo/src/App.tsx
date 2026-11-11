@@ -300,12 +300,12 @@ const VIEW_LABELS: Record<string, string> = {
 
 const BED_SHORT_LABELS: Record<string, string> = {
   SINGLE_1_BED: "1 Giường đơn",
-  TWIN_2_SINGLE: "2 Giường đơn (Twin)",
+  TWIN_2_SINGLE: "2 Giường đơn",
   DOUBLE_QUEEN_1_BED: "1 Giường đôi",
   KING_1_BED: "1 Giường King",
   FLEX_DOUBLE_OR_TWIN: "Đôi / 2 Đơn",
-  MULTI_BED_TRIPLE: "Triple (3 khách)",
-  MULTI_BED_QUAD_FAMILY: "Family (4 khách)",
+  MULTI_BED_TRIPLE: "Triple",
+  MULTI_BED_QUAD_FAMILY: "Family",
 };
 
 function formatFullVnd(amount: number): string {
@@ -900,10 +900,10 @@ export function App() {
         )}
 
         {/* =================================================================== */}
-        {/* 3 CLEAN KPI CARDS (REMOVED SHA-256 / SCREENSHOT CARD)               */}
+        {/* 3 CLEAN KPI CARDS ALIGNED ON 12-COLUMN GRID (4 + 4 + 4)             */}
         {/* =================================================================== */}
-        <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="p-4 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs flex flex-col justify-between gap-2.5">
+        <section className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-12 gap-4">
+          <div className="lg:col-span-4 p-4 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs flex flex-col justify-between gap-2.5">
             <div className="flex items-center justify-between gap-2">
               <span className="text-xs font-medium text-zinc-500">
                 Agoda
@@ -960,7 +960,7 @@ export function App() {
             )}
           </div>
 
-          <div className="p-4 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs flex flex-col justify-between gap-2.5">
+          <div className="lg:col-span-4 p-4 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs flex flex-col justify-between gap-2.5">
             <div className="flex items-center justify-between gap-2">
               <span className="text-xs font-medium text-zinc-500">
                 Booking.com
@@ -1017,7 +1017,7 @@ export function App() {
             )}
           </div>
 
-          <div className="p-4 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs flex flex-col justify-between gap-2.5">
+          <div className="lg:col-span-4 p-4 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs flex flex-col justify-between gap-2.5">
             <div className="flex items-center justify-between gap-2">
               <span className="text-xs font-medium text-zinc-500">
                 Chênh lệch Agoda vs. Booking
@@ -1050,357 +1050,370 @@ export function App() {
         </section>
 
         {/* =================================================================== */}
-        {/* MAIN WORKSPACE: 12-COLUMN SPLIT                                     */}
+        {/* MAIN WORKSPACE: 12-COLUMN SPLIT (8 + 4) WITH BALANCED HEIGHTS       */}
         {/* =================================================================== */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        <section className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
           {/* LEFT 8 COLS: UNIFIED MULTI-OTA RATE COMPARISON MATRIX */}
-          <div className="lg:col-span-8 p-5 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs space-y-3.5">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <h2 className="text-sm font-semibold text-zinc-900">
-                Ma trận Đối sánh Giá Thực Tế ({report?.hotelName} ·{" "}
-                {report?.checkIn})
-              </h2>
+          <div className="lg:col-span-8 p-5 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs flex flex-col justify-between gap-3.5">
+            <div className="space-y-3">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <h2 className="text-sm font-semibold text-zinc-900">
+                  Ma trận Đối sánh Giá Thực Tế ({report?.hotelName} ·{" "}
+                  {report?.checkIn})
+                </h2>
 
-              <div className="inline-flex items-center bg-zinc-100 p-0.5 rounded-lg border border-zinc-200/60">
-                <button
-                  type="button"
-                  data-testid="basis-UI_WEB"
-                  onClick={() => setPriceBasis("UI_WEB")}
-                  className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-all cursor-pointer ${
-                    priceBasis === "UI_WEB"
-                      ? "bg-white text-zinc-950 shadow-2xs"
-                      : "text-zinc-500 hover:text-zinc-800"
-                  }`}
-                >
-                  UI Web
-                </button>
-                <button
-                  type="button"
-                  data-testid="basis-GROSS"
-                  onClick={() => setPriceBasis("GROSS")}
-                  className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-all cursor-pointer ${
-                    priceBasis === "GROSS"
-                      ? "bg-white text-zinc-950 shadow-2xs"
-                      : "text-zinc-500 hover:text-zinc-800"
-                  }`}
-                >
-                  Sau thuế (Gross)
-                </button>
-                <button
-                  type="button"
-                  data-testid="basis-NET"
-                  onClick={() => setPriceBasis("NET")}
-                  className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-all cursor-pointer ${
-                    priceBasis === "NET"
-                      ? "bg-white text-zinc-950 shadow-2xs"
-                      : "text-zinc-500 hover:text-zinc-800"
-                  }`}
-                >
-                  Trước thuế (Net)
-                </button>
-              </div>
-            </div>
-
-            {/* Compact Multi-Dimensional Filter Bar */}
-            <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-zinc-100">
-              <div className="flex items-center bg-zinc-100 p-0.5 rounded-lg border border-zinc-200/70 shrink-0">
-                {(
-                  [
-                    { key: "ALL", label: "Tất cả phòng" },
-                    { key: "SINGLE_BED_ONLY", label: "Phòng 1 Giường" },
-                    { key: "MULTI_BED_ONLY", label: "Phòng Nhiều Giường" },
-                  ] as const
-                ).map((item) => {
-                  const active = multiBedMode === item.key;
-                  return (
-                    <button
-                      key={item.key}
-                      type="button"
-                      data-testid={`bed-mode-${item.key}`}
-                      onClick={() => {
-                        setMultiBedMode(item.key);
-                        setPage(1);
-                      }}
-                      className={`px-2.5 py-1 rounded-md text-[11px] whitespace-nowrap transition-all cursor-pointer ${
-                        active
-                          ? "bg-white text-zinc-950 font-semibold shadow-2xs"
-                          : "text-zinc-500 hover:text-zinc-900"
-                      }`}
-                    >
-                      {item.label}
-                    </button>
-                  );
-                })}
-              </div>
-
-              <div className="flex flex-wrap items-center gap-1.5">
-                <span className="inline-flex items-center gap-1 text-[11px] text-zinc-400 mr-0.5">
-                  <SlidersHorizontal className="w-3 h-3" />
-                  Lọc:
-                </span>
-
-                <select
-                  data-testid="filter-room-type"
-                  aria-label="Lọc theo Room Type"
-                  value={roomType}
-                  onChange={(e) => {
-                    setRoomType(e.target.value);
-                    setPage(1);
-                  }}
-                  className={getSelectClass(roomType !== "ALL")}
-                >
-                  <option value="ALL">Hạng: Tất cả</option>
-                  <option value="Standard">Hạng: Standard</option>
-                  <option value="Superior">Hạng: Superior</option>
-                  <option value="Deluxe">Hạng: Deluxe</option>
-                  <option value="Executive">Hạng: Executive</option>
-                  <option value="Suite">Hạng: Suite</option>
-                </select>
-
-                <select
-                  data-testid="filter-bed-category"
-                  aria-label="Lọc theo Cấu hình Giường"
-                  value={detailedBedCategory}
-                  onChange={(e) => {
-                    setDetailedBedCategory(e.target.value);
-                    setPage(1);
-                  }}
-                  className={getSelectClass(detailedBedCategory !== "ALL")}
-                >
-                  <option value="ALL">Giường: Tất cả</option>
-                  <option value="SINGLE_1_BED">Single (1 Đơn)</option>
-                  <option value="TWIN_2_SINGLE">Twin (2 Đơn)</option>
-                  <option value="DOUBLE_QUEEN_1_BED">Double / Queen</option>
-                  <option value="KING_1_BED">King</option>
-                  <option value="FLEX_DOUBLE_OR_TWIN">Đôi / 2 Đơn</option>
-                  <option value="MULTI_BED_TRIPLE">Triple (3 khách)</option>
-                  <option value="MULTI_BED_QUAD_FAMILY">Family (4+ khách)</option>
-                </select>
-
-                <select
-                  data-testid="filter-view-category"
-                  aria-label="Lọc theo Hướng nhìn"
-                  value={viewCategory}
-                  onChange={(e) => {
-                    setViewCategory(e.target.value);
-                    setPage(1);
-                  }}
-                  className={getSelectClass(viewCategory !== "ALL")}
-                >
-                  <option value="ALL">View: Tất cả</option>
-                  <option value="CITY_VIEW">View: City View</option>
-                  <option value="PARTIAL_SEA_VIEW">View: Partial Sea View</option>
-                  <option value="OCEAN_SEA_VIEW">View: Ocean View</option>
-                  <option value="NO_WINDOW">View: No Window</option>
-                </select>
-
-                <select
-                  data-testid="filter-area-range"
-                  aria-label="Lọc theo Diện tích"
-                  value={areaRange}
-                  onChange={(e) => {
-                    setAreaRange(e.target.value);
-                    setPage(1);
-                  }}
-                  className={getSelectClass(areaRange !== "ALL")}
-                >
-                  <option value="ALL">Diện tích: Tất cả</option>
-                  <option value="UNDER_25">Diện tích: &lt; 25m²</option>
-                  <option value="FROM_25_TO_35">Diện tích: 25m² – 35m²</option>
-                  <option value="FROM_36_TO_50">Diện tích: 36m² – 50m²</option>
-                  <option value="OVER_50">Diện tích: &gt; 50m²</option>
-                </select>
-
-                {hasActiveFilter && (
+                <div className="inline-flex items-center bg-zinc-100 p-0.5 rounded-lg border border-zinc-200/60">
                   <button
                     type="button"
-                    data-testid="btn-reset-filters"
-                    onClick={handleResetFilters}
-                    className="h-7 px-2 rounded-lg text-[11px] font-medium text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors cursor-pointer"
+                    data-testid="basis-UI_WEB"
+                    onClick={() => setPriceBasis("UI_WEB")}
+                    className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-all cursor-pointer ${
+                      priceBasis === "UI_WEB"
+                        ? "bg-white text-zinc-950 shadow-2xs"
+                        : "text-zinc-500 hover:text-zinc-800"
+                    }`}
                   >
-                    Đặt lại
+                    UI Web
                   </button>
-                )}
-              </div>
-            </div>
-
-            {/* Clean Master Comparison Table */}
-            {!isBusy && (!report || report.comparisonGroups.length === 0) ? (
-              <div className="py-12 text-center text-xs text-zinc-500 space-y-2">
-                <div>Không có hạng phòng nào khớp với bộ lọc hiện tại.</div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleResetFilters}
-                >
-                  Xóa bộ lọc
-                </Button>
-              </div>
-            ) : (
-              <div className="space-y-2.5">
-                {isBusy && (
-                  <div
-                    data-testid="scraping-status-banner"
-                    className="px-3.5 py-2 rounded-xl bg-zinc-900 text-white text-xs flex items-center justify-between gap-2"
+                  <button
+                    type="button"
+                    data-testid="basis-GROSS"
+                    onClick={() => setPriceBasis("GROSS")}
+                    className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-all cursor-pointer ${
+                      priceBasis === "GROSS"
+                        ? "bg-white text-zinc-950 shadow-2xs"
+                        : "text-zinc-500 hover:text-zinc-800"
+                    }`}
                   >
-                    <div className="flex items-center gap-2">
-                      <RotateCcw className="w-3.5 h-3.5 animate-spin text-emerald-400 shrink-0" />
-                      <span>
-                        {scraping
-                          ? "Đang cào giá trực tiếp từ Agoda & Booking.com..."
-                          : "Đang tải dữ liệu..."}
-                      </span>
-                    </div>
-                  </div>
-                )}
+                    Sau thuế (Gross)
+                  </button>
+                  <button
+                    type="button"
+                    data-testid="basis-NET"
+                    onClick={() => setPriceBasis("NET")}
+                    className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-all cursor-pointer ${
+                      priceBasis === "NET"
+                        ? "bg-white text-zinc-950 shadow-2xs"
+                        : "text-zinc-500 hover:text-zinc-800"
+                    }`}
+                  >
+                    Trước thuế (Net)
+                  </button>
+                </div>
+              </div>
 
-                <div
-                  data-testid="comparison-table-wrapper"
-                  className="rounded-xl border border-zinc-200/80 overflow-x-auto"
-                >
-                  <Table>
-                    <TableHeader className="bg-zinc-50/80">
-                      <TableRow className="hover:bg-transparent">
-                        <TableHead className="text-[11px] font-semibold text-zinc-500 py-2.5 pl-3 pr-2 w-[28%]">
-                          Hạng phòng
-                        </TableHead>
-                        <TableHead className="text-[11px] font-semibold text-zinc-500 text-right py-2.5 px-1.5 w-[14%]">
-                          Giá chuẩn
-                        </TableHead>
-                        <TableHead className="text-[11px] font-semibold text-zinc-500 text-right py-2.5 px-1.5 w-[14.5%]">
-                          Agoda
-                        </TableHead>
-                        <TableHead className="text-[11px] font-semibold text-zinc-500 text-right py-2.5 px-1.5 w-[14.5%]">
-                          Booking.com
-                        </TableHead>
-                        <TableHead className="text-[11px] font-semibold text-zinc-500 text-right py-2.5 px-1.5 w-[14.5%]">
-                          Expedia
-                        </TableHead>
-                        <TableHead className="text-[11px] font-semibold text-zinc-500 text-right py-2.5 pl-1.5 pr-3 w-[14.5%]">
-                          Trip.com
-                        </TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {isBusy
-                        ? skeletonRows.map((rowKey) => (
-                            <TableRow
-                              key={rowKey}
-                              className="hover:bg-transparent"
-                            >
-                              <TableCell className="py-3 pl-3 pr-2 align-top whitespace-normal">
-                                <div className="flex items-center gap-2">
-                                  <span className="skeleton-shimmer h-4 w-12 rounded" />
-                                  <span
-                                    data-testid="room-name-skeleton"
-                                    className="skeleton-shimmer h-4 w-36 rounded-md"
-                                  />
-                                </div>
-                                <div className="mt-1.5 flex items-center gap-1.5">
-                                  <span className="skeleton-shimmer h-3.5 w-10 rounded" />
-                                  <span className="skeleton-shimmer h-3.5 w-16 rounded" />
-                                  <span className="skeleton-shimmer h-3.5 w-24 rounded" />
-                                </div>
-                              </TableCell>
-                              {(
-                                [
-                                  "GOODNSTAY",
-                                  "AGODA",
-                                  "BOOKING",
-                                  "EXPEDIA",
-                                  "TRIP",
-                                ] as OtaCode[]
-                              ).map((ota) => (
-                                <TableCell
-                                  key={ota}
-                                  className={`py-3 text-right align-top ${
-                                    ota === "TRIP"
-                                      ? "pl-1.5 pr-3"
-                                      : "px-1.5"
-                                  }`}
-                                >
-                                  <div
-                                    data-testid="price-cell-skeleton"
-                                    className="flex flex-col items-end gap-1.5 py-0.5"
-                                  >
-                                    <span className="skeleton-shimmer h-4 w-20 rounded-md" />
-                                    <span className="skeleton-shimmer h-3.5 w-14 rounded" />
+              {/* Single-Line Balanced Filter Toolbar */}
+              <div className="flex flex-wrap items-center justify-between gap-1.5 p-1.5 rounded-xl bg-zinc-50/80 border border-zinc-200/70">
+                <div className="flex items-center bg-white p-0.5 rounded-lg border border-zinc-200/80 shrink-0">
+                  {(
+                    [
+                      { key: "ALL", label: "Tất cả phòng" },
+                      { key: "SINGLE_BED_ONLY", label: "Phòng 1 Giường" },
+                      { key: "MULTI_BED_ONLY", label: "Phòng Nhiều Giường" },
+                    ] as const
+                  ).map((item) => {
+                    const active = multiBedMode === item.key;
+                    return (
+                      <button
+                        key={item.key}
+                        type="button"
+                        data-testid={`bed-mode-${item.key}`}
+                        onClick={() => {
+                          setMultiBedMode(item.key);
+                          setPage(1);
+                        }}
+                        className={`px-2 py-1 rounded-md text-[11px] whitespace-nowrap transition-all cursor-pointer ${
+                          active
+                            ? "bg-zinc-900 text-white font-semibold shadow-2xs"
+                            : "text-zinc-500 hover:text-zinc-900"
+                        }`}
+                      >
+                        {item.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="flex flex-wrap items-center gap-1">
+                  <select
+                    data-testid="filter-room-type"
+                    aria-label="Lọc theo Room Type"
+                    value={roomType}
+                    onChange={(e) => {
+                      setRoomType(e.target.value);
+                      setPage(1);
+                    }}
+                    className={getSelectClass(roomType !== "ALL")}
+                  >
+                    <option value="ALL">Hạng: Tất cả</option>
+                    <option value="Standard">Standard</option>
+                    <option value="Superior">Superior</option>
+                    <option value="Deluxe">Deluxe</option>
+                    <option value="Executive">Executive</option>
+                    <option value="Suite">Suite</option>
+                  </select>
+
+                  <select
+                    data-testid="filter-bed-category"
+                    aria-label="Lọc theo Cấu hình Giường"
+                    value={detailedBedCategory}
+                    onChange={(e) => {
+                      setDetailedBedCategory(e.target.value);
+                      setPage(1);
+                    }}
+                    className={getSelectClass(detailedBedCategory !== "ALL")}
+                  >
+                    <option value="ALL">Giường: Tất cả</option>
+                    <option value="SINGLE_1_BED">1 Đơn (Single)</option>
+                    <option value="TWIN_2_SINGLE">2 Đơn (Twin)</option>
+                    <option value="DOUBLE_QUEEN_1_BED">Đôi (Double)</option>
+                    <option value="KING_1_BED">King</option>
+                    <option value="FLEX_DOUBLE_OR_TWIN">Đôi / 2 Đơn</option>
+                    <option value="MULTI_BED_TRIPLE">Triple (3)</option>
+                    <option value="MULTI_BED_QUAD_FAMILY">Family (4+)</option>
+                  </select>
+
+                  <select
+                    data-testid="filter-view-category"
+                    aria-label="Lọc theo Hướng nhìn"
+                    value={viewCategory}
+                    onChange={(e) => {
+                      setViewCategory(e.target.value);
+                      setPage(1);
+                    }}
+                    className={getSelectClass(viewCategory !== "ALL")}
+                  >
+                    <option value="ALL">View: Tất cả</option>
+                    <option value="CITY_VIEW">City View</option>
+                    <option value="PARTIAL_SEA_VIEW">Partial Sea</option>
+                    <option value="OCEAN_SEA_VIEW">Ocean View</option>
+                    <option value="NO_WINDOW">No Window</option>
+                  </select>
+
+                  <select
+                    data-testid="filter-area-range"
+                    aria-label="Lọc theo Diện tích"
+                    value={areaRange}
+                    onChange={(e) => {
+                      setAreaRange(e.target.value);
+                      setPage(1);
+                    }}
+                    className={getSelectClass(areaRange !== "ALL")}
+                  >
+                    <option value="ALL">Diện tích: Tất cả</option>
+                    <option value="UNDER_25">&lt; 25m²</option>
+                    <option value="FROM_25_TO_35">25 – 35m²</option>
+                    <option value="FROM_36_TO_50">36 – 50m²</option>
+                    <option value="OVER_50">&gt; 50m²</option>
+                  </select>
+
+                  {hasActiveFilter && (
+                    <button
+                      type="button"
+                      data-testid="btn-reset-filters"
+                      onClick={handleResetFilters}
+                      className="h-7 px-2 rounded-lg text-[11px] font-medium text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors cursor-pointer"
+                    >
+                      Đặt lại
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Clean Master Comparison Table */}
+              {!isBusy && (!report || report.comparisonGroups.length === 0) ? (
+                <div className="py-16 text-center text-xs text-zinc-500 space-y-2">
+                  <div>Không có hạng phòng nào khớp với bộ lọc hiện tại.</div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleResetFilters}
+                  >
+                    Xóa bộ lọc
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-2.5">
+                  {isBusy && (
+                    <div
+                      data-testid="scraping-status-banner"
+                      className="px-3.5 py-2 rounded-xl bg-zinc-900 text-white text-xs flex items-center justify-between gap-2"
+                    >
+                      <div className="flex items-center gap-2">
+                        <RotateCcw className="w-3.5 h-3.5 animate-spin text-emerald-400 shrink-0" />
+                        <span>
+                          {scraping
+                            ? "Đang cào giá trực tiếp từ Agoda & Booking.com..."
+                            : "Đang tải dữ liệu..."}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  <div
+                    data-testid="comparison-table-wrapper"
+                    className="rounded-xl border border-zinc-200/80 overflow-x-auto"
+                  >
+                    <Table className="table-fixed w-full min-w-[830px]">
+                      <TableHeader className="bg-zinc-50/80">
+                        <TableRow className="hover:bg-transparent">
+                          <TableHead className="text-[11px] font-semibold text-zinc-500 py-2.5 pl-3 pr-2 w-[27%]">
+                            Hạng phòng
+                          </TableHead>
+                          <TableHead className="text-[11px] font-semibold text-zinc-500 text-right py-2.5 px-1.5 w-[11%]">
+                            Giá chuẩn
+                          </TableHead>
+                          <TableHead className="text-[11px] font-semibold text-zinc-500 text-right py-2.5 px-1.5 w-[15.5%]">
+                            Agoda
+                          </TableHead>
+                          <TableHead className="text-[11px] font-semibold text-zinc-500 text-right py-2.5 px-1.5 w-[15.5%]">
+                            Booking.com
+                          </TableHead>
+                          <TableHead className="text-[11px] font-semibold text-zinc-500 text-right py-2.5 px-1.5 w-[15.5%]">
+                            Expedia
+                          </TableHead>
+                          <TableHead className="text-[11px] font-semibold text-zinc-500 text-right py-2.5 pl-1.5 pr-3 w-[15.5%]">
+                            Trip.com
+                          </TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {isBusy
+                          ? skeletonRows.map((rowKey) => (
+                              <TableRow
+                                key={rowKey}
+                                className="hover:bg-transparent"
+                              >
+                                <TableCell className="py-3 pl-3 pr-2 align-middle whitespace-normal overflow-hidden">
+                                  <div className="flex items-center gap-2">
+                                    <span className="skeleton-shimmer h-4 w-8 rounded" />
+                                    <span
+                                      data-testid="room-name-skeleton"
+                                      className="skeleton-shimmer h-4 w-36 rounded-md"
+                                    />
+                                  </div>
+                                  <div className="mt-1.5 flex items-center gap-1.5">
+                                    <span className="skeleton-shimmer h-3.5 w-10 rounded" />
+                                    <span className="skeleton-shimmer h-3.5 w-16 rounded" />
+                                    <span className="skeleton-shimmer h-3.5 w-20 rounded" />
                                   </div>
                                 </TableCell>
-                              ))}
-                            </TableRow>
-                          ))
-                        : report!.comparisonGroups.map((grp) => {
-                            const isSelected =
-                              selectedGroup?.groupKey === grp.groupKey;
-                            const p = grp.spreadAnalysis.platforms;
-                            const comparedOtas: OtaCode[] = [
-                              "AGODA",
-                              "BOOKING",
-                              "EXPEDIA",
-                              "TRIP",
-                            ];
-                            const activeOtaCount = comparedOtas.filter(
-                              (ota) =>
-                                Boolean(grp.otaOffers[ota]) &&
-                                !apiErrorState?.failedOtas.includes(ota)
-                            ).length;
-                            const hasRowUnscraped =
-                              activeOtaCount < comparedOtas.length ||
-                              Boolean(apiErrorState?.failed);
-
-                            const renderOtaCell = (ota: OtaCode) => {
-                              const m = p[ota];
-                              const off = grp.otaOffers[ota];
-                              const isOtaApiFailed = Boolean(
-                                apiErrorState?.failedOtas.includes(ota)
-                              );
-                              if (!m || !off || isOtaApiFailed) {
-                                return (
-                                  <div className="flex flex-col items-end">
-                                    <span
-                                      data-testid={`ota-unscraped-${ota}`}
-                                      className="inline-flex items-center px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200/80 text-[10px] font-medium whitespace-nowrap"
+                                {(
+                                  [
+                                    "GOODNSTAY",
+                                    "AGODA",
+                                    "BOOKING",
+                                    "EXPEDIA",
+                                    "TRIP",
+                                  ] as OtaCode[]
+                                ).map((ota) => (
+                                  <TableCell
+                                    key={ota}
+                                    className={`py-3 text-right align-middle overflow-hidden ${
+                                      ota === "TRIP"
+                                        ? "pl-1.5 pr-3"
+                                        : "px-1.5"
+                                    }`}
+                                  >
+                                    <div
+                                      data-testid="price-cell-skeleton"
+                                      className="flex flex-col items-end gap-1.5 py-0.5"
                                     >
-                                      Sàn chưa cào giá
-                                    </span>
-                                  </div>
+                                      <span className="skeleton-shimmer h-4 w-20 rounded-md" />
+                                      <span className="skeleton-shimmer h-3.5 w-14 rounded" />
+                                    </div>
+                                  </TableCell>
+                                ))}
+                              </TableRow>
+                            ))
+                          : report!.comparisonGroups.map((grp) => {
+                              const isSelected =
+                                selectedGroup?.groupKey === grp.groupKey;
+                              const p = grp.spreadAnalysis.platforms;
+                              const comparedOtas: OtaCode[] = [
+                                "AGODA",
+                                "BOOKING",
+                                "EXPEDIA",
+                                "TRIP",
+                              ];
+                              const activeOtaCount = comparedOtas.filter(
+                                (ota) =>
+                                  Boolean(grp.otaOffers[ota]) &&
+                                  !apiErrorState?.failedOtas.includes(ota)
+                              ).length;
+                              const hasRowUnscraped =
+                                activeOtaCount < comparedOtas.length ||
+                                Boolean(apiErrorState?.failed);
+
+                              const renderOtaCell = (ota: OtaCode) => {
+                                const m = p[ota];
+                                const off = grp.otaOffers[ota];
+                                const isOtaApiFailed = Boolean(
+                                  apiErrorState?.failedOtas.includes(ota)
                                 );
-                              }
-                              const isPositive = m.diffVsRefPct > 0.05;
-                              const isNegative = m.diffVsRefPct < -0.05;
-                              const fullRoomId =
-                                off.liveProof?.roomId ||
-                                off.liveProof?.externalNativeId
-                                  ?.replace(/^masterRoomId:/, "")
-                                  .replace(/^roomId:/, "")
-                                  .replace(/^unitId:/, "")
-                                  .replace(/^baseRoomId:/, "")
-                                  .replace(/^blockId:/, "") ||
-                                "";
-                              const deepLinkUrl =
-                                off.liveProof?.deepLinkUrl ||
-                                off.liveProof?.sourceUrl ||
-                                "#";
-                              const subPriceLabel =
-                                ota === "AGODA" ||
-                                ota === "EXPEDIA" ||
-                                ota === "TRIP"
-                                  ? `Gross ${formatCompactVnd(off.grossPrice)}`
-                                  : `Net ${formatCompactVnd(off.netPrice)}`;
-
-                              return (
-                                <div className="flex flex-col items-end gap-0.5">
-                                  <div className="flex items-center gap-1">
-                                    <span
-                                      data-testid={`price-value-${ota}`}
-                                      className="font-mono text-xs font-semibold text-zinc-900"
-                                    >
-                                      {formatFullVnd(m.price)}
-                                    </span>
-                                    {ota !== "GOODNSTAY" && (
+                                if (!m || !off || isOtaApiFailed) {
+                                  return (
+                                    <div className="flex flex-col items-end">
                                       <span
-                                        className={`inline-flex items-center px-1 py-0.2 rounded text-[9.5px] font-mono font-medium ${
+                                        data-testid={`ota-unscraped-${ota}`}
+                                        className="inline-flex items-center px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200/80 text-[10px] font-medium whitespace-nowrap"
+                                      >
+                                        Sàn chưa cào giá
+                                      </span>
+                                    </div>
+                                  );
+                                }
+                                if (ota === "GOODNSTAY") {
+                                  return (
+                                    <div className="flex flex-col items-end gap-0.5">
+                                      <span
+                                        data-testid="price-value-GOODNSTAY"
+                                        className="font-mono text-[11.5px] font-semibold text-zinc-900"
+                                      >
+                                        {formatFullVnd(m.price)}
+                                      </span>
+                                      <span className="text-[10px] font-mono text-zinc-400">
+                                        Giá BAR
+                                      </span>
+                                    </div>
+                                  );
+                                }
+                                const isPositive = m.diffVsRefPct > 0.05;
+                                const isNegative = m.diffVsRefPct < -0.05;
+                                const pctFormatted = Number(
+                                  m.diffVsRefPct.toFixed(1)
+                                );
+                                const fullRoomId =
+                                  off.liveProof?.roomId ||
+                                  off.liveProof?.externalNativeId
+                                    ?.replace(/^masterRoomId:/, "")
+                                    .replace(/^roomId:/, "")
+                                    .replace(/^unitId:/, "")
+                                    .replace(/^baseRoomId:/, "")
+                                    .replace(/^blockId:/, "") ||
+                                  "";
+                                const deepLinkUrl =
+                                  off.liveProof?.deepLinkUrl ||
+                                  off.liveProof?.sourceUrl ||
+                                  "#";
+                                const subPriceLabel =
+                                  ota === "AGODA" ||
+                                  ota === "EXPEDIA" ||
+                                  ota === "TRIP"
+                                    ? `Gross ${formatCompactVnd(off.grossPrice)}`
+                                    : `Net ${formatCompactVnd(off.netPrice)}`;
+
+                                return (
+                                  <div className="flex flex-col items-end gap-0.5">
+                                    <div className="flex items-center justify-end gap-1">
+                                      <span
+                                        data-testid={`price-value-${ota}`}
+                                        className="font-mono text-[11.5px] font-semibold text-zinc-900"
+                                      >
+                                        {formatFullVnd(m.price)}
+                                      </span>
+                                      <span
+                                        className={`inline-flex items-center px-1 py-0.2 rounded text-[9px] font-mono font-medium ${
                                           isNegative
                                             ? "bg-rose-50 text-rose-700"
                                             : isPositive
@@ -1409,14 +1422,15 @@ export function App() {
                                         }`}
                                       >
                                         {isPositive
-                                          ? `+${m.diffVsRefPct}%`
-                                          : `${m.diffVsRefPct}%`}
+                                          ? `+${pctFormatted}%`
+                                          : `${pctFormatted}%`}
                                       </span>
-                                    )}
-                                  </div>
-                                  {ota !== "GOODNSTAY" && (
-                                    <div className="flex items-center gap-1 text-[10px] font-mono text-zinc-400">
-                                      <span data-testid={`ui-web-price-${ota}`}>
+                                    </div>
+                                    <div className="flex items-center justify-end text-[10px] font-mono text-zinc-400">
+                                      <span
+                                        data-testid={`ui-web-price-${ota}`}
+                                        className="sr-only"
+                                      >
                                         {subPriceLabel}
                                       </span>
                                       <a
@@ -1430,177 +1444,181 @@ export function App() {
                                           setSelectedOtaForForm(ota);
                                           setInspectorTab("proof");
                                         }}
-                                        className="inline-flex items-center gap-0.5 px-1 py-0.2 rounded bg-zinc-100 hover:bg-emerald-50 text-zinc-600 hover:text-emerald-800 text-[9.5px] font-mono transition-colors"
-                                        title={`Mở phòng "${off.roomName}" (#${fullRoomId}) trên ${OTA_LABELS[ota]}`}
+                                        className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-zinc-100 hover:bg-emerald-50 text-zinc-600 hover:text-emerald-800 text-[9.5px] font-mono transition-colors"
+                                        title={`Mở phòng "${off.roomName}" (#${fullRoomId} · ${subPriceLabel}) trên ${OTA_LABELS[ota]}`}
                                       >
                                         <span>#{fullRoomId}</span>
                                         <ExternalLink className="w-2.5 h-2.5 shrink-0" />
                                       </a>
                                     </div>
-                                  )}
-                                </div>
-                              );
-                            };
+                                  </div>
+                                );
+                              };
 
-                            return (
-                              <TableRow
-                                key={grp.groupKey}
-                                data-testid="comparison-row"
-                                onClick={() => setSelectedGroupKey(grp.groupKey)}
-                                className={`cursor-pointer transition-colors ${
-                                  isSelected
-                                    ? "bg-zinc-100/90 hover:bg-zinc-100"
-                                    : "hover:bg-zinc-50/70"
-                                }`}
-                              >
-                                <TableCell className="py-2.5 pl-3 pr-2 align-top whitespace-normal">
-                                  <div className="flex flex-wrap items-center gap-1">
-                                    <span className="px-1.5 py-0.2 rounded bg-zinc-900 text-white text-[10px] font-mono font-semibold">
-                                      #{grp.matchRank ?? 1}
-                                    </span>
-                                    <span className="px-1.5 py-0.2 rounded bg-zinc-200/70 text-zinc-800 text-[10px] font-semibold">
-                                      {grp.roomType}
-                                    </span>
-                                    {hasRowUnscraped && (
-                                      <span
-                                        data-testid="row-live-ota-badge"
-                                        className="px-1.5 py-0.2 rounded border bg-amber-50 text-amber-800 border-amber-200/80 text-[10px] font-mono font-medium"
-                                      >
-                                        Live {activeOtaCount}/4 · Sàn chưa cào giá
+                              return (
+                                <TableRow
+                                  key={grp.groupKey}
+                                  data-testid="comparison-row"
+                                  onClick={() => setSelectedGroupKey(grp.groupKey)}
+                                  className={`cursor-pointer transition-colors ${
+                                    isSelected
+                                      ? "bg-zinc-100/90 hover:bg-zinc-100"
+                                      : "hover:bg-zinc-50/70"
+                                  }`}
+                                >
+                                  <TableCell className="py-2.5 pl-3 pr-2 align-middle whitespace-normal overflow-hidden">
+                                    <div className="flex items-center gap-1.5 min-w-0">
+                                      <span className="px-1.5 py-0.2 rounded bg-zinc-900 text-white text-[10px] font-mono font-semibold shrink-0">
+                                        #{grp.matchRank ?? 1}
                                       </span>
+                                      <span
+                                        className="font-semibold text-xs text-zinc-950 truncate"
+                                        title={grp.sampleGoodNStayForm.roomName}
+                                      >
+                                        {grp.sampleGoodNStayForm.roomName}
+                                      </span>
+                                    </div>
+                                    <div className="text-[11px] text-zinc-500 mt-0.5 truncate">
+                                      <span className="font-mono text-zinc-600">
+                                        {grp.areaSqm ?? "--"}m²
+                                      </span>
+                                      <span className="text-zinc-300 mx-1">
+                                        ·
+                                      </span>
+                                      <span>
+                                        {VIEW_LABELS[grp.viewCategory] ??
+                                          grp.viewCategory}
+                                      </span>
+                                      <span className="text-zinc-300 mx-1">
+                                        ·
+                                      </span>
+                                      <span className="text-zinc-700 font-medium">
+                                        {BED_SHORT_LABELS[
+                                          grp.detailedBedCategory
+                                        ] ?? grp.goodNStayBedType}
+                                      </span>
+                                    </div>
+                                    {hasRowUnscraped && (
+                                      <div className="mt-1">
+                                        <span
+                                          data-testid="row-live-ota-badge"
+                                          className="inline-flex px-1.5 py-0.2 rounded border bg-amber-50 text-amber-800 border-amber-200/80 text-[10px] font-mono font-medium"
+                                        >
+                                          Live {activeOtaCount}/4 · Sàn chưa cào giá
+                                        </span>
+                                      </div>
                                     )}
-                                  </div>
-                                  <div className="font-semibold text-xs text-zinc-950 mt-1">
-                                    {grp.sampleGoodNStayForm.roomName}
-                                  </div>
-                                  <div className="text-[11px] text-zinc-500 mt-0.5 flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
-                                    <span>{grp.areaSqm ?? "--"}m²</span>
-                                    <span className="text-zinc-300">·</span>
-                                    <span>
-                                      {VIEW_LABELS[grp.viewCategory] ??
-                                        grp.viewCategory}
-                                    </span>
-                                    <span className="text-zinc-300">·</span>
-                                    <span className="text-zinc-700 font-medium">
-                                      {BED_SHORT_LABELS[
-                                        grp.detailedBedCategory
-                                      ] ?? grp.goodNStayBedType}
-                                    </span>
-                                  </div>
-                                </TableCell>
-                                <TableCell className="py-2.5 px-1.5 text-right align-top">
-                                  {renderOtaCell("GOODNSTAY")}
-                                </TableCell>
-                                <TableCell className="py-2.5 px-1.5 text-right align-top">
-                                  {renderOtaCell("AGODA")}
-                                </TableCell>
-                                <TableCell className="py-2.5 px-1.5 text-right align-top">
-                                  {renderOtaCell("BOOKING")}
-                                </TableCell>
-                                <TableCell className="py-2.5 px-1.5 text-right align-top">
-                                  {renderOtaCell("EXPEDIA")}
-                                </TableCell>
-                                <TableCell className="py-2.5 pl-1.5 pr-3 text-right align-top">
-                                  {renderOtaCell("TRIP")}
-                                </TableCell>
-                              </TableRow>
-                            );
-                          })}
-                    </TableBody>
-                  </Table>
+                                  </TableCell>
+                                  <TableCell className="py-2.5 px-1.5 text-right align-middle overflow-hidden">
+                                    {renderOtaCell("GOODNSTAY")}
+                                  </TableCell>
+                                  <TableCell className="py-2.5 px-1.5 text-right align-middle overflow-hidden">
+                                    {renderOtaCell("AGODA")}
+                                  </TableCell>
+                                  <TableCell className="py-2.5 px-1.5 text-right align-middle overflow-hidden">
+                                    {renderOtaCell("BOOKING")}
+                                  </TableCell>
+                                  <TableCell className="py-2.5 px-1.5 text-right align-middle overflow-hidden">
+                                    {renderOtaCell("EXPEDIA")}
+                                  </TableCell>
+                                  <TableCell className="py-2.5 pl-1.5 pr-3 text-right align-middle overflow-hidden">
+                                    {renderOtaCell("TRIP")}
+                                  </TableCell>
+                                </TableRow>
+                              );
+                            })}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* TOP-5 LAZY PAGINATION BAR ANCHORED AT BOTTOM OF LEFT CARD */}
+            {report?.pagination && (
+              <div
+                data-testid="pagination-bar"
+                className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-zinc-100"
+              >
+                <div className="text-xs text-zinc-500">
+                  Hiển thị{" "}
+                  <span className="font-mono font-semibold text-zinc-900">
+                    Top {report.pagination.startRank}–
+                    {report.pagination.endRank}
+                  </span>{" "}
+                  /{" "}
+                  <span className="font-mono font-semibold text-zinc-900">
+                    {report.pagination.totalItems}
+                  </span>{" "}
+                  phòng
                 </div>
 
-                {/* TOP-5 LAZY PAGINATION BAR */}
-                {report?.pagination && (
-                  <div
-                    data-testid="pagination-bar"
-                    className="flex flex-wrap items-center justify-between gap-2 pt-2 px-1"
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    data-testid="btn-prev-page"
+                    disabled={isBusy || (report.pagination.page || 1) <= 1}
+                    onClick={() => setPage((p) => Math.max(1, p - 1))}
+                    className="h-7 px-2.5 rounded-lg border border-zinc-200 bg-white hover:bg-zinc-50 text-xs font-medium text-zinc-700 disabled:opacity-40 cursor-pointer"
                   >
-                    <div className="text-xs text-zinc-500">
-                      Hiển thị{" "}
-                      <span className="font-mono font-semibold text-zinc-900">
-                        Top {report.pagination.startRank}–
-                        {report.pagination.endRank}
-                      </span>{" "}
-                      /{" "}
-                      <span className="font-mono font-semibold text-zinc-900">
-                        {report.pagination.totalItems}
-                      </span>{" "}
-                      phòng
-                    </div>
+                    ← Trước
+                  </button>
 
-                    <div className="flex items-center gap-1.5">
+                  {Array.from(
+                    { length: report.pagination.totalPages },
+                    (_, idx) => idx + 1
+                  ).map((pg) => {
+                    const isCurr = pg === report.pagination?.page;
+                    const sRank = (pg - 1) * pageSize + 1;
+                    const eRank = Math.min(
+                      report.pagination?.totalItems || 0,
+                      pg * pageSize
+                    );
+                    return (
                       <button
+                        key={pg}
                         type="button"
-                        data-testid="btn-prev-page"
-                        disabled={
-                          isBusy || (report.pagination.page || 1) <= 1
-                        }
-                        onClick={() =>
-                          setPage((p) => Math.max(1, p - 1))
-                        }
-                        className="h-7 px-2.5 rounded-lg border border-zinc-200 bg-white hover:bg-zinc-50 text-xs font-medium text-zinc-700 disabled:opacity-40 cursor-pointer"
+                        data-testid={`btn-page-${pg}`}
+                        disabled={isBusy}
+                        onClick={() => setPage(pg)}
+                        className={`h-7 px-2.5 rounded-lg border text-xs font-mono transition-colors cursor-pointer ${
+                          isCurr
+                            ? "border-zinc-900 bg-zinc-900 text-white font-semibold"
+                            : "border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-600"
+                        }`}
                       >
-                        ← Trước
+                        Top {sRank}–{eRank}
                       </button>
+                    );
+                  })}
 
-                      {Array.from(
-                        { length: report.pagination.totalPages },
-                        (_, idx) => idx + 1
-                      ).map((pg) => {
-                        const isCurr = pg === report.pagination?.page;
-                        const sRank = (pg - 1) * pageSize + 1;
-                        const eRank = Math.min(
-                          report.pagination?.totalItems || 0,
-                          pg * pageSize
-                        );
-                        return (
-                          <button
-                            key={pg}
-                            type="button"
-                            data-testid={`btn-page-${pg}`}
-                            disabled={isBusy}
-                            onClick={() => setPage(pg)}
-                            className={`h-7 px-2.5 rounded-lg border text-xs font-mono transition-colors cursor-pointer ${
-                              isCurr
-                                ? "border-zinc-900 bg-zinc-900 text-white font-semibold"
-                                : "border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-600"
-                            }`}
-                          >
-                            Top {sRank}–{eRank}
-                          </button>
-                        );
-                      })}
-
-                      <button
-                        type="button"
-                        data-testid="btn-next-page"
-                        disabled={
-                          isBusy ||
-                          (report.pagination.page || 1) >=
-                            (report.pagination.totalPages || 1)
-                        }
-                        onClick={() =>
-                          setPage((p) =>
-                            Math.min(
-                              report.pagination?.totalPages || 1,
-                              p + 1
-                            )
-                          )
-                        }
-                        className="h-7 px-2.5 rounded-lg border border-zinc-200 bg-white hover:bg-zinc-50 text-xs font-medium text-zinc-700 disabled:opacity-40 cursor-pointer"
-                      >
-                        Tiếp →
-                      </button>
-                    </div>
-                  </div>
-                )}
+                  <button
+                    type="button"
+                    data-testid="btn-next-page"
+                    disabled={
+                      isBusy ||
+                      (report.pagination.page || 1) >=
+                        (report.pagination.totalPages || 1)
+                    }
+                    onClick={() =>
+                      setPage((p) =>
+                        Math.min(
+                          report.pagination?.totalPages || 1,
+                          p + 1
+                        )
+                      )
+                    }
+                    className="h-7 px-2.5 rounded-lg border border-zinc-200 bg-white hover:bg-zinc-50 text-xs font-medium text-zinc-700 disabled:opacity-40 cursor-pointer"
+                  >
+                    Tiếp →
+                  </button>
+                </div>
               </div>
             )}
           </div>
 
           {/* RIGHT 4 COLS: INSPECTOR, 8-FIELD FORM & LIVE PROOF */}
-          <div className="lg:col-span-4 p-5 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs space-y-4 lg:sticky lg:top-20">
+          <div className="lg:col-span-4 p-5 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs space-y-3.5">
             {isBusy ? (
               <div
                 data-testid="inspector-skeleton"
@@ -1666,7 +1684,7 @@ export function App() {
                   <div className="grid grid-cols-2 gap-2.5">
                     <div className="space-y-1">
                       <label className="text-[11px] font-medium text-zinc-500">
-                        Price per night (KRW / VND) *
+                        Price per night *
                       </label>
                       <div
                         data-testid="form-field-skeleton"
@@ -1690,7 +1708,7 @@ export function App() {
 
                   <div className="space-y-1">
                     <label className="text-[11px] font-medium text-zinc-500">
-                      Amenity Types (4 tùy chọn chuẩn)
+                      Amenity Types
                     </label>
                     <div className="grid grid-cols-2 gap-2 p-2.5 rounded-lg border border-zinc-200 bg-zinc-50/40">
                       <span className="skeleton-shimmer h-4 w-24 rounded" />
@@ -1700,35 +1718,31 @@ export function App() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2.5">
+                  <div className="grid grid-cols-3 gap-2">
                     <div className="space-y-1">
                       <label className="text-[11px] font-medium text-zinc-500">
-                        Room Type (Dropdown 6 mục)
+                        Room Type
                       </label>
                       <div className="h-8 px-2.5 rounded-md border border-zinc-200 bg-zinc-50/60 flex items-center">
-                        <span className="skeleton-shimmer h-4 w-20 rounded" />
+                        <span className="skeleton-shimmer h-4 w-16 rounded" />
                       </div>
                     </div>
                     <div className="space-y-1">
                       <label className="text-[11px] font-medium text-zinc-500">
-                        Bed Type (Dropdown 4 mục)
+                        Bed Type
                       </label>
                       <div className="h-8 px-2.5 rounded-md border border-zinc-200 bg-zinc-50/60 flex items-center">
-                        <span className="skeleton-shimmer h-4 w-24 rounded" />
+                        <span className="skeleton-shimmer h-4 w-16 rounded" />
                       </div>
                     </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2.5 items-end pt-1 border-t border-zinc-100">
                     <div className="space-y-1">
                       <label className="text-[11px] font-medium text-zinc-500">
-                        Total Inventory *
+                        Inventory *
                       </label>
                       <div className="h-8 px-3 rounded-md border border-zinc-200 bg-zinc-50/60 flex items-center">
                         <span className="skeleton-shimmer h-4 w-8 rounded" />
                       </div>
                     </div>
-                    <span className="skeleton-shimmer h-4 w-36 rounded mb-1.5" />
                   </div>
                 </div>
               </div>
@@ -1765,7 +1779,7 @@ export function App() {
                   </div>
                 </div>
 
-                {/* OTA Source Switcher */}
+                {/* OTA Source Switcher (non-truncated short labels, accessible full aria-label) */}
                 <div className="grid grid-cols-4 gap-1 bg-zinc-100 p-1 rounded-xl border border-zinc-200/60">
                   {(
                     ["AGODA", "BOOKING", "EXPEDIA", "TRIP"] as OtaCode[]
@@ -1780,6 +1794,7 @@ export function App() {
                       <button
                         key={ota}
                         type="button"
+                        aria-label={OTA_LABELS[ota]}
                         disabled={!hasOffer}
                         onClick={() => setSelectedOtaForForm(ota)}
                         title={
@@ -1787,13 +1802,13 @@ export function App() {
                             ? `Xem dữ liệu ${OTA_LABELS[ota]}`
                             : `${OTA_LABELS[ota]}: Sàn chưa cào giá`
                         }
-                        className={`py-1.5 px-1.5 rounded-lg text-[11px] font-medium truncate transition-all cursor-pointer disabled:opacity-40 ${
+                        className={`py-1.5 px-1 rounded-lg text-[11px] font-medium whitespace-nowrap transition-all cursor-pointer disabled:opacity-40 ${
                           active
                             ? "bg-white text-zinc-950 font-semibold shadow-2xs"
                             : "text-zinc-500 hover:text-zinc-900"
                         }`}
                       >
-                        {OTA_LABELS[ota]}
+                        {OTA_SHORT_LABELS[ota]}
                       </button>
                     );
                   })}
@@ -1997,19 +2012,19 @@ export function App() {
                   {/* TAB 2: TAX BREAKDOWN & COMPACT JSON MAPPING CONTRACT */}
                   <TabsContent value="breakdown" className="pt-3 space-y-3">
                     <div className="rounded-xl border border-zinc-200/80 overflow-hidden">
-                      <Table>
+                      <Table className="table-fixed w-full">
                         <TableHeader className="bg-zinc-50/80">
                           <TableRow>
-                            <TableHead className="text-[10.5px] py-2 px-2.5">
+                            <TableHead className="text-[10.5px] py-2 pl-2.5 pr-1.5 w-[31%]">
                               Sàn
                             </TableHead>
-                            <TableHead className="text-[10.5px] text-right py-2 px-2">
+                            <TableHead className="text-[10.5px] text-right py-2 px-1.5 w-[23%]">
                               Giá Net
                             </TableHead>
-                            <TableHead className="text-[10.5px] text-right py-2 px-2">
+                            <TableHead className="text-[10.5px] text-right py-2 px-1.5 w-[22%]">
                               Thuế &amp; Phí
                             </TableHead>
-                            <TableHead className="text-[10.5px] text-right py-2 px-2.5">
+                            <TableHead className="text-[10.5px] text-right py-2 pl-1.5 pr-2.5 w-[24%]">
                               Gross
                             </TableHead>
                           </TableRow>
@@ -2031,12 +2046,12 @@ export function App() {
                             if (!off || isFailed) {
                               return (
                                 <TableRow key={ota}>
-                                  <TableCell className="py-2 px-2.5 text-xs font-medium">
-                                    {OTA_LABELS[ota]}
+                                  <TableCell className="py-2 pl-2.5 pr-1.5 text-[11px] font-medium truncate">
+                                    {OTA_SHORT_LABELS[ota]}
                                   </TableCell>
                                   <TableCell
                                     colSpan={3}
-                                    className="py-2 px-2.5 text-right"
+                                    className="py-2 pr-2.5 text-right"
                                   >
                                     <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200/80 text-[10px] font-medium">
                                       Sàn chưa cào giá
@@ -2047,16 +2062,16 @@ export function App() {
                             }
                             return (
                               <TableRow key={ota}>
-                                <TableCell className="py-2 px-2.5 text-xs font-medium">
-                                  <div>{OTA_LABELS[ota]}</div>
+                                <TableCell className="py-2 pl-2.5 pr-1.5 text-[11px] font-medium truncate">
+                                  {OTA_SHORT_LABELS[ota]}
                                 </TableCell>
-                                <TableCell className="py-2 px-2 text-right font-mono text-xs text-zinc-500">
+                                <TableCell className="py-2 px-1.5 text-right font-mono text-[11px] text-zinc-500">
                                   {formatFullVnd(off.netPrice)}
                                 </TableCell>
-                                <TableCell className="py-2 px-2 text-right font-mono text-xs text-zinc-400">
+                                <TableCell className="py-2 px-1.5 text-right font-mono text-[11px] text-zinc-400">
                                   +{formatFullVnd(off.taxesAndFees)}
                                 </TableCell>
-                                <TableCell className="py-2 px-2.5 text-right font-mono text-xs font-semibold text-zinc-900">
+                                <TableCell className="py-2 pl-1.5 pr-2.5 text-right font-mono text-[11px] font-semibold text-zinc-900">
                                   {formatFullVnd(off.grossPrice)}
                                 </TableCell>
                               </TableRow>
@@ -2090,12 +2105,17 @@ export function App() {
                           data-testid="json-mapping-contract-panel"
                           className="p-2.5 rounded-xl bg-zinc-50 border border-zinc-200/90 space-y-2 text-xs"
                         >
-                          <div className="flex flex-wrap items-center justify-between gap-1.5">
-                            <span className="font-semibold text-zinc-900">
-                              JSON Mapping
-                            </span>
+                          <div className="space-y-1.5">
+                            <div className="flex items-center justify-between">
+                              <span className="font-semibold text-zinc-900">
+                                JSON Mapping
+                              </span>
+                              <span className="text-[10.5px] font-mono text-zinc-400">
+                                gns-room-matcher-v1
+                              </span>
+                            </div>
 
-                            <div className="flex flex-wrap items-center gap-1 bg-white p-0.5 rounded-lg border border-zinc-200">
+                            <div className="grid grid-cols-6 gap-1 bg-white p-1 rounded-lg border border-zinc-200">
                               {(
                                 [
                                   "BOOKING_COM",
@@ -2118,14 +2138,15 @@ export function App() {
                                     type="button"
                                     disabled={!hasMap}
                                     data-testid={`mapping-ota-${otaKey}`}
+                                    title={otaKey}
                                     onClick={() => setMappingOtaView(otaKey)}
-                                    className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-medium transition-all cursor-pointer disabled:opacity-40 ${
+                                    className={`py-1 px-1 rounded text-[10px] font-medium truncate transition-all cursor-pointer disabled:opacity-40 ${
                                       active
-                                        ? "bg-zinc-900 text-white"
+                                        ? "bg-zinc-900 text-white font-semibold"
                                         : "text-zinc-600 hover:text-zinc-950"
                                     }`}
                                   >
-                                    {otaKey}
+                                    {MAPPING_OTA_SHORT_LABELS[otaKey]}
                                   </button>
                                 );
                               })}
@@ -2134,12 +2155,12 @@ export function App() {
 
                           {activeContract && (
                             <div className="relative">
-                              <div className="flex items-center justify-between px-2.5 py-1.5 rounded-t-lg bg-zinc-900 text-zinc-300 text-[10.5px] font-mono border-b border-zinc-800">
-                                <span>
+                              <div className="flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-t-lg bg-zinc-900 text-zinc-300 text-[10.5px] font-mono border-b border-zinc-800">
+                                <span className="truncate min-w-0">
                                   {activeContract.gnsRoomId}_
                                   {activeContract.ota}.json
                                 </span>
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-1.5 shrink-0">
                                   <button
                                     type="button"
                                     data-testid="btn-copy-json-mapping"
@@ -2153,7 +2174,7 @@ export function App() {
                                         2000
                                       );
                                     }}
-                                    className="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-white cursor-pointer"
+                                    className="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-white whitespace-nowrap cursor-pointer"
                                   >
                                     {copiedJson
                                       ? "Đã sao chép"
@@ -2164,10 +2185,10 @@ export function App() {
                                     target="_blank"
                                     rel="noreferrer"
                                     data-testid="link-open-json-api"
-                                    className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded bg-emerald-700 hover:bg-emerald-600 text-white"
+                                    className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded bg-emerald-700 hover:bg-emerald-600 text-white whitespace-nowrap"
                                   >
                                     <span>API JSON</span>
-                                    <ExternalLink className="w-2.5 h-2.5" />
+                                    <ExternalLink className="w-2.5 h-2.5 shrink-0" />
                                   </a>
                                 </div>
                               </div>
@@ -2211,7 +2232,7 @@ export function App() {
                                 className="p-2.5 rounded-lg bg-white border border-zinc-200/80 flex items-center justify-between gap-2"
                               >
                                 <div className="font-semibold text-zinc-900">
-                                  {OTA_LABELS[ota]}
+                                  {OTA_SHORT_LABELS[ota]}
                                 </div>
                                 <span
                                   data-testid={`proof-unscraped-${ota}`}
@@ -2243,7 +2264,7 @@ export function App() {
                               <div className="min-w-0 space-y-0.5">
                                 <div className="flex items-center gap-1.5">
                                   <span className="font-semibold text-zinc-900">
-                                    {OTA_LABELS[ota]}
+                                    {OTA_SHORT_LABELS[ota]}
                                   </span>
                                   <code className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-zinc-100 text-zinc-700">
                                     #{fullId}
@@ -2253,9 +2274,19 @@ export function App() {
                                   <span className="font-bold text-emerald-700">
                                     {formatFullVnd(uiPrice)}
                                   </span>{" "}
-                                  <span className="text-zinc-400">
-                                    (Gross: {formatFullVnd(off.grossPrice)})
-                                  </span>
+                                  {ota === "BOOKING" ? (
+                                    <span className="text-zinc-400">
+                                      (Net: {formatFullVnd(off.netPrice)}
+                                      {off.liveProof?.partnerOfferGrossPrice
+                                        ? ` · Ưu đãi ĐT: ${formatFullVnd(off.liveProof.partnerOfferGrossPrice)}`
+                                        : ""}
+                                      )
+                                    </span>
+                                  ) : (
+                                    <span className="text-zinc-400">
+                                      (Gross: {formatFullVnd(off.grossPrice)})
+                                    </span>
+                                  )}
                                 </div>
                               </div>
 

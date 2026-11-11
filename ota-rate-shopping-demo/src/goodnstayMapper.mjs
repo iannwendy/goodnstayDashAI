@@ -1300,24 +1300,24 @@ export function buildMatchedRoomComparisonGroups(normalizedRooms = [], filters =
 
     if (expFallbackOffer) {
       const isLibra = item.hotelId.includes("libra");
-      const expPropId = isLibra ? "37519084" : "104829512";
+      const expPropId = isLibra ? "26738941" : "118398809";
       const expUrl = isLibra
-        ? "https://www.expedia.com/Nha-Trang-Hotels-Libra-Hotel-Nha-Trang.h37519084.Hotel-Information"
-        : "https://www.expedia.com/Nha-Trang-Hotels-Champton-Nha-Trang-Hotel.h104829512.Hotel-Information";
-      const hotelsComPropId = isLibra ? "ho1200610688" : "ho3354644384";
+        ? "https://www.expedia.com.vn/Nha-Trang-Khach-San-Libra-Nha-Trang-Hotel.h26738941.Thong-tin-khach-san"
+        : "https://www.expedia.com.vn/Nha-Trang-Khach-San-Champton-Nha-Trang.h118398809.Thong-tin-khach-san";
+      const hotelsComPropId = isLibra ? "ho856646112" : "ho3789761888";
       const hotelsComUrl = isLibra
-        ? "https://www.hotels.com/ho1200610688/libra-hotel-nha-trang-nha-trang-vietnam/"
-        : "https://www.hotels.com/ho3354644384/champton-nha-trang-hotel-nha-trang-vietnam/";
+        ? "https://vi.hotels.com/ho856646112/khach-san-libra-nha-trang-nha-trang-viet-nam/"
+        : "https://vi.hotels.com/ho3789761888/";
       const googleHotelsPropId = isLibra
-        ? "gns_gh_libra_nt_37519084"
-        : "gns_gh_champton_nt_104829512";
+        ? "ChkImMC_oOXkm4w7Gg0vZy8xMWd4emczM2pqEAE"
+        : "ChkI65rJhoOs4YcIGg0vZy8xMXd5NzVnbW1kEAE";
       const googleHotelsUrl = isLibra
-        ? "https://www.google.com/travel/hotels/entity/Libra-Hotel-Nha-Trang"
-        : "https://www.google.com/travel/hotels/entity/Champton-Nha-Trang-Hotel";
+        ? "https://www.google.com/travel/hotels/entity/ChkImMC_oOXkm4w7Gg0vZy8xMWd4emczM2pqEAE/prices"
+        : "https://www.google.com/travel/hotels/entity/ChkI65rJhoOs4YcIGg0vZy8xMXd5NzVnbW1kEAE/prices";
 
       const expUnitId =
         item.otaOffers.EXPEDIA?.liveProof?.roomId ||
-        `${isLibra ? "389104" : "324098"}${String(100 + matchRank)}`;
+        `${isLibra ? "267389" : "118398"}${String(800 + matchRank)}`;
 
       const syntheticExpOffer = item.otaOffers.EXPEDIA || {
         ...expFallbackOffer,
@@ -1342,13 +1342,13 @@ export function buildMatchedRoomComparisonGroups(normalizedRooms = [], filters =
         lookupMethod: "PROPERTY_AND_ROOM_ID",
       });
 
-      const tripPropId = isLibra ? "51892043" : "108549210";
+      const tripPropId = isLibra ? "21856735" : "130225119";
       const tripUrl = isLibra
-        ? "https://www.trip.com/hotels/nha-trang-hotel-detail-51892043/libra-hotel-nha-trang/"
-        : "https://www.trip.com/hotels/nha-trang-hotel-detail-108549210/champton-nha-trang-hotel/";
+        ? "https://vn.trip.com/hotels/nha-trang-hotel-detail-21856735/libra-hotel-nha-trang/"
+        : "https://vn.trip.com/hotels/nha-trang-hotel-detail-130225119/champton-nha-trang-hotel/";
       const tripRoomId =
         item.otaOffers.TRIP?.liveProof?.roomId ||
-        `${isLibra ? "854092" : "892041"}${String(100 + matchRank)}`;
+        `${isLibra ? "88845" : "53155"}${String(100 + matchRank)}`;
       const syntheticTripOffer = item.otaOffers.TRIP || {
         ...expFallbackOffer,
         roomId: tripRoomId,
