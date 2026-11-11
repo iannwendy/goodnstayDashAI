@@ -13,6 +13,7 @@ import {
   Sun,
   Moon,
   AlertTriangle,
+  Globe,
 } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
@@ -262,25 +263,48 @@ interface ReportResponse {
   comparisonGroups: ComparisonGroup[];
 }
 
-type LocaleCode = "vi" | "ko";
+type LocaleCode = "vi" | "en" | "ko";
 
 function detectInitialLocale(): LocaleCode {
   if (typeof window !== "undefined") {
     const winLocale = (window as unknown as { __GNS_LOCALE__?: string })
       .__GNS_LOCALE__;
-    if (winLocale === "ko") return "ko";
-    if (winLocale === "vi") return "vi";
+    if (winLocale === "vi" || winLocale === "en" || winLocale === "ko") {
+      return winLocale;
+    }
+    try {
+      const saved = window.localStorage.getItem("gns_ota_locale");
+      if (saved === "vi" || saved === "en" || saved === "ko") {
+        return saved;
+      }
+    } catch {
+      // ignore storage errors
+    }
   }
   if (typeof document !== "undefined") {
     const htmlLang = (document.documentElement.lang || "").toLowerCase();
     if (htmlLang.startsWith("ko")) return "ko";
+    if (htmlLang.startsWith("en")) return "en";
   }
   return "vi";
 }
 
+const PAGE_TITLES_BY_LOCALE: Record<LocaleCode, string> = {
+  vi: "goodNstay — Đối Sánh Giá Đa Sàn OTA & Tự Động Điền Form Hạng Phòng",
+  en: "goodNstay — Multi-OTA Rate Comparison & Automated Room Form Mapping",
+  ko: "goodNstay — 실시간 다중 OTA 요금 비교 & 객실 자동 매칭",
+};
+
 const OTA_LABELS_BY_LOCALE: Record<LocaleCode, Record<OtaCode, string>> = {
   vi: {
     GOODNSTAY: "Giá mốc chuẩn (BAR)",
+    AGODA: "Agoda (Live)",
+    BOOKING: "Booking.com (Live)",
+    EXPEDIA: "Expedia (EPS)",
+    TRIP: "Trip.com",
+  },
+  en: {
+    GOODNSTAY: "Reference Rate (BAR)",
     AGODA: "Agoda (Live)",
     BOOKING: "Booking.com (Live)",
     EXPEDIA: "Expedia (EPS)",
@@ -298,6 +322,13 @@ const OTA_LABELS_BY_LOCALE: Record<LocaleCode, Record<OtaCode, string>> = {
 const OTA_SHORT_LABELS_BY_LOCALE: Record<LocaleCode, Record<OtaCode, string>> = {
   vi: {
     GOODNSTAY: "Giá chuẩn (BAR)",
+    AGODA: "Agoda",
+    BOOKING: "Booking.com",
+    EXPEDIA: "Expedia",
+    TRIP: "Trip.com",
+  },
+  en: {
+    GOODNSTAY: "BAR Rate",
     AGODA: "Agoda",
     BOOKING: "Booking.com",
     EXPEDIA: "Expedia",
@@ -332,6 +363,16 @@ const VIEW_LABELS_BY_LOCALE: Record<LocaleCode, Record<string, string>> = {
     NO_WINDOW: "No Window",
     STANDARD_VIEW: "Tiêu chuẩn",
   },
+  en: {
+    CITY_VIEW: "City View",
+    OCEAN_SEA_VIEW: "Ocean View",
+    OCEAN_FRONT: "Beachfront",
+    PARTIAL_SEA_VIEW: "Partial Sea View",
+    POOL_VIEW: "Pool View",
+    GARDEN_VIEW: "Garden View",
+    NO_WINDOW: "No Window",
+    STANDARD_VIEW: "Standard View",
+  },
   ko: {
     CITY_VIEW: "시티뷰",
     OCEAN_SEA_VIEW: "오션뷰",
@@ -354,6 +395,15 @@ const BED_SHORT_LABELS_BY_LOCALE: Record<LocaleCode, Record<string, string>> = {
     MULTI_BED_TRIPLE: "Triple",
     MULTI_BED_QUAD_FAMILY: "Family",
   },
+  en: {
+    SINGLE_1_BED: "1 Single Bed",
+    TWIN_2_SINGLE: "2 Single Beds",
+    DOUBLE_QUEEN_1_BED: "1 Double Bed",
+    KING_1_BED: "1 King Bed",
+    FLEX_DOUBLE_OR_TWIN: "Double / Twin",
+    MULTI_BED_TRIPLE: "Triple (3)",
+    MULTI_BED_QUAD_FAMILY: "Family (4+)",
+  },
   ko: {
     SINGLE_1_BED: "싱글베드 1개",
     TWIN_2_SINGLE: "싱글베드 2개",
@@ -365,6 +415,375 @@ const BED_SHORT_LABELS_BY_LOCALE: Record<LocaleCode, Record<string, string>> = {
   },
 };
 
+const UI_TEXT = {
+  vi: {
+    localeSwitcherAria: "Chuyển đổi ngôn ngữ hiển thị",
+    hotelSelectAria: "Chọn khách sạn cào thực tế",
+    hotelChampton: "Champton Nha Trang Hotel (5 Sao)",
+    hotelLibra: "Libra Hotel Nha Trang (4 Sao)",
+    checkinSelectAria: "Chọn ngày Check-in để cào thật",
+    checkinOpt1: "Check-in: 20/11/2026 (1 đêm)",
+    checkinOpt2: "Check-in: 25/11/2026 (1 đêm)",
+    checkinOpt3: "Check-in: 05/12/2026 (1 đêm)",
+    liveBadgeWarnTitle:
+      "Có sàn chưa cào được giá hoặc lỗi gọi API — Bấm để kiểm tra",
+    liveBadgeOkTitle: "Bấm xem bằng chứng ảnh chụp màn hình và SHA-256",
+    liveBadgeWarnText: (n: number) => `Live ${n} Sàn · Sàn chưa cào giá`,
+    liveBadgeOkText: "Live 2 Sàn: Agoda + Booking.com",
+    themeToLightAria: "Chuyển sang giao diện Sáng (Light Mode)",
+    themeToDarkAria: "Chuyển sang giao diện Tối (Dark Mode)",
+    themeDarkTitle: "Đang ở chế độ Tối (Dark Mode) — Bấm để chuyển sang Sáng",
+    themeLightTitle: "Đang ở chế độ Sáng (Light Mode) — Bấm để chuyển sang Tối",
+    formulasBtn: "Công thức",
+    scrapeBusyBtn: "Đang cào Agoda + Booking...",
+    scrapeIdleBtn: "Cào Trực Tiếp Ngay",
+    closeBtn: "Đóng",
+    unscrapedPrefix: "Sàn chưa cào giá:",
+    retryScrapeBtn: "Thử cào lại",
+    dismissWarnBtn: "Ẩn cảnh báo",
+    fetchErrMsg: "Lỗi kết nối API đối sánh giá — Sàn chưa cào giá",
+    fetchErrToast: "Lỗi gọi API đối sánh giá — Trạng thái: Sàn chưa cào giá.",
+    scrapeOkToast: (
+      hotelName?: string,
+      checkIn?: string,
+      agodaCount?: number,
+      bookingCount?: number
+    ) =>
+      `Đã cào trực tiếp thành công ${hotelName} (Ngày ${checkIn}): Agoda ${agodaCount ?? 0} hạng phòng · Booking.com ${bookingCount ?? 0} hạng phòng.`,
+    scrapeErrMsg: "Lỗi gọi API cào giá trực tiếp — Sàn chưa cào giá",
+    scrapeErrToast:
+      "Không thể kết nối phiên cào trực tiếp — Trạng thái: Sàn chưa cào giá.",
+    formulaTitle: "Công Thức Chuẩn Hóa & Khớp Phòng Đa Sàn",
+    collapseBtn: "Thu gọn",
+    formula1Desc:
+      "Bóc trực tiếp mã phòng, giá trước thuế (Net) và sau thuế (Gross).",
+    formula2Desc: "Trích xuất mã blockId và giá hiển thị thực tế theo đêm.",
+    formula3Title: "3. Khóa Khớp Phòng (Match Key)",
+    formula3Desc:
+      "Ghép tự động cùng hạng phòng giữa các sàn OTA dù khác tên gọi.",
+    kpiScraping: "Đang cào...",
+    unscrapedBadge: "Sàn chưa cào giá",
+    unscrapedCellBadge: "Sàn chưa cào giá",
+    roomTypesUnit: "hạng phòng",
+    openAgoda: "Mở Agoda",
+    openBooking: "Mở Booking",
+    kpiSpreadTitle: "Chênh lệch Agoda vs. Booking",
+    matchedPairsCount: (n: number) => `${n} cặp phòng khớp`,
+    matrixTitle: (hotelName?: string, checkIn?: string) =>
+      `Ma trận Đối sánh Giá Thực Tế (${hotelName} · ${checkIn})`,
+    basisUiWeb: "UI Web",
+    basisGross: "Sau thuế (Gross)",
+    basisNet: "Trước thuế (Net)",
+    bedModeAll: "Tất cả phòng",
+    bedModeSingle: "Phòng 1 Giường",
+    bedModeMulti: "Phòng Nhiều Giường",
+    filterRoomTypeAria: "Lọc theo Room Type",
+    filterRoomTypeAll: "Hạng: Tất cả",
+    filterBedAria: "Lọc theo Cấu hình Giường",
+    filterBedAll: "Giường: Tất cả",
+    filterBedSingle: "1 Đơn (Single)",
+    filterBedTwin: "2 Đơn (Twin)",
+    filterBedDouble: "Đôi (Double)",
+    filterBedFlex: "Đôi / 2 Đơn",
+    filterBedTriple: "Triple (3)",
+    filterBedFamily: "Family (4+)",
+    filterViewAria: "Lọc theo Hướng nhìn",
+    filterViewAll: "View: Tất cả",
+    filterViewCity: "City View",
+    filterViewPartialSea: "Partial Sea",
+    filterViewOcean: "Ocean View",
+    filterViewNoWindow: "No Window",
+    filterAreaAria: "Lọc theo Diện tích",
+    filterAreaAll: "Diện tích: Tất cả",
+    resetBtn: "Đặt lại",
+    emptyFilterText: "Không có hạng phòng nào khớp với bộ lọc hiện tại.",
+    clearFilterBtn: "Xóa bộ lọc",
+    scrapingBannerBusy: "Đang cào giá trực tiếp từ Agoda & Booking.com...",
+    loadingBannerBusy: "Đang tải dữ liệu...",
+    colRoomType: "Hạng phòng",
+    colBarRate: "Giá chuẩn",
+    barSubLabel: "Giá BAR",
+    deepLinkTooltip: (
+      roomName: string,
+      roomId: string,
+      subPrice: string,
+      otaLabel: string
+    ) => `Mở phòng "${roomName}" (#${roomId} · ${subPrice}) trên ${otaLabel}`,
+    rowUnscrapedBadge: (activeCount: number) =>
+      `Live ${activeCount}/4 · Sàn chưa cào giá`,
+    prevPageBtn: "← Trước",
+    nextPageBtn: "Tiếp →",
+    skeletonSpreadLabel: "Biên độ chênh lệch",
+    inspectorSpreadLabel: "Chênh lệch",
+    otaViewDataTitle: (otaLabel: string) => `Xem dữ liệu ${otaLabel}`,
+    otaUnscrapedTitle: (otaLabel: string) => `${otaLabel}: Sàn chưa cào giá`,
+    tabForm: "Form 8 Trường",
+    tabBreakdown: "Thuế & Khớp phòng",
+    tabProof: "Bằng chứng Live",
+    photosModalTitle:
+      "UPLOAD PHOTOS — Danh sách ảnh phòng trích xuất tự động",
+    photosModalDesc: (otaLabel: string, roomName: string) =>
+      `Ảnh phòng từ ${otaLabel} cho ${roomName}`,
+    taxColChannel: "Sàn",
+    taxColNet: "Giá Net",
+    taxColTaxFee: "Thuế & Phí",
+    copiedJsonBtn: "Đã sao chép",
+    copyJsonBtn: "Sao chép JSON",
+    directRoomLinksTitle: (roomName: string) =>
+      `Link phòng trực tiếp (${roomName})`,
+    partnerOfferLabel: (formattedAmount: string) =>
+      ` · Ưu đãi ĐT: ${formattedAmount}`,
+    openRoomBtn: "Mở phòng",
+    updatedAtPrefix: "Cập nhật: ",
+    selectRoomFallback: "Chọn một hạng phòng bên trái để xem chi tiết.",
+  },
+  en: {
+    localeSwitcherAria: "Switch display language",
+    hotelSelectAria: "Select hotel for live rate shopping",
+    hotelChampton: "Champton Nha Trang Hotel (5-Star)",
+    hotelLibra: "Libra Hotel Nha Trang (4-Star)",
+    checkinSelectAria: "Select check-in date",
+    checkinOpt1: "Check-in: 2026-11-20 (1 night)",
+    checkinOpt2: "Check-in: 2026-11-25 (1 night)",
+    checkinOpt3: "Check-in: 2026-12-05 (1 night)",
+    liveBadgeWarnTitle:
+      "Unscraped OTA or API connection issue — Click to inspect",
+    liveBadgeOkTitle: "Click to inspect live scrape proof & room deep links",
+    liveBadgeWarnText: (n: number) => `Live ${n} OTAs · Unscraped Rate`,
+    liveBadgeOkText: "Live 2 OTAs: Agoda + Booking.com",
+    themeToLightAria: "Switch to Light Mode",
+    themeToDarkAria: "Switch to Dark Mode",
+    themeDarkTitle: "Dark Mode active — Click to switch to Light Mode",
+    themeLightTitle: "Light Mode active — Click to switch to Dark Mode",
+    formulasBtn: "Formulas",
+    scrapeBusyBtn: "Scraping Agoda + Booking...",
+    scrapeIdleBtn: "Scrape Live Now",
+    closeBtn: "Close",
+    unscrapedPrefix: "Unscraped OTA:",
+    retryScrapeBtn: "Retry Scrape",
+    dismissWarnBtn: "Dismiss",
+    fetchErrMsg: "Rate comparison API connection error — Unscraped OTA",
+    fetchErrToast: "Rate comparison API error — Status: Unscraped OTA.",
+    scrapeOkToast: (
+      hotelName?: string,
+      checkIn?: string,
+      agodaCount?: number,
+      bookingCount?: number
+    ) =>
+      `Live scrape completed for ${hotelName} (${checkIn}): Agoda ${agodaCount ?? 0} room types · Booking.com ${bookingCount ?? 0} room types.`,
+    scrapeErrMsg: "Live scrape API error — Unscraped OTA",
+    scrapeErrToast:
+      "Unable to connect to live scrape session — Status: Unscraped OTA.",
+    formulaTitle: "Multi-OTA Rate Normalization & Room Matching Rules",
+    collapseBtn: "Collapse",
+    formula1Desc:
+      "Extracts native room ID, before-tax (Net) and after-tax (Gross) rates directly.",
+    formula2Desc:
+      "Extracts blockId and live nightly web UI prices directly from DOM.",
+    formula3Title: "3. Canonical Match Key",
+    formula3Desc:
+      "Automatically pairs identical physical rooms across OTAs despite different naming.",
+    kpiScraping: "Scraping...",
+    unscrapedBadge: "Unscraped Rate",
+    unscrapedCellBadge: "Unscraped",
+    roomTypesUnit: "room types",
+    openAgoda: "Open Agoda",
+    openBooking: "Open Booking",
+    kpiSpreadTitle: "Agoda vs. Booking Spread",
+    matchedPairsCount: (n: number) => `${n} matched room pairs`,
+    matrixTitle: (hotelName?: string, checkIn?: string) =>
+      `Live Multi-OTA Rate Comparison Matrix (${hotelName} · ${checkIn})`,
+    basisUiWeb: "Web UI",
+    basisGross: "After Tax (Gross)",
+    basisNet: "Before Tax (Net)",
+    bedModeAll: "All Rooms",
+    bedModeSingle: "1-Bed Rooms",
+    bedModeMulti: "Multi-Bed Rooms",
+    filterRoomTypeAria: "Filter by Room Type",
+    filterRoomTypeAll: "Tier: All",
+    filterBedAria: "Filter by Bed Configuration",
+    filterBedAll: "Bed: All",
+    filterBedSingle: "1 Single",
+    filterBedTwin: "2 Twin",
+    filterBedDouble: "Double",
+    filterBedFlex: "Double / Twin",
+    filterBedTriple: "Triple (3)",
+    filterBedFamily: "Family (4+)",
+    filterViewAria: "Filter by View",
+    filterViewAll: "View: All",
+    filterViewCity: "City View",
+    filterViewPartialSea: "Partial Sea",
+    filterViewOcean: "Ocean View",
+    filterViewNoWindow: "No Window",
+    filterAreaAria: "Filter by Room Area",
+    filterAreaAll: "Area: All",
+    resetBtn: "Reset",
+    emptyFilterText: "No room categories match the current filter criteria.",
+    clearFilterBtn: "Clear Filters",
+    scrapingBannerBusy:
+      "Scraping live rates directly from Agoda & Booking.com...",
+    loadingBannerBusy: "Loading rate comparison data...",
+    colRoomType: "Room Category",
+    colBarRate: "BAR Rate",
+    barSubLabel: "BAR Rate",
+    deepLinkTooltip: (
+      roomName: string,
+      roomId: string,
+      subPrice: string,
+      otaLabel: string
+    ) => `Open "${roomName}" (#${roomId} · ${subPrice}) on ${otaLabel}`,
+    rowUnscrapedBadge: (activeCount: number) =>
+      `Live ${activeCount}/4 · Unscraped`,
+    prevPageBtn: "← Prev",
+    nextPageBtn: "Next →",
+    skeletonSpreadLabel: "Market Spread",
+    inspectorSpreadLabel: "Spread",
+    otaViewDataTitle: (otaLabel: string) => `View ${otaLabel} data`,
+    otaUnscrapedTitle: (otaLabel: string) => `${otaLabel}: Unscraped`,
+    tabForm: "8-Field Form",
+    tabBreakdown: "Tax & Mapping",
+    tabProof: "Live Proof",
+    photosModalTitle:
+      "UPLOAD PHOTOS — Auto-Extracted OTA Room Gallery",
+    photosModalDesc: (otaLabel: string, roomName: string) =>
+      `Room photos extracted from ${otaLabel} for ${roomName}`,
+    taxColChannel: "Channel",
+    taxColNet: "Net Rate",
+    taxColTaxFee: "Taxes & Fees",
+    copiedJsonBtn: "Copied",
+    copyJsonBtn: "Copy JSON",
+    directRoomLinksTitle: (roomName: string) =>
+      `Direct Room Deep Links (${roomName})`,
+    partnerOfferLabel: (formattedAmount: string) =>
+      ` · Partner Offer: ${formattedAmount}`,
+    openRoomBtn: "Open Room",
+    updatedAtPrefix: "Updated: ",
+    selectRoomFallback: "Select a room category on the left to inspect details.",
+  },
+  ko: {
+    localeSwitcherAria: "표시 언어 전환",
+    hotelSelectAria: "실시간 수집 호텔 선택",
+    hotelChampton: "Champton Nha Trang Hotel (5성급)",
+    hotelLibra: "Libra Hotel Nha Trang (4성급)",
+    checkinSelectAria: "실시간 수집 체크인 날짜 선택",
+    checkinOpt1: "체크인: 2026-11-20 (1박)",
+    checkinOpt2: "체크인: 2026-11-25 (1박)",
+    checkinOpt3: "체크인: 2026-12-05 (1박)",
+    liveBadgeWarnTitle: "미수집 채널 또는 API 오류가 있습니다 — 클릭하여 확인",
+    liveBadgeOkTitle: "실시간 수집 증빙 및 객실 딥링크 확인",
+    liveBadgeWarnText: (n: number) => `실시간 ${n}개 채널 · 요금 미수집`,
+    liveBadgeOkText: "실시간 2개 채널: Agoda + Booking.com",
+    themeToLightAria: "라이트 모드(Light Mode)로 전환",
+    themeToDarkAria: "다크 모드(Dark Mode)로 전환",
+    themeDarkTitle: "현재 다크 모드 — 클릭하여 라이트 모드로 전환",
+    themeLightTitle: "현재 라이트 모드 — 클릭하여 다크 모드로 전환",
+    formulasBtn: "산출 공식",
+    scrapeBusyBtn: "Agoda + Booking 실시간 수집 중...",
+    scrapeIdleBtn: "실시간 즉시 수집",
+    closeBtn: "닫기",
+    unscrapedPrefix: "채널 요금 미수집:",
+    retryScrapeBtn: "다시 수집",
+    dismissWarnBtn: "경고 숨기기",
+    fetchErrMsg: "요금 비교 API 연결 오류 — 채널 요금 미수집",
+    fetchErrToast: "요금 비교 API 호출 오류 — 상태: 채널 요금 미수집",
+    scrapeOkToast: (
+      hotelName?: string,
+      checkIn?: string,
+      agodaCount?: number,
+      bookingCount?: number
+    ) =>
+      `${hotelName} (${checkIn}) 실시간 수집 완료: Agoda ${agodaCount ?? 0}개 객실 유형 · Booking.com ${bookingCount ?? 0}개 객실 유형.`,
+    scrapeErrMsg: "실시간 수집 API 호출 오류 — 채널 요금 미수집",
+    scrapeErrToast:
+      "실시간 수집 세션에 연결할 수 없습니다 — 상태: 채널 요금 미수집",
+    formulaTitle: "다중 OTA 요금 정규화 및 객실 매칭 공식",
+    collapseBtn: "접기",
+    formula1Desc:
+      "객실 고유 ID, 세전 요금(Net) 및 세후 총액(Gross)을 직접 추출합니다.",
+    formula2Desc:
+      "실제 blockId 코드와 1박당 웹 표시 요금을 직접 추출합니다.",
+    formula3Title: "3. 객실 매칭 키 (Match Key)",
+    formula3Desc:
+      "OTA마다 객실명이 달라도 동일한 물리적 객실로 1:1 자동 매칭합니다.",
+    kpiScraping: "수집 중...",
+    unscrapedBadge: "요금 미수집",
+    unscrapedCellBadge: "요금 미수집",
+    roomTypesUnit: "개 객실 유형",
+    openAgoda: "Agoda 열기",
+    openBooking: "Booking 열기",
+    kpiSpreadTitle: "Agoda vs. Booking 평균 편차",
+    matchedPairsCount: (n: number) => `${n}개 매칭 객실 쌍`,
+    matrixTitle: (hotelName?: string, checkIn?: string) =>
+      `실시간 다중 OTA 요금 비교 매트릭스 (${hotelName} · ${checkIn})`,
+    basisUiWeb: "웹 표시가 (UI Web)",
+    basisGross: "세후 총액 (Gross)",
+    basisNet: "세전 요금 (Net)",
+    bedModeAll: "전체 객실",
+    bedModeSingle: "1베드 객실",
+    bedModeMulti: "다중 베드 객실",
+    filterRoomTypeAria: "객실 등급 필터",
+    filterRoomTypeAll: "등급: 전체",
+    filterBedAria: "침대 구성 필터",
+    filterBedAll: "침대: 전체",
+    filterBedSingle: "싱글 1개 (Single)",
+    filterBedTwin: "싱글 2개 (Twin)",
+    filterBedDouble: "더블 1개 (Double)",
+    filterBedFlex: "더블 / 2 싱글",
+    filterBedTriple: "트리플 (3인)",
+    filterBedFamily: "패밀리 (4인+)",
+    filterViewAria: "전망 필터",
+    filterViewAll: "전망: 전체",
+    filterViewCity: "시티뷰 (City)",
+    filterViewPartialSea: "부분 오션뷰",
+    filterViewOcean: "오션뷰 (Ocean)",
+    filterViewNoWindow: "창문 없음",
+    filterAreaAria: "객실 면적 필터",
+    filterAreaAll: "면적: 전체",
+    resetBtn: "초기화",
+    emptyFilterText: "현재 필터 조건과 일치하는 객실 유형이 없습니다.",
+    clearFilterBtn: "필터 초기화",
+    scrapingBannerBusy:
+      "Agoda & Booking.com에서 실시간 요금을 수집하고 있습니다...",
+    loadingBannerBusy: "데이터를 불러오는 중...",
+    colRoomType: "객실 유형",
+    colBarRate: "기준가 (BAR)",
+    barSubLabel: "기준 BAR",
+    deepLinkTooltip: (
+      roomName: string,
+      roomId: string,
+      subPrice: string,
+      otaLabel: string
+    ) => `${otaLabel}에서 "${roomName}" (#${roomId} · ${subPrice}) 객실 열기`,
+    rowUnscrapedBadge: (activeCount: number) =>
+      `실시간 ${activeCount}/4 · 요금 미수집`,
+    prevPageBtn: "← 이전",
+    nextPageBtn: "다음 →",
+    skeletonSpreadLabel: "시장 편차",
+    inspectorSpreadLabel: "시장 편차",
+    otaViewDataTitle: (otaLabel: string) => `${otaLabel} 데이터 보기`,
+    otaUnscrapedTitle: (otaLabel: string) => `${otaLabel}: 요금 미수집`,
+    tabForm: "8개 항목 폼",
+    tabBreakdown: "세금 & 매칭 JSON",
+    tabProof: "실시간 증빙",
+    photosModalTitle: "UPLOAD PHOTOS — 자동 추출된 객실 사진 목록",
+    photosModalDesc: (otaLabel: string, roomName: string) =>
+      `${otaLabel}에서 추출한 ${roomName} 객실 사진`,
+    taxColChannel: "채널",
+    taxColNet: "세전 (Net)",
+    taxColTaxFee: "세금 & 봉사료",
+    copiedJsonBtn: "복사 완료",
+    copyJsonBtn: "JSON 복사",
+    directRoomLinksTitle: (roomName: string) =>
+      `실시간 객실 딥링크 (${roomName})`,
+    partnerOfferLabel: (formattedAmount: string) =>
+      ` · 제휴 특가: ${formattedAmount}`,
+    openRoomBtn: "객실 열기",
+    updatedAtPrefix: "업데이트: ",
+    selectRoomFallback:
+      "왼쪽 표에서 객실 유형을 선택하면 상세 정보를 확인할 수 있습니다.",
+  },
+} as const;
+
 function formatFullVnd(amount: number): string {
   return `${Math.round(amount || 0).toLocaleString("vi-VN")}đ`;
 }
@@ -373,31 +792,44 @@ function formatCompactVnd(amount: number, locale: LocaleCode = "vi"): string {
   const val = Math.round(amount || 0);
   if (val >= 1_000_000) {
     const num = (val / 1_000_000).toFixed(2).replace(/\.?0+$/, "");
-    return locale === "ko" ? `${num}M₫` : `${num}tr`;
+    return locale === "vi" ? `${num}tr` : `${num}M₫`;
   }
-  return locale === "ko"
-    ? `${Math.round(val / 1_000)}K₫`
-    : `${Math.round(val / 1_000)}k`;
+  return locale === "vi"
+    ? `${Math.round(val / 1_000)}k`
+    : `${Math.round(val / 1_000)}K₫`;
 }
 
 function formatLocalizedDescription(
   offer: OtaOfferEntry,
   locale: LocaleCode
 ): string {
-  if (locale !== "ko") {
+  if (locale === "vi") {
     return offer.formFields.description;
   }
+  const viewCode = offer.filterMeta?.viewCategory || "STANDARD_VIEW";
+  const bedCode = offer.filterMeta?.detailedBedCategory || "";
+  const amenitiesText = (offer.formFields.amenityTypes || []).join(", ");
+
+  if (locale === "en") {
+    const areaText = offer.filterMeta?.areaSqm
+      ? `${offer.filterMeta.areaSqm} m²`
+      : "Standard";
+    const viewText = VIEW_LABELS_BY_LOCALE.en[viewCode] || viewCode;
+    const bedText =
+      BED_SHORT_LABELS_BY_LOCALE.en[bedCode] ||
+      offer.filterMeta?.rawBedText ||
+      offer.formFields.bedType;
+    return `[Tier: ${offer.formFields.roomType} | Area: ${areaText} | View: ${viewText} | Bed: ${bedText}] — ${offer.formFields.roomName} (Max ${offer.formFields.maximumGuests} guests). Key amenities: ${amenitiesText}.`;
+  }
+
   const areaText = offer.filterMeta?.areaSqm
     ? `${offer.filterMeta.areaSqm} m²`
     : "표준";
-  const viewCode = offer.filterMeta?.viewCategory || "STANDARD_VIEW";
   const viewText = VIEW_LABELS_BY_LOCALE.ko[viewCode] || viewCode;
-  const bedCode = offer.filterMeta?.detailedBedCategory || "";
   const bedText =
     BED_SHORT_LABELS_BY_LOCALE.ko[bedCode] ||
     offer.filterMeta?.rawBedText ||
     offer.formFields.bedType;
-  const amenitiesText = (offer.formFields.amenityTypes || []).join(", ");
   return `[객실 등급: ${offer.formFields.roomType} | 면적: ${areaText} | 전망: ${viewText} | 침대: ${bedText}] — ${offer.formFields.roomName} 객실 (최대 ${offer.formFields.maximumGuests}인 투숙 가능). 기본 구비 시설: ${amenitiesText}.`;
 }
 
@@ -411,9 +843,13 @@ function formatVietnamDateTime(
   locale: LocaleCode = "vi"
 ): string {
   if (preformattedVi && preformattedVi.includes("GMT+7")) {
-    return locale === "ko"
-      ? preformattedVi.replace("(Giờ VN GMT+7)", "(베트남 시간 GMT+7)")
-      : preformattedVi;
+    if (locale === "ko") {
+      return preformattedVi.replace("(Giờ VN GMT+7)", "(베트남 시간 GMT+7)");
+    }
+    if (locale === "en") {
+      return preformattedVi.replace("(Giờ VN GMT+7)", "(VN Time GMT+7)");
+    }
+    return preformattedVi;
   }
   const d = isoOrStr ? new Date(isoOrStr) : new Date();
   const validDate = Number.isNaN(d.getTime()) ? new Date() : d;
@@ -429,17 +865,35 @@ function formatVietnamDateTime(
   }).formatToParts(validDate);
   const map = Object.fromEntries(parts.map((p) => [p.type, p.value]));
   const tzSuffix =
-    locale === "ko" ? "(베트남 시간 GMT+7)" : "(Giờ VN GMT+7)";
+    locale === "ko"
+      ? "(베트남 시간 GMT+7)"
+      : locale === "en"
+        ? "(VN Time GMT+7)"
+        : "(Giờ VN GMT+7)";
   return `${map.hour}:${map.minute}:${map.second} — ${map.day}/${map.month}/${map.year} ${tzSuffix}`;
 }
 
 export function App() {
-  const [locale] = useState<LocaleCode>(() => detectInitialLocale());
-  const isKo = locale === "ko";
+  const [locale, setLocale] = useState<LocaleCode>(() => detectInitialLocale());
+  const t = UI_TEXT[locale];
   const OTA_LABELS = OTA_LABELS_BY_LOCALE[locale];
   const OTA_SHORT_LABELS = OTA_SHORT_LABELS_BY_LOCALE[locale];
   const VIEW_LABELS = VIEW_LABELS_BY_LOCALE[locale];
   const BED_SHORT_LABELS = BED_SHORT_LABELS_BY_LOCALE[locale];
+
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      document.documentElement.lang = locale;
+      document.title = PAGE_TITLES_BY_LOCALE[locale];
+    }
+    if (typeof window !== "undefined") {
+      try {
+        window.localStorage.setItem("gns_ota_locale", locale);
+      } catch {
+        // ignore storage errors
+      }
+    }
+  }, [locale]);
   const [report, setReport] = useState<ReportResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [scraping, setScraping] = useState<boolean>(false);
@@ -478,9 +932,13 @@ export function App() {
   // Trạng thái lỗi gọi API cào giá ("Sàn chưa cào giá")
   const [apiErrorState, setApiErrorState] = useState<{
     failed: boolean;
+    kind?: "fetch" | "scrape";
     message: string;
     failedOtas: OtaCode[];
   } | null>(null);
+
+  const localeRef = useRef<LocaleCode>(locale);
+  localeRef.current = locale;
 
   // Tham số cào thực tế (Đổi khách sạn hoặc đổi ngày Check-in để chứng minh Live Scrape)
   const [selectedHotelKey, setSelectedHotelKey] = useState<string>(
@@ -558,25 +1016,20 @@ export function App() {
       }
     } catch {
       if (reqId !== latestFetchIdRef.current) return;
+      const curT = UI_TEXT[localeRef.current];
       setApiErrorState({
         failed: true,
-        message: isKo
-          ? "요금 비교 API 연결 오류 — 채널 요금 미수집"
-          : "Lỗi kết nối API đối sánh giá — Sàn chưa cào giá",
+        kind: "fetch",
+        message: curT.fetchErrMsg,
         failedOtas: ["AGODA", "BOOKING", "EXPEDIA", "TRIP"],
       });
-      showToast(
-        isKo
-          ? "요금 비교 API 호출 오류 — 상태: 채널 요금 미수집"
-          : "Lỗi gọi API đối sánh giá — Trạng thái: Sàn chưa cào giá."
-      );
+      showToast(curT.fetchErrToast);
     } finally {
       if (reqId === latestFetchIdRef.current) {
         setLoading(false);
       }
     }
   }, [
-    isKo,
     selectedHotelKey,
     selectedCheckIn,
     roomType,
@@ -619,23 +1072,22 @@ export function App() {
       setApiErrorState(null);
       await fetchReport();
       showToast(
-        isKo
-          ? `${fresh.hotelName} (${fresh.checkIn}) 실시간 수집 완료: Agoda ${fresh.liveScrapeProof?.agoda.masterRoomCount ?? 0}개 객실 유형 · Booking.com ${fresh.liveScrapeProof?.booking.uniqueRoomCount ?? 0}개 객실 유형.`
-          : `Đã cào trực tiếp thành công ${fresh.hotelName} (Ngày ${fresh.checkIn}): Agoda ${fresh.liveScrapeProof?.agoda.masterRoomCount ?? 0} hạng phòng · Booking.com ${fresh.liveScrapeProof?.booking.uniqueRoomCount ?? 0} hạng phòng.`
+        UI_TEXT[localeRef.current].scrapeOkToast(
+          fresh.hotelName,
+          fresh.checkIn,
+          fresh.liveScrapeProof?.agoda.masterRoomCount,
+          fresh.liveScrapeProof?.booking.uniqueRoomCount
+        )
       );
     } catch {
+      const curT = UI_TEXT[localeRef.current];
       setApiErrorState({
         failed: true,
-        message: isKo
-          ? "실시간 수집 API 호출 오류 — 채널 요금 미수집"
-          : "Lỗi gọi API cào giá trực tiếp — Sàn chưa cào giá",
+        kind: "scrape",
+        message: curT.scrapeErrMsg,
         failedOtas: ["AGODA", "BOOKING"],
       });
-      showToast(
-        isKo
-          ? "실시간 수집 세션에 연결할 수 없습니다 — 상태: 채널 요금 미수집"
-          : "Không thể kết nối phiên cào trực tiếp — Trạng thái: Sàn chưa cào giá."
-      );
+      showToast(curT.scrapeErrToast);
     } finally {
       setScraping(false);
     }
@@ -672,35 +1124,6 @@ export function App() {
       null
     );
   }, [selectedGroup, selectedOtaForForm]);
-
-  const summaryStats = useMemo(() => {
-    if (report?.overallSummary) {
-      return report.overallSummary;
-    }
-    const groups = report?.comparisonGroups ?? [];
-    let bothLiveMatchedCount = 0;
-    let agodaVsBookingDiffSum = 0;
-
-    groups.forEach((g) => {
-      const agoda = g.otaOffers.AGODA;
-      const booking = g.otaOffers.BOOKING;
-      if (agoda && booking) {
-        bothLiveMatchedCount++;
-        const pA =
-          priceBasis === "NET" ? agoda.netPrice : agoda.grossPrice;
-        const pB =
-          priceBasis === "NET" ? booking.netPrice : booking.grossPrice;
-        agodaVsBookingDiffSum += ((pA - pB) / pB) * 100;
-      }
-    });
-
-    return {
-      bothLiveMatchedCount,
-      avgAgodaVsBookingPct: bothLiveMatchedCount
-        ? Number((agodaVsBookingDiffSum / bothLiveMatchedCount).toFixed(2))
-        : 0,
-    };
-  }, [report, priceBasis]);
 
   const getSelectClass = (isActive: boolean) =>
     `h-7 px-2 rounded-lg border text-[11px] font-medium transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500/20 ${
@@ -755,11 +1178,7 @@ export function App() {
               <Building2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
               <select
                 data-testid="select-hotel"
-                aria-label={
-                  isKo
-                    ? "실시간 수집 호텔 선택"
-                    : "Chọn khách sạn cào thực tế"
-                }
+                aria-label={t.hotelSelectAria}
                 value={selectedHotelKey}
                 onChange={(e) => {
                   setSelectedHotelKey(e.target.value);
@@ -767,16 +1186,8 @@ export function App() {
                 }}
                 className="bg-transparent font-medium text-xs text-zinc-900 pr-1 focus:outline-none cursor-pointer"
               >
-                <option value="champton-nha-trang">
-                  {isKo
-                    ? "Champton Nha Trang Hotel (5성급)"
-                    : "Champton Nha Trang Hotel (5 Sao)"}
-                </option>
-                <option value="libra-nha-trang">
-                  {isKo
-                    ? "Libra Hotel Nha Trang (4성급)"
-                    : "Libra Hotel Nha Trang (4 Sao)"}
-                </option>
+                <option value="champton-nha-trang">{t.hotelChampton}</option>
+                <option value="libra-nha-trang">{t.hotelLibra}</option>
               </select>
             </div>
 
@@ -784,11 +1195,7 @@ export function App() {
               <Calendar className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
               <select
                 data-testid="select-checkin"
-                aria-label={
-                  isKo
-                    ? "실시간 수집 체크인 날짜 선택"
-                    : "Chọn ngày Check-in để cào thật"
-                }
+                aria-label={t.checkinSelectAria}
                 value={selectedCheckIn}
                 onChange={(e) => {
                   setSelectedCheckIn(e.target.value);
@@ -796,21 +1203,9 @@ export function App() {
                 }}
                 className="bg-transparent font-mono text-xs text-zinc-800 pr-1 focus:outline-none cursor-pointer"
               >
-                <option value="2026-11-20">
-                  {isKo
-                    ? "체크인: 2026-11-20 (1박)"
-                    : "Check-in: 20/11/2026 (1 đêm)"}
-                </option>
-                <option value="2026-11-25">
-                  {isKo
-                    ? "체크인: 2026-11-25 (1박)"
-                    : "Check-in: 25/11/2026 (1 đêm)"}
-                </option>
-                <option value="2026-12-05">
-                  {isKo
-                    ? "체크인: 2026-12-05 (1박)"
-                    : "Check-in: 05/12/2026 (1 đêm)"}
-                </option>
+                <option value="2026-11-20">{t.checkinOpt1}</option>
+                <option value="2026-11-25">{t.checkinOpt2}</option>
+                <option value="2026-12-05">{t.checkinOpt3}</option>
               </select>
             </div>
           </div>
@@ -827,47 +1222,65 @@ export function App() {
                   : "bg-emerald-50/80 border-emerald-200/80 text-emerald-800 hover:bg-emerald-100/70"
               }`}
               title={
-                hasUnscrapedLiveOta
-                  ? isKo
-                    ? "미수집 채널 또는 API 오류가 있습니다 — 클릭하여 확인"
-                    : "Có sàn chưa cào được giá hoặc lỗi gọi API — Bấm để kiểm tra"
-                  : isKo
-                    ? "실시간 수집 증빙 및 객실 딥링크 확인"
-                    : "Bấm xem bằng chứng ảnh chụp màn hình và SHA-256"
+                hasUnscrapedLiveOta ? t.liveBadgeWarnTitle : t.liveBadgeOkTitle
               }
             >
               {hasUnscrapedLiveOta ? (
                 <>
                   <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
                   <span className="font-medium">
-                    {isKo
-                      ? `실시간 ${liveHealthyCount}개 채널 · 요금 미수집`
-                      : `Live ${liveHealthyCount} Sàn · Sàn chưa cào giá`}
+                    {t.liveBadgeWarnText(liveHealthyCount)}
                   </span>
                 </>
               ) : (
                 <>
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 pulse-live" />
-                  <span className="font-medium">
-                    {isKo
-                      ? "실시간 2개 채널: Agoda + Booking.com"
-                      : "Live 2 Sàn: Agoda + Booking.com"}
-                  </span>
+                  <span className="font-medium">{t.liveBadgeOkText}</span>
                 </>
               )}
             </button>
+
+            {/* 3-Language Switcher: VI / EN / KO */}
+            <div
+              data-testid="locale-switcher"
+              role="group"
+              aria-label={t.localeSwitcherAria}
+              className="inline-flex items-center gap-0.5 p-0.5 h-8 rounded-lg border border-zinc-200 bg-zinc-100/90 shrink-0"
+            >
+              <Globe className="w-3.5 h-3.5 text-zinc-500 ml-1.5 mr-0.5 shrink-0" />
+              {(
+                [
+                  { code: "vi", label: "VI", title: "Tiếng Việt" },
+                  { code: "en", label: "EN", title: "English" },
+                  { code: "ko", label: "KO", title: "한국어" },
+                ] as const
+              ).map((lang) => {
+                const active = locale === lang.code;
+                return (
+                  <button
+                    key={lang.code}
+                    type="button"
+                    data-testid={`btn-locale-${lang.code}`}
+                    aria-pressed={active}
+                    title={lang.title}
+                    onClick={() => setLocale(lang.code)}
+                    className={`px-2 h-[26px] rounded-md text-[11px] font-mono font-semibold transition-all cursor-pointer ${
+                      active
+                        ? "bg-zinc-900 text-white shadow-2xs"
+                        : "text-zinc-600 hover:text-zinc-950"
+                    }`}
+                  >
+                    {lang.label}
+                  </button>
+                );
+              })}
+            </div>
 
             <button
               type="button"
               data-testid="btn-toggle-theme"
               aria-label={
-                theme === "dark"
-                  ? isKo
-                    ? "라이트 모드(Light Mode)로 전환"
-                    : "Chuyển sang giao diện Sáng (Light Mode)"
-                  : isKo
-                    ? "다크 모드(Dark Mode)로 전환"
-                    : "Chuyển sang giao diện Tối (Dark Mode)"
+                theme === "dark" ? t.themeToLightAria : t.themeToDarkAria
               }
               onClick={() =>
                 setTheme((prev) => (prev === "dark" ? "light" : "dark"))
@@ -877,15 +1290,7 @@ export function App() {
                   ? "bg-zinc-900 text-amber-400 border-zinc-700 hover:bg-zinc-800"
                   : "bg-white text-zinc-700 border-zinc-200 hover:bg-zinc-50"
               }`}
-              title={
-                theme === "dark"
-                  ? isKo
-                    ? "현재 다크 모드 — 클릭하여 라이트 모드로 전환"
-                    : "Đang ở chế độ Tối (Dark Mode) — Bấm để chuyển sang Sáng"
-                  : isKo
-                    ? "현재 라이트 모드 — 클릭하여 다크 모드로 전환"
-                    : "Đang ở chế độ Sáng (Light Mode) — Bấm để chuyển sang Tối"
-              }
+              title={theme === "dark" ? t.themeDarkTitle : t.themeLightTitle}
             >
               {theme === "dark" ? (
                 <>
@@ -911,7 +1316,7 @@ export function App() {
               }`}
             >
               <Calculator className="w-3.5 h-3.5" />
-              <span>{isKo ? "산출 공식" : "Công thức"}</span>
+              <span>{t.formulasBtn}</span>
             </button>
 
             <button
@@ -924,15 +1329,7 @@ export function App() {
               <RotateCcw
                 className={`w-3.5 h-3.5 ${scraping ? "animate-spin" : ""}`}
               />
-              <span>
-                {scraping
-                  ? isKo
-                    ? "Agoda + Booking 실시간 수집 중..."
-                    : "Đang cào Agoda + Booking..."
-                  : isKo
-                    ? "실시간 즉시 수집"
-                    : "Cào Trực Tiếp Ngay"}
-              </span>
+              <span>{scraping ? t.scrapeBusyBtn : t.scrapeIdleBtn}</span>
             </button>
           </div>
         </div>
@@ -951,7 +1348,7 @@ export function App() {
               onClick={() => setToastMessage(null)}
               className="text-zinc-400 hover:text-white text-xs cursor-pointer"
             >
-              {isKo ? "닫기" : "Đóng"}
+              {t.closeBtn}
             </button>
           </div>
         </div>
@@ -966,10 +1363,12 @@ export function App() {
           >
             <div className="flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
-              <span className="font-semibold">
-                {isKo ? "채널 요금 미수집:" : "Sàn chưa cào giá:"}
+              <span className="font-semibold">{t.unscrapedPrefix}</span>
+              <span>
+                {apiErrorState.kind === "scrape"
+                  ? t.scrapeErrMsg
+                  : t.fetchErrMsg}
               </span>
-              <span>{apiErrorState.message}</span>
             </div>
             <div className="flex items-center gap-2">
               <button
@@ -978,7 +1377,7 @@ export function App() {
                 onClick={() => handleLiveScrape()}
                 className="px-2.5 py-1 rounded-lg bg-zinc-900 text-white text-[11px] font-medium hover:bg-zinc-800 cursor-pointer"
               >
-                {isKo ? "다시 수집" : "Thử cào lại"}
+                {t.retryScrapeBtn}
               </button>
               <button
                 type="button"
@@ -986,7 +1385,7 @@ export function App() {
                 onClick={() => setApiErrorState(null)}
                 className="text-amber-800 hover:text-amber-950 text-[11px] font-medium underline cursor-pointer"
               >
-                {isKo ? "경고 숨기기" : "Ẩn cảnh báo"}
+                {t.dismissWarnBtn}
               </button>
             </div>
           </div>
@@ -1001,16 +1400,14 @@ export function App() {
           <section className="p-4 rounded-2xl bg-white border border-zinc-200/90 shadow-2xs space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-zinc-900">
-                {isKo
-                  ? "다중 OTA 요금 정규화 및 객실 매칭 공식"
-                  : "Công Thức Chuẩn Hóa & Khớp Phòng Đa Sàn"}
+                {t.formulaTitle}
               </span>
               <button
                 type="button"
                 onClick={() => setShowFormulas(false)}
                 className="inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-900 cursor-pointer"
               >
-                {isKo ? "접기" : "Thu gọn"} <ChevronUp className="w-3.5 h-3.5" />
+                {t.collapseBtn} <ChevronUp className="w-3.5 h-3.5" />
               </button>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
@@ -1021,11 +1418,7 @@ export function App() {
                 <div className="font-mono text-[11px] text-emerald-700">
                   roomGridData.masterRooms
                 </div>
-                <div className="text-zinc-500 text-[11px]">
-                  {isKo
-                    ? "객실 고유 ID, 세전 요금(Net) 및 세후 총액(Gross)을 직접 추출합니다."
-                    : "Bóc trực tiếp mã phòng, giá trước thuế (Net) và sau thuế (Gross)."}
-                </div>
+                <div className="text-zinc-500 text-[11px]">{t.formula1Desc}</div>
               </div>
               <div className="p-3 rounded-xl bg-zinc-50/80 space-y-1">
                 <div className="font-semibold text-zinc-900">
@@ -1034,198 +1427,20 @@ export function App() {
                 <div className="font-mono text-[11px] text-zinc-800">
                   #hprt-table tr[data-block-id]
                 </div>
-                <div className="text-zinc-500 text-[11px]">
-                  {isKo
-                    ? "실제 blockId 코드와 1박당 웹 표시 요금을 직접 추출합니다."
-                    : "Trích xuất mã blockId và giá hiển thị thực tế theo đêm."}
-                </div>
+                <div className="text-zinc-500 text-[11px]">{t.formula2Desc}</div>
               </div>
               <div className="p-3 rounded-xl bg-zinc-50/80 space-y-1">
                 <div className="font-semibold text-zinc-900">
-                  {isKo
-                    ? "3. 객실 매칭 키 (Match Key)"
-                    : "3. Khóa Khớp Phòng (Match Key)"}
+                  {t.formula3Title}
                 </div>
                 <div className="font-mono text-[11px] text-sky-700">
                   Tier + Bed + View + Area (m²)
                 </div>
-                <div className="text-zinc-500 text-[11px]">
-                  {isKo
-                    ? "OTA마다 객실명이 달라도 동일한 물리적 객실로 1:1 자동 매칭합니다."
-                    : "Ghép tự động cùng hạng phòng giữa các sàn OTA dù khác tên gọi."}
-                </div>
+                <div className="text-zinc-500 text-[11px]">{t.formula3Desc}</div>
               </div>
             </div>
           </section>
         )}
-
-        {/* =================================================================== */}
-        {/* 3 CLEAN KPI CARDS ALIGNED ON 12-COLUMN GRID (4 + 4 + 4)             */}
-        {/* =================================================================== */}
-        <section className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-12 gap-4">
-          <div className="lg:col-span-4 p-4 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs flex flex-col justify-between gap-2.5">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-medium text-zinc-500">
-                Agoda
-              </span>
-              {isBusy ? (
-                <span className="text-[11px] font-mono text-zinc-600 bg-zinc-100 px-2 py-0.5 rounded-md whitespace-nowrap shrink-0 animate-pulse">
-                  {isKo ? "수집 중..." : "Đang cào..."}
-                </span>
-              ) : agodaLiveOk ? (
-                <span
-                  data-testid="kpi-status-agoda"
-                  className="text-[11px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md whitespace-nowrap shrink-0"
-                >
-                  LIVE
-                </span>
-              ) : (
-                <span
-                  data-testid="kpi-status-agoda"
-                  className="text-[11px] font-mono text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md whitespace-nowrap shrink-0"
-                >
-                  {isKo ? "요금 미수집" : "Sàn chưa cào giá"}
-                </span>
-              )}
-            </div>
-            {isBusy ? (
-              <div className="flex items-center gap-2 py-0.5">
-                <span
-                  data-testid="data-skeleton"
-                  className="skeleton-shimmer h-7 w-14 rounded-md"
-                />
-                <span className="skeleton-shimmer h-4 w-24 rounded" />
-              </div>
-            ) : (
-              <div className="flex items-baseline justify-between gap-2">
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-2xl font-bold font-mono tracking-tight text-zinc-950">
-                    {agodaLiveOk ? (proof?.agoda.masterRoomCount ?? 0) : 0}
-                  </span>
-                  <span className="text-xs text-zinc-400">
-                    {agodaLiveOk
-                      ? isKo
-                        ? "개 객실 유형"
-                        : "hạng phòng"
-                      : isKo
-                        ? "요금 미수집"
-                        : "Sàn chưa cào giá"}
-                  </span>
-                </div>
-                {proof?.agoda.sourceUrl && (
-                  <a
-                    href={proof.agoda.sourceUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-0.5 text-xs text-zinc-600 hover:text-zinc-950 font-medium"
-                  >
-                    {isKo ? "Agoda 열기" : "Mở Agoda"}{" "}
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
-                )}
-              </div>
-            )}
-          </div>
-
-          <div className="lg:col-span-4 p-4 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs flex flex-col justify-between gap-2.5">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-medium text-zinc-500">
-                Booking.com
-              </span>
-              {isBusy ? (
-                <span className="text-[11px] font-mono text-zinc-600 bg-zinc-100 px-2 py-0.5 rounded-md whitespace-nowrap shrink-0 animate-pulse">
-                  {isKo ? "수집 중..." : "Đang cào..."}
-                </span>
-              ) : bookingLiveOk ? (
-                <span
-                  data-testid="kpi-status-booking"
-                  className="text-[11px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md whitespace-nowrap shrink-0"
-                >
-                  LIVE
-                </span>
-              ) : (
-                <span
-                  data-testid="kpi-status-booking"
-                  className="text-[11px] font-mono text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md whitespace-nowrap shrink-0"
-                >
-                  {isKo ? "요금 미수집" : "Sàn chưa cào giá"}
-                </span>
-              )}
-            </div>
-            {isBusy ? (
-              <div className="flex items-center gap-2 py-0.5">
-                <span
-                  data-testid="data-skeleton"
-                  className="skeleton-shimmer h-7 w-14 rounded-md"
-                />
-                <span className="skeleton-shimmer h-4 w-28 rounded" />
-              </div>
-            ) : (
-              <div className="flex items-baseline justify-between gap-2">
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-2xl font-bold font-mono tracking-tight text-zinc-950">
-                    {bookingLiveOk ? (proof?.booking.uniqueRoomCount ?? 0) : 0}
-                  </span>
-                  <span className="text-xs text-zinc-400">
-                    {bookingLiveOk
-                      ? isKo
-                        ? "개 객실 유형"
-                        : "hạng phòng"
-                      : isKo
-                        ? "요금 미수집"
-                        : "Sàn chưa cào giá"}
-                  </span>
-                </div>
-                {proof?.booking.sourceUrl && (
-                  <a
-                    href={proof.booking.sourceUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-0.5 text-xs text-zinc-600 hover:text-zinc-950 font-medium"
-                  >
-                    {isKo ? "Booking 열기" : "Mở Booking"}{" "}
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
-                )}
-              </div>
-            )}
-          </div>
-
-          <div className="lg:col-span-4 p-4 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs flex flex-col justify-between gap-2.5">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-medium text-zinc-500">
-                {isKo
-                  ? "Agoda vs. Booking 평균 편차"
-                  : "Chênh lệch Agoda vs. Booking"}
-              </span>
-              <span className="text-[11px] font-mono text-zinc-600 bg-zinc-100 px-2 py-0.5 rounded-md whitespace-nowrap shrink-0">
-                {priceBasis}
-              </span>
-            </div>
-            {isBusy ? (
-              <div className="flex items-center gap-2 py-0.5">
-                <span
-                  data-testid="data-skeleton"
-                  className="skeleton-shimmer h-7 w-24 rounded-md"
-                />
-                <span className="skeleton-shimmer h-4 w-28 rounded" />
-              </div>
-            ) : (
-              <div className="flex items-baseline justify-between gap-2">
-                <span className="text-2xl font-bold font-mono tracking-tight text-emerald-600">
-                  {summaryStats.avgAgodaVsBookingPct >= 0
-                    ? `+${summaryStats.avgAgodaVsBookingPct}%`
-                    : `${summaryStats.avgAgodaVsBookingPct}%`}
-                </span>
-                <span className="text-xs text-zinc-400">
-                  {isKo
-                    ? `${summaryStats.bothLiveMatchedCount}개 매칭 객실 쌍`
-                    : `${summaryStats.bothLiveMatchedCount} cặp phòng khớp`}
-                </span>
-              </div>
-            )}
-          </div>
-        </section>
 
         {/* =================================================================== */}
         {/* MAIN WORKSPACE: 12-COLUMN SPLIT (8 + 4) WITH BALANCED HEIGHTS       */}
@@ -1236,9 +1451,7 @@ export function App() {
             <div className="space-y-3">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <h2 className="text-sm font-semibold text-zinc-900">
-                  {isKo
-                    ? `실시간 다중 OTA 요금 비교 매트릭스 (${report?.hotelName} · ${report?.checkIn})`
-                    : `Ma trận Đối sánh Giá Thực Tế (${report?.hotelName} · ${report?.checkIn})`}
+                  {t.matrixTitle(report?.hotelName, report?.checkIn)}
                 </h2>
 
                 <div className="inline-flex items-center bg-zinc-100 p-0.5 rounded-lg border border-zinc-200/60">
@@ -1252,7 +1465,7 @@ export function App() {
                         : "text-zinc-500 hover:text-zinc-800"
                     }`}
                   >
-                    {isKo ? "웹 표시가 (UI Web)" : "UI Web"}
+                    {t.basisUiWeb}
                   </button>
                   <button
                     type="button"
@@ -1264,7 +1477,7 @@ export function App() {
                         : "text-zinc-500 hover:text-zinc-800"
                     }`}
                   >
-                    {isKo ? "세후 총액 (Gross)" : "Sau thuế (Gross)"}
+                    {t.basisGross}
                   </button>
                   <button
                     type="button"
@@ -1276,7 +1489,7 @@ export function App() {
                         : "text-zinc-500 hover:text-zinc-800"
                     }`}
                   >
-                    {isKo ? "세전 요금 (Net)" : "Trước thuế (Net)"}
+                    {t.basisNet}
                   </button>
                 </div>
               </div>
@@ -1286,18 +1499,9 @@ export function App() {
                 <div className="flex items-center bg-white p-0.5 rounded-lg border border-zinc-200/80 shrink-0">
                   {(
                     [
-                      {
-                        key: "ALL",
-                        label: isKo ? "전체 객실" : "Tất cả phòng",
-                      },
-                      {
-                        key: "SINGLE_BED_ONLY",
-                        label: isKo ? "1베드 객실" : "Phòng 1 Giường",
-                      },
-                      {
-                        key: "MULTI_BED_ONLY",
-                        label: isKo ? "다중 베드 객실" : "Phòng Nhiều Giường",
-                      },
+                      { key: "ALL", label: t.bedModeAll },
+                      { key: "SINGLE_BED_ONLY", label: t.bedModeSingle },
+                      { key: "MULTI_BED_ONLY", label: t.bedModeMulti },
                     ] as const
                   ).map((item) => {
                     const active = multiBedMode === item.key;
@@ -1325,7 +1529,7 @@ export function App() {
                 <div className="flex flex-wrap items-center gap-1">
                   <select
                     data-testid="filter-room-type"
-                    aria-label={isKo ? "객실 등급 필터" : "Lọc theo Room Type"}
+                    aria-label={t.filterRoomTypeAria}
                     value={roomType}
                     onChange={(e) => {
                       setRoomType(e.target.value);
@@ -1333,9 +1537,7 @@ export function App() {
                     }}
                     className={getSelectClass(roomType !== "ALL")}
                   >
-                    <option value="ALL">
-                      {isKo ? "등급: 전체" : "Hạng: Tất cả"}
-                    </option>
+                    <option value="ALL">{t.filterRoomTypeAll}</option>
                     <option value="Standard">Standard</option>
                     <option value="Superior">Superior</option>
                     <option value="Deluxe">Deluxe</option>
@@ -1345,9 +1547,7 @@ export function App() {
 
                   <select
                     data-testid="filter-bed-category"
-                    aria-label={
-                      isKo ? "침대 구성 필터" : "Lọc theo Cấu hình Giường"
-                    }
+                    aria-label={t.filterBedAria}
                     value={detailedBedCategory}
                     onChange={(e) => {
                       setDetailedBedCategory(e.target.value);
@@ -1355,33 +1555,27 @@ export function App() {
                     }}
                     className={getSelectClass(detailedBedCategory !== "ALL")}
                   >
-                    <option value="ALL">
-                      {isKo ? "침대: 전체" : "Giường: Tất cả"}
-                    </option>
-                    <option value="SINGLE_1_BED">
-                      {isKo ? "싱글 1개 (Single)" : "1 Đơn (Single)"}
-                    </option>
-                    <option value="TWIN_2_SINGLE">
-                      {isKo ? "싱글 2개 (Twin)" : "2 Đơn (Twin)"}
-                    </option>
+                    <option value="ALL">{t.filterBedAll}</option>
+                    <option value="SINGLE_1_BED">{t.filterBedSingle}</option>
+                    <option value="TWIN_2_SINGLE">{t.filterBedTwin}</option>
                     <option value="DOUBLE_QUEEN_1_BED">
-                      {isKo ? "더블 1개 (Double)" : "Đôi (Double)"}
+                      {t.filterBedDouble}
                     </option>
                     <option value="KING_1_BED">King</option>
                     <option value="FLEX_DOUBLE_OR_TWIN">
-                      {isKo ? "더블 / 2 싱글" : "Đôi / 2 Đơn"}
+                      {t.filterBedFlex}
                     </option>
                     <option value="MULTI_BED_TRIPLE">
-                      {isKo ? "트리플 (3인)" : "Triple (3)"}
+                      {t.filterBedTriple}
                     </option>
                     <option value="MULTI_BED_QUAD_FAMILY">
-                      {isKo ? "패밀리 (4인+)" : "Family (4+)"}
+                      {t.filterBedFamily}
                     </option>
                   </select>
 
                   <select
                     data-testid="filter-view-category"
-                    aria-label={isKo ? "전망 필터" : "Lọc theo Hướng nhìn"}
+                    aria-label={t.filterViewAria}
                     value={viewCategory}
                     onChange={(e) => {
                       setViewCategory(e.target.value);
@@ -1389,26 +1583,18 @@ export function App() {
                     }}
                     className={getSelectClass(viewCategory !== "ALL")}
                   >
-                    <option value="ALL">
-                      {isKo ? "전망: 전체" : "View: Tất cả"}
-                    </option>
-                    <option value="CITY_VIEW">
-                      {isKo ? "시티뷰 (City)" : "City View"}
-                    </option>
+                    <option value="ALL">{t.filterViewAll}</option>
+                    <option value="CITY_VIEW">{t.filterViewCity}</option>
                     <option value="PARTIAL_SEA_VIEW">
-                      {isKo ? "부분 오션뷰" : "Partial Sea"}
+                      {t.filterViewPartialSea}
                     </option>
-                    <option value="OCEAN_SEA_VIEW">
-                      {isKo ? "오션뷰 (Ocean)" : "Ocean View"}
-                    </option>
-                    <option value="NO_WINDOW">
-                      {isKo ? "창문 없음" : "No Window"}
-                    </option>
+                    <option value="OCEAN_SEA_VIEW">{t.filterViewOcean}</option>
+                    <option value="NO_WINDOW">{t.filterViewNoWindow}</option>
                   </select>
 
                   <select
                     data-testid="filter-area-range"
-                    aria-label={isKo ? "객실 면적 필터" : "Lọc theo Diện tích"}
+                    aria-label={t.filterAreaAria}
                     value={areaRange}
                     onChange={(e) => {
                       setAreaRange(e.target.value);
@@ -1416,9 +1602,7 @@ export function App() {
                     }}
                     className={getSelectClass(areaRange !== "ALL")}
                   >
-                    <option value="ALL">
-                      {isKo ? "면적: 전체" : "Diện tích: Tất cả"}
-                    </option>
+                    <option value="ALL">{t.filterAreaAll}</option>
                     <option value="UNDER_25">&lt; 25m²</option>
                     <option value="FROM_25_TO_35">25 – 35m²</option>
                     <option value="FROM_36_TO_50">36 – 50m²</option>
@@ -1432,7 +1616,7 @@ export function App() {
                       onClick={handleResetFilters}
                       className="h-7 px-2 rounded-lg text-[11px] font-medium text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors cursor-pointer"
                     >
-                      {isKo ? "초기화" : "Đặt lại"}
+                      {t.resetBtn}
                     </button>
                   )}
                 </div>
@@ -1441,17 +1625,13 @@ export function App() {
               {/* Clean Master Comparison Table */}
               {!isBusy && (!report || report.comparisonGroups.length === 0) ? (
                 <div className="py-16 text-center text-xs text-zinc-500 space-y-2">
-                  <div>
-                    {isKo
-                      ? "현재 필터 조건과 일치하는 객실 유형이 없습니다."
-                      : "Không có hạng phòng nào khớp với bộ lọc hiện tại."}
-                  </div>
+                  <div>{t.emptyFilterText}</div>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={handleResetFilters}
                   >
-                    {isKo ? "필터 초기화" : "Xóa bộ lọc"}
+                    {t.clearFilterBtn}
                   </Button>
                 </div>
               ) : (
@@ -1465,12 +1645,8 @@ export function App() {
                         <RotateCcw className="w-3.5 h-3.5 animate-spin text-emerald-400 shrink-0" />
                         <span>
                           {scraping
-                            ? isKo
-                              ? "Agoda & Booking.com에서 실시간 요금을 수집하고 있습니다..."
-                              : "Đang cào giá trực tiếp từ Agoda & Booking.com..."
-                            : isKo
-                              ? "데이터를 불러오는 중..."
-                              : "Đang tải dữ liệu..."}
+                            ? t.scrapingBannerBusy
+                            : t.loadingBannerBusy}
                         </span>
                       </div>
                     </div>
@@ -1484,10 +1660,10 @@ export function App() {
                       <TableHeader className="bg-zinc-50/80">
                         <TableRow className="hover:bg-transparent">
                           <TableHead className="text-[11px] font-semibold text-zinc-500 py-2.5 pl-3 pr-2 w-[27%]">
-                            {isKo ? "객실 유형" : "Hạng phòng"}
+                            {t.colRoomType}
                           </TableHead>
                           <TableHead className="text-[11px] font-semibold text-zinc-500 text-right py-2.5 px-1.5 w-[11%]">
-                            {isKo ? "기준가 (BAR)" : "Giá chuẩn"}
+                            {t.colBarRate}
                           </TableHead>
                           <TableHead className="text-[11px] font-semibold text-zinc-500 text-right py-2.5 px-1.5 w-[15.5%]">
                             Agoda
@@ -1584,7 +1760,7 @@ export function App() {
                                         data-testid={`ota-unscraped-${ota}`}
                                         className="inline-flex items-center px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200/80 text-[10px] font-medium whitespace-nowrap"
                                       >
-                                        {isKo ? "요금 미수집" : "Sàn chưa cào giá"}
+                                        {t.unscrapedCellBadge}
                                       </span>
                                     </div>
                                   );
@@ -1599,7 +1775,7 @@ export function App() {
                                         {formatFullVnd(m.price)}
                                       </span>
                                       <span className="text-[10px] font-mono text-zinc-400">
-                                        {isKo ? "기준 BAR" : "Giá BAR"}
+                                        {t.barSubLabel}
                                       </span>
                                     </div>
                                   );
@@ -1671,11 +1847,12 @@ export function App() {
                                           setInspectorTab("proof");
                                         }}
                                         className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-zinc-100 hover:bg-emerald-50 text-zinc-600 hover:text-emerald-800 text-[9.5px] font-mono transition-colors"
-                                        title={
-                                          isKo
-                                            ? `${OTA_LABELS[ota]}에서 "${off.roomName}" (#${fullRoomId} · ${subPriceLabel}) 객실 열기`
-                                            : `Mở phòng "${off.roomName}" (#${fullRoomId} · ${subPriceLabel}) trên ${OTA_LABELS[ota]}`
-                                        }
+                                        title={t.deepLinkTooltip(
+                                          off.roomName,
+                                          fullRoomId,
+                                          subPriceLabel,
+                                          OTA_LABELS[ota]
+                                        )}
                                       >
                                         <span>#{fullRoomId}</span>
                                         <ExternalLink className="w-2.5 h-2.5 shrink-0" />
@@ -1734,9 +1911,7 @@ export function App() {
                                           data-testid="row-live-ota-badge"
                                           className="inline-flex px-1.5 py-0.2 rounded border bg-amber-50 text-amber-800 border-amber-200/80 text-[10px] font-mono font-medium"
                                         >
-                                          {isKo
-                                            ? `실시간 ${activeOtaCount}/4 · 요금 미수집`
-                                            : `Live ${activeOtaCount}/4 · Sàn chưa cào giá`}
+                                          {t.rowUnscrapedBadge(activeOtaCount)}
                                         </span>
                                       </div>
                                     )}
@@ -1773,7 +1948,7 @@ export function App() {
                 className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-zinc-100"
               >
                 <div className="text-xs text-zinc-500">
-                  {isKo ? (
+                  {locale === "ko" ? (
                     <>
                       전체{" "}
                       <span className="font-mono font-semibold text-zinc-900">
@@ -1785,6 +1960,19 @@ export function App() {
                         {report.pagination.endRank}
                       </span>{" "}
                       표시
+                    </>
+                  ) : locale === "en" ? (
+                    <>
+                      Showing{" "}
+                      <span className="font-mono font-semibold text-zinc-900">
+                        Top {report.pagination.startRank}–
+                        {report.pagination.endRank}
+                      </span>{" "}
+                      of{" "}
+                      <span className="font-mono font-semibold text-zinc-900">
+                        {report.pagination.totalItems}
+                      </span>{" "}
+                      rooms
                     </>
                   ) : (
                     <>
@@ -1810,7 +1998,7 @@ export function App() {
                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                     className="h-7 px-2.5 rounded-lg border border-zinc-200 bg-white hover:bg-zinc-50 text-xs font-medium text-zinc-700 disabled:opacity-40 cursor-pointer"
                   >
-                    {isKo ? "← 이전" : "← Trước"}
+                    {t.prevPageBtn}
                   </button>
 
                   {Array.from(
@@ -1859,7 +2047,7 @@ export function App() {
                     }
                     className="h-7 px-2.5 rounded-lg border border-zinc-200 bg-white hover:bg-zinc-50 text-xs font-medium text-zinc-700 disabled:opacity-40 cursor-pointer"
                   >
-                    {isKo ? "다음 →" : "Tiếp →"}
+                    {t.nextPageBtn}
                   </button>
                 </div>
               </div>
@@ -1883,7 +2071,7 @@ export function App() {
                   </div>
                   <div className="flex flex-col items-end gap-1.5">
                     <span className="text-[10px] text-zinc-400 uppercase font-medium">
-                      {isKo ? "시장 편차" : "Biên độ chênh lệch"}
+                      {t.skeletonSpreadLabel}
                     </span>
                     <span className="skeleton-shimmer h-5 w-16 rounded-md" />
                   </div>
@@ -2020,7 +2208,7 @@ export function App() {
 
                   <div className="text-right shrink-0">
                     <div className="text-[10px] text-zinc-400 uppercase font-medium">
-                      {isKo ? "시장 편차" : "Chênh lệch"}
+                      {t.inspectorSpreadLabel}
                     </div>
                     <div className="text-sm font-bold font-mono text-zinc-900">
                       {selectedGroup.spreadAnalysis.marketSpreadPct}%
@@ -2048,12 +2236,8 @@ export function App() {
                         onClick={() => setSelectedOtaForForm(ota)}
                         title={
                           hasOffer
-                            ? isKo
-                              ? `${OTA_LABELS[ota]} 데이터 보기`
-                              : `Xem dữ liệu ${OTA_LABELS[ota]}`
-                            : isKo
-                              ? `${OTA_LABELS[ota]}: 요금 미수집`
-                              : `${OTA_LABELS[ota]}: Sàn chưa cào giá`
+                            ? t.otaViewDataTitle(OTA_LABELS[ota])
+                            : t.otaUnscrapedTitle(OTA_LABELS[ota])
                         }
                         className={`py-1.5 px-1 rounded-lg text-[11px] font-medium whitespace-nowrap transition-all cursor-pointer disabled:opacity-40 ${
                           active
@@ -2074,13 +2258,13 @@ export function App() {
                 >
                   <TabsList className="w-full grid grid-cols-3">
                     <TabsTrigger value="form" className="text-xs">
-                      {isKo ? "8개 항목 폼" : "Form 8 Trường"}
+                      {t.tabForm}
                     </TabsTrigger>
                     <TabsTrigger value="breakdown" className="text-xs">
-                      {isKo ? "세금 & 매칭 JSON" : "Thuế & Khớp phòng"}
+                      {t.tabBreakdown}
                     </TabsTrigger>
                     <TabsTrigger value="proof" className="text-xs">
-                      {isKo ? "실시간 증빙" : "Bằng chứng Live"}
+                      {t.tabProof}
                     </TabsTrigger>
                   </TabsList>
 
@@ -2107,15 +2291,12 @@ export function App() {
                         </DialogTrigger>
                         <DialogContent className="max-w-xl">
                           <DialogHeader>
-                            <DialogTitle>
-                              {isKo
-                                ? "UPLOAD PHOTOS — 자동 추출된 객실 사진 목록"
-                                : "UPLOAD PHOTOS — Danh sách ảnh phòng trích xuất tự động"}
-                            </DialogTitle>
+                            <DialogTitle>{t.photosModalTitle}</DialogTitle>
                             <DialogDescription>
-                              {isKo
-                                ? `${OTA_LABELS[selectedOtaForForm]}에서 추출한 ${activeOfferForForm.formFields.roomName} 객실 사진`
-                                : `Ảnh phòng từ ${OTA_LABELS[selectedOtaForForm]} cho ${activeOfferForForm.formFields.roomName}`}
+                              {t.photosModalDesc(
+                                OTA_LABELS[selectedOtaForForm],
+                                activeOfferForForm.formFields.roomName
+                              )}
                             </DialogDescription>
                           </DialogHeader>
                           <div className="grid grid-cols-2 gap-3 pt-2">
@@ -2274,13 +2455,13 @@ export function App() {
                         <TableHeader className="bg-zinc-50/80">
                           <TableRow>
                             <TableHead className="text-[10.5px] py-2 pl-2.5 pr-1.5 w-[31%]">
-                              {isKo ? "채널" : "Sàn"}
+                              {t.taxColChannel}
                             </TableHead>
                             <TableHead className="text-[10.5px] text-right py-2 px-1.5 w-[23%]">
-                              {isKo ? "세전 (Net)" : "Giá Net"}
+                              {t.taxColNet}
                             </TableHead>
                             <TableHead className="text-[10.5px] text-right py-2 px-1.5 w-[22%]">
-                              {isKo ? "세금 & 봉사료" : "Thuế & Phí"}
+                              {t.taxColTaxFee}
                             </TableHead>
                             <TableHead className="text-[10.5px] text-right py-2 pl-1.5 pr-2.5 w-[24%]">
                               Gross
@@ -2312,7 +2493,7 @@ export function App() {
                                     className="py-2 pr-2.5 text-right"
                                   >
                                     <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200/80 text-[10px] font-medium">
-                                      {isKo ? "요금 미수집" : "Sàn chưa cào giá"}
+                                      {t.unscrapedCellBadge}
                                     </span>
                                   </TableCell>
                                 </TableRow>
@@ -2435,12 +2616,8 @@ export function App() {
                                     className="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-white whitespace-nowrap cursor-pointer"
                                   >
                                     {copiedJson
-                                      ? isKo
-                                        ? "복사 완료"
-                                        : "Đã sao chép"
-                                      : isKo
-                                        ? "JSON 복사"
-                                        : "Sao chép JSON"}
+                                      ? t.copiedJsonBtn
+                                      : t.copyJsonBtn}
                                   </button>
                                   <a
                                     href={apiHref}
@@ -2475,9 +2652,9 @@ export function App() {
                     >
                       <div className="flex items-center justify-between">
                         <span className="font-semibold text-zinc-950 truncate">
-                          {isKo
-                            ? `실시간 객실 딥링크 (${selectedGroup.sampleGoodNStayForm.roomName})`
-                            : `Link phòng trực tiếp (${selectedGroup.sampleGoodNStayForm.roomName})`}
+                          {t.directRoomLinksTitle(
+                            selectedGroup.sampleGoodNStayForm.roomName
+                          )}
                         </span>
                       </div>
 
@@ -2502,7 +2679,7 @@ export function App() {
                                   data-testid={`proof-unscraped-${ota}`}
                                   className="px-2 py-0.5 rounded-md bg-amber-50 text-amber-800 border border-amber-200 text-[10.5px] font-medium whitespace-nowrap shrink-0"
                                 >
-                                  {isKo ? "요금 미수집" : "Sàn chưa cào giá"}
+                                  {t.unscrapedCellBadge}
                                 </span>
                               </div>
                             );
@@ -2542,9 +2719,12 @@ export function App() {
                                     <span className="text-zinc-400">
                                       (Net: {formatFullVnd(off.netPrice)}
                                       {off.liveProof?.partnerOfferGrossPrice
-                                        ? isKo
-                                          ? ` · 제휴 특가: ${formatFullVnd(off.liveProof.partnerOfferGrossPrice)}`
-                                          : ` · Ưu đãi ĐT: ${formatFullVnd(off.liveProof.partnerOfferGrossPrice)}`
+                                        ? t.partnerOfferLabel(
+                                            formatFullVnd(
+                                              off.liveProof
+                                                .partnerOfferGrossPrice
+                                            )
+                                          )
                                         : ""}
                                       )
                                     </span>
@@ -2563,7 +2743,7 @@ export function App() {
                                 data-testid={`inspector-deep-jump-${ota}`}
                                 className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white text-[11px] font-medium whitespace-nowrap shrink-0"
                               >
-                                <span>{isKo ? "객실 열기" : "Mở phòng"}</span>
+                                <span>{t.openRoomBtn}</span>
                                 <ExternalLink className="w-3 h-3" />
                               </a>
                             </div>
@@ -2576,7 +2756,7 @@ export function App() {
                         className="pt-1 text-[10.5px] text-zinc-400 font-mono flex items-center justify-between"
                       >
                         <span>
-                          {isKo ? "업데이트: " : "Cập nhật: "}
+                          {t.updatedAtPrefix}
                           {formatVietnamDateTime(
                             proof?.scrapedAt,
                             proof?.scrapedAtVi,
@@ -2598,9 +2778,7 @@ export function App() {
               </>
             ) : (
               <div className="py-12 text-center text-xs text-zinc-400">
-                {isKo
-                  ? "왼쪽 표에서 객실 유형을 선택하면 상세 정보를 확인할 수 있습니다."
-                  : "Chọn một hạng phòng bên trái để xem chi tiết."}
+                {t.selectRoomFallback}
               </div>
             )}
           </div>

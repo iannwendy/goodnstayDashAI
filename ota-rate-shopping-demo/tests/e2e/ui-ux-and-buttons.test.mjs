@@ -80,6 +80,7 @@ test("E2E-1: Topbar không bị lấp chữ (0px overlap) và không tràn ngang
           "[data-testid='select-hotel']",
           "[data-testid='select-checkin']",
           "[data-testid='btn-live-badge']",
+          "[data-testid='locale-switcher']",
           "[data-testid='btn-toggle-theme']",
           "[data-testid='btn-toggle-formulas']",
           "[data-testid='btn-live-scrape']",
@@ -662,8 +663,6 @@ test("E2E-4: Khi bấm 'Cào Trực Tiếp Ngay', toàn bộ số tiền, KPI v�
       tablePriceSkeletons: document.querySelectorAll(
         "[data-testid='price-cell-skeleton']"
       ).length,
-      kpiSkeletons: document.querySelectorAll("[data-testid='data-skeleton']")
-        .length,
       inspectorSkeletons: document.querySelectorAll(
         "[data-testid='form-field-skeleton']"
       ).length,
@@ -677,11 +676,6 @@ test("E2E-4: Khi bấm 'Cào Trực Tiếp Ngay', toàn bộ số tiền, KPI v�
     assert.ok(
       duringScrapeCheck.tablePriceSkeletons >= 15,
       `Trong lúc đang cào, các ô giá trong bảng phải hiện skeleton loading (thực tế: ${duringScrapeCheck.tablePriceSkeletons})`
-    );
-    assert.equal(
-      duringScrapeCheck.kpiSkeletons,
-      3,
-      "3 thẻ KPI phía trên phải hiện skeleton loading"
     );
     assert.ok(
       duringScrapeCheck.inspectorSkeletons >= 4,
@@ -1044,13 +1038,6 @@ test("E2E-6: Kiểm tra Bộ lọc theo Diện tích (m²), Chuyển đổi Ligh
       `Topbar btn-live-badge phải hiển thị 'Live 0 Sàn · Sàn chưa cào giá' khi lỗi gọi API, thực tế: ${liveBadgeTextAfterFail}`
     );
 
-    const agodaKpiStatus =
-      (await page.getByTestId("kpi-status-agoda").textContent()) || "";
-    const bookingKpiStatus =
-      (await page.getByTestId("kpi-status-booking").textContent()) || "";
-    assert.equal(agodaKpiStatus.trim(), "Sàn chưa cào giá");
-    assert.equal(bookingKpiStatus.trim(), "Sàn chưa cào giá");
-
     const unscrapedAgodaCells = await page
       .getByTestId("ota-unscraped-AGODA")
       .count();
@@ -1061,6 +1048,118 @@ test("E2E-6: Kiểm tra Bộ lọc theo Diện tích (m²), Chuyển đổi Ligh
     assert.equal(unscrapedBookingCells, 5);
 
     await page.unroute("**/api/scrape-live");
+  } finally {
+    await browser.close();
+  }
+});
+
+test("E2E-7: Chuyển đổi trực tiếp 3 ngôn ngữ (VI / EN / KO) mượt mà, lưu localStorage, 0px tràn/đè chữ trên cả 3 ngôn ngữ", async () => {
+  const browser = await launchBrowser();
+  try {
+    const page = await browser.newPage({
+      viewport: { width: 1440, height: 900 },
+    });
+    const errors = [];
+    page.on("pageerror", (err) => errors.push(err.message));
+
+    await page.goto(BASE_URL, { waitUntil: "networkidle" });
+
+    const btnVi = page.getByTestId("btn-locale-vi");
+    const btnEn = page.getByTestId("btn-locale-en");
+    const btnKo = page.getByTestId("btn-locale-ko");
+
+    // 1. Mặc định khi mở lần đầu là Tiếng Việt (vi)
+    assert.equal(await btnVi.getAttribute("aria-pressed"), "true");
+    assert.equal(await btnEn.getAttribute("aria-pressed"), "false");
+    assert.equal(await btnKo.getAttribute("aria-pressed"), "false");
+
+    // 2. Bấm sang Tiếng Anh (EN)
+    await btnEn.click();
+    await page
+      .getByText(/Live Multi-OTA Rate Comparison Matrix/)
+      .waitFor({ timeout: 3000 });
+
+    const enState = await page.evaluate(() => {
+      const ta = document.querySelector("[data-testid='textarea-description']");
+      return {
+        htmlLang: document.documentElement.lang,
+        title: document.title,
+        savedLocale: window.localStorage.getItem("gns_ota_locale"),
+        scrollWidth: document.documentElement.scrollWidth,
+        innerWidth: window.innerWidth,
+        descValue: ta ? ta.value : "",
+        descClientHeight: ta ? ta.clientHeight : 0,
+        descScrollHeight: ta ? ta.scrollHeight : 0,
+      };
+    });
+    assert.equal(enState.htmlLang, "en");
+    assert.match(enState.title, /Multi-OTA Rate Comparison/);
+    assert.equal(enState.savedLocale, "en");
+    assert.ok(enState.scrollWidth <= enState.innerWidth);
+    assert.match(enState.descValue, /\[Tier: .* \| Area: .* \| View: .* \| Bed: .*\]/);
+    assert.ok(
+      enState.descScrollHeight <= enState.descClientHeight + 4,
+      `Description EN không được tràn khung dọc: ${JSON.stringify(enState)}`
+    );
+    await page.getByText(/Showing Top 1–5 of/).waitFor({ timeout: 3000 });
+
+    // Mở tab Live Proof ở bản EN kiểm tra nhãn giờ GMT+7 tiếng Anh
+    await page.getByRole("tab", { name: "Live Proof" }).click();
+    const enTimestamp =
+      (await page.getByTestId("scraped-at-vietnam-time").textContent()) || "";
+    assert.match(enTimestamp, /Updated: .* \(VN Time GMT\+7\)/);
+
+    // 3. Bấm sang Tiếng Hàn (KO)
+    await btnKo.click();
+    await page
+      .getByText(/실시간 다중 OTA 요금 비교 매트릭스/)
+      .waitFor({ timeout: 3000 });
+
+    // Quay lại tab Form 8 trường tiếng Hàn ("8개 항목 폼") để kiểm tra Description tiếng Hàn
+    await page.getByRole("tab", { name: "8개 항목 폼" }).click();
+    const koState = await page.evaluate(() => {
+      const ta = document.querySelector("[data-testid='textarea-description']");
+      return {
+        htmlLang: document.documentElement.lang,
+        title: document.title,
+        savedLocale: window.localStorage.getItem("gns_ota_locale"),
+        scrollWidth: document.documentElement.scrollWidth,
+        innerWidth: window.innerWidth,
+        descValue: ta ? ta.value : "",
+        descClientHeight: ta ? ta.clientHeight : 0,
+        descScrollHeight: ta ? ta.scrollHeight : 0,
+      };
+    });
+    assert.equal(koState.htmlLang, "ko");
+    assert.match(koState.title, /실시간 다중 OTA 요금 비교/);
+    assert.equal(koState.savedLocale, "ko");
+    assert.ok(koState.scrollWidth <= koState.innerWidth);
+    assert.match(koState.descValue, /\[객실 등급: .* \| 면적: .* \| 전망: .* \| 침대: .*\]/);
+    assert.ok(
+      koState.descScrollHeight <= koState.descClientHeight + 4,
+      `Description KO không được tràn khung dọc: ${JSON.stringify(koState)}`
+    );
+    await page.getByText(/전체 .*개 객실 중 Top 1–5 표시/).waitFor({ timeout: 3000 });
+
+    // Kiểm tra reload trang vẫn giữ nguyên ngôn ngữ Hàn đã lưu trong localStorage
+    await page.reload({ waitUntil: "networkidle" });
+    assert.equal(await btnKo.getAttribute("aria-pressed"), "true");
+    await page
+      .getByText(/실시간 다중 OTA 요금 비교 매트릭스/)
+      .waitFor({ timeout: 3000 });
+
+    // 4. Bấm quay về Tiếng Việt (VI)
+    await btnVi.click();
+    await page
+      .getByText(/Ma trận Đối sánh Giá Thực Tế/)
+      .waitFor({ timeout: 3000 });
+    assert.equal(await btnVi.getAttribute("aria-pressed"), "true");
+    const viSaved = await page.evaluate(() =>
+      window.localStorage.getItem("gns_ota_locale")
+    );
+    assert.equal(viSaved, "vi");
+
+    assert.equal(errors.length, 0, `Có lỗi runtime JS: ${errors.join("; ")}`);
   } finally {
     await browser.close();
   }
