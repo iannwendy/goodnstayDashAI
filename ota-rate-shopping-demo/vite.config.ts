@@ -141,7 +141,7 @@ function otaRateShoppingApiPlugin(): Plugin {
 
         for (const grp of filteredGroups) {
           for (const item of grp.rawItems) {
-            if (grp.otaOffers[item.otaSource] && item.liveProof) {
+            if (grp.otaOffers[item.otaSource]?.id === item.id && item.liveProof) {
               grp.otaOffers[item.otaSource].liveProof = item.liveProof;
             }
           }
