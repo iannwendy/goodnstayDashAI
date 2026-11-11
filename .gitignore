@@ -8,9 +8,10 @@
 AGENTS.md
 CLAUDE.md
 
-# Bộ nhớ đệm công cụ trình duyệt & kỹ năng hệ thống tự sinh ở local
+# Bộ nhớ đệm công cụ trình duyệt & kỹ năng AI cục bộ
 .playwright-mcp/
 skills/system/
+.agents/skills/
 
 # Tệp tạm thời hệ điều hành, Office & Python
 .DS_Store

@@ -1,1 +1,0 @@
-{"timestamp": "2026-11-06T03:35:00+00:00", "diagram": "examples/sample_booking_flow.drawio", "feedback_type": "validator_catch", "issue": "Baseline initialization of feedback log schema", "actionable_rule": "Always run drawio_helper.py validate --strict on generated .drawio files before presenting to the user.", "promoted": true}
