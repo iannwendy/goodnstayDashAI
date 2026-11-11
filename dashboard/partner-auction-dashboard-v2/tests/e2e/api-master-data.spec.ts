@@ -1,5 +1,35 @@
+import http from "node:http";
 import { test, expect } from "@playwright/test";
 import { attachErrorMonitor, resetSeedViaApi } from "../helpers/e2e-helpers";
+
+function httpGetWithHost(
+  pathName: string,
+  hostHeader: string,
+): Promise<{ statusCode: number; body: string }> {
+  return new Promise((resolve, reject) => {
+    const req = http.request(
+      {
+        hostname: "127.0.0.1",
+        port: 5182,
+        path: pathName,
+        method: "GET",
+        headers: { Host: hostHeader, Accept: "*/*" },
+      },
+      (res) => {
+        let body = "";
+        res.setEncoding("utf8");
+        res.on("data", (chunk) => {
+          body += chunk;
+        });
+        res.on("end", () => {
+          resolve({ statusCode: res.statusCode ?? 0, body });
+        });
+      },
+    );
+    req.on("error", reject);
+    req.end();
+  });
+}
 
 test.describe("TC-API: Master Data REST API, Persistence, Validation & Static Fallback", () => {
   test.afterAll(async ({ request }) => {
@@ -92,7 +122,7 @@ test.describe("TC-API: Master Data REST API, Persistence, Validation & Static Fa
     ).toBe(false);
   });
 
-  test("TC-API-06..07: Static /master-data/*.json endpoint & localStorage fallback when REST API is unreachable", async ({
+  test("TC-API-06..07: Static /master-data/*.json endpoint & localStorage UI fallback when REST API is unreachable", async ({
     page,
     request,
   }) => {
@@ -106,31 +136,40 @@ test.describe("TC-API: Master Data REST API, Persistence, Validation & Static Fa
     expect(hp.guestPriceMultiplier).toBe(1.265);
     expect(hp.totalRooms).toBe(30);
 
-    // TC-API-07: Abort /api/master-data -> app seamlessly falls back to static /master-data/*.json + localStorage
+    // TC-API-07: Abort /api/master-data -> Partner Hub Overview seamlessly loads from static /master-data/*.json + persists UI prefs
     await page.route("**/api/master-data**", (route) => route.abort());
     await page.goto("/");
     await expect(page.getByTestId("kpi-card-revenue")).toBeVisible();
-    await expect(page.getByText("Doanh thu (30 ngày)")).toBeVisible();
+    await expect(page.getByTestId("section-revenue-timeline")).toBeVisible();
 
-    // Toggle Night Flash Sale while offline -> persists to localStorage fallback key
-    const flashSwitch = page
-      .locator("div", { hasText: /Xả đêm 20:00/ })
-      .locator('button[role="switch"]')
-      .first();
-    const initialChecked = await flashSwitch.getAttribute("aria-checked");
-    await flashSwitch.click();
-    await expect(flashSwitch).toHaveAttribute(
-      "aria-checked",
-      initialChecked === "true" ? "false" : "true",
-    );
+    await page.getByTestId("topbar-currency-select").selectOption("KRW");
+    await expect(page.getByTestId("kpi-card-revenue")).toContainText("₩");
 
-    const cachedProfile = await page.evaluate(() =>
-      localStorage.getItem("gns_master_v28_hotelProfile"),
+    const cachedPrefs = await page.evaluate(() =>
+      localStorage.getItem("gns_partner_hub_prefs_v1"),
     );
-    expect(cachedProfile).not.toBeNull();
+    expect(cachedPrefs).not.toBeNull();
+    expect(cachedPrefs).toContain("KRW");
 
     await page.unroute("**/api/master-data**");
     await page.evaluate(() => localStorage.clear());
     monitor.assertZeroErrors();
+  });
+
+  test("TC-API-08: Allowed tunnel Host headers (.ts.net & .trycloudflare.com) serve FE & BE without 403 block", async () => {
+    for (const tunnelHost of [
+      "bao-minh-nguyens-macbook-pro-m4-pro.tail6930d7.ts.net",
+      "demo-quick-tunnel.trycloudflare.com",
+    ]) {
+      const feRes = await httpGetWithHost("/", tunnelHost);
+      expect(feRes.statusCode).toBe(200);
+      expect(feRes.body).toContain('<div id="root"></div>');
+
+      const beRes = await httpGetWithHost("/api/master-data", tunnelHost);
+      expect(beRes.statusCode).toBe(200);
+      const parsed = JSON.parse(beRes.body);
+      expect(parsed.ok).toBe(true);
+      expect(parsed.source).toBe("live-master-api");
+    }
   });
 });

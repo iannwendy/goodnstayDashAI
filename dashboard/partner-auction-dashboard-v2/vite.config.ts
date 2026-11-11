@@ -200,7 +200,7 @@ export default defineConfig({
     host: "0.0.0.0",
     port: 5182,
     strictPort: true,
-    allowedHosts: [".trycloudflare.com"],
+    allowedHosts: [".trycloudflare.com", ".ts.net"],
     watch: {
       ignored: ["**/master-data/**"],
     },
@@ -209,6 +209,6 @@ export default defineConfig({
     host: "0.0.0.0",
     port: 4182,
     strictPort: true,
-    allowedHosts: [".trycloudflare.com"],
+    allowedHosts: [".trycloudflare.com", ".ts.net"],
   },
 });

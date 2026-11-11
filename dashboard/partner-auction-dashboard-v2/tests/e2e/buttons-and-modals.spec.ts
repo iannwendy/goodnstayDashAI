@@ -5,182 +5,99 @@ import {
   resetSeedViaApi,
 } from "../helpers/e2e-helpers";
 
-test.describe("TC-UI: All Header Buttons, Switches, 6 KPI Modals, Match->Bid Handoff & Session Log", () => {
+test.describe("TC-UI: Partner Hub Sidebar, Topbar Utilities, AI Advisor Panels, KPI Tooltips & Booking Slip Modal", () => {
   test.afterAll(async ({ request }) => {
     await resetSeedViaApi(request);
   });
 
-  test("TC-UI-01..06: Topbar switches, Branch selector, Formula drawer, Toast dismiss & all 6 KPI Drilldown Modals", async ({
+  test("TC-UI-01..06: Collapsible Sidebar (1.png <-> 2.png), Marketing Submenu, Polite Nav Notice, Help Guide & Notifications", async ({
     page,
     request,
   }) => {
     const monitor = attachErrorMonitor(page);
     await gotoFreshSeedDashboard(page, request);
 
-    // 1. Formula Drawer open & collapse
-    await page.locator('button[title="Xem công thức chuẩn goodNstay"]').click();
-    await expect(
-      page.getByText("1. Doanh thu & Giá bình quân đêm (ADR)"),
-    ).toBeVisible();
-    await page.getByRole("button", { name: "Thu gọn" }).click();
-    await expect(
-      page.getByText("1. Doanh thu & Giá bình quân đêm (ADR)"),
-    ).toBeHidden();
+    const sidebar = page.getByTestId("sidebar-nav");
+    await expect(sidebar).toBeVisible();
+    await expect(sidebar).toHaveAttribute("data-collapsed", "false");
 
-    // 2. Branch Selector updates room inventory & KPI labels across all 3 branches
-    const branchSelect = page.getByTestId("topbar-branch-select");
-    await branchSelect.selectOption("br_mykhe");
-    await expect(
-      page.locator('button[type="button"]', { hasText: /^\d+\/12 đã khóa$/ }),
-    ).toBeVisible();
+    // 1. Expand Marketing submenu while sidebar is expanded
+    await page.getByTestId("nav-item-marketing").click();
+    await expect(page.getByTestId("nav-marketing-submenu")).toBeVisible();
 
-    await branchSelect.selectOption("br_songhan");
-    await expect(
-      page.locator('button[type="button"]', { hasText: /^\d+\/10 đã khóa$/ }),
-    ).toBeVisible();
+    // 2. Collapse sidebar -> switches to compact icon-rail (like demo_new/1.png)
+    await page.getByTestId("sidebar-collapse-btn").click();
+    await expect(sidebar).toHaveAttribute("data-collapsed", "true");
 
-    await branchSelect.selectOption("br_anthuong");
-    await expect(
-      page.locator('button[type="button"]', { hasText: /^\d+\/8 đã khóa$/ }),
-    ).toBeVisible();
+    // Expand back -> full sidebar (like demo_new/2.png)
+    await page.getByTestId("sidebar-collapse-btn").click();
+    await expect(sidebar).toHaveAttribute("data-collapsed", "false");
 
-    await branchSelect.selectOption("all");
-    await expect(
-      page.locator('button[type="button"]', { hasText: /^\d+\/30 đã khóa$/ }),
-    ).toBeVisible();
+    // 3. Clicking non-overview nav item shows polite commercial notice and stays on Overview
+    await page.getByTestId("nav-item-calendar").click();
+    const noticeToast = page.getByTestId("hub-toast-banner");
+    await expect(noticeToast).toBeVisible();
+    await page.getByTestId("hub-toast-close").click();
+    await expect(noticeToast).toBeHidden();
+    await expect(page.getByTestId("section-revenue-timeline")).toBeVisible();
 
-    // 3. Auto-Bid Switch + Toast dismiss button ("Đóng")
-    const autoBidSwitch = page
-      .locator("header")
-      .locator('button[role="switch"]')
-      .first();
-    await autoBidSwitch.click();
-    await expect(
-      page.getByRole("button", { name: "Đóng", exact: true }),
-    ).toBeVisible();
-    await page.getByRole("button", { name: "Đóng", exact: true }).click();
-    await autoBidSwitch.click();
-    await page.getByRole("button", { name: "Đóng", exact: true }).click();
-
-    // 4. Night Flash Sale Switch (-15% tonight floor adjustment)
-    const flashSwitch = page
-      .locator("div", { hasText: /Xả đêm 20:00/ })
-      .locator('button[role="switch"]')
-      .first();
-    const flashBefore = await flashSwitch.getAttribute("aria-checked");
-    await flashSwitch.click();
-    await expect(flashSwitch).toHaveAttribute(
-      "aria-checked",
-      flashBefore === "true" ? "false" : "true",
-    );
-    await flashSwitch.click();
-
+    // 4. Help Guide dialog opens & closes cleanly
+    await page.getByTestId("topbar-help-btn").click();
     const dialog = page.getByRole("dialog");
-
-    // 5A. KPI Modal #1: revenue_total (30d granularity toggle 4 tuần <-> 30 ngày)
-    await page.getByTestId("kpi-card-revenue").click();
     await expect(dialog).toBeVisible();
-    await expect(
-      dialog.getByTestId("revenue-modal-primary-total"),
-    ).toBeVisible();
-    const gran30dBtn = dialog.getByRole("button", { name: "30 ngày" });
-    if (await gran30dBtn.isVisible()) {
-      await gran30dBtn.click();
-      await dialog.getByRole("button", { name: "4 tuần" }).click();
-    }
+    await expect(dialog).toContainText("30 giây");
     await page.keyboard.press("Escape");
     await expect(dialog).toBeHidden();
 
-    // 5B. KPI Modal #2: revenue_today (ADR & Paid Orders)
-    await page.getByText(/ADR bình quân/).click();
-    await expect(dialog).toBeVisible();
-    await expect(
-      dialog.getByText(/Giá Bình Quân Đêm \(ADR\)/),
-    ).toBeVisible();
-    await page.keyboard.press("Escape");
-    await expect(dialog).toBeHidden();
-
-    // 5C. KPI Modal #3: sessions_total (XX/YY phiên sub-button on KPI card 3)
-    await page
-      .locator('button[type="button"]', { hasText: /^\d+\/\d+ phiên/ })
-      .click();
-    await expect(dialog).toBeVisible();
-    await expect(dialog.getByText(/AI Auto-Bid/).first()).toBeVisible();
-    await page.keyboard.press("Escape");
-    await expect(dialog).toBeHidden();
-
-    // 5D. KPI Modal #4: win_rate (Tỷ lệ được chọn card)
-    await page.getByText("Tỷ lệ được chọn", { exact: true }).click();
-    await expect(dialog).toBeVisible();
-    await expect(
-      dialog.getByText(/Phễu Chuyển Đổi Thanh Toán/),
-    ).toBeVisible();
-    await page.keyboard.press("Escape");
-    await expect(dialog).toBeHidden();
-
-    // 5E. KPI Modal #5: rooms_occupied (XX/30 đã khóa sub-button)
-    await page
-      .locator('button[type="button"]', { hasText: /^\d+\/30 đã khóa$/ })
-      .click();
-    await expect(dialog).toBeVisible();
-    await expect(dialog.getByText(/Lịch 30 Phòng/)).toBeVisible();
-    await page.keyboard.press("Escape");
-    await expect(dialog).toBeHidden();
-
-    // 5F. KPI Modal #6: rooms_vacant (Quỹ phòng card)
-    await page.getByText(/Quỹ phòng hôm nay/).click();
-    await expect(dialog).toBeVisible();
-    await expect(
-      dialog.getByText(/Quản Lý Mở Khóa \/ Khóa Phòng/),
-    ).toBeVisible();
-    await page.keyboard.press("Escape");
-    await expect(dialog).toBeHidden();
+    // 5. Notifications popover opens & closes
+    await page.getByTestId("topbar-notifications-btn").click();
+    await expect(page.getByTestId("notifications-popover")).toBeVisible();
+    await page.getByTestId("topbar-notifications-btn").click();
+    await expect(page.getByTestId("notifications-popover")).toBeHidden();
 
     monitor.assertZeroErrors();
   });
 
-  test("TC-UI-07..10: MatchBreakdownModal -> CustomBidModal perk handoff & Session Log -> Loss Autopsy navigation", async ({
+  test("TC-UI-07..10: KPI Info Tooltips, Both AI Advisor Collapse/Refresh Controls & Booking Detail Slip Modal", async ({
     page,
     request,
   }) => {
     const monitor = attachErrorMonitor(page);
     await gotoFreshSeedDashboard(page, request);
+
+    // 1. KPI info button reveals plain-business explanation
+    await page.getByTestId("kpi-info-revenue").click();
+    await expect(page.getByTestId("kpi-tooltip-revenue")).toBeVisible();
+    await page.getByTestId("kpi-info-revenue").click();
+
+    // 2. Revenue AI Advisor collapse & expand
+    const revCards = page.getByTestId("advisor-revenue-cards");
+    await expect(revCards).toBeVisible();
+    await page.getByTestId("advisor-revenue-toggle").click();
+    await expect(revCards).toBeHidden();
+    await page.getByTestId("advisor-revenue-toggle").click();
+    await expect(revCards).toBeVisible();
+
+    // 3. Bids Status AI Advisor collapse & expand + refresh timestamp
+    const bidsCards = page.getByTestId("advisor-bids-cards");
+    await expect(bidsCards).toBeVisible();
+    await page.getByTestId("advisor-bids-refresh").click();
+    await page.getByTestId("advisor-bids-toggle").click();
+    await expect(bidsCards).toBeHidden();
+    await page.getByTestId("advisor-bids-toggle").click();
+    await expect(bidsCards).toBeVisible();
+
+    // 4. Recent Bookings -> click "Xem chi tiết" -> opens real hotel Reservation Slip modal
+    const firstDetailBtn = page.getByTestId("booking-view-detail-btn").first();
+    await expect(firstDetailBtn).toBeVisible();
+    await firstDetailBtn.click();
+
     const dialog = page.getByRole("dialog");
-
-    // 1. Open MatchBreakdownModal on a live session -> handoff to CustomBidModal
-    const matchBtn = page.getByRole("button", { name: /^Khớp \d+%$/ }).first();
-    await matchBtn.click();
-    await expect(
-      dialog.getByText("Điểm Khớp Yêu Cầu (AI Match %)"),
-    ).toBeVisible();
-
-    const applyAndBidBtn = dialog.getByRole("button", {
-      name: /Áp dụng & Mở báo giá|Mở cửa sổ báo giá/i,
-    });
-    if (await applyAndBidBtn.isVisible()) {
-      await applyAndBidBtn.click();
-      await expect(
-        dialog.getByText("Gửi Báo Giá 1 Lần (One-Shot) & Đặc Quyền"),
-      ).toBeVisible();
-      await dialog.getByRole("button", { name: /Đặt theo AI/ }).click();
-      await dialog.getByRole("button", { name: "Đóng", exact: true }).click();
-    } else {
-      await dialog.getByRole("button", { name: "Đóng", exact: true }).click();
-    }
+    await expect(dialog).toBeVisible();
+    await expect(dialog).toContainText("#71");
+    await expect(dialog).toContainText("100%");
+    await page.keyboard.press("Escape");
     await expect(dialog).toBeHidden();
-
-    // 2. Session Log: filter "Từ chối (N)" -> click "Đối chiếu" / autopsy button -> jumps to Tab 2 Loss Autopsy
-    await page.getByRole("button", { name: /^Từ chối \(\d+\)$/ }).click();
-    const autopsyJumpBtn = page
-      .locator("tbody")
-      .getByRole("button", { name: /Đối chiếu|Phân tích/i })
-      .first();
-    if ((await autopsyJumpBtn.count()) > 0) {
-      await autopsyJumpBtn.click();
-      await expect(
-        page.getByRole("tab", { name: /Hiệu suất & Thị phần/ }),
-      ).toHaveAttribute("data-state", "active");
-    }
 
     monitor.assertZeroErrors();
   });

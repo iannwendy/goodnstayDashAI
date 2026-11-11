@@ -1,7 +1,7 @@
-# Danh Mục Test Case Tự Động — Partner Auction Dashboard v2 (`tests/`)
+# Danh Mục Test Case Tự Động — Optibide Partner Hub (`dashboard/partner-auction-dashboard-v2/tests/`)
 
-Tài liệu này liệt kê toàn bộ các nhóm Test Case tự động bảo vệ chất lượng cho **goodNstay Partner Auction Dashboard v2**.
-**Quy tắc bắt buộc**: Mỗi khi thêm tính năng mới hoặc chỉnh sửa logic/giao diện hiện có, phải chạy lại toàn bộ `npm test` và cập nhật/bổ sung mã Test Case mới vào bảng này.
+Tài liệu này liệt kê toàn bộ các nhóm Test Case tự động bảo vệ chất lượng cho **Optibide Partner Hub — Dashboard Overview** (giao diện quản lý khách sạn thương mại dành cho người dùng thuần kinh doanh).  
+**Quy tắc bắt buộc**: Mỗi khi thêm tính năng mới hoặc chỉnh sửa logic/giao diện hiện có, phải chạy lại toàn bộ `npm test` + `npm run build` và cập nhật danh mục mã Test Case vào tài liệu này.
 
 ---
 
@@ -9,16 +9,10 @@ Tài liệu này liệt kê toàn bộ các nhóm Test Case tự động bảo v
 
 | Mã TC | Mô tả kiểm thử | Kỳ vọng chuẩn |
 | :--- | :--- | :--- |
-| `TC-UNIT-01` | Hệ số tổng giá khách trả `(1 + 15% Phí sàn) × (1 + 10% VAT)` | Bằng chính xác `1.265` (`1.000.000đ` -> `1.265.000đ`) |
-| `TC-UNIT-02` | Tính tổng giá khách trả trên các bậc giá gốc KS (`850k`, `722.5k`, `1.25M`, `1.98M`, `3.2M`) | Khớp chính xác công thức `Math.round(base * 1.265)` |
-| `TC-UNIT-03` | Xử lý biên `0đ` và làm tròn số nguyên VNĐ khi nhân lẻ | Trả về `0` với `0đ`, luôn là số nguyên (`Number.isInteger === true`) |
-| `TC-UNIT-04` | Ghi đè `multiplier` tùy chỉnh | Tính đúng theo hệ số truyền vào |
-| `TC-UNIT-05` | Tính đơn điệu nghiêm ngặt của hàm định giá | `baseA < baseB` luôn cho `guestA < guestB` |
-| `TC-UNIT-06` | `formatCompactVnd` cho 3 tầng `<1M`, `1M–10M`, `>=10M` | `850k`, `1.98M`, `66.4M`, không dư `.0` |
-| `TC-UNIT-07` | `formatButtonVnd` cho nút bấm báo giá nhanh | Chữ `K` in hoa dưới `1M` (`850K`) và `M` gọn từ `1M+` (`1.98M`) |
-| `TC-UNIT-08` | `formatFullVnd` chuẩn `vi-VN` | Tách nhóm nghìn bằng dấu chấm `.` và hậu tố `đ` (`66.360.000đ`) |
-| `TC-UNIT-10..12` | `formatCountdown` tại biên âm, `0s`, `3p` khẩn, `10p` cảnh báo, `60p` TTL | Clamping `<=0` về `00:00`, pad 2 chữ số `03:00`, `10:00`, `60:00` |
-| `TC-UNIT-13..17` | `parseStayDayOffsets` cho đêm nay, nhiều đêm, qua tháng, vượt khung 14 ngày & chuỗi lỗi | Trả về mảng `dayOffset` hợp lệ nằm gọn trong `[0..13]` |
+| `TC-UNIT-01..05` | Công thức nền `calcGuestTotalFromBase` (`1.265`), biên `0đ`, làm tròn nguyên & tính đơn điệu | Tính chính xác và bảo toàn thứ tự đơn điệu |
+| `TC-UNIT-06..09` | Bộ định dạng tiền VNĐ (`formatCompactVnd`, `formatButtonVnd`, `formatFullVnd`) | Hiển thị chuẩn dấu chấm phân nhóm hàng nghìn và đơn vị |
+| `TC-UNIT-10..12` | `formatCountdown` tại biên âm, `0s`, `3p`, `10p`, `60p` | Clamping `<=0` về `00:00`, pad đủ 2 chữ số |
+| `TC-UNIT-13..17` | `parseStayDayOffsets` qua ranh giới tháng và khung 14 ngày | Trả về mảng `dayOffset` hợp lệ nằm gọn trong `[0..13]` |
 
 ---
 
@@ -26,38 +20,33 @@ Tài liệu này liệt kê toàn bộ các nhóm Test Case tự động bảo v
 
 | Mã TC | Mô tả kiểm thử | Kỳ vọng chuẩn |
 | :--- | :--- | :--- |
-| `TC-DATA-01` | Tồn tại & cú pháp JSON của 11 bảng trong `master-data/seed/` và `master-data/` | Đọc & `JSON.parse` thành công 100% |
-| `TC-DATA-02` | Đồng bộ ánh xạ bảng giữa `vite.config.ts` và `src/services/masterDataService.ts` | Mọi key trong `MasterDataBundle` khớp tên file ở cả API lẫn static fallback |
-| `TC-DATA-03` | Bất biến `hotel_profile.json` | `30` phòng = `12 + 10 + 8` qua 3 chi nhánh, phí sàn `15%`, VAT `10%`, `urgent < warn < ttl` |
-| `TC-DATA-04` | Phân quyền RBAC trong `users_roles.json` | `manager` (`canOverrideFloor=true`, `canConfigureBotRules=true`), `receptionist` (`false`, `false`) |
-| `TC-DATA-05` | Hạng phòng `room_classes.json` | Tổng `4` hạng = `30` phòng, `baseFloorPrice < rackRate`, không có lỗi `##` |
-| `TC-DATA-06` | Sơ đồ `rooms_pms.json` (`#101..#130`) | Đủ `30` phòng duy nhất, khóa ngoại `branchId` & `roomClassId` hợp lệ 100% |
-| `TC-DATA-07` | Lịch `calendar_14d_pms.json` | Đủ `14` ngày liên tiếp (`dayOffset 0..13`), `otherBooked + auctionBooked + vacantRooms = 30` |
-| `TC-DATA-08` | Phiên đấu giá `auction_sessions.json` | Mã `id` duy nhất, `matchedRoomClassId`, `branchId`, `lockedRoomNumber`, `autopsyId` hợp lệ |
-| `TC-DATA-09` | Benchmark toàn sàn `system_benchmarks.json` | Đủ 3 kỳ (`today`, `7d`, `30d`) và đủ 4 hạng phòng |
-| `TC-DATA-10` | Đặc quyền `perks_catalog.json` & `match_breakdowns.json` | `suggestedPerkId` luôn trỏ tới `perk.id` hợp lệ |
+| `TC-DATA-01..02` | Đầy đủ 12 bảng JSON trong `master-data/seed/` & `master-data/` và đồng bộ đường dẫn với `vite.config.ts` / `masterDataService.ts` | Parse sạch 100%, khớp ánh xạ REST API & static fallback |
+| `TC-DATA-03..11` | Bất biến `hotel_profile` (30 phòng = `12+10+8`), `users_roles`, `room_classes`, `rooms_pms` (`#101..#130`), `calendar_14d_pms`, `auction_sessions`, `system_benchmarks`, `perks_catalog`, `lifecycle_catalog` | Toàn vẹn khóa ngoại & ràng buộc số học 100% |
 
 ---
 
-## 3. Business Logic & Analytics Engine (`tests/unit/analytics-engine.test.ts`)
+## 3. Core Analytics Engine (`tests/unit/analytics-engine.test.ts`)
 
 | Mã TC | Mô tả kiểm thử | Kỳ vọng chuẩn |
 | :--- | :--- | :--- |
-| `TC-LOGIC-01` | Quan hệ bao hàm giữa 3 kỳ thời gian (`today <= 7d <= 30d`) | Doanh thu, số báo giá, đơn thắng và số đêm bán tăng dần không giảm |
-| `TC-LOGIC-02` | Đẳng thức Doanh thu, ADR, Tổng khách trả & Phí sàn + VAT | `ADR = round(baseRevenue / nights)`, `platformFeeAndVat = guestPaidTotal - baseRevenue` |
-| `TC-LOGIC-03` | Bộ lọc Chi nhánh (`all`, `br_mykhe`, `br_songhan`, `br_anthuong`) | Tổng phòng `12 + 10 + 8 = 30`; tổng doanh thu 3 chi nhánh = doanh thu toàn chuỗi |
-| `TC-LOGIC-04` | Bóc tách doanh thu từng phòng (`allChainRoomRevenues`) | Đủ `30` phòng theo thứ tự `#101..#130`, tổng bằng chính xác `baseRevenue` |
-| `TC-LOGIC-05` | `buildRevenueTimeSeries` (`today` 4 ca, `7d` 7 ngày, `30d` 4 tuần / 30 ngày) | Tổng doanh thu các cột thời gian khớp tuyệt đối `baseRevenue` của kỳ |
-| `TC-LOGIC-06` | Chế độ Xả phòng đêm (`Night Flash Sale -15%`) | Chỉ giảm giá sàn & giá gợi ý AI cho phiên nhận phòng tối nay; phiên ngày mai trở đi giữ nguyên |
-| `TC-LOGIC-07` | Hết hạn đếm ngược Live (`remainingSeconds = 0`) & trần `isAutoBidEligible` | Giảm `activeLiveCount` đúng 1 đơn vị; kiểm tra chuẩn trần số phòng & số khách |
-| `TC-LOGIC-08` | Phễu chuyển đổi thanh toán 8 bước (`all`, `auto`, `manual`) | Không tăng qua từng bước (`step[i] <= step[i-1]`), `auto + manual = all` |
-| `TC-LOGIC-09` | Bảo vệ phòng `booked_auction` (Đã TT 100%) trên lịch 14 ngày | `manualOverrides` khóa được phòng trống nhưng **tuyệt đối không mở khóa** được phòng đã TT 100% |
-| `TC-LOGIC-10` | `resolveMatchBreakdown` | Trả đúng dữ liệu seed hoặc sinh fallback 3 tiêu chí + gợi ý `perk_bf` khi `score < 95` |
-| `TC-LOGIC-11` | `computeBenchmarkTrendSeries` (Biểu đồ đường đôi & bộ lọc 4 chiều) | Đúng số mốc (`6`/`7`/`6`), đếm đúng `activeFiltersCount`, xử lý an toàn trạng thái `0` phiên |
+| `TC-LOGIC-01..12` | Động cơ tổng hợp nền theo kỳ (`today <= 7d <= 30d`), chi nhánh, từng phòng, chuỗi thời gian, giá sàn đêm và lịch 14 ngày | Đảm bảo tính nhất quán dữ liệu nền cho toàn bộ báo cáo |
 
 ---
 
-## 4. Build & TypeScript Gate (`tests/unit/build-and-typecheck.test.ts`)
+## 4. Business Hotel Overview Analytics, Đa Ngôn Ngữ & Đa Tiền Tệ (`tests/unit/overview-analytics.test.ts`)
+
+| Mã TC | Mô tả kiểm thử | Kỳ vọng chuẩn |
+| :--- | :--- | :--- |
+| `TC-OVW-01` | Quy đổi `convertFromVnd` & định dạng `formatBusinessMoney` / `formatDisplayDate` qua `VND`, `KRW`, `USD` và `vi`, `en`, `ko` | Biên `0` hiển thị `0 ₫` / `0 ₩` / `$0`; số dương compact có dấu `+`; ngày hiển thị đúng chuẩn từng ngôn ngữ, không có `NaN` |
+| `TC-OVW-02` | Chuỗi ngày `dailySeries` & tổng 4 nhóm trạng thái báo giá (`accepted`, `expired`, `rejected`, `cancelled`) qua mọi kỳ (`today`, `7d`, `30d`) và mọi cơ sở L'amour | Đúng số ngày (`1`/`7`/`30`), tổng doanh thu ngày = KPI doanh thu, tổng đơn ngày = số đơn hoàn tất (`29` đơn ở `all/30d`), `accepted + expired + rejected + cancelled === totalBids` |
+| `TC-OVW-03` | Cơ sở mới `stay_h11` (khớp `demo_new/1.png`) & biên `0` lượt báo giá | Trả về `0` doanh thu, `75` lượt báo giá (`0` chốt, `8` quá hạn, `67` chọn nơi khác, `0` hủy), điểm đánh giá `0.0`, điểm hiển thị `800`, `0` đơn đặt phòng và tuyệt đối không phát sinh `NaN` / `Infinity` |
+| `TC-OVW-04` | Kiểm tra ngôn ngữ Tiếng Việt thuần kinh doanh khách sạn | Dùng nhãn đời thường (*Doanh thu thực nhận*, *Tỷ lệ khách chốt*, *Điểm uy tín hiển thị*); `0` thuật ngữ kỹ thuật nội bộ (`1.265`, `REJ_`, `settled_t_plus_7`, `RACE`, `ELO Score`, `RevPAR`, `Mô phỏng`) |
+| `TC-OVW-05` | Từ điển `English` & `한국어` chuẩn cổng đối tác khách sạn | Khớp chính xác tiêu đề tham chiếu `Optibide Partner Hub` (`Dashboard overview`, `Revenue Timeline`, `Bids Status`, `Ratings, Trust & Visibility`, `ELO Score`, `Recent Bookings`) |
+| `TC-OVW-06` | Bảo toàn mã đơn đặt phòng toàn chuỗi (`#43..#71`) & dịch thuật ghi chú/tiện ích theo ngôn ngữ | Đơn mới nhất giữ nguyên mã `#71` dù lọc `today`/`7d`/`30d` hay lọc riêng từng chi nhánh; tiện ích & ghi chú khách lưu trú dịch chuẩn sang `en` và `ko` |
+
+---
+
+## 5. Build & TypeScript Gate (`tests/unit/build-and-typecheck.test.ts`)
 
 | Mã TC | Mô tả kiểm thử | Kỳ vọng chuẩn |
 | :--- | :--- | :--- |
@@ -65,66 +54,50 @@ Tài liệu này liệt kê toàn bộ các nhóm Test Case tự động bảo v
 
 ---
 
-## 5. REST API, Lưu Trữ & Fallback Offline (`tests/e2e/api-master-data.spec.ts`)
+## 6. REST API, Lưu Trữ & Fallback Offline (`tests/e2e/api-master-data.spec.ts`)
 
 | Mã TC | Mô tả kiểm thử | Kỳ vọng chuẩn |
 | :--- | :--- | :--- |
-| `TC-API-01` | `GET /api/master-data` | HTTP `200`, `ok: true`, trả đủ 11 bảng Master Data |
-| `TC-API-02` | `PUT /api/master-data/botRules` | HTTP `200`, ghi xuống đĩa và đọc lại khớp dữ liệu |
-| `TC-API-03` | `PUT /api/master-data/<unknown>` | HTTP `400`, từ chối bảng không hợp lệ |
-| `TC-API-04` | `PUT /api/master-data/botRules` với JSON hỏng | HTTP `400`, không làm sập server |
-| `TC-API-05` | `POST /api/master-data/reset` | Khôi phục nguyên vẹn 11 bảng từ `master-data/seed/*.json` |
-| `TC-API-06..07` | Static `/master-data/*.json` & `localStorage` fallback khi đứt `/api/master-data` | UI vẫn khởi chạy đầy đủ và lưu thay đổi vào `gns_master_v28_*` |
+| `TC-API-01..05` | `GET /api/master-data`, `PUT /api/master-data/botRules`, chặn HTTP `400` bảng lạ / JSON lỗi & `POST /api/master-data/reset` | Hoạt động chính xác và khôi phục sạch về `master-data/seed/*.json` |
+| `TC-API-06..07` | Static `/master-data/*.json` & `localStorage` (`gns_partner_hub_prefs_v1`) khi ngắt kết nối `/api/master-data` | Trang Tổng quan vẫn hiển thị đầy đủ biểu đồ/KPI và lưu tùy chọn tiền tệ/ngôn ngữ ổn định |
+| `TC-API-08` | Hỗ trợ truy cập qua tên miền Tunnel (`.ts.net`, `.trycloudflare.com`) | Trả HTTP `200` cho cả giao diện và API, không bị chặn `403` |
 
 ---
 
-## 6. Nút Bấm, Công Tắc, 6 Hộp Thoại KPI & Điều Hướng (`tests/e2e/buttons-and-modals.spec.ts` + `tests/*.spec.ts`)
+## 7. Thanh Menu Trái, Tiện Ích Đầu Trang, Trợ Lý AI & Phiếu Đặt Phòng (`tests/e2e/buttons-and-modals.spec.ts`)
 
 | Mã TC | Mô tả kiểm thử | Kỳ vọng chuẩn |
 | :--- | :--- | :--- |
-| `TC-UI-01` | Ngăn kéo `Công thức` -> `Thu gọn` | Mở/đóng mượt, hiển thị đúng công thức ADR & `×1.265` |
-| `TC-UI-02` | Dropdown chọn Chi nhánh (`Tất cả`, `CN Mỹ Khê`, `CN Sông Hàn`, `CN An Thượng`) | Cập nhật ngay số phòng `/12`, `/10`, `/8`, `/30` và KPI tương ứng |
-| `TC-UI-03..04` | Công tắc `Auto-Bid`, `Xả đêm 20:00 (-15%)` & nút `Đóng` Toast | Đổi trạng thái `aria-checked`, hiện thông báo và đóng Toast sạch |
-| `TC-UI-05..06` | Mở & đóng toàn bộ **6 chế độ `KpiDrilldownModal`** (`revenue_total`, `revenue_today`, `sessions_total`, `win_rate`, `rooms_occupied`, `rooms_vacant`) | Cả 6 modal hiển thị đúng dữ liệu kỳ/chi nhánh, chuyển tab con mượt, đóng bằng `Escape` |
-| `TC-UI-07..10` | `MatchBreakdownModal` -> `CustomBidModal` (`Đặt theo AI`, `Hủy`) & Nhật ký phiên (`<1/N>`, tìm kiếm không dấu, 7 kiểu sắp xếp, nhảy sang `Đối chiếu phiên trượt`) | Chuyển tiếp đặc quyền chính xác, phân trang 10 dòng/trang, nhảy thẳng sang Tab 2 Autopsy |
+| `TC-UI-01..03` | Thu gọn / mở rộng thanh menu trái (`1.png` <-> `2.png`), mở menu con *Khuyến mãi & Tiếp thị*, thông báo lịch sự cho các mục menu phụ | Chuyển đổi mượt `data-collapsed`, hiển thị thông báo thương mại lịch sự và giữ nguyên trang Tổng quan |
+| `TC-UI-04..06` | Nút Trợ giúp nhanh (`?`) 30 giây & Popover Chuông thông báo vận hành | Mở/đóng hộp thoại hướng dẫn ngôn ngữ đời thường và danh sách thông báo sạch bằng `Escape` / click |
+| `TC-UI-07..09` | Chú thích `(i)` trên thẻ KPI & thu gọn / mở rộng / làm mới cả 2 hộp `Trợ lý AI goodNstay` | Bật/tắt giải thích dễ hiểu trên KPI và đóng/mở gọn các thẻ lời khuyên AI |
+| `TC-UI-10` | Nút `Xem chi tiết` (`View detail`) trên bảng *Đơn đặt phòng gần đây* | Mở phiếu đặt phòng `#71` đầy đủ thông tin cơ sở, hạng phòng, ngày nhận/trả, tiền thực nhận và đóng mượt bằng `Escape` |
 
 ---
 
-## 7. Luồng Nghiệp Vụ & Phân Quyền RBAC (`tests/e2e/workflows-and-rbac.spec.ts`)
+## 8. Luồng Nghiệp Vụ Kinh Doanh, Đa Ngôn Ngữ/Tiền Tệ & Phân Trang (`tests/e2e/workflows-and-rbac.spec.ts`)
 
 | Mã TC | Mô tả kiểm thử | Kỳ vọng chuẩn |
 | :--- | :--- | :--- |
-| `TC-FLOW-01..04` | Bảo vệ Giá sàn (`Floor Guardrail`) theo `Auto-Bid ON/OFF` × vai trò `Quản lý` vs `Lễ tân` | Auto-Bid ON khóa cứng dưới sàn; Lễ tân luôn bị chặn dưới sàn; Quản lý tắt Auto-Bid + tích xác nhận mới gửi được giá dưới sàn |
-| `TC-FLOW-05..08` | `Chạy Auto-Bid ngay`, mô phỏng `Từ chối` & `Khách TT 100% · Khóa phòng` | Auto-Bid gửi hàng loạt; `Từ chối` đẩy vào lịch sử trượt; `TT 100%` khóa phòng & tăng đơn thắng từ `29` lên `30` |
-| `TC-FLOW-09..12` | CRUD Quy tắc Auto-Bid theo RBAC & khóa cứng phòng `Đã khóa đơn TT 100%` ở Tab 3 | Lễ tân bị `disabled` nút Lưu/Xóa quy tắc; Quản lý thêm/xóa thành công; phòng TT 100% không thể mở khóa tay |
+| `TC-FLOW-01..02` | Cổng kiểm duyệt ngôn ngữ thuần kinh doanh & hiển thị mặc định toàn chuỗi 30 ngày | Không xuất hiện chuỗi kỹ thuật/giả lập trên toàn bộ trang; hiển thị đúng 29 đơn hoàn tất |
+| `TC-FLOW-03..05` | Đổi kỳ thời gian (`30d` -> `7d` -> `today`) & đổi cơ sở sang `Stay Hotel H11 (Cơ sở mới)` | Cập nhật đúng số đơn (`29` -> `13` -> `5`); cơ sở `Stay Hotel H11` hiển thị đúng trạng thái `1.png` (`0 ₫`, `75` báo giá, `★0.0`, điểm hiển thị `800`, khung trống *Chưa có đơn đặt phòng gần đây*) |
+| `TC-FLOW-06..08` | Chuyển đổi trực tiếp Ngôn ngữ (`Tiếng Việt` / `English` / `한국어`) & Tiền tệ (`VND` / `KRW` / `USD`) | Đồng bộ ngay lập tức toàn bộ tiêu đề, nhãn biểu đồ, hộp cố vấn AI và ký hiệu tiền tệ (`₫`, `₩`, `$`) |
+| `TC-FLOW-09..10` | Phân trang bảng *Đơn đặt phòng gần đây* (`5` / `10` dòng/trang, `<`, `>`) & tự động kẹp về trang 1 khi thu hẹp kỳ lọc | Đang ở trang 3 (`11–15`) của kỳ 30 ngày, chuyển sang `Hôm nay` (`5` đơn) tự động đưa về `1–5`, không bao giờ rơi vào trang rỗng |
 
 ---
 
-## 8. Ma Trận Responsive Đa Thiết Bị (`tests/e2e/responsive-matrix.spec.ts`)
+## 9. Ma Trận Responsive 7 Kích Thước Màn Hình (`tests/e2e/responsive-matrix.spec.ts`)
 
-Kiểm thử tự động trên **7 kích thước màn hình chuẩn** × **3 Tab chính** × **Modal Doanh thu & Báo giá tùy chỉnh**:
+Kiểm thử tự động trên đủ **7 kích thước màn hình chuẩn**:
 - `1440×900` (Desktop Wide)
 - `1280×800` (Laptop Standard)
-- `1024×768` (Tablet Landscape — ranh giới `lg:`)
-- `768×1024` (Tablet Portrait)
+- `1024×768` (Tablet Landscape — ranh giới thanh menu trái cố định `lg:`)
+- `768×1024` (Tablet Portrait — ngăn kéo menu di động)
 - `390×844` (iPhone 14 / 15)
 - `375×667` (iPhone SE)
 - `360×800` (Compact Android)
 
 **Tiêu chuẩn bắt buộc trên mọi viewport**:
-1. `document.documentElement.scrollWidth <= window.innerWidth` (Tuyệt đối không tràn ngang trên cả sơ đồ 30 phòng lẫn bảng lịch 14 ngày).
-2. Breakpoint thanh điều hướng: `>= 1024px` hiển thị `topbar-branch-select`, ẩn `mobile-branch-select`; `< 1024px` hiển thị `mobile-branch-select`, ẩn `topbar-branch-select`.
-3. Mọi thẻ KPI, hộp thoại (`role="dialog"`) và nút thao tác đều nằm trọn trong chiều rộng màn hình (`x >= 0`, `x + width <= viewport.width + 1`) với vùng chạm hợp lệ.
-4. `0` lỗi `console.error` và `0` lỗi `pageerror`.
-
----
-
-## 9. Doanh thu đơn giản & Loại bỏ Y tế / NHN KCP (`tests/dashboard-audit.spec.ts` — `TC-REV`)
-
-| ID | Nội dung kiểm thử | Kỳ vọng |
-|---|---|---|
-| `TC-REV-01` | Hiển thị Doanh thu khách sạn thuần túy trên KPI Card #1 và cửa sổ `Doanh Thu Khách Sạn` | Hiện đúng tổng doanh thu kỳ (`66.360.000đ` / `29.380.000đ` / `11.850.000đ`), số đơn hoàn tất, số đêm phòng & ADR bình quân |
-| `TC-REV-02` | Bộ lọc thời gian trực tiếp trong cửa sổ Doanh thu (`Theo ngày` · `Theo tuần` · `Theo tháng`) | Chuyển đổi đồng bộ dữ liệu, biểu đồ cột và danh sách đơn hoàn tất theo từng kỳ |
-| `TC-REV-03` | Bộ lọc phạm vi (`Tất cả phòng` · `Từng phòng #101–#130` · `Từng chi nhánh`) | Cho phép xem gộp theo hạng phòng, chọn riêng từng buồng (VD `#116`), hoặc đối chiếu 3 chi nhánh (`CN Mỹ Khê`, `CN Sông Hàn`, `CN An Thượng`) |
-| `TC-REV-04` | Đồng bộ bộ chọn Chi nhánh giữa cửa sổ Doanh thu và thanh Topbar Header | Chọn `CN Mỹ Khê` trong modal cập nhật ngay `topbar-branch-select` = `br_mykhe` trên toàn Dashboard |
-| `TC-REV-05` | Kiểm tra tuyệt đối không còn thông tin y tế hay cổng NHN KCP / NHK | Toàn bộ DOM trang chính, các modal và `master-data/*.json` có `0` chuỗi `y tế`, `medical`, `KCP`, `NHN`, `NHK` |
+1. `document.documentElement.scrollWidth <= window.innerWidth` trên cả trạng thái có đơn hoàn tất, trạng thái cơ sở mới trống đơn (`stay_h11`), ngăn kéo menu di động và hộp thoại `Phiếu chi tiết đặt phòng`.
+2. `>= 1024px` hiển thị thanh menu trái cố định (`sidebar-nav`); `< 1024px` chuyển sang nút mở ngăn kéo trượt (`mobile-menu-btn` -> `mobile-sidebar-drawer`).
+3. `0` lỗi `console.error` và `0` lỗi `pageerror`.

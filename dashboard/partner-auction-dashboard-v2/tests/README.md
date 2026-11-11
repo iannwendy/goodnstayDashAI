@@ -1,6 +1,6 @@
 # Hệ Thống Kiểm Thử Tự Động Toàn Diện (`tests/`)
 
-Thư mục này chứa toàn bộ hệ thống kiểm thử tự động cho **goodNstay Partner Auction Dashboard v2**, bao phủ từ công thức toán học, hợp đồng dữ liệu JSON, engine phân tích nghiệp vụ, kiểm tra kiểu TypeScript, REST API cho tới từng nút bấm, phân quyền RBAC và giao diện responsive trên 7 kích thước màn hình.
+Thư mục này chứa toàn bộ hệ thống kiểm thử tự động cho **Optibide Partner Hub — Dashboard Overview** (`goodNstay Partner Auction Dashboard v2`), bao phủ từ công thức nền, hợp đồng dữ liệu JSON, engine phân tích tổng quan kinh doanh khách sạn, đa ngôn ngữ/tiền tệ, kiểm tra kiểu TypeScript, REST API cho tới từng nút bấm, thông báo, phiếu đặt phòng và giao diện responsive trên 7 kích thước màn hình.
 
 ## Cấu Trúc Thư Mục
 
@@ -13,18 +13,16 @@ tests/
 │   ├── seed-loader.ts                     # Nạp dữ liệu gốc từ master-data/seed/*.json
 │   └── e2e-helpers.ts                     # Tiện ích Playwright (chặn lỗi console, reset seed, kiểm tra tràn ngang)
 ├── unit/
-│   ├── pricing-and-formatters.test.ts     # Kiểm thử công thức ×1.265, định dạng VNĐ, đếm ngược, ngày lưu trú
+│   ├── pricing-and-formatters.test.ts     # Kiểm thử công thức giá nền, định dạng VNĐ, đếm ngược, ngày lưu trú
 │   ├── master-data-contract.test.ts       # Kiểm thử schema, khóa ngoại & đồng bộ bảng Master Data
-│   ├── analytics-engine.test.ts           # Kiểm thử KPI đa kỳ, chi nhánh, phễu 8 bước, xả đêm, lịch 14 ngày
+│   ├── analytics-engine.test.ts           # Kiểm thử động cơ tổng hợp nền theo kỳ, chi nhánh, lịch 14 ngày
+│   ├── overview-analytics.test.ts         # Kiểm thử KPI Tổng quan, chuỗi ngày, báo giá 4 nhóm, đa ngôn ngữ/tiền tệ & mã đơn ổn định
 │   └── build-and-typecheck.test.ts        # Cổng kiểm tra biên dịch tĩnh tsc --noEmit (0 lỗi)
-├── e2e/
-│   ├── api-master-data.spec.ts            # Kiểm thử REST API GET/PUT/POST, lỗi 400 & fallback offline
-│   ├── buttons-and-modals.spec.ts         # Kiểm thử mọi nút bấm, switch, 6 modal KPI & điều hướng
-│   ├── workflows-and-rbac.spec.ts         # Kiểm thử luồng đấu giá, Pay-to-Lock, Bot Rules & RBAC Quản lý/Lễ tân
-│   └── responsive-matrix.spec.ts          # Kiểm thử responsive 7 màn hình (360px -> 1440px) × 3 tab × modals
-├── dashboard-audit.spec.ts                # Kiểm toán tổng thể đồng bộ kỳ, lịch phòng, phễu & doanh thu
-├── benchmark-line-chart.spec.ts           # Kiểm thử chuyên sâu biểu đồ đường đôi Benchmark & bộ lọc 4 chiều
-└── session-log-pagination.spec.ts         # Kiểm thử chuyên sâu phân trang <1/N>, tìm kiếm không dấu & sắp xếp
+└── e2e/
+    ├── api-master-data.spec.ts            # Kiểm thử REST API GET/PUT/POST, lỗi 400 & fallback offline
+    ├── buttons-and-modals.spec.ts         # Kiểm thử thanh menu trái, trợ giúp, thông báo, cố vấn AI & phiếu đặt phòng
+    ├── workflows-and-rbac.spec.ts         # Kiểm thử ngôn ngữ thuần kinh doanh, bộ lọc kỳ/cơ sở, đa ngôn ngữ/tiền tệ & phân trang
+    └── responsive-matrix.spec.ts          # Kiểm thử responsive 7 màn hình (360px -> 1440px), ngăn kéo menu & modal
 ```
 
 ## Các Lệnh Chạy Kiểm Thử
