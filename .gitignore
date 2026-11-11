@@ -5,8 +5,8 @@
 .env.*
 !.env.example
 !.env.jira.example
-AGENTS.md
-CLAUDE.md
+/AGENTS.md
+/CLAUDE.md
 
 # Bộ nhớ đệm công cụ trình duyệt & kỹ năng AI cục bộ
 .playwright-mcp/
@@ -23,6 +23,3 @@ __pycache__/
 ota-rate-shopping-demo/dist/
 ota-rate-shopping-demo/node_modules
 *.tsbuildinfo
-
-# Nested Git repository được quản lý riêng tại https://github.com/iannwendy/dashv2.git
-dashboard/partner-auction-dashboard-v2/

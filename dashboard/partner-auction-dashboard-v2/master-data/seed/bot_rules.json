@@ -1,0 +1,16 @@
+[
+  {
+    "ruleId": "RULE-01",
+    "title": "Ca đêm vắng lễ tân → Tự chào giá sàn 750k dưới 1 phút (≤4 phòng, ≤8 khách)",
+    "active": true,
+    "createdAt": "2026-11-01",
+    "sourceCaseId": "CRQ-8909"
+  },
+  {
+    "ruleId": "RULE-02",
+    "title": "Tự động chặn Auto-Bid khi đoàn >4 phòng hoặc >8 khách (Chuyển duyệt tay)",
+    "active": true,
+    "createdAt": "2026-10-15",
+    "sourceCaseId": "SYSTEM_GUARDRAIL"
+  }
+]

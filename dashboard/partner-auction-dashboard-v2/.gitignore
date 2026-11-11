@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# OS & Editor
+.DS_Store
+.vscode/
+.idea/
+
+# Python cache (scripts)
+__pycache__/
+*.pyc
+
+# Logs & Env
+*.log
+.env
+.env.local
+.env.*.local
+
+# Playwright
+test-results/
+playwright-report/

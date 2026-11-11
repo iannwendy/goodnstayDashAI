@@ -1,0 +1,87 @@
+{
+  "hotelId": "HTL-DN-024",
+  "brandName": "goodNstay",
+  "brandSuffix": "Partner Studio",
+  "version": "v2.7",
+  "hotelName": "L'amour Boutique Hotel",
+  "starRating": 4,
+  "totalRooms": 30,
+  "city": "Đà Nẵng",
+  "district": "Phường Phước Mỹ, Quận Sơn Trà",
+  "referenceDate": "2026-11-06",
+  "currentDateLabel": "Thứ Sáu, 06/11/2026",
+  "currentShortDate": "06/11/2026 • 19:45",
+  "goldenWindowRange": "06/11 – 19/11/2026",
+  "goldenWindowDays": 14,
+  "bidTtlSeconds": 3600,
+  "paymentHoldTtlSeconds": 600,
+  "urgentThresholdSeconds": 600,
+  "warnThresholdSeconds": 1800,
+  "payoutCycleLabel": "Đối soát T+7 (Ký quỹ tự động)",
+  "hotelCommissionRate": 0.0,
+  "platformFeeRate": 0.15,
+  "vatRate": 0.1,
+  "guestPriceMultiplier": 1.265,
+  "defaultFloorPrice": 750000,
+  "nightFlashDiscountPct": 15,
+  "nightFlashStartHour": "20:00",
+  "autoBidMaxRooms": 4,
+  "autoBidMaxGuests": 8,
+  "autoBidEnabled": true,
+  "nightFlashSaleActive": false,
+  "eloScore": 1680,
+  "eloTier": "Hạng Vàng (Top 12% Đà Nẵng)",
+  "reviewRating5": 4.8,
+  "reviewCount": 142,
+  "reviewCriteria5": {
+    "roomComfortCleanliness": 4.9,
+    "staffHospitality": 4.8,
+    "checkinExperience": 4.8,
+    "amenitiesExpectation": 4.7,
+    "valueForMoney": 4.8
+  },
+  "branches": [
+    {
+      "id": "br_mykhe",
+      "shortName": "CN Mỹ Khê",
+      "name": "L'amour Mỹ Khê · Sơn Trà",
+      "district": "Phước Mỹ, Sơn Trà",
+      "totalRooms": 12,
+      "previousPeriodRevenue": {
+        "today": 4600000,
+        "7d": 7200000,
+        "30d": 20200000
+      }
+    },
+    {
+      "id": "br_songhan",
+      "shortName": "CN Sông Hàn",
+      "name": "L'amour Sông Hàn · Hải Châu",
+      "district": "Bạch Đằng, Hải Châu",
+      "totalRooms": 10,
+      "previousPeriodRevenue": {
+        "today": 2500000,
+        "7d": 13100000,
+        "30d": 20400000
+      }
+    },
+    {
+      "id": "br_anthuong",
+      "shortName": "CN An Thượng",
+      "name": "L'amour An Thượng · Ngũ Hành Sơn",
+      "district": "Mỹ An, Ngũ Hành Sơn",
+      "totalRooms": 8,
+      "previousPeriodRevenue": {
+        "today": 2700000,
+        "7d": 4900000,
+        "30d": 14000000
+      }
+    }
+  ],
+  "eveningForecast": {
+    "expectedRequestsMin": 6,
+    "expectedRequestsMax": 9,
+    "potentialBaseRevenueMin": 5200000,
+    "potentialBaseRevenueMax": 8400000
+  }
+}

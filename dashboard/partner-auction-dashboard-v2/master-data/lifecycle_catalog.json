@@ -1,0 +1,518 @@
+{
+  "version": "2.7.0",
+  "holdMechanism": {
+    "ttlSeconds": 600,
+    "ttlMinutes": 10,
+    "analogy": "Giữ ghế rạp chiếu phim (Exclusive 10-Minute Seat Lock)",
+    "summary": "Ngay khi du khách bấm 'Chọn chào giá & Thanh toán', hệ thống cấp khóa tạm độc quyền 10 phút (600s) lên đúng mã phòng vật lý trong kỳ lưu trú. Trong 10 phút này: (1) Khách/phiên khác trùng phòng bị chặn nút Thanh toán (chuyển sang Hàng chờ Standby), (2) Lễ tân không thể khóa tay đè lên phòng đang giữ, (3) Hoàn tất thanh toán 100% sẽ chuyển sang Khóa cứng vĩnh viễn và tự đóng các phiên Standby trùng, (4) Hết 10 phút / lỗi thẻ / thoát trang sẽ lập tức nhả khóa về Trống mở đấu giá."
+  },
+  "roomStateMachine": [
+    {
+      "status": "vacant_unlocked",
+      "label": "Trống · Mở đấu giá",
+      "badgeTone": "sky",
+      "canBid": true,
+      "canGuestCheckout": true,
+      "canManualOverride": true,
+      "description": "Phòng vật lý đang mở khóa, cho phép nhận đồng thời nhiều phiên đấu giá Live để tối đa hóa tỷ lệ lấp đầy."
+    },
+    {
+      "status": "payment_hold",
+      "label": "Tạm khóa chờ TT (10p)",
+      "badgeTone": "amber",
+      "canBid": true,
+      "canGuestCheckout": false,
+      "canManualOverride": false,
+      "description": "Đang giữ chỗ độc quyền tối đa 600 giây (10:00) cho 1 khách tại cổng thanh toán. Phiên khác không thể bấm chọn đè; lễ tân bị chặn khóa tay."
+    },
+    {
+      "status": "booked_auction",
+      "label": "Đã khóa goodNstay (TT 100%)",
+      "badgeTone": "emerald",
+      "canBid": false,
+      "canGuestCheckout": false,
+      "canManualOverride": false,
+      "description": "Khách đã thanh toán đủ 100% trực tuyến. Phòng khóa cứng bảo vệ quyền lợi khách, tự động rút mọi báo giá trùng ngày."
+    },
+    {
+      "status": "booked_other",
+      "label": "Đã khóa OTA / Lễ tân",
+      "badgeTone": "zinc",
+      "canBid": false,
+      "canGuestCheckout": false,
+      "canManualOverride": true,
+      "description": "Phòng bán qua Booking/Agoda/Traveloka hoặc Lễ tân khóa thủ công cho khách Walk-in. Có thể chủ động mở khóa lại nếu khách hủy."
+    }
+  ],
+  "stages": [
+    {
+      "stageNumber": 1,
+      "id": "STG-01",
+      "title": "Khách gửi Yêu cầu Đặt phòng (CRQ)",
+      "actor": "Du khách (App/Web)",
+      "slaText": "Tức thì (<1s)",
+      "roomStatus": "vacant_unlocked",
+      "requestStatus": "created",
+      "bidStatus": "not_invited",
+      "paymentStatus": "not_started",
+      "happyOutcome": "Tạo mã phiên #CRQ kèm địa bàn, hạng phòng bắt buộc, ngày lưu trú, số khách & tiện ích mong muốn.",
+      "failureOutcomes": [
+        "Khách hủy yêu cầu trước khi phát tán"
+      ]
+    },
+    {
+      "stageNumber": 2,
+      "id": "STG-02",
+      "title": "Lọc Hard Rules & Chấm AI Match %",
+      "actor": "AI Matching Engine",
+      "slaText": "< 500ms",
+      "roomStatus": "vacant_unlocked",
+      "requestStatus": "matching",
+      "bidStatus": "pending_quote",
+      "paymentStatus": "not_started",
+      "happyOutcome": "Lọc cứng khu vực + hạng phòng + sức chứa + còn buồng mở/tạm giữ, tính điểm khớp mềm (0–100%) và đẩy WebSocket.",
+      "failureOutcomes": [
+        "REJ_HARD_RULE_MISMATCH"
+      ]
+    },
+    {
+      "stageNumber": 3,
+      "id": "STG-03",
+      "title": "KS Duyệt Giá sàn RBAC & Gửi Báo giá 1 lần",
+      "actor": "AI Auto-Bid / Quản lý / Lễ tân",
+      "slaText": "Auto <60s · Tay <5p (TTL 60p)",
+      "roomStatus": "vacant_unlocked",
+      "requestStatus": "bidding_open",
+      "bidStatus": "sent_waiting_guest",
+      "paymentStatus": "not_started",
+      "happyOutcome": "Gửi giá gốc cố định 1 lần (hiệu lực 60 phút) kèm đặc quyền mềm; phòng vật lý VẪN MỞ KHÓA cho các phiên khác.",
+      "failureOutcomes": [
+        "REJ_FLOOR_GUARDRAIL_BLOCKED",
+        "REJ_PARTNER_SKIPPED_SESSION",
+        "REJ_SLOW_RESPONSE_TTL_60M"
+      ]
+    },
+    {
+      "stageNumber": 4,
+      "id": "STG-04",
+      "title": "Khách So sánh Báo giá (Tổng × 1.265)",
+      "actor": "Du khách",
+      "slaText": "Trong cửa sổ 60 phút",
+      "roomStatus": "vacant_unlocked",
+      "requestStatus": "offers_comparing",
+      "bidStatus": "sent_waiting_guest",
+      "paymentStatus": "not_started",
+      "happyOutcome": "Khách mở xem ảnh, tiện nghi, đặc quyền và tổng giá thanh toán (= Giá gốc × 1.15 phí sàn × 1.10 VAT).",
+      "failureOutcomes": [
+        "REJ_COMPETITOR_WON_PRICE",
+        "REJ_MISSING_MANDATORY_PERK",
+        "REJ_NO_GUEST_ACTION_60M"
+      ]
+    },
+    {
+      "stageNumber": 5,
+      "id": "STG-05",
+      "title": "Bấm Chọn Chào giá → Tạm khóa Phòng 10 Phút",
+      "actor": "Du khách + Lock Coordinator",
+      "slaText": "Atomic Lock · Đếm ngược 10:00 (600s)",
+      "roomStatus": "payment_hold",
+      "requestStatus": "checkout_hold_10m",
+      "bidStatus": "payment_hold_10m",
+      "paymentStatus": "awaiting_hold_10m",
+      "happyOutcome": "Giữ độc quyền mã phòng vật lý trong 10 phút (như đặt ghế xem phim). Mọi phiên trùng phòng chuyển sang Standby (khóa nút chọn).",
+      "failureOutcomes": [
+        "Standby chờ nhả khóa nếu phòng vừa bị giữ trước 1ms"
+      ]
+    },
+    {
+      "stageNumber": 6,
+      "id": "STG-06",
+      "title": "Xác thực Cổng Thanh toán Trực tuyến 100%",
+      "actor": "Du khách + Cổng Thanh toán",
+      "slaText": "Tối đa 600 giây (10:00)",
+      "roomStatus": "payment_hold",
+      "requestStatus": "checkout_hold_10m",
+      "bidStatus": "payment_hold_10m",
+      "paymentStatus": "processing_gateway",
+      "happyOutcome": "Khách hoàn tất thẻ/QR/3DS 100% giá trị đơn trước khi đồng hồ 10:00 về 00:00 (không thu cọc một phần).",
+      "failureOutcomes": [
+        "REJ_HOLD_EXPIRED_10M",
+        "REJ_PAYMENT_GATEWAY_DECLINED",
+        "REJ_GUEST_ABANDONED_HOLD"
+      ]
+    },
+    {
+      "stageNumber": 7,
+      "id": "STG-07",
+      "title": "Khóa Cứng Phòng PMS & Tự đóng Phiên Trùng",
+      "actor": "PMS Sync & Auction Engine",
+      "slaText": "Tức thì (<1s sau Webhook)",
+      "roomStatus": "booked_auction",
+      "requestStatus": "confirmed_paid",
+      "bidStatus": "won_paid_100",
+      "paymentStatus": "paid_escrow_100",
+      "happyOutcome": "Chuyển phòng từ Tạm khóa 10p sang Đã khóa TT 100%, phát hành mã nhận phòng và tự đóng các phiên trùng hạng hết buồng.",
+      "failureOutcomes": [
+        "REJ_AUTO_CLOSED_SOLD_OUT (cho các phiên trùng thua cuộc)"
+      ]
+    },
+    {
+      "stageNumber": 8,
+      "id": "STG-08",
+      "title": "Lưu trú (Check-in / Check-out) hoặc Xử lý Bất khả kháng",
+      "actor": "Lễ tân KS & Du khách",
+      "slaText": "Theo ngày nhận/trả phòng",
+      "roomStatus": "booked_auction",
+      "requestStatus": "checked_in",
+      "bidStatus": "won_paid_100",
+      "paymentStatus": "paid_escrow_100",
+      "happyOutcome": "Khách nhận phòng không phải thanh toán lại tiền buồng; hoàn tất trả phòng đúng hạn.",
+      "failureOutcomes": [
+        "REJ_FORCE_MAJEURE_REFUND (nếu hủy bất khả kháng có chứng từ)"
+      ]
+    },
+    {
+      "stageNumber": 9,
+      "id": "STG-09",
+      "title": "Đối soát T+7 (100% Giá gốc) & Cập nhật Điểm ELO",
+      "actor": "Hệ thống Thanh quyết toán",
+      "slaText": "T+7 sau ngày Check-out",
+      "roomStatus": "vacant_unlocked",
+      "requestStatus": "settled_t_plus_7",
+      "bidStatus": "won_paid_100",
+      "paymentStatus": "settled_hotel",
+      "happyOutcome": "Giải ngân nguyên vẹn 100% Giá gốc về tài khoản khách sạn (0% hoa hồng KS) và cộng điểm uy tín ELO + Review 5 tiêu chí.",
+      "failureOutcomes": []
+    }
+  ],
+  "rejectCatalog": [
+    {
+      "code": "REJ_HARD_RULE_MISMATCH",
+      "shortLabel": "Lệch điều kiện cứng",
+      "group": "pre_bid",
+      "stageNumber": 2,
+      "roomEffect": "Không ảnh hưởng (vẫn mở)",
+      "financialEffect": "0đ",
+      "description": "Khách sạn khác quận/khu vực, thiếu hạng phòng bắt buộc hoặc hết sạch buồng trống trong ngày lưu trú.",
+      "partnerAction": "Mở khóa thêm buồng OTA/Lễ tân còn dư vào quỹ đấu giá 14 ngày vàng."
+    },
+    {
+      "code": "REJ_FLOOR_GUARDRAIL_BLOCKED",
+      "shortLabel": "Chặn dưới giá sàn RBAC",
+      "group": "pre_bid",
+      "stageNumber": 3,
+      "roomEffect": "Không ảnh hưởng (vẫn mở)",
+      "financialEffect": "Bảo vệ biên lợi nhuận",
+      "description": "Tài khoản Lễ tân nhập mức giá thấp hơn Giá sàn bảo vệ hoặc Quản lý chưa tắt Auto-Bid để ký duyệt ngoại lệ.",
+      "partnerAction": "Giữ giá >= Giá sàn hoặc chuyển quyền Quản lý để duyệt giảm sâu có kiểm soát."
+    },
+    {
+      "code": "REJ_PARTNER_SKIPPED_SESSION",
+      "shortLabel": "KS chủ động bỏ qua",
+      "group": "pre_bid",
+      "stageNumber": 3,
+      "roomEffect": "Giữ phòng cho kênh khác",
+      "financialEffect": "0đ (không tính phạt ELO)",
+      "description": "Khách sạn chủ động bấm 'Bỏ qua' phiên Live khi muốn ưu tiên giữ buồng cho đoàn khách lẻ giá cao.",
+      "partnerAction": "Chỉ bỏ qua khi công suất ngày chọn đạt >85%."
+    },
+    {
+      "code": "REJ_SLOW_RESPONSE_TTL_60M",
+      "shortLabel": "Gửi chậm / Hết TTL 60p",
+      "group": "bidding_competition",
+      "stageNumber": 3,
+      "roomEffect": "Không khóa phòng",
+      "financialEffect": "Mất cơ hội doanh thu",
+      "description": "Phản hồi tay quá trễ (>15–30 phút) hoặc đồng hồ phiên 60 phút chạm 00:00 trước khi kịp gửi giá.",
+      "partnerAction": "Bật AI Auto-Bid (<60s) cho ca trưa 11h–13h30 và ca đêm sau 22h00."
+    },
+    {
+      "code": "REJ_COMPETITOR_WON_PRICE",
+      "shortLabel": "Đối thủ thắng giá tốt hơn",
+      "group": "bidding_competition",
+      "stageNumber": 4,
+      "roomEffect": "Phòng vẫn mở cho phiên khác",
+      "financialEffect": "0đ",
+      "description": "Du khách so sánh danh sách Live và chọn khách sạn cùng hạng có tổng giá thanh toán mềm hơn.",
+      "partnerAction": "Hạ nhẹ 3–5% giá gốc hoặc kích hoạt Xả đêm (-15%) sau 20:00."
+    },
+    {
+      "code": "REJ_MISSING_MANDATORY_PERK",
+      "shortLabel": "Thiếu đặc quyền mềm chốt đơn",
+      "group": "bidding_competition",
+      "stageNumber": 4,
+      "roomEffect": "Phòng vẫn mở cho phiên khác",
+      "financialEffect": "0đ",
+      "description": "Điểm khớp <90% do thiếu Bữa sáng hoặc Trả phòng trễ 14:00 so với đối thủ cùng tầm giá.",
+      "partnerAction": "Đính kèm đặc quyền mềm chi phí thấp (0đ–90k) khi gửi báo giá."
+    },
+    {
+      "code": "REJ_NO_GUEST_ACTION_60M",
+      "shortLabel": "Khách không tương tác hết 60p",
+      "group": "bidding_competition",
+      "stageNumber": 4,
+      "roomEffect": "Tự thu hồi hiệu lực giá sau 60p",
+      "financialEffect": "0đ",
+      "description": "Khách rời ứng dụng và không chọn bất kỳ báo giá nào cho tới khi hết hạn 60 phút.",
+      "partnerAction": "Không cần thao tác — phòng không bị giam nên không thiệt hại công suất."
+    },
+    {
+      "code": "REJ_HOLD_EXPIRED_10M",
+      "shortLabel": "Quá hạn tạm khóa 10 phút",
+      "group": "payment_hold_10m",
+      "stageNumber": 6,
+      "roomEffect": "Nhả khóa payment_hold → Trống ngay lập tức",
+      "financialEffect": "0đ (không giam phòng quá 10p)",
+      "description": "Khách đã bấm giữ phòng 10 phút (600s) nhưng không hoàn tất thanh toán trước khi đồng hồ về 00:00.",
+      "partnerAction": "Hệ thống tự mở khóa phòng tức thì và đánh thức các phiên Standby đang chờ."
+    },
+    {
+      "code": "REJ_PAYMENT_GATEWAY_DECLINED",
+      "shortLabel": "Cổng TT từ chối thẻ / 3DS",
+      "group": "payment_hold_10m",
+      "stageNumber": 6,
+      "roomEffect": "Nhả khóa payment_hold → Trống ngay lập tức",
+      "financialEffect": "0đ",
+      "description": "Giao dịch thẻ nội địa/quốc tế bị ngân hàng từ chối hạn mức hoặc sai xác thực OTP/3DS và không thử lại kịp.",
+      "partnerAction": "Phòng tự động mở lại cho phiên kế tiếp mà không cần Lễ tân can thiệp."
+    },
+    {
+      "code": "REJ_GUEST_ABANDONED_HOLD",
+      "shortLabel": "Khách thoát trang giữ chỗ 10p",
+      "group": "payment_hold_10m",
+      "stageNumber": 6,
+      "roomEffect": "Hủy khóa sớm <10p → Trống tức thì",
+      "financialEffect": "0đ",
+      "description": "Khách chủ động bấm 'Hủy & Chọn lại' ngay trên màn hình thanh toán trước khi hết 10 phút.",
+      "partnerAction": "Giải phóng khóa phòng sớm giúp các phiên Standby chốt đơn ngay không phải đợi hết 10 phút."
+    },
+    {
+      "code": "REJ_AUTO_CLOSED_SOLD_OUT",
+      "shortLabel": "Tự đóng do căn cuối vừa TT 100%",
+      "group": "post_payment",
+      "stageNumber": 7,
+      "roomEffect": "Phòng đã khóa cứng cho đơn thắng",
+      "financialEffect": "Bảo vệ 100% chống Overbooking",
+      "description": "Phiên cạnh tranh cùng hạng phòng đã hoàn tất thanh toán 100% căn trống cuối cùng nên báo giá trùng tự động rút.",
+      "partnerAction": "Không tính vào tỷ lệ thua cạnh tranh của khách sạn."
+    }
+  ],
+  "scenarioMatrix": [
+    {
+      "caseId": "CASE-01",
+      "title": "Happy Path Auto-Bid → Giữ ghế 10p → TT 100% → Khóa cứng",
+      "category": "happy_path",
+      "trigger": "Yêu cầu ≤4 phòng, ≤8 khách; Auto-Bid bật; khách chọn và thanh toán 100% trong 2 phút.",
+      "roomTransition": "vacant_unlocked → payment_hold (10p) → booked_auction",
+      "bidTransition": "pending_quote → sent_waiting_guest → payment_hold_10m → won_paid_100",
+      "paymentTransition": "not_started → awaiting_hold_10m → paid_escrow_100 → settled_hotel",
+      "rejectCode": null,
+      "outcome": "SUCCESS",
+      "sampleSessionId": "CRQ-8940"
+    },
+    {
+      "caseId": "CASE-02",
+      "title": "Happy Path Duyệt tay kèm Đặc quyền mềm → Chốt căn Suite cuối",
+      "category": "happy_path",
+      "trigger": "Quản lý/Lễ tân gửi báo giá tùy chỉnh kèm Buffet sáng/Trà chiều; khách giữ chỗ 10p và TT 100%.",
+      "roomTransition": "vacant_unlocked → payment_hold (10p) → booked_auction",
+      "bidTransition": "pending_quote → sent_waiting_guest → payment_hold_10m → won_paid_100",
+      "paymentTransition": "not_started → awaiting_hold_10m → paid_escrow_100",
+      "rejectCode": null,
+      "outcome": "SUCCESS",
+      "sampleSessionId": "CRQ-8938"
+    },
+    {
+      "caseId": "CASE-03",
+      "title": "Đua giữ ghế Rạp phim (Race Condition): Khách A đang giữ 10p → Khách B bị chặn Standby",
+      "category": "payment_hold_concurrency",
+      "trigger": "Phòng #130 là căn trống cuối ngày 07/11. #CRQ-8944 bấm TT trước nên giữ khóa 10p; #CRQ-8942 muốn chọn cùng phòng.",
+      "roomTransition": "payment_hold (#130 khóa độc quyền bởi #CRQ-8944 trong 600s)",
+      "bidTransition": "#CRQ-8944: payment_hold_10m | #CRQ-8942: standby_hold_conflict",
+      "paymentTransition": "#CRQ-8944: awaiting_hold_10m | #CRQ-8942: blocked_by_hold",
+      "rejectCode": null,
+      "outcome": "HOLD_ACTIVE",
+      "sampleSessionId": "CRQ-8944"
+    },
+    {
+      "caseId": "CASE-04",
+      "title": "Khách A hoàn tất TT 100% trong 10p → Tự động đóng phiên Standby của Khách B",
+      "category": "payment_hold_concurrency",
+      "trigger": "#CRQ-8944 thanh toán thành công khi đồng hồ giữ phòng còn >00:00; hạng Executive về 0 phòng trống.",
+      "roomTransition": "payment_hold → booked_auction (#130 khóa vĩnh viễn)",
+      "bidTransition": "#CRQ-8944: won_paid_100 | #CRQ-8942: auto_closed",
+      "paymentTransition": "#CRQ-8944: paid_escrow_100 | #CRQ-8942: not_started",
+      "rejectCode": "REJ_AUTO_CLOSED_SOLD_OUT",
+      "outcome": "AUTO_CLOSED_SIBLING",
+      "sampleSessionId": "CRQ-8942"
+    },
+    {
+      "caseId": "CASE-05",
+      "title": "Khách A quá hạn giữ phòng 10 phút (00:00) → Nhả khóa #130 & Mở lại cho Khách B",
+      "category": "payment_hold_concurrency",
+      "trigger": "Đồng hồ 10:00 trên #CRQ-8944 chạm 00:00 mà chưa nhận được xác nhận thanh toán.",
+      "roomTransition": "payment_hold → vacant_unlocked (tự mở khóa tức thì)",
+      "bidTransition": "payment_hold_10m → release_after_hold (#CRQ-8942 thoát Standby)",
+      "paymentTransition": "awaiting_hold_10m → expired_hold_10m",
+      "rejectCode": "REJ_HOLD_EXPIRED_10M",
+      "outcome": "RELEASED_TO_VACANT",
+      "sampleSessionId": "CRQ-8932"
+    },
+    {
+      "caseId": "CASE-06",
+      "title": "Thẻ ngân hàng từ chối / Lỗi OTP 3DS trong lúc giữ phòng 10p",
+      "category": "payment_hold_concurrency",
+      "trigger": "Cổng thanh toán trả mã lỗi thẻ không đủ hạn mức hoặc xác thực 3DS thất bại và phiên đóng.",
+      "roomTransition": "payment_hold → vacant_unlocked",
+      "bidTransition": "payment_hold_10m → release_after_hold",
+      "paymentTransition": "processing_gateway → failed_gateway",
+      "rejectCode": "REJ_PAYMENT_GATEWAY_DECLINED",
+      "outcome": "PAYMENT_FAILED",
+      "sampleSessionId": "CRQ-8779"
+    },
+    {
+      "caseId": "CASE-07",
+      "title": "Khách chủ động bấm Thoát / Đổi ý ngay tại màn hình giữ phòng 10p",
+      "category": "payment_hold_concurrency",
+      "trigger": "Khách bấm nút Quay lại/Hủy giữ chỗ ở phút thứ 3 (còn 07:00) để xem khách sạn khác.",
+      "roomTransition": "payment_hold → vacant_unlocked (nhả khóa sớm trước 10p)",
+      "bidTransition": "payment_hold_10m → release_after_hold",
+      "paymentTransition": "awaiting_hold_10m → abandoned_by_guest",
+      "rejectCode": "REJ_GUEST_ABANDONED_HOLD",
+      "outcome": "RELEASED_EARLY",
+      "sampleSessionId": "CRQ-8780"
+    },
+    {
+      "caseId": "CASE-08",
+      "title": "Chặn Lễ tân khóa tay đè lên phòng đang Tạm khóa chờ TT 10p",
+      "category": "inventory_guardrail",
+      "trigger": "Khách Walk-in tới quầy đúng lúc phòng #130 đang ở trạng thái payment_hold (còn 08:15).",
+      "roomTransition": "Giữ nguyên payment_hold (Từ chối thao tác khóa tay cho tới khi hết 10p)",
+      "bidTransition": "Giữ nguyên payment_hold_10m",
+      "paymentTransition": "Giữ nguyên awaiting_hold_10m",
+      "rejectCode": null,
+      "outcome": "GUARDRAIL_PROTECTED",
+      "sampleSessionId": "CRQ-8944"
+    },
+    {
+      "caseId": "CASE-09",
+      "title": "Chặn mở khóa thủ công đối với phòng đã Thanh toán 100% (booked_auction)",
+      "category": "inventory_guardrail",
+      "trigger": "Nhân sự bấm vào ô phòng #116/#125 đã TT 100% trên Sơ đồ 30 phòng để thử mở khóa.",
+      "roomTransition": "Giữ nguyên booked_auction (Khóa cứng bảo vệ khách)",
+      "bidTransition": "won_paid_100",
+      "paymentTransition": "paid_escrow_100",
+      "rejectCode": null,
+      "outcome": "GUARDRAIL_PROTECTED",
+      "sampleSessionId": "CRQ-8940"
+    },
+    {
+      "caseId": "CASE-10",
+      "title": "Lễ tân khóa 1 phòng trống cho khách Walk-in/OTA khi chưa có ai giữ 10p",
+      "category": "inventory_guardrail",
+      "trigger": "Phòng đang ở vacant_unlocked; Lễ tân bấm 'Khóa phòng' trên lịch 14 ngày.",
+      "roomTransition": "vacant_unlocked → booked_other",
+      "bidTransition": "Cập nhật giảm số buồng trống của các phiên Live trùng ngày",
+      "paymentTransition": "Thu trực tiếp tại quầy / OTA",
+      "rejectCode": null,
+      "outcome": "INVENTORY_SYNCED",
+      "sampleSessionId": "CRQ-8941"
+    },
+    {
+      "caseId": "CASE-11",
+      "title": "Lễ tân nhập giá thấp hơn Giá sàn bảo vệ → Bị chặn cứng bởi RBAC",
+      "category": "rbac_pricing",
+      "trigger": "Vai trò Lễ tân nhập 500.000đ (< Giá sàn 750.000đ) trong cửa sổ Báo giá tùy chỉnh.",
+      "roomTransition": "vacant_unlocked",
+      "bidTransition": "Chặn nút Gửi báo giá (không phát sinh bid lỗi)",
+      "paymentTransition": "not_started",
+      "rejectCode": "REJ_FLOOR_GUARDRAIL_BLOCKED",
+      "outcome": "RBAC_BLOCKED",
+      "sampleSessionId": "CRQ-8941"
+    },
+    {
+      "caseId": "CASE-12",
+      "title": "Quản lý tắt Auto-Bid & Tích xác nhận duyệt giá dưới sàn thành công",
+      "category": "rbac_pricing",
+      "trigger": "Vai trò Quản lý chủ động tắt Auto-Bid, tích ô chịu trách nhiệm duyệt dưới sàn và gửi báo giá 1 lần.",
+      "roomTransition": "vacant_unlocked",
+      "bidTransition": "pending_quote → sent_waiting_guest",
+      "paymentTransition": "not_started",
+      "rejectCode": null,
+      "outcome": "MANAGER_OVERRIDE_SENT",
+      "sampleSessionId": "CRQ-8941"
+    },
+    {
+      "caseId": "CASE-13",
+      "title": "Đoàn lớn (>4 phòng hoặc >8 khách) → Tự động chặn Auto-Bid chuyển Duyệt tay",
+      "category": "rbac_pricing",
+      "trigger": "Yêu cầu đoàn 5 phòng / 10 khách vượt trần an toàn Auto-Bid.",
+      "roomTransition": "vacant_unlocked",
+      "bidTransition": "Chờ Quản lý kiểm tra quỹ phòng liên thông & báo giá tay",
+      "paymentTransition": "not_started",
+      "rejectCode": null,
+      "outcome": "MANUAL_REVIEW_REQUIRED",
+      "sampleSessionId": "CRQ-8938"
+    },
+    {
+      "caseId": "CASE-14",
+      "title": "Bật Xả đêm (-15% sau 20:00) → Chỉ giảm đơn nhận phòng tối nay, giữ nguyên ngày xa",
+      "category": "rbac_pricing",
+      "trigger": "Bật công tắc Xả đêm 20:00: #CRQ-8941 (06/11) giảm sàn -15%, còn #CRQ-8942 (07/11) & #CRQ-8943 (09/11) giữ nguyên.",
+      "roomTransition": "vacant_unlocked",
+      "bidTransition": "Tự động tính lại AI Suggested Price cho phiên nhận phòng đêm nay",
+      "paymentTransition": "not_started",
+      "rejectCode": null,
+      "outcome": "RATE_PARITY_SAFE",
+      "sampleSessionId": "CRQ-8941"
+    },
+    {
+      "caseId": "CASE-15",
+      "title": "Khách từ chối báo giá do cao hơn đối thủ hoặc thiếu Bữa sáng / Late Check-out",
+      "category": "bidding_loss",
+      "trigger": "Giá chào vượt mặt bằng >5% hoặc không đính kèm đặc quyền mềm khi Match Score <90%.",
+      "roomTransition": "vacant_unlocked (phòng vẫn mở bán bình thường)",
+      "bidTransition": "sent_waiting_guest → rejected_by_guest",
+      "paymentTransition": "not_started",
+      "rejectCode": "REJ_COMPETITOR_WON_PRICE",
+      "outcome": "COMPETITIVE_LOSS",
+      "sampleSessionId": "CRQ-8924"
+    },
+    {
+      "caseId": "CASE-16",
+      "title": "Phiên hết hạn 60 phút (TTL 00:00) do phản hồi chậm hoặc khách rời phiên",
+      "category": "bidding_loss",
+      "trigger": "Ca đêm không bật Auto-Bid (gửi sau 31 phút) hoặc khách không thao tác hết 60 phút.",
+      "roomTransition": "vacant_unlocked",
+      "bidTransition": "sent_waiting_guest → expired_60m",
+      "paymentTransition": "not_started",
+      "rejectCode": "REJ_SLOW_RESPONSE_TTL_60M",
+      "outcome": "EXPIRED_60M",
+      "sampleSessionId": "CRQ-8909"
+    },
+    {
+      "caseId": "CASE-17",
+      "title": "Khách sạn chủ động bấm 'Bỏ qua' phiên Live để giữ phòng bán lẻ giá cao",
+      "category": "bidding_loss",
+      "trigger": "Quản lý/Lễ tân bấm 'Bỏ qua' trên thẻ phiên đang mở.",
+      "roomTransition": "vacant_unlocked (hoặc khóa tay sang booked_other)",
+      "bidTransition": "pending_quote → partner_skipped",
+      "paymentTransition": "not_started",
+      "rejectCode": "REJ_PARTNER_SKIPPED_SESSION",
+      "outcome": "PARTNER_SKIPPED",
+      "sampleSessionId": "CRQ-8943"
+    },
+    {
+      "caseId": "CASE-18",
+      "title": "Hủy bất khả kháng sau khi đã TT 100% (có chứng từ xác thực) vs. Đối soát T+7",
+      "category": "post_payment",
+      "trigger": "Sự cố thiên tai/chuyến bay hủy có xác nhận hợp lệ trước giờ nhận phòng → Hoàn trả & mở khóa lại buồng.",
+      "roomTransition": "booked_auction → vacant_unlocked (nếu hủy hợp lệ trước check-in)",
+      "bidTransition": "won_paid_100 → cancelled_force_majeure (hoặc giữ won_paid_100 tới T+7)",
+      "paymentTransition": "paid_escrow_100 → refunded_force_majeure (hoặc settled_hotel ở T+7)",
+      "rejectCode": null,
+      "outcome": "SETTLED_OR_FORCE_MAJEURE",
+      "sampleSessionId": "CRQ-8792"
+    }
+  ]
+}
