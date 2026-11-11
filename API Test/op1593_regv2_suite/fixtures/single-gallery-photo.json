@@ -1,0 +1,38 @@
+{
+  "propertyName": "QA Sample Hotel Da Nang",
+  "legalName": "QA Sample Hospitality Company Limited",
+  "streetAddress": "100 Vo Nguyen Giap Street, My An Ward",
+  "countryCode": "VN",
+  "administrativeAreaCode": "<VALID_VN_LOCATION_L2_CODE>",
+  "propertyTypeKey": "HOTEL",
+  "starRating": 4,
+  "officialWebsite": "https://qa-sample-hotel.example.test",
+  "primaryContact": {
+    "fullName": "QA Tester",
+    "jobTitle": "General Manager",
+    "email": "qa-sample@example.test",
+    "phoneCountry": "VN",
+    "phone": "+84900000000",
+    "preferredContactMethod": "EMAIL"
+  },
+  "businessDocument": [
+    {
+      "assetId": "00000000-0000-4000-8000-000000000101",
+      "uploadReceipt": "<VALID_FINALIZED_DOC_RECEIPT_1>",
+      "order": 1
+    }
+  ],
+  "gallery": [
+    {
+      "assetId": "00000000-0000-4000-8000-000000000201",
+      "uploadReceipt": "<VALID_FINALIZED_PHOTO_RECEIPT_1>",
+      "order": 1
+    }
+  ],
+  "submissionAcknowledgement": {
+    "policyVersion": "<VALID_POLICY_VERSION_V2>",
+    "informationAccuracyAccepted": true,
+    "termsAndPrivacyAccepted": true,
+    "verificationAuthorizationAccepted": true
+  }
+}
