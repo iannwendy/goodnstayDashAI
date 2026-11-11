@@ -55,7 +55,7 @@ const AMENITY_MAPPING_RULES: Record<string, RegExp> = {
 
 ### 3. Giải Bài Toán Khó Nhất Của Trường `Room Type`: Xử Lý Các Tên Phòng "Sáng Tạo" (Như `"Urban Room"` Trong Ảnh)
 
-Nhìn vào bức ảnh thứ 2 của bạn ([`image (2) (1).png`](file:///Users/iannwendy/Desktop/goodNstay/imgs/image%20(2)%20(1).png)), ngay bên dưới dropdown `Room Type` chính là một căn phòng có tên **`"Urban Room"`**!
+Nhìn vào bức ảnh thứ 2 của bạn ([`image (2) (1).png`](file:///Users/iannwendy/Desktop/goodNstay/ota-rate-shopping-demo/docs/imgs/image%20(2)%20(1).png)), ngay bên dưới dropdown `Room Type` chính là một căn phòng có tên **`"Urban Room"`**!
 * **Vấn đề**: Dropdown `Room Type` của goodNstay chỉ có 6 giá trị chuẩn: `Standard`, `Superior`, `Deluxe`, `Executive`, `Suite`, `Any Room`. Nhưng các khách sạn boutique/lifestyle trên Agoda, Booking, Trip lại rất hay đặt tên phòng kiểu:
   * *"Urban Room"*, *"Classic Room"*, *"Cozy Room"*, *"Signature Room"*, *"Premier Room"*, *"Grand Room"*, *"Oasis Room"*, *"Studio"*.
 * Nếu chỉ tìm chữ `"Standard"` hay `"Deluxe"` trong tên phòng thì `"Urban Room"` sẽ bị rơi vào `Any Room` $\rightarrow$ **Mất khả năng lọc và so sánh chính xác hạng phòng!**
@@ -103,7 +103,7 @@ flowchart TD
 Bạn đặt ra yêu cầu rất sát thực tế: **"Cần một cái filter để lọc đúng hạng phòng, single room hay nhiều giường, đảm bảo so sánh phải chính xác cùng một hạng phòng"**.
 
 #### Tại sao phải tách lớp dữ liệu Giường thành 2 tầng?
-Trên giao diện Form goodNstay ([`image (3).png`](file:///Users/iannwendy/Desktop/goodNstay/imgs/image%20(3).png)), dropdown `Bed Type` chỉ có **4 lựa chọn**:
+Trên giao diện Form goodNstay ([`image (3).png`](file:///Users/iannwendy/Desktop/goodNstay/ota-rate-shopping-demo/docs/imgs/image%20(3).png)), dropdown `Bed Type` chỉ có **4 lựa chọn**:
 1. `Single`
 2. `Twin`
 3. `Double (Queen, King)`

@@ -21,3 +21,7 @@ __pycache__/
 .pytest_cache/
 ota-rate-shopping-demo/dist/
 ota-rate-shopping-demo/node_modules
+*.tsbuildinfo
+
+# Nested Git repository được quản lý riêng tại https://github.com/iannwendy/dashv2.git
+dashboard/partner-auction-dashboard-v2/
