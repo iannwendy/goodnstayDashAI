@@ -262,20 +262,54 @@ interface ReportResponse {
   comparisonGroups: ComparisonGroup[];
 }
 
-const OTA_LABELS: Record<OtaCode, string> = {
-  GOODNSTAY: "Giá mốc chuẩn (BAR)",
-  AGODA: "Agoda (Live)",
-  BOOKING: "Booking.com (Live)",
-  EXPEDIA: "Expedia (EPS)",
-  TRIP: "Trip.com",
+type LocaleCode = "vi" | "ko";
+
+function detectInitialLocale(): LocaleCode {
+  if (typeof window !== "undefined") {
+    const winLocale = (window as unknown as { __GNS_LOCALE__?: string })
+      .__GNS_LOCALE__;
+    if (winLocale === "ko") return "ko";
+    if (winLocale === "vi") return "vi";
+  }
+  if (typeof document !== "undefined") {
+    const htmlLang = (document.documentElement.lang || "").toLowerCase();
+    if (htmlLang.startsWith("ko")) return "ko";
+  }
+  return "vi";
+}
+
+const OTA_LABELS_BY_LOCALE: Record<LocaleCode, Record<OtaCode, string>> = {
+  vi: {
+    GOODNSTAY: "Giá mốc chuẩn (BAR)",
+    AGODA: "Agoda (Live)",
+    BOOKING: "Booking.com (Live)",
+    EXPEDIA: "Expedia (EPS)",
+    TRIP: "Trip.com",
+  },
+  ko: {
+    GOODNSTAY: "기준 요금 (BAR)",
+    AGODA: "Agoda (Live)",
+    BOOKING: "Booking.com (Live)",
+    EXPEDIA: "Expedia (EPS)",
+    TRIP: "Trip.com",
+  },
 };
 
-const OTA_SHORT_LABELS: Record<OtaCode, string> = {
-  GOODNSTAY: "Giá chuẩn (BAR)",
-  AGODA: "Agoda",
-  BOOKING: "Booking.com",
-  EXPEDIA: "Expedia",
-  TRIP: "Trip.com",
+const OTA_SHORT_LABELS_BY_LOCALE: Record<LocaleCode, Record<OtaCode, string>> = {
+  vi: {
+    GOODNSTAY: "Giá chuẩn (BAR)",
+    AGODA: "Agoda",
+    BOOKING: "Booking.com",
+    EXPEDIA: "Expedia",
+    TRIP: "Trip.com",
+  },
+  ko: {
+    GOODNSTAY: "기준가 (BAR)",
+    AGODA: "Agoda",
+    BOOKING: "Booking.com",
+    EXPEDIA: "Expedia",
+    TRIP: "Trip.com",
+  },
 };
 
 const MAPPING_OTA_SHORT_LABELS: Record<MappingOtaKey, string> = {
@@ -287,37 +321,84 @@ const MAPPING_OTA_SHORT_LABELS: Record<MappingOtaKey, string> = {
   GOOGLE_HOTELS: "Google",
 };
 
-const VIEW_LABELS: Record<string, string> = {
-  CITY_VIEW: "City View",
-  OCEAN_SEA_VIEW: "Ocean View",
-  OCEAN_FRONT: "Beachfront",
-  PARTIAL_SEA_VIEW: "Partial Sea View",
-  POOL_VIEW: "Pool View",
-  GARDEN_VIEW: "Garden View",
-  NO_WINDOW: "No Window",
-  STANDARD_VIEW: "Tiêu chuẩn",
+const VIEW_LABELS_BY_LOCALE: Record<LocaleCode, Record<string, string>> = {
+  vi: {
+    CITY_VIEW: "City View",
+    OCEAN_SEA_VIEW: "Ocean View",
+    OCEAN_FRONT: "Beachfront",
+    PARTIAL_SEA_VIEW: "Partial Sea View",
+    POOL_VIEW: "Pool View",
+    GARDEN_VIEW: "Garden View",
+    NO_WINDOW: "No Window",
+    STANDARD_VIEW: "Tiêu chuẩn",
+  },
+  ko: {
+    CITY_VIEW: "시티뷰",
+    OCEAN_SEA_VIEW: "오션뷰",
+    OCEAN_FRONT: "비치프론트",
+    PARTIAL_SEA_VIEW: "부분 오션뷰",
+    POOL_VIEW: "풀뷰",
+    GARDEN_VIEW: "가든뷰",
+    NO_WINDOW: "창문 없음",
+    STANDARD_VIEW: "일반 전망",
+  },
 };
 
-const BED_SHORT_LABELS: Record<string, string> = {
-  SINGLE_1_BED: "1 Giường đơn",
-  TWIN_2_SINGLE: "2 Giường đơn",
-  DOUBLE_QUEEN_1_BED: "1 Giường đôi",
-  KING_1_BED: "1 Giường King",
-  FLEX_DOUBLE_OR_TWIN: "Đôi / 2 Đơn",
-  MULTI_BED_TRIPLE: "Triple",
-  MULTI_BED_QUAD_FAMILY: "Family",
+const BED_SHORT_LABELS_BY_LOCALE: Record<LocaleCode, Record<string, string>> = {
+  vi: {
+    SINGLE_1_BED: "1 Giường đơn",
+    TWIN_2_SINGLE: "2 Giường đơn",
+    DOUBLE_QUEEN_1_BED: "1 Giường đôi",
+    KING_1_BED: "1 Giường King",
+    FLEX_DOUBLE_OR_TWIN: "Đôi / 2 Đơn",
+    MULTI_BED_TRIPLE: "Triple",
+    MULTI_BED_QUAD_FAMILY: "Family",
+  },
+  ko: {
+    SINGLE_1_BED: "싱글베드 1개",
+    TWIN_2_SINGLE: "싱글베드 2개",
+    DOUBLE_QUEEN_1_BED: "더블베드 1개",
+    KING_1_BED: "킹베드 1개",
+    FLEX_DOUBLE_OR_TWIN: "더블 / 2 싱글",
+    MULTI_BED_TRIPLE: "트리플 (3인)",
+    MULTI_BED_QUAD_FAMILY: "패밀리 (4인+)",
+  },
 };
 
 function formatFullVnd(amount: number): string {
   return `${Math.round(amount || 0).toLocaleString("vi-VN")}đ`;
 }
 
-function formatCompactVnd(amount: number): string {
+function formatCompactVnd(amount: number, locale: LocaleCode = "vi"): string {
   const val = Math.round(amount || 0);
   if (val >= 1_000_000) {
-    return `${(val / 1_000_000).toFixed(2).replace(/\.?0+$/, "")}tr`;
+    const num = (val / 1_000_000).toFixed(2).replace(/\.?0+$/, "");
+    return locale === "ko" ? `${num}M₫` : `${num}tr`;
   }
-  return `${Math.round(val / 1_000)}k`;
+  return locale === "ko"
+    ? `${Math.round(val / 1_000)}K₫`
+    : `${Math.round(val / 1_000)}k`;
+}
+
+function formatLocalizedDescription(
+  offer: OtaOfferEntry,
+  locale: LocaleCode
+): string {
+  if (locale !== "ko") {
+    return offer.formFields.description;
+  }
+  const areaText = offer.filterMeta?.areaSqm
+    ? `${offer.filterMeta.areaSqm} m²`
+    : "표준";
+  const viewCode = offer.filterMeta?.viewCategory || "STANDARD_VIEW";
+  const viewText = VIEW_LABELS_BY_LOCALE.ko[viewCode] || viewCode;
+  const bedCode = offer.filterMeta?.detailedBedCategory || "";
+  const bedText =
+    BED_SHORT_LABELS_BY_LOCALE.ko[bedCode] ||
+    offer.filterMeta?.rawBedText ||
+    offer.formFields.bedType;
+  const amenitiesText = (offer.formFields.amenityTypes || []).join(", ");
+  return `[객실 등급: ${offer.formFields.roomType} | 면적: ${areaText} | 전망: ${viewText} | 침대: ${bedText}] — ${offer.formFields.roomName} 객실 (최대 ${offer.formFields.maximumGuests}인 투숙 가능). 기본 구비 시설: ${amenitiesText}.`;
 }
 
 /**
@@ -326,10 +407,13 @@ function formatCompactVnd(amount: number): string {
  */
 function formatVietnamDateTime(
   isoOrStr?: string | null,
-  preformattedVi?: string | null
+  preformattedVi?: string | null,
+  locale: LocaleCode = "vi"
 ): string {
   if (preformattedVi && preformattedVi.includes("GMT+7")) {
-    return preformattedVi;
+    return locale === "ko"
+      ? preformattedVi.replace("(Giờ VN GMT+7)", "(베트남 시간 GMT+7)")
+      : preformattedVi;
   }
   const d = isoOrStr ? new Date(isoOrStr) : new Date();
   const validDate = Number.isNaN(d.getTime()) ? new Date() : d;
@@ -344,10 +428,18 @@ function formatVietnamDateTime(
     hour12: false,
   }).formatToParts(validDate);
   const map = Object.fromEntries(parts.map((p) => [p.type, p.value]));
-  return `${map.hour}:${map.minute}:${map.second} — ${map.day}/${map.month}/${map.year} (Giờ VN GMT+7)`;
+  const tzSuffix =
+    locale === "ko" ? "(베트남 시간 GMT+7)" : "(Giờ VN GMT+7)";
+  return `${map.hour}:${map.minute}:${map.second} — ${map.day}/${map.month}/${map.year} ${tzSuffix}`;
 }
 
 export function App() {
+  const [locale] = useState<LocaleCode>(() => detectInitialLocale());
+  const isKo = locale === "ko";
+  const OTA_LABELS = OTA_LABELS_BY_LOCALE[locale];
+  const OTA_SHORT_LABELS = OTA_SHORT_LABELS_BY_LOCALE[locale];
+  const VIEW_LABELS = VIEW_LABELS_BY_LOCALE[locale];
+  const BED_SHORT_LABELS = BED_SHORT_LABELS_BY_LOCALE[locale];
   const [report, setReport] = useState<ReportResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [scraping, setScraping] = useState<boolean>(false);
@@ -468,16 +560,23 @@ export function App() {
       if (reqId !== latestFetchIdRef.current) return;
       setApiErrorState({
         failed: true,
-        message: "Lỗi kết nối API đối sánh giá — Sàn chưa cào giá",
+        message: isKo
+          ? "요금 비교 API 연결 오류 — 채널 요금 미수집"
+          : "Lỗi kết nối API đối sánh giá — Sàn chưa cào giá",
         failedOtas: ["AGODA", "BOOKING", "EXPEDIA", "TRIP"],
       });
-      showToast("Lỗi gọi API đối sánh giá — Trạng thái: Sàn chưa cào giá.");
+      showToast(
+        isKo
+          ? "요금 비교 API 호출 오류 — 상태: 채널 요금 미수집"
+          : "Lỗi gọi API đối sánh giá — Trạng thái: Sàn chưa cào giá."
+      );
     } finally {
       if (reqId === latestFetchIdRef.current) {
         setLoading(false);
       }
     }
   }, [
+    isKo,
     selectedHotelKey,
     selectedCheckIn,
     roomType,
@@ -520,16 +619,22 @@ export function App() {
       setApiErrorState(null);
       await fetchReport();
       showToast(
-        `Đã cào trực tiếp thành công ${fresh.hotelName} (Ngày ${fresh.checkIn}): Agoda ${fresh.liveScrapeProof?.agoda.masterRoomCount ?? 0} hạng phòng · Booking.com ${fresh.liveScrapeProof?.booking.uniqueRoomCount ?? 0} hạng phòng.`
+        isKo
+          ? `${fresh.hotelName} (${fresh.checkIn}) 실시간 수집 완료: Agoda ${fresh.liveScrapeProof?.agoda.masterRoomCount ?? 0}개 객실 유형 · Booking.com ${fresh.liveScrapeProof?.booking.uniqueRoomCount ?? 0}개 객실 유형.`
+          : `Đã cào trực tiếp thành công ${fresh.hotelName} (Ngày ${fresh.checkIn}): Agoda ${fresh.liveScrapeProof?.agoda.masterRoomCount ?? 0} hạng phòng · Booking.com ${fresh.liveScrapeProof?.booking.uniqueRoomCount ?? 0} hạng phòng.`
       );
     } catch {
       setApiErrorState({
         failed: true,
-        message: "Lỗi gọi API cào giá trực tiếp — Sàn chưa cào giá",
+        message: isKo
+          ? "실시간 수집 API 호출 오류 — 채널 요금 미수집"
+          : "Lỗi gọi API cào giá trực tiếp — Sàn chưa cào giá",
         failedOtas: ["AGODA", "BOOKING"],
       });
       showToast(
-        "Không thể kết nối phiên cào trực tiếp — Trạng thái: Sàn chưa cào giá."
+        isKo
+          ? "실시간 수집 세션에 연결할 수 없습니다 — 상태: 채널 요금 미수집"
+          : "Không thể kết nối phiên cào trực tiếp — Trạng thái: Sàn chưa cào giá."
       );
     } finally {
       setScraping(false);
@@ -650,7 +755,11 @@ export function App() {
               <Building2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
               <select
                 data-testid="select-hotel"
-                aria-label="Chọn khách sạn cào thực tế"
+                aria-label={
+                  isKo
+                    ? "실시간 수집 호텔 선택"
+                    : "Chọn khách sạn cào thực tế"
+                }
                 value={selectedHotelKey}
                 onChange={(e) => {
                   setSelectedHotelKey(e.target.value);
@@ -659,10 +768,14 @@ export function App() {
                 className="bg-transparent font-medium text-xs text-zinc-900 pr-1 focus:outline-none cursor-pointer"
               >
                 <option value="champton-nha-trang">
-                  Champton Nha Trang Hotel (5 Sao)
+                  {isKo
+                    ? "Champton Nha Trang Hotel (5성급)"
+                    : "Champton Nha Trang Hotel (5 Sao)"}
                 </option>
                 <option value="libra-nha-trang">
-                  Libra Hotel Nha Trang (4 Sao)
+                  {isKo
+                    ? "Libra Hotel Nha Trang (4성급)"
+                    : "Libra Hotel Nha Trang (4 Sao)"}
                 </option>
               </select>
             </div>
@@ -671,7 +784,11 @@ export function App() {
               <Calendar className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
               <select
                 data-testid="select-checkin"
-                aria-label="Chọn ngày Check-in để cào thật"
+                aria-label={
+                  isKo
+                    ? "실시간 수집 체크인 날짜 선택"
+                    : "Chọn ngày Check-in để cào thật"
+                }
                 value={selectedCheckIn}
                 onChange={(e) => {
                   setSelectedCheckIn(e.target.value);
@@ -679,9 +796,21 @@ export function App() {
                 }}
                 className="bg-transparent font-mono text-xs text-zinc-800 pr-1 focus:outline-none cursor-pointer"
               >
-                <option value="2026-11-20">Check-in: 20/11/2026 (1 đêm)</option>
-                <option value="2026-11-25">Check-in: 25/11/2026 (1 đêm)</option>
-                <option value="2026-12-05">Check-in: 05/12/2026 (1 đêm)</option>
+                <option value="2026-11-20">
+                  {isKo
+                    ? "체크인: 2026-11-20 (1박)"
+                    : "Check-in: 20/11/2026 (1 đêm)"}
+                </option>
+                <option value="2026-11-25">
+                  {isKo
+                    ? "체크인: 2026-11-25 (1박)"
+                    : "Check-in: 25/11/2026 (1 đêm)"}
+                </option>
+                <option value="2026-12-05">
+                  {isKo
+                    ? "체크인: 2026-12-05 (1박)"
+                    : "Check-in: 05/12/2026 (1 đêm)"}
+                </option>
               </select>
             </div>
           </div>
@@ -699,22 +828,30 @@ export function App() {
               }`}
               title={
                 hasUnscrapedLiveOta
-                  ? "Có sàn chưa cào được giá hoặc lỗi gọi API — Bấm để kiểm tra"
-                  : "Bấm xem bằng chứng ảnh chụp màn hình và SHA-256"
+                  ? isKo
+                    ? "미수집 채널 또는 API 오류가 있습니다 — 클릭하여 확인"
+                    : "Có sàn chưa cào được giá hoặc lỗi gọi API — Bấm để kiểm tra"
+                  : isKo
+                    ? "실시간 수집 증빙 및 객실 딥링크 확인"
+                    : "Bấm xem bằng chứng ảnh chụp màn hình và SHA-256"
               }
             >
               {hasUnscrapedLiveOta ? (
                 <>
                   <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
                   <span className="font-medium">
-                    Live {liveHealthyCount} Sàn · Sàn chưa cào giá
+                    {isKo
+                      ? `실시간 ${liveHealthyCount}개 채널 · 요금 미수집`
+                      : `Live ${liveHealthyCount} Sàn · Sàn chưa cào giá`}
                   </span>
                 </>
               ) : (
                 <>
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 pulse-live" />
                   <span className="font-medium">
-                    Live 2 Sàn: Agoda + Booking.com
+                    {isKo
+                      ? "실시간 2개 채널: Agoda + Booking.com"
+                      : "Live 2 Sàn: Agoda + Booking.com"}
                   </span>
                 </>
               )}
@@ -725,8 +862,12 @@ export function App() {
               data-testid="btn-toggle-theme"
               aria-label={
                 theme === "dark"
-                  ? "Chuyển sang giao diện Sáng (Light Mode)"
-                  : "Chuyển sang giao diện Tối (Dark Mode)"
+                  ? isKo
+                    ? "라이트 모드(Light Mode)로 전환"
+                    : "Chuyển sang giao diện Sáng (Light Mode)"
+                  : isKo
+                    ? "다크 모드(Dark Mode)로 전환"
+                    : "Chuyển sang giao diện Tối (Dark Mode)"
               }
               onClick={() =>
                 setTheme((prev) => (prev === "dark" ? "light" : "dark"))
@@ -738,8 +879,12 @@ export function App() {
               }`}
               title={
                 theme === "dark"
-                  ? "Đang ở chế độ Tối (Dark Mode) — Bấm để chuyển sang Sáng"
-                  : "Đang ở chế độ Sáng (Light Mode) — Bấm để chuyển sang Tối"
+                  ? isKo
+                    ? "현재 다크 모드 — 클릭하여 라이트 모드로 전환"
+                    : "Đang ở chế độ Tối (Dark Mode) — Bấm để chuyển sang Sáng"
+                  : isKo
+                    ? "현재 라이트 모드 — 클릭하여 다크 모드로 전환"
+                    : "Đang ở chế độ Sáng (Light Mode) — Bấm để chuyển sang Tối"
               }
             >
               {theme === "dark" ? (
@@ -766,7 +911,7 @@ export function App() {
               }`}
             >
               <Calculator className="w-3.5 h-3.5" />
-              <span>Công thức</span>
+              <span>{isKo ? "산출 공식" : "Công thức"}</span>
             </button>
 
             <button
@@ -781,8 +926,12 @@ export function App() {
               />
               <span>
                 {scraping
-                  ? "Đang cào Agoda + Booking..."
-                  : "Cào Trực Tiếp Ngay"}
+                  ? isKo
+                    ? "Agoda + Booking 실시간 수집 중..."
+                    : "Đang cào Agoda + Booking..."
+                  : isKo
+                    ? "실시간 즉시 수집"
+                    : "Cào Trực Tiếp Ngay"}
               </span>
             </button>
           </div>
@@ -802,7 +951,7 @@ export function App() {
               onClick={() => setToastMessage(null)}
               className="text-zinc-400 hover:text-white text-xs cursor-pointer"
             >
-              Đóng
+              {isKo ? "닫기" : "Đóng"}
             </button>
           </div>
         </div>
@@ -817,7 +966,9 @@ export function App() {
           >
             <div className="flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
-              <span className="font-semibold">Sàn chưa cào giá:</span>
+              <span className="font-semibold">
+                {isKo ? "채널 요금 미수집:" : "Sàn chưa cào giá:"}
+              </span>
               <span>{apiErrorState.message}</span>
             </div>
             <div className="flex items-center gap-2">
@@ -827,7 +978,7 @@ export function App() {
                 onClick={() => handleLiveScrape()}
                 className="px-2.5 py-1 rounded-lg bg-zinc-900 text-white text-[11px] font-medium hover:bg-zinc-800 cursor-pointer"
               >
-                Thử cào lại
+                {isKo ? "다시 수집" : "Thử cào lại"}
               </button>
               <button
                 type="button"
@@ -835,7 +986,7 @@ export function App() {
                 onClick={() => setApiErrorState(null)}
                 className="text-amber-800 hover:text-amber-950 text-[11px] font-medium underline cursor-pointer"
               >
-                Ẩn cảnh báo
+                {isKo ? "경고 숨기기" : "Ẩn cảnh báo"}
               </button>
             </div>
           </div>
@@ -850,14 +1001,16 @@ export function App() {
           <section className="p-4 rounded-2xl bg-white border border-zinc-200/90 shadow-2xs space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-zinc-900">
-                Công Thức Chuẩn Hóa &amp; Khớp Phòng Đa Sàn
+                {isKo
+                  ? "다중 OTA 요금 정규화 및 객실 매칭 공식"
+                  : "Công Thức Chuẩn Hóa & Khớp Phòng Đa Sàn"}
               </span>
               <button
                 type="button"
                 onClick={() => setShowFormulas(false)}
                 className="inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-900 cursor-pointer"
               >
-                Thu gọn <ChevronUp className="w-3.5 h-3.5" />
+                {isKo ? "접기" : "Thu gọn"} <ChevronUp className="w-3.5 h-3.5" />
               </button>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
@@ -869,8 +1022,9 @@ export function App() {
                   roomGridData.masterRooms
                 </div>
                 <div className="text-zinc-500 text-[11px]">
-                  Bóc trực tiếp mã phòng, giá trước thuế (Net) và sau thuế
-                  (Gross).
+                  {isKo
+                    ? "객실 고유 ID, 세전 요금(Net) 및 세후 총액(Gross)을 직접 추출합니다."
+                    : "Bóc trực tiếp mã phòng, giá trước thuế (Net) và sau thuế (Gross)."}
                 </div>
               </div>
               <div className="p-3 rounded-xl bg-zinc-50/80 space-y-1">
@@ -881,18 +1035,24 @@ export function App() {
                   #hprt-table tr[data-block-id]
                 </div>
                 <div className="text-zinc-500 text-[11px]">
-                  Trích xuất mã blockId và giá hiển thị thực tế theo đêm.
+                  {isKo
+                    ? "실제 blockId 코드와 1박당 웹 표시 요금을 직접 추출합니다."
+                    : "Trích xuất mã blockId và giá hiển thị thực tế theo đêm."}
                 </div>
               </div>
               <div className="p-3 rounded-xl bg-zinc-50/80 space-y-1">
                 <div className="font-semibold text-zinc-900">
-                  3. Khóa Khớp Phòng (Match Key)
+                  {isKo
+                    ? "3. 객실 매칭 키 (Match Key)"
+                    : "3. Khóa Khớp Phòng (Match Key)"}
                 </div>
                 <div className="font-mono text-[11px] text-sky-700">
                   Tier + Bed + View + Area (m²)
                 </div>
                 <div className="text-zinc-500 text-[11px]">
-                  Ghép tự động cùng hạng phòng giữa các sàn OTA dù khác tên gọi.
+                  {isKo
+                    ? "OTA마다 객실명이 달라도 동일한 물리적 객실로 1:1 자동 매칭합니다."
+                    : "Ghép tự động cùng hạng phòng giữa các sàn OTA dù khác tên gọi."}
                 </div>
               </div>
             </div>
@@ -910,7 +1070,7 @@ export function App() {
               </span>
               {isBusy ? (
                 <span className="text-[11px] font-mono text-zinc-600 bg-zinc-100 px-2 py-0.5 rounded-md whitespace-nowrap shrink-0 animate-pulse">
-                  Đang cào...
+                  {isKo ? "수집 중..." : "Đang cào..."}
                 </span>
               ) : agodaLiveOk ? (
                 <span
@@ -924,7 +1084,7 @@ export function App() {
                   data-testid="kpi-status-agoda"
                   className="text-[11px] font-mono text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md whitespace-nowrap shrink-0"
                 >
-                  Sàn chưa cào giá
+                  {isKo ? "요금 미수집" : "Sàn chưa cào giá"}
                 </span>
               )}
             </div>
@@ -943,7 +1103,13 @@ export function App() {
                     {agodaLiveOk ? (proof?.agoda.masterRoomCount ?? 0) : 0}
                   </span>
                   <span className="text-xs text-zinc-400">
-                    {agodaLiveOk ? "hạng phòng" : "Sàn chưa cào giá"}
+                    {agodaLiveOk
+                      ? isKo
+                        ? "개 객실 유형"
+                        : "hạng phòng"
+                      : isKo
+                        ? "요금 미수집"
+                        : "Sàn chưa cào giá"}
                   </span>
                 </div>
                 {proof?.agoda.sourceUrl && (
@@ -953,7 +1119,8 @@ export function App() {
                     rel="noreferrer"
                     className="inline-flex items-center gap-0.5 text-xs text-zinc-600 hover:text-zinc-950 font-medium"
                   >
-                    Mở Agoda <ExternalLink className="w-3 h-3" />
+                    {isKo ? "Agoda 열기" : "Mở Agoda"}{" "}
+                    <ExternalLink className="w-3 h-3" />
                   </a>
                 )}
               </div>
@@ -967,7 +1134,7 @@ export function App() {
               </span>
               {isBusy ? (
                 <span className="text-[11px] font-mono text-zinc-600 bg-zinc-100 px-2 py-0.5 rounded-md whitespace-nowrap shrink-0 animate-pulse">
-                  Đang cào...
+                  {isKo ? "수집 중..." : "Đang cào..."}
                 </span>
               ) : bookingLiveOk ? (
                 <span
@@ -981,7 +1148,7 @@ export function App() {
                   data-testid="kpi-status-booking"
                   className="text-[11px] font-mono text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md whitespace-nowrap shrink-0"
                 >
-                  Sàn chưa cào giá
+                  {isKo ? "요금 미수집" : "Sàn chưa cào giá"}
                 </span>
               )}
             </div>
@@ -1000,7 +1167,13 @@ export function App() {
                     {bookingLiveOk ? (proof?.booking.uniqueRoomCount ?? 0) : 0}
                   </span>
                   <span className="text-xs text-zinc-400">
-                    {bookingLiveOk ? "hạng phòng" : "Sàn chưa cào giá"}
+                    {bookingLiveOk
+                      ? isKo
+                        ? "개 객실 유형"
+                        : "hạng phòng"
+                      : isKo
+                        ? "요금 미수집"
+                        : "Sàn chưa cào giá"}
                   </span>
                 </div>
                 {proof?.booking.sourceUrl && (
@@ -1010,7 +1183,8 @@ export function App() {
                     rel="noreferrer"
                     className="inline-flex items-center gap-0.5 text-xs text-zinc-600 hover:text-zinc-950 font-medium"
                   >
-                    Mở Booking <ExternalLink className="w-3 h-3" />
+                    {isKo ? "Booking 열기" : "Mở Booking"}{" "}
+                    <ExternalLink className="w-3 h-3" />
                   </a>
                 )}
               </div>
@@ -1020,7 +1194,9 @@ export function App() {
           <div className="lg:col-span-4 p-4 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs flex flex-col justify-between gap-2.5">
             <div className="flex items-center justify-between gap-2">
               <span className="text-xs font-medium text-zinc-500">
-                Chênh lệch Agoda vs. Booking
+                {isKo
+                  ? "Agoda vs. Booking 평균 편차"
+                  : "Chênh lệch Agoda vs. Booking"}
               </span>
               <span className="text-[11px] font-mono text-zinc-600 bg-zinc-100 px-2 py-0.5 rounded-md whitespace-nowrap shrink-0">
                 {priceBasis}
@@ -1042,7 +1218,9 @@ export function App() {
                     : `${summaryStats.avgAgodaVsBookingPct}%`}
                 </span>
                 <span className="text-xs text-zinc-400">
-                  {summaryStats.bothLiveMatchedCount} cặp phòng khớp
+                  {isKo
+                    ? `${summaryStats.bothLiveMatchedCount}개 매칭 객실 쌍`
+                    : `${summaryStats.bothLiveMatchedCount} cặp phòng khớp`}
                 </span>
               </div>
             )}
@@ -1058,8 +1236,9 @@ export function App() {
             <div className="space-y-3">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <h2 className="text-sm font-semibold text-zinc-900">
-                  Ma trận Đối sánh Giá Thực Tế ({report?.hotelName} ·{" "}
-                  {report?.checkIn})
+                  {isKo
+                    ? `실시간 다중 OTA 요금 비교 매트릭스 (${report?.hotelName} · ${report?.checkIn})`
+                    : `Ma trận Đối sánh Giá Thực Tế (${report?.hotelName} · ${report?.checkIn})`}
                 </h2>
 
                 <div className="inline-flex items-center bg-zinc-100 p-0.5 rounded-lg border border-zinc-200/60">
@@ -1073,7 +1252,7 @@ export function App() {
                         : "text-zinc-500 hover:text-zinc-800"
                     }`}
                   >
-                    UI Web
+                    {isKo ? "웹 표시가 (UI Web)" : "UI Web"}
                   </button>
                   <button
                     type="button"
@@ -1085,7 +1264,7 @@ export function App() {
                         : "text-zinc-500 hover:text-zinc-800"
                     }`}
                   >
-                    Sau thuế (Gross)
+                    {isKo ? "세후 총액 (Gross)" : "Sau thuế (Gross)"}
                   </button>
                   <button
                     type="button"
@@ -1097,7 +1276,7 @@ export function App() {
                         : "text-zinc-500 hover:text-zinc-800"
                     }`}
                   >
-                    Trước thuế (Net)
+                    {isKo ? "세전 요금 (Net)" : "Trước thuế (Net)"}
                   </button>
                 </div>
               </div>
@@ -1107,9 +1286,18 @@ export function App() {
                 <div className="flex items-center bg-white p-0.5 rounded-lg border border-zinc-200/80 shrink-0">
                   {(
                     [
-                      { key: "ALL", label: "Tất cả phòng" },
-                      { key: "SINGLE_BED_ONLY", label: "Phòng 1 Giường" },
-                      { key: "MULTI_BED_ONLY", label: "Phòng Nhiều Giường" },
+                      {
+                        key: "ALL",
+                        label: isKo ? "전체 객실" : "Tất cả phòng",
+                      },
+                      {
+                        key: "SINGLE_BED_ONLY",
+                        label: isKo ? "1베드 객실" : "Phòng 1 Giường",
+                      },
+                      {
+                        key: "MULTI_BED_ONLY",
+                        label: isKo ? "다중 베드 객실" : "Phòng Nhiều Giường",
+                      },
                     ] as const
                   ).map((item) => {
                     const active = multiBedMode === item.key;
@@ -1137,7 +1325,7 @@ export function App() {
                 <div className="flex flex-wrap items-center gap-1">
                   <select
                     data-testid="filter-room-type"
-                    aria-label="Lọc theo Room Type"
+                    aria-label={isKo ? "객실 등급 필터" : "Lọc theo Room Type"}
                     value={roomType}
                     onChange={(e) => {
                       setRoomType(e.target.value);
@@ -1145,7 +1333,9 @@ export function App() {
                     }}
                     className={getSelectClass(roomType !== "ALL")}
                   >
-                    <option value="ALL">Hạng: Tất cả</option>
+                    <option value="ALL">
+                      {isKo ? "등급: 전체" : "Hạng: Tất cả"}
+                    </option>
                     <option value="Standard">Standard</option>
                     <option value="Superior">Superior</option>
                     <option value="Deluxe">Deluxe</option>
@@ -1155,7 +1345,9 @@ export function App() {
 
                   <select
                     data-testid="filter-bed-category"
-                    aria-label="Lọc theo Cấu hình Giường"
+                    aria-label={
+                      isKo ? "침대 구성 필터" : "Lọc theo Cấu hình Giường"
+                    }
                     value={detailedBedCategory}
                     onChange={(e) => {
                       setDetailedBedCategory(e.target.value);
@@ -1163,19 +1355,33 @@ export function App() {
                     }}
                     className={getSelectClass(detailedBedCategory !== "ALL")}
                   >
-                    <option value="ALL">Giường: Tất cả</option>
-                    <option value="SINGLE_1_BED">1 Đơn (Single)</option>
-                    <option value="TWIN_2_SINGLE">2 Đơn (Twin)</option>
-                    <option value="DOUBLE_QUEEN_1_BED">Đôi (Double)</option>
+                    <option value="ALL">
+                      {isKo ? "침대: 전체" : "Giường: Tất cả"}
+                    </option>
+                    <option value="SINGLE_1_BED">
+                      {isKo ? "싱글 1개 (Single)" : "1 Đơn (Single)"}
+                    </option>
+                    <option value="TWIN_2_SINGLE">
+                      {isKo ? "싱글 2개 (Twin)" : "2 Đơn (Twin)"}
+                    </option>
+                    <option value="DOUBLE_QUEEN_1_BED">
+                      {isKo ? "더블 1개 (Double)" : "Đôi (Double)"}
+                    </option>
                     <option value="KING_1_BED">King</option>
-                    <option value="FLEX_DOUBLE_OR_TWIN">Đôi / 2 Đơn</option>
-                    <option value="MULTI_BED_TRIPLE">Triple (3)</option>
-                    <option value="MULTI_BED_QUAD_FAMILY">Family (4+)</option>
+                    <option value="FLEX_DOUBLE_OR_TWIN">
+                      {isKo ? "더블 / 2 싱글" : "Đôi / 2 Đơn"}
+                    </option>
+                    <option value="MULTI_BED_TRIPLE">
+                      {isKo ? "트리플 (3인)" : "Triple (3)"}
+                    </option>
+                    <option value="MULTI_BED_QUAD_FAMILY">
+                      {isKo ? "패밀리 (4인+)" : "Family (4+)"}
+                    </option>
                   </select>
 
                   <select
                     data-testid="filter-view-category"
-                    aria-label="Lọc theo Hướng nhìn"
+                    aria-label={isKo ? "전망 필터" : "Lọc theo Hướng nhìn"}
                     value={viewCategory}
                     onChange={(e) => {
                       setViewCategory(e.target.value);
@@ -1183,16 +1389,26 @@ export function App() {
                     }}
                     className={getSelectClass(viewCategory !== "ALL")}
                   >
-                    <option value="ALL">View: Tất cả</option>
-                    <option value="CITY_VIEW">City View</option>
-                    <option value="PARTIAL_SEA_VIEW">Partial Sea</option>
-                    <option value="OCEAN_SEA_VIEW">Ocean View</option>
-                    <option value="NO_WINDOW">No Window</option>
+                    <option value="ALL">
+                      {isKo ? "전망: 전체" : "View: Tất cả"}
+                    </option>
+                    <option value="CITY_VIEW">
+                      {isKo ? "시티뷰 (City)" : "City View"}
+                    </option>
+                    <option value="PARTIAL_SEA_VIEW">
+                      {isKo ? "부분 오션뷰" : "Partial Sea"}
+                    </option>
+                    <option value="OCEAN_SEA_VIEW">
+                      {isKo ? "오션뷰 (Ocean)" : "Ocean View"}
+                    </option>
+                    <option value="NO_WINDOW">
+                      {isKo ? "창문 없음" : "No Window"}
+                    </option>
                   </select>
 
                   <select
                     data-testid="filter-area-range"
-                    aria-label="Lọc theo Diện tích"
+                    aria-label={isKo ? "객실 면적 필터" : "Lọc theo Diện tích"}
                     value={areaRange}
                     onChange={(e) => {
                       setAreaRange(e.target.value);
@@ -1200,7 +1416,9 @@ export function App() {
                     }}
                     className={getSelectClass(areaRange !== "ALL")}
                   >
-                    <option value="ALL">Diện tích: Tất cả</option>
+                    <option value="ALL">
+                      {isKo ? "면적: 전체" : "Diện tích: Tất cả"}
+                    </option>
                     <option value="UNDER_25">&lt; 25m²</option>
                     <option value="FROM_25_TO_35">25 – 35m²</option>
                     <option value="FROM_36_TO_50">36 – 50m²</option>
@@ -1214,7 +1432,7 @@ export function App() {
                       onClick={handleResetFilters}
                       className="h-7 px-2 rounded-lg text-[11px] font-medium text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors cursor-pointer"
                     >
-                      Đặt lại
+                      {isKo ? "초기화" : "Đặt lại"}
                     </button>
                   )}
                 </div>
@@ -1223,13 +1441,17 @@ export function App() {
               {/* Clean Master Comparison Table */}
               {!isBusy && (!report || report.comparisonGroups.length === 0) ? (
                 <div className="py-16 text-center text-xs text-zinc-500 space-y-2">
-                  <div>Không có hạng phòng nào khớp với bộ lọc hiện tại.</div>
+                  <div>
+                    {isKo
+                      ? "현재 필터 조건과 일치하는 객실 유형이 없습니다."
+                      : "Không có hạng phòng nào khớp với bộ lọc hiện tại."}
+                  </div>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={handleResetFilters}
                   >
-                    Xóa bộ lọc
+                    {isKo ? "필터 초기화" : "Xóa bộ lọc"}
                   </Button>
                 </div>
               ) : (
@@ -1243,8 +1465,12 @@ export function App() {
                         <RotateCcw className="w-3.5 h-3.5 animate-spin text-emerald-400 shrink-0" />
                         <span>
                           {scraping
-                            ? "Đang cào giá trực tiếp từ Agoda & Booking.com..."
-                            : "Đang tải dữ liệu..."}
+                            ? isKo
+                              ? "Agoda & Booking.com에서 실시간 요금을 수집하고 있습니다..."
+                              : "Đang cào giá trực tiếp từ Agoda & Booking.com..."
+                            : isKo
+                              ? "데이터를 불러오는 중..."
+                              : "Đang tải dữ liệu..."}
                         </span>
                       </div>
                     </div>
@@ -1258,10 +1484,10 @@ export function App() {
                       <TableHeader className="bg-zinc-50/80">
                         <TableRow className="hover:bg-transparent">
                           <TableHead className="text-[11px] font-semibold text-zinc-500 py-2.5 pl-3 pr-2 w-[27%]">
-                            Hạng phòng
+                            {isKo ? "객실 유형" : "Hạng phòng"}
                           </TableHead>
                           <TableHead className="text-[11px] font-semibold text-zinc-500 text-right py-2.5 px-1.5 w-[11%]">
-                            Giá chuẩn
+                            {isKo ? "기준가 (BAR)" : "Giá chuẩn"}
                           </TableHead>
                           <TableHead className="text-[11px] font-semibold text-zinc-500 text-right py-2.5 px-1.5 w-[15.5%]">
                             Agoda
@@ -1358,7 +1584,7 @@ export function App() {
                                         data-testid={`ota-unscraped-${ota}`}
                                         className="inline-flex items-center px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200/80 text-[10px] font-medium whitespace-nowrap"
                                       >
-                                        Sàn chưa cào giá
+                                        {isKo ? "요금 미수집" : "Sàn chưa cào giá"}
                                       </span>
                                     </div>
                                   );
@@ -1373,7 +1599,7 @@ export function App() {
                                         {formatFullVnd(m.price)}
                                       </span>
                                       <span className="text-[10px] font-mono text-zinc-400">
-                                        Giá BAR
+                                        {isKo ? "기준 BAR" : "Giá BAR"}
                                       </span>
                                     </div>
                                   );
@@ -1400,8 +1626,8 @@ export function App() {
                                   ota === "AGODA" ||
                                   ota === "EXPEDIA" ||
                                   ota === "TRIP"
-                                    ? `Gross ${formatCompactVnd(off.grossPrice)}`
-                                    : `Net ${formatCompactVnd(off.netPrice)}`;
+                                    ? `Gross ${formatCompactVnd(off.grossPrice, locale)}`
+                                    : `Net ${formatCompactVnd(off.netPrice, locale)}`;
 
                                 return (
                                   <div className="flex flex-col items-end gap-0.5">
@@ -1445,7 +1671,11 @@ export function App() {
                                           setInspectorTab("proof");
                                         }}
                                         className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-zinc-100 hover:bg-emerald-50 text-zinc-600 hover:text-emerald-800 text-[9.5px] font-mono transition-colors"
-                                        title={`Mở phòng "${off.roomName}" (#${fullRoomId} · ${subPriceLabel}) trên ${OTA_LABELS[ota]}`}
+                                        title={
+                                          isKo
+                                            ? `${OTA_LABELS[ota]}에서 "${off.roomName}" (#${fullRoomId} · ${subPriceLabel}) 객실 열기`
+                                            : `Mở phòng "${off.roomName}" (#${fullRoomId} · ${subPriceLabel}) trên ${OTA_LABELS[ota]}`
+                                        }
                                       >
                                         <span>#{fullRoomId}</span>
                                         <ExternalLink className="w-2.5 h-2.5 shrink-0" />
@@ -1504,7 +1734,9 @@ export function App() {
                                           data-testid="row-live-ota-badge"
                                           className="inline-flex px-1.5 py-0.2 rounded border bg-amber-50 text-amber-800 border-amber-200/80 text-[10px] font-mono font-medium"
                                         >
-                                          Live {activeOtaCount}/4 · Sàn chưa cào giá
+                                          {isKo
+                                            ? `실시간 ${activeOtaCount}/4 · 요금 미수집`
+                                            : `Live ${activeOtaCount}/4 · Sàn chưa cào giá`}
                                         </span>
                                       </div>
                                     )}
@@ -1541,16 +1773,33 @@ export function App() {
                 className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-zinc-100"
               >
                 <div className="text-xs text-zinc-500">
-                  Hiển thị{" "}
-                  <span className="font-mono font-semibold text-zinc-900">
-                    Top {report.pagination.startRank}–
-                    {report.pagination.endRank}
-                  </span>{" "}
-                  /{" "}
-                  <span className="font-mono font-semibold text-zinc-900">
-                    {report.pagination.totalItems}
-                  </span>{" "}
-                  phòng
+                  {isKo ? (
+                    <>
+                      전체{" "}
+                      <span className="font-mono font-semibold text-zinc-900">
+                        {report.pagination.totalItems}
+                      </span>
+                      개 객실 중{" "}
+                      <span className="font-mono font-semibold text-zinc-900">
+                        Top {report.pagination.startRank}–
+                        {report.pagination.endRank}
+                      </span>{" "}
+                      표시
+                    </>
+                  ) : (
+                    <>
+                      Hiển thị{" "}
+                      <span className="font-mono font-semibold text-zinc-900">
+                        Top {report.pagination.startRank}–
+                        {report.pagination.endRank}
+                      </span>{" "}
+                      /{" "}
+                      <span className="font-mono font-semibold text-zinc-900">
+                        {report.pagination.totalItems}
+                      </span>{" "}
+                      phòng
+                    </>
+                  )}
                 </div>
 
                 <div className="flex items-center gap-1.5">
@@ -1561,7 +1810,7 @@ export function App() {
                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                     className="h-7 px-2.5 rounded-lg border border-zinc-200 bg-white hover:bg-zinc-50 text-xs font-medium text-zinc-700 disabled:opacity-40 cursor-pointer"
                   >
-                    ← Trước
+                    {isKo ? "← 이전" : "← Trước"}
                   </button>
 
                   {Array.from(
@@ -1610,7 +1859,7 @@ export function App() {
                     }
                     className="h-7 px-2.5 rounded-lg border border-zinc-200 bg-white hover:bg-zinc-50 text-xs font-medium text-zinc-700 disabled:opacity-40 cursor-pointer"
                   >
-                    Tiếp →
+                    {isKo ? "다음 →" : "Tiếp →"}
                   </button>
                 </div>
               </div>
@@ -1634,7 +1883,7 @@ export function App() {
                   </div>
                   <div className="flex flex-col items-end gap-1.5">
                     <span className="text-[10px] text-zinc-400 uppercase font-medium">
-                      Biên độ chênh lệch
+                      {isKo ? "시장 편차" : "Biên độ chênh lệch"}
                     </span>
                     <span className="skeleton-shimmer h-5 w-16 rounded-md" />
                   </div>
@@ -1771,7 +2020,7 @@ export function App() {
 
                   <div className="text-right shrink-0">
                     <div className="text-[10px] text-zinc-400 uppercase font-medium">
-                      Chênh lệch
+                      {isKo ? "시장 편차" : "Chênh lệch"}
                     </div>
                     <div className="text-sm font-bold font-mono text-zinc-900">
                       {selectedGroup.spreadAnalysis.marketSpreadPct}%
@@ -1799,8 +2048,12 @@ export function App() {
                         onClick={() => setSelectedOtaForForm(ota)}
                         title={
                           hasOffer
-                            ? `Xem dữ liệu ${OTA_LABELS[ota]}`
-                            : `${OTA_LABELS[ota]}: Sàn chưa cào giá`
+                            ? isKo
+                              ? `${OTA_LABELS[ota]} 데이터 보기`
+                              : `Xem dữ liệu ${OTA_LABELS[ota]}`
+                            : isKo
+                              ? `${OTA_LABELS[ota]}: 요금 미수집`
+                              : `${OTA_LABELS[ota]}: Sàn chưa cào giá`
                         }
                         className={`py-1.5 px-1 rounded-lg text-[11px] font-medium whitespace-nowrap transition-all cursor-pointer disabled:opacity-40 ${
                           active
@@ -1821,13 +2074,13 @@ export function App() {
                 >
                   <TabsList className="w-full grid grid-cols-3">
                     <TabsTrigger value="form" className="text-xs">
-                      Form 8 Trường
+                      {isKo ? "8개 항목 폼" : "Form 8 Trường"}
                     </TabsTrigger>
                     <TabsTrigger value="breakdown" className="text-xs">
-                      Thuế &amp; Khớp phòng
+                      {isKo ? "세금 & 매칭 JSON" : "Thuế & Khớp phòng"}
                     </TabsTrigger>
                     <TabsTrigger value="proof" className="text-xs">
-                      Bằng chứng Live
+                      {isKo ? "실시간 증빙" : "Bằng chứng Live"}
                     </TabsTrigger>
                   </TabsList>
 
@@ -1855,12 +2108,14 @@ export function App() {
                         <DialogContent className="max-w-xl">
                           <DialogHeader>
                             <DialogTitle>
-                              UPLOAD PHOTOS — Danh sách ảnh phòng trích xuất tự
-                              động
+                              {isKo
+                                ? "UPLOAD PHOTOS — 자동 추출된 객실 사진 목록"
+                                : "UPLOAD PHOTOS — Danh sách ảnh phòng trích xuất tự động"}
                             </DialogTitle>
                             <DialogDescription>
-                              Ảnh phòng từ {OTA_LABELS[selectedOtaForForm]} cho{" "}
-                              {activeOfferForForm.formFields.roomName}
+                              {isKo
+                                ? `${OTA_LABELS[selectedOtaForForm]}에서 추출한 ${activeOfferForForm.formFields.roomName} 객실 사진`
+                                : `Ảnh phòng từ ${OTA_LABELS[selectedOtaForForm]} cho ${activeOfferForForm.formFields.roomName}`}
                             </DialogDescription>
                           </DialogHeader>
                           <div className="grid grid-cols-2 gap-3 pt-2">
@@ -1909,7 +2164,10 @@ export function App() {
                         data-testid="textarea-description"
                         readOnly
                         rows={4}
-                        value={activeOfferForForm.formFields.description}
+                        value={formatLocalizedDescription(
+                          activeOfferForForm,
+                          locale
+                        )}
                         className="w-full min-h-[84px] rounded-md border border-zinc-200 bg-zinc-50/60 px-3 py-2 text-xs leading-relaxed text-zinc-700 focus:outline-none resize-y"
                       />
                     </div>
@@ -1921,7 +2179,7 @@ export function App() {
                         </label>
                         <Input
                           readOnly
-                          value={`₩ ${activeOfferForForm.formFields.pricePerNightKrw.toLocaleString("en-US")} (${formatCompactVnd(activeOfferForForm.formFields.pricePerNightVnd)})`}
+                          value={`₩ ${activeOfferForForm.formFields.pricePerNightKrw.toLocaleString("en-US")} (${formatCompactVnd(activeOfferForForm.formFields.pricePerNightVnd, locale)})`}
                           className="h-8 text-xs font-mono font-medium bg-zinc-50/60"
                         />
                       </div>
@@ -2016,13 +2274,13 @@ export function App() {
                         <TableHeader className="bg-zinc-50/80">
                           <TableRow>
                             <TableHead className="text-[10.5px] py-2 pl-2.5 pr-1.5 w-[31%]">
-                              Sàn
+                              {isKo ? "채널" : "Sàn"}
                             </TableHead>
                             <TableHead className="text-[10.5px] text-right py-2 px-1.5 w-[23%]">
-                              Giá Net
+                              {isKo ? "세전 (Net)" : "Giá Net"}
                             </TableHead>
                             <TableHead className="text-[10.5px] text-right py-2 px-1.5 w-[22%]">
-                              Thuế &amp; Phí
+                              {isKo ? "세금 & 봉사료" : "Thuế & Phí"}
                             </TableHead>
                             <TableHead className="text-[10.5px] text-right py-2 pl-1.5 pr-2.5 w-[24%]">
                               Gross
@@ -2054,7 +2312,7 @@ export function App() {
                                     className="py-2 pr-2.5 text-right"
                                   >
                                     <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200/80 text-[10px] font-medium">
-                                      Sàn chưa cào giá
+                                      {isKo ? "요금 미수집" : "Sàn chưa cào giá"}
                                     </span>
                                   </TableCell>
                                 </TableRow>
@@ -2177,8 +2435,12 @@ export function App() {
                                     className="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-white whitespace-nowrap cursor-pointer"
                                   >
                                     {copiedJson
-                                      ? "Đã sao chép"
-                                      : "Sao chép JSON"}
+                                      ? isKo
+                                        ? "복사 완료"
+                                        : "Đã sao chép"
+                                      : isKo
+                                        ? "JSON 복사"
+                                        : "Sao chép JSON"}
                                   </button>
                                   <a
                                     href={apiHref}
@@ -2213,7 +2475,9 @@ export function App() {
                     >
                       <div className="flex items-center justify-between">
                         <span className="font-semibold text-zinc-950 truncate">
-                          Link phòng trực tiếp ({selectedGroup.sampleGoodNStayForm.roomName})
+                          {isKo
+                            ? `실시간 객실 딥링크 (${selectedGroup.sampleGoodNStayForm.roomName})`
+                            : `Link phòng trực tiếp (${selectedGroup.sampleGoodNStayForm.roomName})`}
                         </span>
                       </div>
 
@@ -2238,7 +2502,7 @@ export function App() {
                                   data-testid={`proof-unscraped-${ota}`}
                                   className="px-2 py-0.5 rounded-md bg-amber-50 text-amber-800 border border-amber-200 text-[10.5px] font-medium whitespace-nowrap shrink-0"
                                 >
-                                  Sàn chưa cào giá
+                                  {isKo ? "요금 미수집" : "Sàn chưa cào giá"}
                                 </span>
                               </div>
                             );
@@ -2278,7 +2542,9 @@ export function App() {
                                     <span className="text-zinc-400">
                                       (Net: {formatFullVnd(off.netPrice)}
                                       {off.liveProof?.partnerOfferGrossPrice
-                                        ? ` · Ưu đãi ĐT: ${formatFullVnd(off.liveProof.partnerOfferGrossPrice)}`
+                                        ? isKo
+                                          ? ` · 제휴 특가: ${formatFullVnd(off.liveProof.partnerOfferGrossPrice)}`
+                                          : ` · Ưu đãi ĐT: ${formatFullVnd(off.liveProof.partnerOfferGrossPrice)}`
                                         : ""}
                                       )
                                     </span>
@@ -2297,7 +2563,7 @@ export function App() {
                                 data-testid={`inspector-deep-jump-${ota}`}
                                 className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white text-[11px] font-medium whitespace-nowrap shrink-0"
                               >
-                                <span>Mở phòng</span>
+                                <span>{isKo ? "객실 열기" : "Mở phòng"}</span>
                                 <ExternalLink className="w-3 h-3" />
                               </a>
                             </div>
@@ -2310,10 +2576,11 @@ export function App() {
                         className="pt-1 text-[10.5px] text-zinc-400 font-mono flex items-center justify-between"
                       >
                         <span>
-                          Cập nhật:{" "}
+                          {isKo ? "업데이트: " : "Cập nhật: "}
                           {formatVietnamDateTime(
                             proof?.scrapedAt,
-                            proof?.scrapedAtVi
+                            proof?.scrapedAtVi,
+                            locale
                           )}
                         </span>
                         {proof?.verifiedAtVi && (
@@ -2331,7 +2598,9 @@ export function App() {
               </>
             ) : (
               <div className="py-12 text-center text-xs text-zinc-400">
-                Chọn một hạng phòng bên trái để xem chi tiết.
+                {isKo
+                  ? "왼쪽 표에서 객실 유형을 선택하면 상세 정보를 확인할 수 있습니다."
+                  : "Chọn một hạng phòng bên trái để xem chi tiết."}
               </div>
             )}
           </div>
