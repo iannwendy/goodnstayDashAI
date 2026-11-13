@@ -1,0 +1,259 @@
+{
+  "schemaVersion": "3.0.0",
+  "brandName": "Optibide",
+  "referenceDate": "2026-11-06",
+  "currencyRates": {
+    "VND": 1,
+    "KRW": 18.5,
+    "USD": 25400
+  },
+  "partnerUser": {
+    "userId": "USR-PARTNER-01",
+    "displayName": {
+      "vi": "Nguyễn Bảo Minh",
+      "en": "Kim Ha-yoon",
+      "ko": "김하윤"
+    },
+    "initials": {
+      "vi": "BM",
+      "en": "KH",
+      "ko": "KH"
+    },
+    "roleBadge": {
+      "vi": "Quản lý khách sạn",
+      "en": "Property Manager",
+      "ko": "호텔 지배인"
+    }
+  },
+  "periodsMeta": {
+    "today": {
+      "startDate": "2026-11-06",
+      "endDate": "2026-11-06",
+      "previousNetRevenueVnd": 9800000,
+      "targetAcceptRatePct": 36.5
+    },
+    "7d": {
+      "startDate": "2026-10-31",
+      "endDate": "2026-11-06",
+      "previousNetRevenueVnd": 25200000,
+      "targetAcceptRatePct": 36.2
+    },
+    "30d": {
+      "startDate": "2026-10-08",
+      "endDate": "2026-11-06",
+      "previousNetRevenueVnd": 54600000,
+      "targetAcceptRatePct": 35.8
+    }
+  },
+  "chainOverview": {
+    "hotelId": "HTL-DN-024",
+    "label": {
+      "vi": "L'amour Boutique Hotel (Toàn hệ thống)",
+      "en": "L'amour Boutique Hotel (All Properties)",
+      "ko": "L'amour Boutique Hotel (전체 지점)"
+    },
+    "shortName": {
+      "vi": "L'amour Boutique Hotel",
+      "en": "L'amour Boutique Hotel",
+      "ko": "L'amour Boutique Hotel"
+    },
+    "district": {
+      "vi": "Đà Nẵng",
+      "en": "Da Nang",
+      "ko": "다낭"
+    },
+    "roomsCount": 30,
+    "badgeColor": "#1D4ED8",
+    "autoBidEnabled": true,
+    "reviewRating5": 4.8,
+    "reviewCount": 142,
+    "reviewCriteria5": {
+      "amenities": 4.7,
+      "checkin": 4.8,
+      "cleanliness": 4.9,
+      "service": 4.8,
+      "value": 4.8
+    },
+    "eloScore": 1680,
+    "visibilityTone": "good",
+    "visibilitySubtitle": {
+      "vi": "Hiển thị ưu tiên cao — Báo giá của khách sạn được ưu tiên đưa lên nhóm đầu cho khách xem",
+      "en": "High visibility · Top 12% in Da Nang",
+      "ko": "우수 노출 등급 — 고객 검색 시 호텔의 제안이 상단에 우선 표시됩니다"
+    }
+  },
+  "properties": [
+    {
+      "id": "br_mykhe",
+      "isChainMember": true,
+      "label": {
+        "vi": "L'amour Mỹ Khê · Sơn Trà",
+        "en": "L'amour My Khe · Son Tra",
+        "ko": "라무르 미케 · 선짜"
+      },
+      "shortName": {
+        "vi": "CN Mỹ Khê",
+        "en": "L'amour My Khe",
+        "ko": "미케 지점"
+      },
+      "district": {
+        "vi": "Phước Mỹ, Sơn Trà",
+        "en": "Phuoc My, Son Tra",
+        "ko": "선짜구 프억미"
+      },
+      "roomsCount": 12,
+      "badgeColor": "#2563EB",
+      "autoBidEnabled": true,
+      "previousPeriodRevenueVnd": {
+        "today": 4600000,
+        "7d": 7200000,
+        "30d": 20200000
+      },
+      "reviewRating5": 4.9,
+      "reviewCount": 64,
+      "reviewCriteria5": {
+        "amenities": 4.8,
+        "checkin": 4.9,
+        "cleanliness": 5.0,
+        "service": 4.9,
+        "value": 4.9
+      },
+      "eloScore": 1720,
+      "visibilityTone": "good",
+      "visibilitySubtitle": {
+        "vi": "Hiển thị ưu tiên rất cao — Thuộc nhóm dẫn đầu khu vực biển Mỹ Khê",
+        "en": "Top-tier visibility · My Khe Beachfront",
+        "ko": "최상위 노출 등급 — 미케 해변 상위 그룹 우선 노출"
+      }
+    },
+    {
+      "id": "br_songhan",
+      "isChainMember": true,
+      "label": {
+        "vi": "L'amour Sông Hàn · Hải Châu",
+        "en": "L'amour Han River · Hai Chau",
+        "ko": "라무르 한강 · 하이쩌우"
+      },
+      "shortName": {
+        "vi": "CN Sông Hàn",
+        "en": "L'amour Han River",
+        "ko": "한강 지점"
+      },
+      "district": {
+        "vi": "Bạch Đằng, Hải Châu",
+        "en": "Bach Dang, Hai Chau",
+        "ko": "하이쩌우구 박당"
+      },
+      "roomsCount": 10,
+      "badgeColor": "#0D9488",
+      "autoBidEnabled": true,
+      "previousPeriodRevenueVnd": {
+        "today": 2500000,
+        "7d": 13100000,
+        "30d": 20400000
+      },
+      "reviewRating5": 4.8,
+      "reviewCount": 46,
+      "reviewCriteria5": {
+        "amenities": 4.7,
+        "checkin": 4.8,
+        "cleanliness": 4.8,
+        "service": 4.8,
+        "value": 4.8
+      },
+      "eloScore": 1665,
+      "visibilityTone": "good",
+      "visibilitySubtitle": {
+        "vi": "Hiển thị ưu tiên cao — Được nhóm khách công tác trung tâm Hải Châu tin chọn",
+        "en": "High visibility · Hai Chau City Center",
+        "ko": "우수 노출 등급 — 하이쩌우 도심 출장객 선호 숙소"
+      }
+    },
+    {
+      "id": "br_anthuong",
+      "isChainMember": true,
+      "label": {
+        "vi": "L'amour An Thượng · Ngũ Hành Sơn",
+        "en": "L'amour An Thuong · Ngu Hanh Son",
+        "ko": "라무르 안트엉 · 응우하인선"
+      },
+      "shortName": {
+        "vi": "CN An Thượng",
+        "en": "L'amour An Thuong",
+        "ko": "안트엉 지점"
+      },
+      "district": {
+        "vi": "Mỹ An, Ngũ Hành Sơn",
+        "en": "My An, Ngu Hanh Son",
+        "ko": "응우하인선구 미안"
+      },
+      "roomsCount": 8,
+      "badgeColor": "#7C3AED",
+      "autoBidEnabled": true,
+      "previousPeriodRevenueVnd": {
+        "today": 2700000,
+        "7d": 4900000,
+        "30d": 14000000
+      },
+      "reviewRating5": 4.7,
+      "reviewCount": 32,
+      "reviewCriteria5": {
+        "amenities": 4.6,
+        "checkin": 4.7,
+        "cleanliness": 4.8,
+        "service": 4.7,
+        "value": 4.7
+      },
+      "eloScore": 1610,
+      "visibilityTone": "good",
+      "visibilitySubtitle": {
+        "vi": "Hiển thị ổn định — Thu hút khách lưu trú nhiều đêm tại khu phố du lịch An Thượng",
+        "en": "Strong visibility · An Thuong Tourist Quarter",
+        "ko": "안정적 노출 등급 — 안트엉 여행자 거리 연박 고객 선호"
+      }
+    },
+    {
+      "id": "stay_h11",
+      "isChainMember": false,
+      "label": {
+        "vi": "Stay Hotel H11 (Cơ sở mới)",
+        "en": "Stay Hotel H11",
+        "ko": "Stay Hotel H11 (신규 지점)"
+      },
+      "shortName": {
+        "vi": "Stay Hotel H11",
+        "en": "Stay Hotel H11",
+        "ko": "Stay Hotel H11"
+      },
+      "district": {
+        "vi": "Cơ sở mới kích hoạt",
+        "en": "Newly Onboarded",
+        "ko": "신규 입점 숙소"
+      },
+      "roomsCount": 18,
+      "badgeColor": "#64748B",
+      "autoBidEnabled": true,
+      "previousPeriodRevenueVnd": {
+        "today": 0,
+        "7d": 0,
+        "30d": 0
+      },
+      "reviewRating5": 0.0,
+      "reviewCount": 0,
+      "reviewCriteria5": {
+        "amenities": 0.0,
+        "checkin": 0.0,
+        "cleanliness": 0.0,
+        "service": 0.0,
+        "value": 0.0
+      },
+      "eloScore": 800,
+      "visibilityTone": "low",
+      "visibilitySubtitle": {
+        "vi": "Mức hiển thị khởi điểm — Hoàn tất thêm đơn đặt phòng để được ưu tiên đẩy lên đầu danh sách",
+        "en": "Poor visibility",
+        "ko": "초기 노출 단계 — 첫 확정 예약과 리뷰가 쌓이면 상단 노출 우선순위가 올라갑니다"
+      }
+    }
+  ]
+}

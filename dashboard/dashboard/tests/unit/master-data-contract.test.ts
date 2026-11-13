@@ -5,15 +5,14 @@ import path from "node:path";
 import {
   CORE_MASTER_TABLE_FILES,
   MASTER_DATA_DIR,
+  OBSOLETE_LEGACY_FILES,
   PROJECT_ROOT,
   SEED_DATA_DIR,
   loadSeedMasterBundle,
 } from "../helpers/seed-loader";
 
-describe("TC-DATA: Master Data Schema, Referential Integrity & Table Parity", () => {
-  const bundle = loadSeedMasterBundle();
-
-  it("TC-DATA-01: all 11 core seed & live JSON files exist and parse cleanly", () => {
+describe("TC-DATA: Lean Partner Hub Master Data v3.0 Contract & Referential Integrity", () => {
+  it("TC-DATA-01: all 3 lean master-data & seed JSON files + schema_manifest v3.0.0 exist and 0 legacy bloat files remain", () => {
     for (const [tableKey, filename] of Object.entries(CORE_MASTER_TABLE_FILES)) {
       const seedPath = path.join(SEED_DATA_DIR, filename);
       const livePath = path.join(MASTER_DATA_DIR, filename);
@@ -27,9 +26,42 @@ describe("TC-DATA: Master Data Schema, Referential Integrity & Table Parity", ()
         true,
         `Missing live master-data file for ${tableKey}: ${livePath}`,
       );
-      assert.doesNotThrow(() => JSON.parse(fs.readFileSync(seedPath, "utf-8")));
-      assert.doesNotThrow(() => JSON.parse(fs.readFileSync(livePath, "utf-8")));
+      const seedParsed = JSON.parse(fs.readFileSync(seedPath, "utf-8"));
+      const liveParsed = JSON.parse(fs.readFileSync(livePath, "utf-8"));
+      assert.deepEqual(
+        liveParsed,
+        seedParsed,
+        `Live file ${filename} drifted from seed/${filename}`,
+      );
     }
+
+    for (const legacy of OBSOLETE_LEGACY_FILES) {
+      assert.equal(
+        fs.existsSync(path.join(MASTER_DATA_DIR, legacy)),
+        false,
+        `Obsolete file still in master-data/: ${legacy}`,
+      );
+      assert.equal(
+        fs.existsSync(path.join(SEED_DATA_DIR, legacy)),
+        false,
+        `Obsolete file still in master-data/seed/: ${legacy}`,
+      );
+    }
+
+    assert.equal(
+      fs.existsSync(path.join(PROJECT_ROOT, "src/services/analyticsEngine.ts")),
+      false,
+      "Legacy unused analyticsEngine.ts should be removed",
+    );
+
+    const manifest = JSON.parse(
+      fs.readFileSync(path.join(MASTER_DATA_DIR, "schema_manifest.json"), "utf-8"),
+    );
+    assert.equal(manifest.schemaVersion, "3.0.0");
+    assert.deepEqual(
+      Object.keys(manifest.tables).sort(),
+      Object.keys(CORE_MASTER_TABLE_FILES).sort(),
+    );
   });
 
   it("TC-DATA-02: vite.config.ts TABLE_FILE_MAP matches masterDataService.ts STATIC_TABLE_PATHS", () => {
@@ -54,213 +86,162 @@ describe("TC-DATA: Master Data Schema, Referential Integrity & Table Parity", ()
     }
   });
 
-  it("TC-DATA-03: hotel_profile invariants (pricing rates, SLA thresholds, 30 rooms across 3 branches)", () => {
-    const hp = bundle.hotelProfile;
-    assert.equal(hp.totalRooms, 30);
-    assert.equal(hp.goldenWindowDays, 14);
-    assert.equal(hp.platformFeeRate, 0.15);
-    assert.equal(hp.vatRate, 0.1);
-    assert.equal(
-      Number(((1 + hp.platformFeeRate) * (1 + hp.vatRate)).toFixed(4)),
-      hp.guestPriceMultiplier,
-    );
-    assert.ok(hp.urgentThresholdSeconds < hp.warnThresholdSeconds);
-    assert.ok(hp.warnThresholdSeconds < hp.bidTtlSeconds);
-    assert.ok(hp.defaultFloorPrice > 0);
-    assert.equal(hp.branches.length, 3);
+  it("TC-DATA-03: partner_hub_config invariants (Optibide brand, FX rates, user i18n, exact period revenue sums, 4 properties incl. stay_h11)", () => {
+    const bundle = loadSeedMasterBundle();
+    const cfg = bundle.hubConfig;
 
-    const branchRoomSum = hp.branches.reduce((s, b) => s + b.totalRooms, 0);
-    assert.equal(branchRoomSum, hp.totalRooms);
-  });
+    assert.equal(cfg.schemaVersion, "3.0.0");
+    assert.equal(cfg.brandName, "Optibide");
+    assert.equal(cfg.currencyRates.VND, 1);
+    assert.ok(cfg.currencyRates.KRW > 0);
+    assert.ok(cfg.currencyRates.USD > 0);
 
-  it("TC-DATA-04: users_roles defines Manager (override ON, bot ON) and Receptionist (override OFF, bot OFF)", () => {
-    const manager = bundle.usersRoles.find((u) => u.role === "manager");
-    const receptionist = bundle.usersRoles.find(
-      (u) => u.role === "receptionist",
-    );
-    assert.ok(manager, "Missing manager role in users_roles.json");
-    assert.ok(receptionist, "Missing receptionist role in users_roles.json");
-    assert.equal(manager.canOverrideFloor, true);
-    assert.equal(manager.canConfigureBotRules, true);
-    assert.equal(receptionist.canOverrideFloor, false);
-    assert.equal(receptionist.canConfigureBotRules, false);
-  });
-
-  it("TC-DATA-05: room_classes sum to 30 rooms and baseFloorPrice < rackRate", () => {
-    assert.equal(bundle.roomClasses.length, 4);
-    const totalClassRooms = bundle.roomClasses.reduce(
-      (sum, rc) => sum + rc.totalRooms,
-      0,
-    );
-    assert.equal(totalClassRooms, bundle.hotelProfile.totalRooms);
-
-    for (const rc of bundle.roomClasses) {
-      assert.ok(
-        rc.baseFloorPrice > 0 && rc.baseFloorPrice < rc.rackRate,
-        `Invalid floor/rack rate on ${rc.id}`,
-      );
-      assert.ok(!rc.roomRange.includes("##"), `Double hash in ${rc.roomRange}`);
+    for (const loc of ["vi", "en", "ko"] as const) {
+      assert.ok(cfg.partnerUser.displayName[loc].length > 0);
+      assert.ok(cfg.partnerUser.initials[loc].length > 0);
+      assert.ok(cfg.partnerUser.roleBadge[loc].length > 0);
     }
-  });
 
-  it("TC-DATA-06: rooms_pms has 30 unique rooms (#101..#130) with valid branchId & roomClassId FKs", () => {
-    assert.equal(bundle.roomsPms.length, 30);
-    const validBranchIds = new Set(bundle.hotelProfile.branches.map((b) => b.id));
-    const validClassIds = new Set(bundle.roomClasses.map((c) => c.id));
-    const seenRooms = new Set<number>();
+    assert.equal(cfg.properties.length, 4);
+    const propIds = cfg.properties.map((p) => p.id);
+    assert.deepEqual(propIds, [
+      "br_mykhe",
+      "br_songhan",
+      "br_anthuong",
+      "stay_h11",
+    ]);
 
-    for (const room of bundle.roomsPms) {
-      assert.ok(
-        room.roomNumber >= 101 && room.roomNumber <= 130,
-        `Room number out of range: ${room.roomNumber}`,
+    const chainMembers = cfg.properties.filter((p) => p.isChainMember);
+    assert.equal(chainMembers.length, 3);
+    assert.equal(
+      chainMembers.reduce((s, p) => s + p.roomsCount, 0),
+      cfg.chainOverview.roomsCount,
+    );
+    assert.equal(
+      chainMembers.reduce((s, p) => s + p.reviewCount, 0),
+      cfg.chainOverview.reviewCount,
+    );
+
+    // Exact previousPeriodRevenueVnd equality across ALL 3 periods (fixing the old 550k today discrepancy)
+    for (const period of ["today", "7d", "30d"] as const) {
+      const meta = cfg.periodsMeta[period];
+      assert.ok(meta.startDate <= meta.endDate);
+      assert.equal(meta.endDate, cfg.referenceDate);
+      assert.ok(meta.targetAcceptRatePct > 0 && meta.targetAcceptRatePct < 100);
+
+      const branchSum = chainMembers.reduce(
+        (s, p) => s + p.previousPeriodRevenueVnd[period],
+        0,
       );
       assert.equal(
-        seenRooms.has(room.roomNumber),
-        false,
-        `Duplicate roomNumber: ${room.roomNumber}`,
-      );
-      seenRooms.add(room.roomNumber);
-      assert.ok(
-        validBranchIds.has(room.branchId),
-        `Unknown branchId ${room.branchId} on room ${room.roomNumber}`,
-      );
-      assert.ok(
-        validClassIds.has(room.roomClassId),
-        `Unknown roomClassId ${room.roomClassId} on room ${room.roomNumber}`,
+        branchSum,
+        meta.previousNetRevenueVnd,
+        `Period ${period} previousNetRevenueVnd (${meta.previousNetRevenueVnd}) != chain branch sum (${branchSum})`,
       );
     }
 
-    // Per-branch count matches hotelProfile.branches.totalRooms
-    for (const br of bundle.hotelProfile.branches) {
-      const count = bundle.roomsPms.filter((r) => r.branchId === br.id).length;
-      assert.equal(count, br.totalRooms, `Branch ${br.id} room count mismatch`);
-    }
-
-    // Per-class count matches roomClasses.totalRooms
-    for (const rc of bundle.roomClasses) {
-      const count = bundle.roomsPms.filter(
-        (r) => r.roomClassId === rc.id,
-      ).length;
-      assert.equal(count, rc.totalRooms, `RoomClass ${rc.id} count mismatch`);
-    }
-  });
-
-  it("TC-DATA-07: calendar_14d_pms has 14 sequential days (dayOffset 0..13) starting at referenceDate", () => {
-    assert.equal(bundle.calendar14dPms.length, 14);
+    // Distinct ratings & ELO across branches + stay_h11 zero-booking baseline
+    const distinctElo = new Set(cfg.properties.map((p) => p.eloScore));
     assert.equal(
-      bundle.calendar14dPms[0].isoDate,
-      bundle.hotelProfile.referenceDate,
+      distinctElo.size,
+      4,
+      "Each property should have its own ELO visibility score",
     );
-
-    bundle.calendar14dPms.forEach((day, idx) => {
-      assert.equal(day.dayOffset, idx);
-      assert.equal(day.totalRooms, 30);
-      const holdCount = day.paymentHoldRooms ?? 0;
-      assert.ok(
-        day.otherBooked >= 0 &&
-          day.auctionBooked >= 0 &&
-          holdCount >= 0 &&
-          day.vacantRooms >= 0,
-      );
-      assert.equal(
-        day.otherBooked + day.auctionBooked + holdCount + day.vacantRooms,
-        day.totalRooms,
-        `Day offset ${idx} (${day.isoDate}) room equation mismatch`,
-      );
-    });
+    const h11 = cfg.properties.find((p) => p.id === "stay_h11")!;
+    assert.equal(h11.isChainMember, false);
+    assert.equal(h11.reviewRating5, 0);
+    assert.equal(h11.reviewCount, 0);
+    assert.equal(h11.eloScore, 800);
   });
 
-  it("TC-DATA-08: auction_sessions have unique IDs and valid roomClassId, branchId, lockedRoomNumber & autopsyId FKs", () => {
-    assert.ok(bundle.auctionSessions.length >= 60);
+  it("TC-DATA-04: bid_records has 100% valid FKs, all 4 status buckets > 0 on L'amour, exact 75 records for stay_h11, and complete accepted booking slips", () => {
+    const bundle = loadSeedMasterBundle();
+    const validPropIds = new Set(bundle.hubConfig.properties.map((p) => p.id));
     const seenIds = new Set<string>();
-    const validBranchIds = new Set(bundle.hotelProfile.branches.map((b) => b.id));
-    const validClassIds = new Set(bundle.roomClasses.map((c) => c.id));
-    const validRooms = new Set(bundle.roomsPms.map((r) => r.roomNumber));
+    const seenBookingCodes = new Set<string>();
 
-    for (const s of bundle.auctionSessions) {
-      assert.equal(seenIds.has(s.id), false, `Duplicate session ID: ${s.id}`);
-      seenIds.add(s.id);
+    for (const rec of bundle.bidRecords) {
+      assert.equal(seenIds.has(rec.id), false, `Duplicate bid ID: ${rec.id}`);
+      seenIds.add(rec.id);
       assert.ok(
-        validClassIds.has(s.matchedRoomClassId),
-        `Session ${s.id} has invalid matchedRoomClassId ${s.matchedRoomClassId}`,
+        validPropIds.has(rec.propertyId),
+        `Unknown propertyId ${rec.propertyId} on ${rec.id}`,
       );
-      if (s.branchId) {
-        assert.ok(
-          validBranchIds.has(s.branchId),
-          `Session ${s.id} has invalid branchId ${s.branchId}`,
-        );
-      }
-      if (s.lockedRoomNumber !== undefined) {
-        assert.ok(
-          validRooms.has(s.lockedRoomNumber),
-          `Session ${s.id} has invalid lockedRoomNumber ${s.lockedRoomNumber}`,
-        );
-      }
-      if (s.holdRoomNumber != null) {
-        assert.ok(
-          validRooms.has(s.holdRoomNumber),
-          `Session ${s.id} has invalid holdRoomNumber ${s.holdRoomNumber}`,
-        );
-      }
-      if (s.autopsyId) {
-        assert.ok(
-          Boolean(bundle.lossAutopsies[s.autopsyId]),
-          `Session ${s.id} references missing autopsyId ${s.autopsyId}`,
-        );
-      }
-      assert.ok(s.matchScore >= 0 && s.matchScore <= 100);
-      assert.ok(s.nights >= 1);
-    }
-  });
+      assert.ok(
+        ["accepted", "expired", "rejected", "cancelled"].includes(rec.status),
+        `Invalid status ${rec.status} on ${rec.id}`,
+      );
+      assert.ok(["auto", "manual"].includes(rec.bidMode));
+      assert.ok(rec.nights >= 1);
 
-  it("TC-DATA-09: system_benchmarks covers all 3 periods (today, 7d, 30d) and all 4 room classes", () => {
-    const periods = bundle.systemBenchmarks.periodsMeta;
-    for (const key of ["today", "7d", "30d"] as const) {
-      assert.ok(periods[key], `Missing period meta for ${key}`);
-      assert.ok(periods[key].startDate <= periods[key].endDate);
-      assert.equal(periods[key].endDate, bundle.hotelProfile.referenceDate);
-      assert.ok(periods[key].platformWinRatePct > 0 && periods[key].platformWinRatePct < 100);
+      if (rec.status === "accepted") {
+        assert.ok(rec.bookingCode?.startsWith("#"), `Missing bookingCode on ${rec.id}`);
+        assert.equal(
+          seenBookingCodes.has(rec.bookingCode!),
+          false,
+          `Duplicate bookingCode ${rec.bookingCode}`,
+        );
+        seenBookingCodes.add(rec.bookingCode!);
+        assert.ok(rec.checkInDate && rec.checkOutDate);
+        const diffDays = Math.round(
+          (Date.parse(`${rec.checkOutDate}T00:00:00Z`) -
+            Date.parse(`${rec.checkInDate}T00:00:00Z`)) /
+            86_400_000,
+        );
+        assert.equal(diffDays, rec.nights, `Stay nights mismatch on ${rec.id}`);
+        assert.ok((rec.guestsCount ?? 0) >= 1);
+        assert.ok((rec.roomNumber ?? 0) >= 101);
+        assert.equal(
+          rec.netRevenueVnd,
+          rec.offeredRatePerNightVnd * rec.nights,
+          `Net revenue mismatch on ${rec.id}`,
+        );
+        assert.ok(rec.roomName && rec.roomName.vi && rec.roomName.en && rec.roomName.ko);
+        assert.ok(rec.guestNote && rec.guestNote.vi && rec.guestNote.en && rec.guestNote.ko);
+        assert.ok(Array.isArray(rec.amenities) && rec.amenities.length > 0);
+      }
     }
 
-    const benchIds = new Set(
-      bundle.systemBenchmarks.roomClassBenchmarks.map((b) => b.roomClassId),
+    // L'amour chain records have non-zero counts in ALL 4 buckets (including cancelled > 0)
+    const chainIds = new Set(
+      bundle.hubConfig.properties.filter((p) => p.isChainMember).map((p) => p.id),
     );
-    for (const rc of bundle.roomClasses) {
-      assert.ok(benchIds.has(rc.id), `Missing benchmark for room class ${rc.id}`);
-    }
+    const chainRecs = bundle.bidRecords.filter((r) => chainIds.has(r.propertyId));
+    assert.equal(chainRecs.length, 68);
+    assert.equal(chainRecs.filter((r) => r.status === "accepted").length, 29);
+    assert.ok(chainRecs.filter((r) => r.status === "expired").length > 0);
+    assert.ok(chainRecs.filter((r) => r.status === "rejected").length > 0);
+    assert.ok(
+      chainRecs.filter((r) => r.status === "cancelled").length >= 4,
+      "Expected >= 4 cancelled records so 4th Bids Status bucket is populated",
+    );
+
+    // Family Connecting Suite CRQ-8938 explicitly records 4 guests
+    const familyBooking = bundle.bidRecords.find((r) => r.id === "CRQ-8938");
+    assert.ok(familyBooking);
+    assert.equal(familyBooking.guestsCount, 4);
+
+    // Stay Hotel H11 records come directly from bid_records.json (0 accepted, 8 expired, 67 rejected, 0 cancelled = 75)
+    const h11Recs = bundle.bidRecords.filter((r) => r.propertyId === "stay_h11");
+    assert.equal(h11Recs.length, 75);
+    assert.equal(h11Recs.filter((r) => r.status === "accepted").length, 0);
+    assert.equal(h11Recs.filter((r) => r.status === "expired").length, 8);
+    assert.equal(h11Recs.filter((r) => r.status === "rejected").length, 67);
+    assert.equal(h11Recs.filter((r) => r.status === "cancelled").length, 0);
   });
 
-  it("TC-DATA-10: perks_catalog & match_breakdowns link valid perk IDs", () => {
-    assert.ok(bundle.perksCatalog.length >= 3);
-    const perkIds = new Set(bundle.perksCatalog.map((p) => p.id));
-    for (const p of bundle.perksCatalog) {
-      assert.ok(p.unitCostVnd >= 0);
-      assert.ok(p.winBoostPct > 0);
-    }
-    for (const [key, mb] of Object.entries(bundle.matchBreakdowns)) {
-      if (mb.suggestedPerkId) {
-        assert.ok(
-          perkIds.has(mb.suggestedPerkId),
-          `MatchBreakdown ${key} references unknown suggestedPerkId ${mb.suggestedPerkId}`,
-        );
-      }
-    }
-  });
+  it("TC-DATA-05: hub_inbox provides localized messages and operational notifications", () => {
+    const bundle = loadSeedMasterBundle();
+    assert.ok(Array.isArray(bundle.hubInbox.messages));
+    assert.ok(bundle.hubInbox.messages.length >= 2);
+    assert.ok(Array.isArray(bundle.hubInbox.notifications));
+    assert.ok(bundle.hubInbox.notifications.length >= 2);
 
-  it("TC-DATA-11: lifecycle_catalog defines 9 stages, 4 room states, 11+ reject codes, 18 cases & 10m payment_hold FK parity", () => {
-    const lc = bundle.lifecycleCatalog;
-    assert.ok(lc, "Missing lifecycle_catalog.json in master bundle");
-    assert.equal(lc.holdMechanism.ttlSeconds, 600);
-    assert.equal(lc.holdMechanism.ttlMinutes, 10);
-    assert.equal(lc.roomStateMachine.length, 4);
-    assert.equal(lc.stages.length, 9);
-    assert.ok(lc.rejectCatalog.length >= 11);
-    assert.equal(lc.scenarioMatrix.length, 18);
-
-    const holdRooms = bundle.roomsPms.filter((r) => r.status === "payment_hold");
-    assert.equal(holdRooms.length, 1, "Expected 1 active 10m payment_hold room in seed (#130)");
-    assert.equal(holdRooms[0].roomNumber, 130);
-    assert.equal(holdRooms[0].linkedReqId, "CRQ-8944");
-    assert.ok((holdRooms[0].holdRemainingSeconds ?? 0) > 0 && (holdRooms[0].holdRemainingSeconds ?? 0) <= 600);
+    for (const msg of bundle.hubInbox.messages) {
+      assert.ok(msg.preview.vi && msg.preview.en && msg.preview.ko);
+    }
+    for (const note of bundle.hubInbox.notifications) {
+      assert.ok(note.text.vi && note.text.en && note.text.ko);
+    }
   });
 });

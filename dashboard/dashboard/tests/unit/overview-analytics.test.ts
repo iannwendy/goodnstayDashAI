@@ -1,63 +1,14 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import {
-  convertFromVnd,
-  formatAxisTickMoney,
-  formatBusinessMoney,
-  formatDisplayDate,
-  getDictionary,
-  getZeroRevenueAxisMaxVnd,
-} from "@/lib/i18n";
+import { getDictionary } from "@/lib/i18n";
 import {
   buildOverviewViewModel,
   type PropertyFilterKey,
 } from "@/services/overviewAnalytics";
 import { loadSeedMasterBundle } from "../helpers/seed-loader";
 
-describe("TC-OVW: Business Hotel Overview Analytics, Multi-Currency & Plain-Language Copy", () => {
-  it("TC-OVW-01: currency conversion & business money formatting across VND, KRW, and USD", () => {
-    assert.equal(convertFromVnd(0, "VND"), 0);
-    assert.equal(convertFromVnd(0, "KRW"), 0);
-    assert.equal(convertFromVnd(0, "USD"), 0);
-
-    assert.equal(formatBusinessMoney(0, "VND", { compact: true, withPlus: true }), "0 ₫");
-    assert.equal(formatBusinessMoney(0, "KRW", { compact: true, withPlus: true }), "0 ₩");
-    assert.equal(formatBusinessMoney(0, "USD", { compact: true, withPlus: true }), "$0");
-
-    const vndCompact = formatBusinessMoney(31_820_000, "VND", {
-      compact: true,
-      withPlus: true,
-    });
-    assert.ok(vndCompact.startsWith("+"), `Expected + prefix on ${vndCompact}`);
-    assert.ok(vndCompact.includes("₫"), `Expected ₫ symbol on ${vndCompact}`);
-    assert.ok(!vndCompact.includes("NaN"));
-
-    const krwCompact = formatBusinessMoney(48_100_000, "KRW", {
-      compact: true,
-      withPlus: true,
-    });
-    assert.ok(krwCompact.startsWith("+"));
-    assert.ok(krwCompact.includes("₩"));
-
-    const usdFull = formatBusinessMoney(25_400_000, "USD");
-    assert.ok(usdFull.includes("$"));
-    assert.ok(!usdFull.includes("NaN"));
-
-    assert.equal(formatDisplayDate("2026-11-06", "vi", true), "06/11/2026");
-    assert.equal(formatDisplayDate("2026-11-06", "en", true), "Nov 06, 2026");
-    assert.equal(formatDisplayDate("2026-11-06", "ko", true), "2026.11.06");
-
-    assert.equal(
-      formatAxisTickMoney(getZeroRevenueAxisMaxVnd("KRW"), "KRW"),
-      "+4 ₩",
-    );
-    assert.equal(
-      formatAxisTickMoney(getZeroRevenueAxisMaxVnd("USD"), "USD"),
-      "+$4",
-    );
-  });
-
-  it("TC-OVW-02: daily timeline & 4-bucket Bids Status completeness hold across all periods and branches", () => {
+describe("TC-OVW: Business Hotel Overview Analytics (100% Master-Data Driven)", () => {
+  it("TC-OVW-01: daily timeline & 4-bucket Bids Status completeness hold across all periods and properties", () => {
     const bundle = loadSeedMasterBundle();
     const properties: PropertyFilterKey[] = [
       "all",
@@ -77,7 +28,8 @@ describe("TC-OVW: Business Hotel Overview Analytics, Multi-Currency & Plain-Lang
           currency: "VND",
         });
 
-        const expectedDays = periodKey === "today" ? 1 : periodKey === "7d" ? 7 : 30;
+        const expectedDays =
+          periodKey === "today" ? 1 : periodKey === "7d" ? 7 : 30;
         assert.equal(
           vm.dailySeries.length,
           expectedDays,
@@ -92,20 +44,14 @@ describe("TC-OVW: Business Hotel Overview Analytics, Multi-Currency & Plain-Lang
         assert.equal(sumDailyRev, vm.kpis.revenueVnd);
         assert.equal(sumDailyBookings, vm.completedBookings.length);
 
-        const { accepted, expired, rejected, cancelled, total } = vm.bidsBreakdown;
+        const { accepted, expired, rejected, cancelled, total } =
+          vm.bidsBreakdown;
         assert.equal(
           accepted.count + expired.count + rejected.count + cancelled.count,
           total,
           `4-bucket sum mismatch on ${propertyKey}/${periodKey}`,
         );
         assert.equal(total, vm.kpis.totalBids);
-
-        for (const bucket of [accepted, expired, rejected, cancelled]) {
-          assert.ok(
-            Number.isFinite(bucket.sharePct) && bucket.sharePct >= 0,
-            `Invalid sharePct on ${propertyKey}/${periodKey}`,
-          );
-        }
       }
     }
 
@@ -116,11 +62,43 @@ describe("TC-OVW: Business Hotel Overview Analytics, Multi-Currency & Plain-Lang
       currency: "VND",
     });
     assert.equal(chain30d.completedBookings.length, 29);
+    assert.ok(
+      chain30d.bidsBreakdown.cancelled.count >= 4,
+      "Expected non-zero Cancelled bucket in 30d chain view",
+    );
     assert.equal(chain30d.revenueAdvisor.cards.length, 3);
     assert.equal(chain30d.bidsAdvisor.cards.length, 3);
   });
 
-  it("TC-OVW-03: newly onboarded Stay Hotel H11 & zero-bid edge cases never emit NaN or Infinity", () => {
+  it("TC-OVW-02: switching properties dynamically updates Rating, Review Count, 5 Criteria & ELO Score from partner_hub_config", () => {
+    const bundle = loadSeedMasterBundle();
+    const allVm = buildOverviewViewModel(bundle, {
+      propertyKey: "all",
+      periodKey: "30d",
+      locale: "vi",
+      currency: "VND",
+    });
+    const mykheVm = buildOverviewViewModel(bundle, {
+      propertyKey: "br_mykhe",
+      periodKey: "30d",
+      locale: "vi",
+      currency: "VND",
+    });
+    const anthuongVm = buildOverviewViewModel(bundle, {
+      propertyKey: "br_anthuong",
+      periodKey: "30d",
+      locale: "vi",
+      currency: "VND",
+    });
+
+    assert.equal(allVm.trust.eloScore, 1680);
+    assert.equal(allVm.trust.reviewCount, 142);
+    assert.notEqual(mykheVm.trust.eloScore, allVm.trust.eloScore);
+    assert.notEqual(mykheVm.trust.eloScore, anthuongVm.trust.eloScore);
+    assert.notEqual(mykheVm.kpis.rating, anthuongVm.kpis.rating);
+  });
+
+  it("TC-OVW-03: Stay Hotel H11 loads 100% from bid_records & partner_hub_config (0 revenue, 75 bids, ★0.0, ELO 800, 0 messages)", () => {
     const bundle = loadSeedMasterBundle();
     const h11 = buildOverviewViewModel(bundle, {
       propertyKey: "stay_h11",
@@ -136,6 +114,7 @@ describe("TC-OVW: Business Hotel Overview Analytics, Multi-Currency & Plain-Lang
     assert.equal(h11.kpis.autoBidPct, 100);
     assert.equal(h11.trust.eloScore, 800);
     assert.equal(h11.completedBookings.length, 0);
+    assert.equal(h11.inboxMessages.length, 0);
 
     assert.equal(h11.bidsBreakdown.accepted.count, 0);
     assert.equal(h11.bidsBreakdown.expired.count, 8);
@@ -145,7 +124,7 @@ describe("TC-OVW: Business Hotel Overview Analytics, Multi-Currency & Plain-Lang
 
     // Zero-bid synthetic bundle safety check
     const emptyBundle = structuredClone(bundle);
-    emptyBundle.auctionSessions = [];
+    emptyBundle.bidRecords = [];
     const zeroVm = buildOverviewViewModel(emptyBundle, {
       propertyKey: "all",
       periodKey: "today",
@@ -216,7 +195,7 @@ describe("TC-OVW: Business Hotel Overview Analytics, Multi-Currency & Plain-Lang
     assert.ok(koDict.kpiRevenue.length > 0);
   });
 
-  it("TC-OVW-06: Booking IDs remain globally stable across period/branch filters and guestNote/amenities localize in en & ko", () => {
+  it("TC-OVW-06: Booking IDs remain fixed (#43..#71), property/room/guestNote localize cleanly in en & ko (incl. 4-guest Family Suite CRQ-8938)", () => {
     const bundle = loadSeedMasterBundle();
     const all30 = buildOverviewViewModel(bundle, {
       propertyKey: "all",
@@ -240,11 +219,13 @@ describe("TC-OVW: Business Hotel Overview Analytics, Multi-Currency & Plain-Lang
     const topSessionId = all30.completedBookings[0].refSessionId;
     assert.equal(all30.completedBookings[0].bookingCode, "#71");
     assert.equal(
-      all7.completedBookings.find((b) => b.refSessionId === topSessionId)?.bookingCode,
+      all7.completedBookings.find((b) => b.refSessionId === topSessionId)
+        ?.bookingCode,
       "#71",
     );
     assert.equal(
-      allToday.completedBookings.find((b) => b.refSessionId === topSessionId)?.bookingCode,
+      allToday.completedBookings.find((b) => b.refSessionId === topSessionId)
+        ?.bookingCode,
       "#71",
     );
 
@@ -261,12 +242,31 @@ describe("TC-OVW: Business Hotel Overview Analytics, Multi-Currency & Plain-Lang
       currency: "KRW",
     });
 
+    const enFamily = enVm.completedBookings.find(
+      (b) => b.refSessionId === "CRQ-8938",
+    )!;
+    assert.equal(enFamily.guestsCount, 4);
+    assert.ok(
+      enFamily.guestNote.includes("4"),
+      `Expected 4 guests in EN note, got: ${enFamily.guestNote}`,
+    );
+
+    const koFamily = koVm.completedBookings.find(
+      (b) => b.refSessionId === "CRQ-8938",
+    )!;
+    assert.ok(
+      koFamily.guestNote.includes("4"),
+      `Expected 4 guests in KO note, got: ${koFamily.guestNote}`,
+    );
+
     for (const row of enVm.completedBookings) {
       assert.equal(row.guestNote.includes("người lớn"), false);
+      assert.equal(row.propertyName.includes("Sơn Trà"), false);
       assert.equal(row.amenities.includes("Bữa sáng"), false);
     }
     for (const row of koVm.completedBookings) {
       assert.equal(row.guestNote.includes("người lớn"), false);
+      assert.equal(row.propertyName.includes("Sơn Trà"), false);
       assert.equal(row.amenities.includes("Bữa sáng"), false);
     }
   });

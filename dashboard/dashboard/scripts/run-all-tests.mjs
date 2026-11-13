@@ -10,18 +10,10 @@ const SEED_DIR = path.join(ROOT, "master-data", "seed");
 const LIVE_DIR = path.join(ROOT, "master-data");
 
 const TABLE_FILES = [
-  "hotel_profile.json",
-  "users_roles.json",
-  "perks_catalog.json",
-  "room_classes.json",
-  "rooms_pms.json",
-  "calendar_14d_pms.json",
-  "system_benchmarks.json",
-  "auction_sessions.json",
-  "match_breakdowns.json",
-  "loss_autopsies.json",
-  "bot_rules.json",
-  "lifecycle_catalog.json",
+  "partner_hub_config.json",
+  "bid_records.json",
+  "hub_inbox.json",
+  "schema_manifest.json",
 ];
 
 function restoreSeedFiles() {
@@ -51,7 +43,7 @@ let exitCode = 0;
 try {
   restoreSeedFiles();
 
-  // 1. Unit, Master-Data Contract, Analytics Engine & TypeScript Build Gate
+  // 1. Unit, Master-Data Contract, Overview Logic & TypeScript Build Gate
   const unitFiles = fs
     .readdirSync(path.join(ROOT, "tests", "unit"))
     .filter((f) => f.endsWith(".test.ts"))
@@ -59,7 +51,7 @@ try {
     .map((f) => path.join("tests", "unit", f));
 
   const unitStatus = runStep(
-    "PHASE 1/2 — Unit, Contract, Business Logic & TypeScript Build Gate",
+    "PHASE 1/2 — Unit, Master-Data v3.0 Contract, Overview Logic & TypeScript Build Gate",
     process.execPath,
     ["--import", "./tests/helpers/register-ts-alias.mjs", "--test", ...unitFiles],
   );
@@ -67,10 +59,10 @@ try {
     exitCode = unitStatus;
   }
 
-  // 2. Playwright E2E, REST API, All Buttons/Modals, RBAC & 7-Viewport Responsive Matrix
+  // 2. Playwright E2E, REST API, All Buttons/Modals, Workflows & 7-Viewport Responsive Matrix
   const npxBin = process.platform === "win32" ? "npx.cmd" : "npx";
   const e2eStatus = runStep(
-    "PHASE 2/2 — Playwright E2E, REST API, UI Controls, RBAC & Responsive Matrix",
+    "PHASE 2/2 — Playwright E2E, REST API, UI Controls, Workflows & Responsive Matrix",
     npxBin,
     ["playwright", "test"],
   );

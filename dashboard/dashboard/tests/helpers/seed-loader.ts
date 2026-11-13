@@ -9,19 +9,25 @@ export const MASTER_DATA_DIR = path.join(PROJECT_ROOT, "master-data");
 export const SEED_DATA_DIR = path.join(MASTER_DATA_DIR, "seed");
 
 export const CORE_MASTER_TABLE_FILES: Record<keyof MasterDataBundle, string> = {
-  hotelProfile: "hotel_profile.json",
-  usersRoles: "users_roles.json",
-  perksCatalog: "perks_catalog.json",
-  roomClasses: "room_classes.json",
-  roomsPms: "rooms_pms.json",
-  calendar14dPms: "calendar_14d_pms.json",
-  systemBenchmarks: "system_benchmarks.json",
-  auctionSessions: "auction_sessions.json",
-  matchBreakdowns: "match_breakdowns.json",
-  lossAutopsies: "loss_autopsies.json",
-  botRules: "bot_rules.json",
-  lifecycleCatalog: "lifecycle_catalog.json",
+  hubConfig: "partner_hub_config.json",
+  bidRecords: "bid_records.json",
+  hubInbox: "hub_inbox.json",
 };
+
+export const OBSOLETE_LEGACY_FILES = [
+  "hotel_profile.json",
+  "users_roles.json",
+  "perks_catalog.json",
+  "room_classes.json",
+  "rooms_pms.json",
+  "calendar_14d_pms.json",
+  "system_benchmarks.json",
+  "auction_sessions.json",
+  "match_breakdowns.json",
+  "loss_autopsies.json",
+  "bot_rules.json",
+  "lifecycle_catalog.json",
+] as const;
 
 export function loadSeedMasterBundle(): MasterDataBundle {
   const bundle: Record<string, unknown> = {};

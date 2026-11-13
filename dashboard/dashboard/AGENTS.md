@@ -5,10 +5,10 @@ Mọi AI Agent làm việc trong thư mục `dashboard/dashboard` **BẮT BUỘC
 ## 1. Quy Tắc Bắt Buộc Sau Mỗi Lần Chỉnh Sửa Code ("Code Xong Phải Test Kỹ + Thêm Testcase")
 
 1. **Bổ sung / cập nhật Test Case tương ứng với thay đổi vừa làm**:
-   - Sửa công thức giá (`×1.265`), định dạng tiền tệ, đếm ngược, ngày lưu trú -> thêm/cập nhật test trong `tests/unit/pricing-and-formatters.test.ts`.
-   - Sửa cấu trúc hoặc dữ liệu `master-data/*.json` -> đồng bộ với `master-data/seed/*.json` và thêm kiểm tra ràng buộc trong `tests/unit/master-data-contract.test.ts`.
-   - Sửa logic KPI, bộ lọc kỳ (`today`/`7d`/`30d`), chi nhánh, phễu chuyển đổi 8 bước, xả đêm, lịch phòng 14 ngày hoặc biểu đồ Benchmark -> thêm test trong `tests/unit/analytics-engine.test.ts`.
-   - Thêm/sửa nút bấm, switch, dropdown, bảng phân trang, hộp thoại modal hoặc phân quyền RBAC (`Quản lý` vs `Lễ tân`) -> thêm kịch bản E2E trong `tests/e2e/buttons-and-modals.spec.ts` hoặc `tests/e2e/workflows-and-rbac.spec.ts`.
+   - Sửa quy đổi tỷ giá (`VND`/`KRW`/`USD`), định dạng tiền tệ thương mại, ngày lưu trú hoặc tiện ích -> thêm/cập nhật test trong `tests/unit/pricing-and-formatters.test.ts`.
+   - Sửa cấu trúc hoặc dữ liệu bộ Lean Master Data v3.0 (`partner_hub_config.json`, `bid_records.json`, `hub_inbox.json`, `schema_manifest.json`) trong `master-data/` -> đồng bộ 100% với `master-data/seed/` và thêm kiểm tra ràng buộc trong `tests/unit/master-data-contract.test.ts`.
+   - Sửa logic KPI, bộ lọc kỳ (`today`/`7d`/`30d`), chi nhánh (`all`, `br_mykhe`, `br_songhan`, `br_anthuong`, `stay_h11`), 4 nhóm trạng thái báo giá, điểm đánh giá/ELO hoặc hộp cố vấn AI -> thêm test trong `tests/unit/overview-analytics.test.ts`.
+   - Thêm/sửa nút bấm, popover tin nhắn/thông báo, dropdown, bảng phân trang hoặc hộp thoại modal -> thêm kịch bản E2E trong `tests/e2e/buttons-and-modals.spec.ts` hoặc `tests/e2e/workflows-and-rbac.spec.ts`.
    - Thêm/sửa bố cục giao diện, lưới thẻ, biểu đồ Recharts hoặc bảng dữ liệu -> kiểm tra không tràn ngang trên đủ **7 kích thước màn hình** (`1440×900`, `1280×800`, `1024×768`, `768×1024`, `390×844`, `375×667`, `360×800`) trong `tests/e2e/responsive-matrix.spec.ts`.
    - Cập nhật danh mục mã Test Case trong `tests/TEST_CASES.md`.
 

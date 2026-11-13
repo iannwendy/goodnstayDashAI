@@ -1,4 +1,11 @@
-import { CheckCircle2, Calendar, BedDouble, Building2, Wallet } from "lucide-react";
+import {
+  CheckCircle2,
+  Calendar,
+  BedDouble,
+  Building2,
+  Wallet,
+  Users,
+} from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -9,6 +16,7 @@ import {
 import {
   formatBusinessMoney,
   type CurrencyCode,
+  type CurrencyRateMap,
   type OverviewCopy,
 } from "@/lib/i18n";
 import type { RecentBookingRow } from "@/services/overviewAnalytics";
@@ -17,6 +25,7 @@ interface BookingDetailModalProps {
   booking: RecentBookingRow | null;
   onClose: () => void;
   currency: CurrencyCode;
+  currencyRates: CurrencyRateMap;
   copy: OverviewCopy;
 }
 
@@ -24,6 +33,7 @@ export function BookingDetailModal({
   booking,
   onClose,
   currency,
+  currencyRates,
   copy,
 }: BookingDetailModalProps) {
   return (
@@ -86,6 +96,18 @@ export function BookingDetailModal({
                   </span>
                 </div>
                 <div className="flex flex-wrap items-center justify-between gap-2 text-[13px] pt-2 border-t border-slate-100">
+                  <span className="text-slate-500 flex items-center gap-1.5">
+                    <Users className="w-3.5 h-3.5" />
+                    {copy.bookingFieldGuests}
+                  </span>
+                  <span
+                    data-testid="booking-modal-guests"
+                    className="font-semibold text-slate-900 tabular"
+                  >
+                    {booking.guestsCount} {copy.guestsUnit}
+                  </span>
+                </div>
+                <div className="flex flex-wrap items-center justify-between gap-2 text-[13px] pt-2 border-t border-slate-100">
                   <span className="text-slate-500">
                     {copy.bookingFieldPaidAt}
                   </span>
@@ -132,7 +154,9 @@ export function BookingDetailModal({
                     {copy.bookingFieldNetPayout}
                   </span>
                   <span className="text-[18px] font-bold text-emerald-700 tabular">
-                    {formatBusinessMoney(booking.netRevenueVnd, currency)}
+                    {formatBusinessMoney(booking.netRevenueVnd, currency, {
+                      rates: currencyRates,
+                    })}
                   </span>
                 </div>
                 <p className="text-[11.5px] text-emerald-800/85 mt-1.5 mb-0 leading-relaxed">

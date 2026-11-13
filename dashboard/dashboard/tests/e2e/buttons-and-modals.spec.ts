@@ -5,12 +5,12 @@ import {
   resetSeedViaApi,
 } from "../helpers/e2e-helpers";
 
-test.describe("TC-UI: Partner Hub Sidebar, Topbar Utilities, AI Advisor Panels, KPI Tooltips & Booking Slip Modal", () => {
+test.describe("TC-UI: Partner Hub Sidebar, Topbar Utilities, Inbox Popovers, AI Advisor Panels, KPI Tooltips & Booking Slip Modal", () => {
   test.afterAll(async ({ request }) => {
     await resetSeedViaApi(request);
   });
 
-  test("TC-UI-01..06: Collapsible Sidebar (1.png <-> 2.png), Marketing Submenu, Polite Nav Notice, Help Guide & Notifications", async ({
+  test("TC-UI-01..06 & TC-UI-11: Collapsible Sidebar, Marketing Submenu, Polite Nav Notice, Help Guide, Guest Messages & Operational Notifications", async ({
     page,
     request,
   }) => {
@@ -49,11 +49,22 @@ test.describe("TC-UI: Partner Hub Sidebar, Topbar Utilities, AI Advisor Panels, 
     await page.keyboard.press("Escape");
     await expect(dialog).toBeHidden();
 
-    // 5. Notifications popover opens & closes
+    // 5. TC-UI-11: Guest Messages popover displays localized messages from hub_inbox.json
+    await page.getByTestId("topbar-messages-btn").click();
+    const msgPopover = page.getByTestId("messages-popover");
+    await expect(msgPopover).toBeVisible();
+    await expect(msgPopover).toContainText("#71");
+    await expect(msgPopover).toContainText("#69");
+    await page.getByTestId("topbar-messages-btn").click();
+    await expect(msgPopover).toBeHidden();
+
+    // 6. Notifications popover opens & renders dynamic completed count + hub_inbox notifications
     await page.getByTestId("topbar-notifications-btn").click();
-    await expect(page.getByTestId("notifications-popover")).toBeVisible();
+    const notifPopover = page.getByTestId("notifications-popover");
+    await expect(notifPopover).toBeVisible();
+    await expect(notifPopover).toContainText("#71");
     await page.getByTestId("topbar-notifications-btn").click();
-    await expect(page.getByTestId("notifications-popover")).toBeHidden();
+    await expect(notifPopover).toBeHidden();
 
     monitor.assertZeroErrors();
   });
@@ -96,6 +107,7 @@ test.describe("TC-UI: Partner Hub Sidebar, Topbar Utilities, AI Advisor Panels, 
     await expect(dialog).toBeVisible();
     await expect(dialog).toContainText("#71");
     await expect(dialog).toContainText("100%");
+    await expect(page.getByTestId("booking-modal-guests")).toContainText("2 khách");
     await page.keyboard.press("Escape");
     await expect(dialog).toBeHidden();
 

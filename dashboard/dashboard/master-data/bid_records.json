@@ -1,0 +1,2016 @@
+[
+  {
+    "id": "CRQ-8940",
+    "bookingCode": "#71",
+    "propertyId": "br_mykhe",
+    "status": "accepted",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-06",
+    "timeLabel": "18:42",
+    "checkInDate": "2026-11-06",
+    "checkOutDate": "2026-11-08",
+    "nights": 2,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Phòng Deluxe 2 Giường Đơn (Hướng Phố)",
+      "en": "Deluxe Twin City View",
+      "ko": "디럭스 트윈 시티뷰"
+    },
+    "roomNumber": 116,
+    "offeredRatePerNightVnd": 1050000,
+    "netRevenueVnd": 2100000,
+    "guestNote": {
+      "vi": "2 người lớn • Nghỉ dưỡng cuối tuần",
+      "en": "2 adults · Weekend leisure stay (2 nights)",
+      "ko": "성인 2명 · 주말 휴양 2박 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "pool",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8939",
+    "bookingCode": "#70",
+    "propertyId": "br_mykhe",
+    "status": "accepted",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-06",
+    "timeLabel": "16:15",
+    "checkInDate": "2026-11-06",
+    "checkOutDate": "2026-11-08",
+    "nights": 2,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Phòng Superior Giường Đôi",
+      "en": "Superior Double",
+      "ko": "슈페리어 더블"
+    },
+    "roomNumber": 106,
+    "offeredRatePerNightVnd": 800000,
+    "netRevenueVnd": 1600000,
+    "guestNote": {
+      "vi": "2 người lớn • Chuyến bay chiều từ Hà Nội",
+      "en": "2 adults · Afternoon flight arrival (2 nights)",
+      "ko": "성인 2명 · 오후 항공편 도착 2박 확정 예약"
+    },
+    "amenities": [
+      "wifi",
+      "elevator"
+    ]
+  },
+  {
+    "id": "CRQ-8938",
+    "bookingCode": "#69",
+    "propertyId": "br_anthuong",
+    "status": "accepted",
+    "bidMode": "manual",
+    "sessionDate": "2026-11-06",
+    "timeLabel": "14:08",
+    "checkInDate": "2026-11-06",
+    "checkOutDate": "2026-11-08",
+    "nights": 2,
+    "guestsCount": 4,
+    "roomName": {
+      "vi": "Suite Gia Đình Thông Nhau",
+      "en": "Family Connecting Suite",
+      "ko": "패밀리 커넥팅 스위트"
+    },
+    "roomNumber": 125,
+    "offeredRatePerNightVnd": 1700000,
+    "netRevenueVnd": 3400000,
+    "guestNote": {
+      "vi": "Gia đình 4 người • Phòng thông nhau",
+      "en": "Family of 4 · Connecting suite stay (2 nights)",
+      "ko": "4인 가족 · 커넥팅 스위트 2박 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "pool",
+      "parking"
+    ]
+  },
+  {
+    "id": "CRQ-8936",
+    "bookingCode": "#68",
+    "propertyId": "br_songhan",
+    "status": "accepted",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-06",
+    "timeLabel": "12:20",
+    "checkInDate": "2026-11-06",
+    "checkOutDate": "2026-11-09",
+    "nights": 3,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Phòng Deluxe 2 Giường Đơn (Hướng Phố)",
+      "en": "Deluxe Twin City View",
+      "ko": "디럭스 트윈 시티뷰"
+    },
+    "roomNumber": 117,
+    "offeredRatePerNightVnd": 950000,
+    "netRevenueVnd": 2850000,
+    "guestNote": {
+      "vi": "2 khách công tác • Lưu trú 3 đêm",
+      "en": "2 business travelers · 3-night corporate stay",
+      "ko": "출장객 2명 · 3박 비즈니스 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi",
+      "parking"
+    ]
+  },
+  {
+    "id": "CRQ-8934",
+    "bookingCode": "#67",
+    "propertyId": "br_mykhe",
+    "status": "accepted",
+    "bidMode": "manual",
+    "sessionDate": "2026-11-06",
+    "timeLabel": "09:50",
+    "checkInDate": "2026-11-06",
+    "checkOutDate": "2026-11-07",
+    "nights": 1,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Suite Hướng Biển Trực Diện",
+      "en": "Executive Ocean Suite",
+      "ko": "이그제큐티브 오션 스위트"
+    },
+    "roomNumber": 129,
+    "offeredRatePerNightVnd": 1900000,
+    "netRevenueVnd": 1900000,
+    "guestNote": {
+      "vi": "Cặp đôi Hàn Quốc • View biển Mỹ Khê",
+      "en": "Couple stay · My Khe oceanfront view (1 night)",
+      "ko": "커플 투숙객 · 미케 오션뷰 1박 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "pool",
+      "late_checkout"
+    ]
+  },
+  {
+    "id": "CRQ-8937",
+    "propertyId": "br_mykhe",
+    "status": "rejected",
+    "bidMode": "manual",
+    "sessionDate": "2026-11-06",
+    "timeLabel": "15:10",
+    "nights": 2,
+    "offeredRatePerNightVnd": 2250000
+  },
+  {
+    "id": "CRQ-8935",
+    "propertyId": "br_songhan",
+    "status": "expired",
+    "bidMode": "manual",
+    "sessionDate": "2026-11-06",
+    "timeLabel": "11:45",
+    "nights": 1,
+    "offeredRatePerNightVnd": 840000
+  },
+  {
+    "id": "CRQ-8933",
+    "propertyId": "br_anthuong",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-06",
+    "timeLabel": "08:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 790000
+  },
+  {
+    "id": "CRQ-8932",
+    "propertyId": "br_mykhe",
+    "status": "cancelled",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-06",
+    "timeLabel": "07:55",
+    "nights": 1,
+    "offeredRatePerNightVnd": 980000
+  },
+  {
+    "id": "CRQ-8924",
+    "propertyId": "br_songhan",
+    "status": "rejected",
+    "bidMode": "manual",
+    "sessionDate": "2026-11-05",
+    "timeLabel": "21:15",
+    "nights": 2,
+    "offeredRatePerNightVnd": 2300000
+  },
+  {
+    "id": "CRQ-8918",
+    "propertyId": "br_anthuong",
+    "status": "rejected",
+    "bidMode": "manual",
+    "sessionDate": "2026-11-05",
+    "timeLabel": "13:05",
+    "nights": 2,
+    "offeredRatePerNightVnd": 810000
+  },
+  {
+    "id": "CRQ-8909",
+    "propertyId": "br_mykhe",
+    "status": "expired",
+    "bidMode": "manual",
+    "sessionDate": "2026-11-05",
+    "timeLabel": "23:18",
+    "nights": 1,
+    "offeredRatePerNightVnd": 990000
+  },
+  {
+    "id": "CRQ-8921",
+    "bookingCode": "#66",
+    "propertyId": "br_songhan",
+    "status": "accepted",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-05",
+    "timeLabel": "17:20",
+    "checkInDate": "2026-11-05",
+    "checkOutDate": "2026-11-07",
+    "nights": 2,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Phòng Superior Giường Đôi",
+      "en": "Superior Double",
+      "ko": "슈페리어 더블"
+    },
+    "roomNumber": 107,
+    "offeredRatePerNightVnd": 810000,
+    "netRevenueVnd": 1620000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Superior",
+      "en": "2 adults · 2-nights prepaid confirmed stay",
+      "ko": "성인 2명 · 2박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8915",
+    "bookingCode": "#65",
+    "propertyId": "br_anthuong",
+    "status": "accepted",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-05",
+    "timeLabel": "10:40",
+    "checkInDate": "2026-11-05",
+    "checkOutDate": "2026-11-07",
+    "nights": 2,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Phòng Deluxe 2 Giường Đơn (Hướng Phố)",
+      "en": "Deluxe Twin City View",
+      "ko": "디럭스 트윈 시티뷰"
+    },
+    "roomNumber": 118,
+    "offeredRatePerNightVnd": 1020000,
+    "netRevenueVnd": 2040000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Deluxe",
+      "en": "2 adults · 2-nights prepaid confirmed stay",
+      "ko": "성인 2명 · 2박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8904",
+    "bookingCode": "#64",
+    "propertyId": "br_songhan",
+    "status": "accepted",
+    "bidMode": "manual",
+    "sessionDate": "2026-11-04",
+    "timeLabel": "19:05",
+    "checkInDate": "2026-11-05",
+    "checkOutDate": "2026-11-07",
+    "nights": 2,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Suite Gia Đình Thông Nhau",
+      "en": "Family Connecting Suite",
+      "ko": "패밀리 커넥팅 스위트"
+    },
+    "roomNumber": 126,
+    "offeredRatePerNightVnd": 1720000,
+    "netRevenueVnd": 3440000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Suite",
+      "en": "2 adults · 2-nights prepaid confirmed stay",
+      "ko": "성인 2명 · 2박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8899",
+    "bookingCode": "#63",
+    "propertyId": "br_mykhe",
+    "status": "accepted",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-04",
+    "timeLabel": "12:15",
+    "checkInDate": "2026-11-04",
+    "checkOutDate": "2026-11-05",
+    "nights": 1,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Phòng Superior Giường Đôi",
+      "en": "Superior Double",
+      "ko": "슈페리어 더블"
+    },
+    "roomNumber": 101,
+    "offeredRatePerNightVnd": 830000,
+    "netRevenueVnd": 830000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Superior",
+      "en": "2 adults · 1-night prepaid confirmed stay",
+      "ko": "성인 2명 · 1박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8892",
+    "bookingCode": "#62",
+    "propertyId": "br_mykhe",
+    "status": "accepted",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-03",
+    "timeLabel": "20:10",
+    "checkInDate": "2026-11-03",
+    "checkOutDate": "2026-11-05",
+    "nights": 2,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Phòng Deluxe 2 Giường Đơn (Hướng Phố)",
+      "en": "Deluxe Twin City View",
+      "ko": "디럭스 트윈 시티뷰"
+    },
+    "roomNumber": 111,
+    "offeredRatePerNightVnd": 990000,
+    "netRevenueVnd": 1980000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Deluxe",
+      "en": "2 adults · 2-nights prepaid confirmed stay",
+      "ko": "성인 2명 · 2박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8886",
+    "bookingCode": "#61",
+    "propertyId": "br_songhan",
+    "status": "accepted",
+    "bidMode": "manual",
+    "sessionDate": "2026-11-02",
+    "timeLabel": "15:30",
+    "checkInDate": "2026-11-02",
+    "checkOutDate": "2026-11-04",
+    "nights": 2,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Suite Hướng Biển Trực Diện",
+      "en": "Executive Ocean Suite",
+      "ko": "이그제큐티브 오션 스위트"
+    },
+    "roomNumber": 127,
+    "offeredRatePerNightVnd": 1950000,
+    "netRevenueVnd": 3900000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Executive",
+      "en": "2 adults · 2-nights prepaid confirmed stay",
+      "ko": "성인 2명 · 2박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8880",
+    "bookingCode": "#60",
+    "propertyId": "br_mykhe",
+    "status": "accepted",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-01",
+    "timeLabel": "18:25",
+    "checkInDate": "2026-11-01",
+    "checkOutDate": "2026-11-03",
+    "nights": 2,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Phòng Superior Giường Đôi",
+      "en": "Superior Double",
+      "ko": "슈페리어 더블"
+    },
+    "roomNumber": 102,
+    "offeredRatePerNightVnd": 820000,
+    "netRevenueVnd": 1640000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Superior",
+      "en": "2 adults · 2-nights prepaid confirmed stay",
+      "ko": "성인 2명 · 2박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8874",
+    "bookingCode": "#59",
+    "propertyId": "br_mykhe",
+    "status": "accepted",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-31",
+    "timeLabel": "11:50",
+    "checkInDate": "2026-10-31",
+    "checkOutDate": "2026-11-02",
+    "nights": 2,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Phòng Deluxe 2 Giường Đơn (Hướng Phố)",
+      "en": "Deluxe Twin City View",
+      "ko": "디럭스 트윈 시티뷰"
+    },
+    "roomNumber": 112,
+    "offeredRatePerNightVnd": 1040000,
+    "netRevenueVnd": 2080000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Deluxe",
+      "en": "2 adults · 2-nights prepaid confirmed stay",
+      "ko": "성인 2명 · 2박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8868",
+    "bookingCode": "#58",
+    "propertyId": "br_songhan",
+    "status": "accepted",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-30",
+    "timeLabel": "19:15",
+    "checkInDate": "2026-10-30",
+    "checkOutDate": "2026-11-01",
+    "nights": 2,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Phòng Superior Giường Đôi",
+      "en": "Superior Double",
+      "ko": "슈페리어 더블"
+    },
+    "roomNumber": 103,
+    "offeredRatePerNightVnd": 800000,
+    "netRevenueVnd": 1600000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Superior",
+      "en": "2 adults · 2-nights prepaid confirmed stay",
+      "ko": "성인 2명 · 2박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8862",
+    "bookingCode": "#57",
+    "propertyId": "br_mykhe",
+    "status": "accepted",
+    "bidMode": "manual",
+    "sessionDate": "2026-10-29",
+    "timeLabel": "14:10",
+    "checkInDate": "2026-10-29",
+    "checkOutDate": "2026-10-31",
+    "nights": 2,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Suite Gia Đình Thông Nhau",
+      "en": "Family Connecting Suite",
+      "ko": "패밀리 커넥팅 스위트"
+    },
+    "roomNumber": 121,
+    "offeredRatePerNightVnd": 1680000,
+    "netRevenueVnd": 3360000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Suite",
+      "en": "2 adults · 2-nights prepaid confirmed stay",
+      "ko": "성인 2명 · 2박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8857",
+    "bookingCode": "#56",
+    "propertyId": "br_songhan",
+    "status": "accepted",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-28",
+    "timeLabel": "20:05",
+    "checkInDate": "2026-10-28",
+    "checkOutDate": "2026-10-30",
+    "nights": 2,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Phòng Deluxe 2 Giường Đơn (Hướng Phố)",
+      "en": "Deluxe Twin City View",
+      "ko": "디럭스 트윈 시티뷰"
+    },
+    "roomNumber": 113,
+    "offeredRatePerNightVnd": 1000000,
+    "netRevenueVnd": 2000000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Deluxe",
+      "en": "2 adults · 2-nights prepaid confirmed stay",
+      "ko": "성인 2명 · 2박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8851",
+    "bookingCode": "#55",
+    "propertyId": "br_anthuong",
+    "status": "accepted",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-27",
+    "timeLabel": "12:40",
+    "checkInDate": "2026-10-27",
+    "checkOutDate": "2026-10-29",
+    "nights": 2,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Phòng Superior Giường Đôi",
+      "en": "Superior Double",
+      "ko": "슈페리어 더블"
+    },
+    "roomNumber": 104,
+    "offeredRatePerNightVnd": 790000,
+    "netRevenueVnd": 1580000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Superior",
+      "en": "2 adults · 2-nights prepaid confirmed stay",
+      "ko": "성인 2명 · 2박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8846",
+    "bookingCode": "#54",
+    "propertyId": "br_anthuong",
+    "status": "accepted",
+    "bidMode": "manual",
+    "sessionDate": "2026-10-26",
+    "timeLabel": "17:50",
+    "checkInDate": "2026-10-26",
+    "checkOutDate": "2026-10-28",
+    "nights": 2,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Suite Hướng Biển Trực Diện",
+      "en": "Executive Ocean Suite",
+      "ko": "이그제큐티브 오션 스위트"
+    },
+    "roomNumber": 128,
+    "offeredRatePerNightVnd": 1920000,
+    "netRevenueVnd": 3840000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Executive",
+      "en": "2 adults · 2-nights prepaid confirmed stay",
+      "ko": "성인 2명 · 2박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8841",
+    "bookingCode": "#53",
+    "propertyId": "br_songhan",
+    "status": "accepted",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-25",
+    "timeLabel": "16:05",
+    "checkInDate": "2026-10-25",
+    "checkOutDate": "2026-10-27",
+    "nights": 2,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Phòng Deluxe 2 Giường Đơn (Hướng Phố)",
+      "en": "Deluxe Twin City View",
+      "ko": "디럭스 트윈 시티뷰"
+    },
+    "roomNumber": 114,
+    "offeredRatePerNightVnd": 1030000,
+    "netRevenueVnd": 2060000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Deluxe",
+      "en": "2 adults · 2-nights prepaid confirmed stay",
+      "ko": "성인 2명 · 2박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8838",
+    "bookingCode": "#52",
+    "propertyId": "br_anthuong",
+    "status": "accepted",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-25",
+    "timeLabel": "11:20",
+    "checkInDate": "2026-10-25",
+    "checkOutDate": "2026-10-26",
+    "nights": 1,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Phòng Superior Giường Đôi",
+      "en": "Superior Double",
+      "ko": "슈페리어 더블"
+    },
+    "roomNumber": 105,
+    "offeredRatePerNightVnd": 820000,
+    "netRevenueVnd": 820000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Superior",
+      "en": "2 adults · 1-night prepaid confirmed stay",
+      "ko": "성인 2명 · 1박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8836",
+    "bookingCode": "#51",
+    "propertyId": "br_anthuong",
+    "status": "accepted",
+    "bidMode": "manual",
+    "sessionDate": "2026-10-24",
+    "timeLabel": "19:30",
+    "checkInDate": "2026-10-24",
+    "checkOutDate": "2026-10-26",
+    "nights": 2,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Phòng Deluxe 2 Giường Đơn (Hướng Phố)",
+      "en": "Deluxe Twin City View",
+      "ko": "디럭스 트윈 시티뷰"
+    },
+    "roomNumber": 115,
+    "offeredRatePerNightVnd": 1010000,
+    "netRevenueVnd": 2020000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Deluxe",
+      "en": "2 adults · 2-nights prepaid confirmed stay",
+      "ko": "성인 2명 · 2박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8835",
+    "bookingCode": "#48",
+    "propertyId": "br_mykhe",
+    "status": "accepted",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-19",
+    "timeLabel": "15:00",
+    "checkInDate": "2026-10-19",
+    "checkOutDate": "2026-10-21",
+    "nights": 2,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Phòng Superior Giường Đôi",
+      "en": "Superior Double",
+      "ko": "슈페리어 더블"
+    },
+    "roomNumber": 108,
+    "offeredRatePerNightVnd": 850000,
+    "netRevenueVnd": 1700000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Superior",
+      "en": "2 adults · 2-nights prepaid confirmed stay",
+      "ko": "성인 2명 · 2박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8829",
+    "bookingCode": "#50",
+    "propertyId": "br_mykhe",
+    "status": "accepted",
+    "bidMode": "manual",
+    "sessionDate": "2026-10-22",
+    "timeLabel": "18:40",
+    "checkInDate": "2026-10-22",
+    "checkOutDate": "2026-10-24",
+    "nights": 2,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Suite Gia Đình Thông Nhau",
+      "en": "Family Connecting Suite",
+      "ko": "패밀리 커넥팅 스위트"
+    },
+    "roomNumber": 122,
+    "offeredRatePerNightVnd": 1750000,
+    "netRevenueVnd": 3500000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Suite",
+      "en": "2 adults · 2-nights prepaid confirmed stay",
+      "ko": "성인 2명 · 2박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8822",
+    "bookingCode": "#49",
+    "propertyId": "br_songhan",
+    "status": "accepted",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-20",
+    "timeLabel": "12:30",
+    "checkInDate": "2026-10-20",
+    "checkOutDate": "2026-10-23",
+    "nights": 3,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Phòng Superior Giường Đôi",
+      "en": "Superior Double",
+      "ko": "슈페리어 더블"
+    },
+    "roomNumber": 109,
+    "offeredRatePerNightVnd": 780000,
+    "netRevenueVnd": 2340000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Superior",
+      "en": "2 adults · 3-nights prepaid confirmed stay",
+      "ko": "성인 2명 · 3박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8816",
+    "bookingCode": "#47",
+    "propertyId": "br_mykhe",
+    "status": "accepted",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-17",
+    "timeLabel": "20:15",
+    "checkInDate": "2026-10-17",
+    "checkOutDate": "2026-10-19",
+    "nights": 2,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Phòng Deluxe 2 Giường Đơn (Hướng Phố)",
+      "en": "Deluxe Twin City View",
+      "ko": "디럭스 트윈 시티뷰"
+    },
+    "roomNumber": 119,
+    "offeredRatePerNightVnd": 1020000,
+    "netRevenueVnd": 2040000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Deluxe",
+      "en": "2 adults · 2-nights prepaid confirmed stay",
+      "ko": "성인 2명 · 2박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8810",
+    "bookingCode": "#46",
+    "propertyId": "br_anthuong",
+    "status": "accepted",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-15",
+    "timeLabel": "14:45",
+    "checkInDate": "2026-10-15",
+    "checkOutDate": "2026-10-17",
+    "nights": 2,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Phòng Superior Giường Đôi",
+      "en": "Superior Double",
+      "ko": "슈페리어 더블"
+    },
+    "roomNumber": 110,
+    "offeredRatePerNightVnd": 810000,
+    "netRevenueVnd": 1620000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Superior",
+      "en": "2 adults · 2-nights prepaid confirmed stay",
+      "ko": "성인 2명 · 2박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8804",
+    "bookingCode": "#45",
+    "propertyId": "br_mykhe",
+    "status": "accepted",
+    "bidMode": "manual",
+    "sessionDate": "2026-10-13",
+    "timeLabel": "19:10",
+    "checkInDate": "2026-10-13",
+    "checkOutDate": "2026-10-15",
+    "nights": 2,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Suite Hướng Biển Trực Diện",
+      "en": "Executive Ocean Suite",
+      "ko": "이그제큐티브 오션 스위트"
+    },
+    "roomNumber": 130,
+    "offeredRatePerNightVnd": 1960000,
+    "netRevenueVnd": 3920000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Executive",
+      "en": "2 adults · 2-nights prepaid confirmed stay",
+      "ko": "성인 2명 · 2박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8798",
+    "bookingCode": "#44",
+    "propertyId": "br_songhan",
+    "status": "accepted",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-11",
+    "timeLabel": "11:35",
+    "checkInDate": "2026-10-11",
+    "checkOutDate": "2026-10-14",
+    "nights": 3,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Phòng Deluxe 2 Giường Đơn (Hướng Phố)",
+      "en": "Deluxe Twin City View",
+      "ko": "디럭스 트윈 시티뷰"
+    },
+    "roomNumber": 120,
+    "offeredRatePerNightVnd": 980000,
+    "netRevenueVnd": 2940000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Deluxe",
+      "en": "2 adults · 3-nights prepaid confirmed stay",
+      "ko": "성인 2명 · 3박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8792",
+    "bookingCode": "#43",
+    "propertyId": "br_mykhe",
+    "status": "accepted",
+    "bidMode": "manual",
+    "sessionDate": "2026-10-09",
+    "timeLabel": "18:00",
+    "checkInDate": "2026-10-09",
+    "checkOutDate": "2026-10-11",
+    "nights": 2,
+    "guestsCount": 2,
+    "roomName": {
+      "vi": "Phòng Superior Giường Đôi",
+      "en": "Superior Double",
+      "ko": "슈페리어 더블"
+    },
+    "roomNumber": 101,
+    "offeredRatePerNightVnd": 820000,
+    "netRevenueVnd": 1640000,
+    "guestNote": {
+      "vi": "2 người lớn • Đặt phòng Superior",
+      "en": "2 adults · 2-nights prepaid confirmed stay",
+      "ko": "성인 2명 · 2박 사전 결제 확정 예약"
+    },
+    "amenities": [
+      "breakfast",
+      "wifi"
+    ]
+  },
+  {
+    "id": "CRQ-8750",
+    "propertyId": "br_songhan",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-04",
+    "timeLabel": "20:15",
+    "nights": 2,
+    "offeredRatePerNightVnd": 860000
+  },
+  {
+    "id": "CRQ-8751",
+    "propertyId": "br_anthuong",
+    "status": "rejected",
+    "bidMode": "manual",
+    "sessionDate": "2026-11-04",
+    "timeLabel": "12:35",
+    "nights": 2,
+    "offeredRatePerNightVnd": 1120000
+  },
+  {
+    "id": "CRQ-8752",
+    "propertyId": "br_mykhe",
+    "status": "rejected",
+    "bidMode": "manual",
+    "sessionDate": "2026-11-03",
+    "timeLabel": "20:15",
+    "nights": 2,
+    "offeredRatePerNightVnd": 1890000
+  },
+  {
+    "id": "CRQ-8753",
+    "propertyId": "br_songhan",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-03",
+    "timeLabel": "12:35",
+    "nights": 2,
+    "offeredRatePerNightVnd": 2240000
+  },
+  {
+    "id": "CRQ-8754",
+    "propertyId": "br_anthuong",
+    "status": "rejected",
+    "bidMode": "manual",
+    "sessionDate": "2026-11-02",
+    "timeLabel": "20:15",
+    "nights": 2,
+    "offeredRatePerNightVnd": 840000
+  },
+  {
+    "id": "CRQ-8755",
+    "propertyId": "br_mykhe",
+    "status": "rejected",
+    "bidMode": "manual",
+    "sessionDate": "2026-11-01",
+    "timeLabel": "12:35",
+    "nights": 2,
+    "offeredRatePerNightVnd": 1090000
+  },
+  {
+    "id": "CRQ-8756",
+    "propertyId": "br_songhan",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-31",
+    "timeLabel": "20:15",
+    "nights": 2,
+    "offeredRatePerNightVnd": 860000
+  },
+  {
+    "id": "CRQ-8757",
+    "propertyId": "br_anthuong",
+    "status": "rejected",
+    "bidMode": "manual",
+    "sessionDate": "2026-10-31",
+    "timeLabel": "12:35",
+    "nights": 2,
+    "offeredRatePerNightVnd": 1120000
+  },
+  {
+    "id": "CRQ-8758",
+    "propertyId": "br_mykhe",
+    "status": "rejected",
+    "bidMode": "manual",
+    "sessionDate": "2026-10-30",
+    "timeLabel": "20:15",
+    "nights": 2,
+    "offeredRatePerNightVnd": 1890000
+  },
+  {
+    "id": "CRQ-8759",
+    "propertyId": "br_songhan",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-29",
+    "timeLabel": "12:35",
+    "nights": 2,
+    "offeredRatePerNightVnd": 2240000
+  },
+  {
+    "id": "CRQ-8760",
+    "propertyId": "br_anthuong",
+    "status": "rejected",
+    "bidMode": "manual",
+    "sessionDate": "2026-10-28",
+    "timeLabel": "20:15",
+    "nights": 2,
+    "offeredRatePerNightVnd": 840000
+  },
+  {
+    "id": "CRQ-8761",
+    "propertyId": "br_mykhe",
+    "status": "rejected",
+    "bidMode": "manual",
+    "sessionDate": "2026-10-27",
+    "timeLabel": "12:35",
+    "nights": 2,
+    "offeredRatePerNightVnd": 1090000
+  },
+  {
+    "id": "CRQ-8762",
+    "propertyId": "br_songhan",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-26",
+    "timeLabel": "20:15",
+    "nights": 2,
+    "offeredRatePerNightVnd": 860000
+  },
+  {
+    "id": "CRQ-8763",
+    "propertyId": "br_anthuong",
+    "status": "rejected",
+    "bidMode": "manual",
+    "sessionDate": "2026-10-25",
+    "timeLabel": "12:35",
+    "nights": 2,
+    "offeredRatePerNightVnd": 1120000
+  },
+  {
+    "id": "CRQ-8764",
+    "propertyId": "br_mykhe",
+    "status": "expired",
+    "bidMode": "manual",
+    "sessionDate": "2026-10-24",
+    "timeLabel": "20:15",
+    "nights": 2,
+    "offeredRatePerNightVnd": 1890000
+  },
+  {
+    "id": "CRQ-8765",
+    "propertyId": "br_songhan",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-23",
+    "timeLabel": "12:35",
+    "nights": 2,
+    "offeredRatePerNightVnd": 2240000
+  },
+  {
+    "id": "CRQ-8766",
+    "propertyId": "br_anthuong",
+    "status": "expired",
+    "bidMode": "manual",
+    "sessionDate": "2026-10-22",
+    "timeLabel": "20:15",
+    "nights": 2,
+    "offeredRatePerNightVnd": 840000
+  },
+  {
+    "id": "CRQ-8767",
+    "propertyId": "br_mykhe",
+    "status": "rejected",
+    "bidMode": "manual",
+    "sessionDate": "2026-10-21",
+    "timeLabel": "12:35",
+    "nights": 2,
+    "offeredRatePerNightVnd": 1090000
+  },
+  {
+    "id": "CRQ-8768",
+    "propertyId": "br_songhan",
+    "status": "expired",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-20",
+    "timeLabel": "20:15",
+    "nights": 2,
+    "offeredRatePerNightVnd": 860000
+  },
+  {
+    "id": "CRQ-8769",
+    "propertyId": "br_anthuong",
+    "status": "rejected",
+    "bidMode": "manual",
+    "sessionDate": "2026-10-19",
+    "timeLabel": "12:35",
+    "nights": 2,
+    "offeredRatePerNightVnd": 1120000
+  },
+  {
+    "id": "CRQ-8770",
+    "propertyId": "br_mykhe",
+    "status": "expired",
+    "bidMode": "manual",
+    "sessionDate": "2026-10-18",
+    "timeLabel": "20:15",
+    "nights": 2,
+    "offeredRatePerNightVnd": 1890000
+  },
+  {
+    "id": "CRQ-8771",
+    "propertyId": "br_songhan",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-17",
+    "timeLabel": "12:35",
+    "nights": 2,
+    "offeredRatePerNightVnd": 2240000
+  },
+  {
+    "id": "CRQ-8772",
+    "propertyId": "br_anthuong",
+    "status": "expired",
+    "bidMode": "manual",
+    "sessionDate": "2026-10-16",
+    "timeLabel": "20:15",
+    "nights": 2,
+    "offeredRatePerNightVnd": 840000
+  },
+  {
+    "id": "CRQ-8773",
+    "propertyId": "br_mykhe",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-15",
+    "timeLabel": "12:35",
+    "nights": 2,
+    "offeredRatePerNightVnd": 1090000
+  },
+  {
+    "id": "CRQ-8774",
+    "propertyId": "br_songhan",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-14",
+    "timeLabel": "20:15",
+    "nights": 2,
+    "offeredRatePerNightVnd": 860000
+  },
+  {
+    "id": "CRQ-8775",
+    "propertyId": "br_anthuong",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-13",
+    "timeLabel": "12:35",
+    "nights": 2,
+    "offeredRatePerNightVnd": 1120000
+  },
+  {
+    "id": "CRQ-8776",
+    "propertyId": "br_mykhe",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-12",
+    "timeLabel": "20:15",
+    "nights": 2,
+    "offeredRatePerNightVnd": 1890000
+  },
+  {
+    "id": "CRQ-8777",
+    "propertyId": "br_songhan",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-11",
+    "timeLabel": "12:35",
+    "nights": 2,
+    "offeredRatePerNightVnd": 2240000
+  },
+  {
+    "id": "CRQ-8778",
+    "propertyId": "br_anthuong",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-10",
+    "timeLabel": "20:15",
+    "nights": 2,
+    "offeredRatePerNightVnd": 840000
+  },
+  {
+    "id": "CRQ-8779",
+    "propertyId": "br_mykhe",
+    "status": "cancelled",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-09",
+    "timeLabel": "12:35",
+    "nights": 2,
+    "offeredRatePerNightVnd": 1090000
+  },
+  {
+    "id": "CRQ-8780",
+    "propertyId": "br_songhan",
+    "status": "cancelled",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-08",
+    "timeLabel": "20:15",
+    "nights": 2,
+    "offeredRatePerNightVnd": 860000
+  },
+  {
+    "id": "CRQ-8781",
+    "propertyId": "br_anthuong",
+    "status": "cancelled",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-08",
+    "timeLabel": "12:35",
+    "nights": 2,
+    "offeredRatePerNightVnd": 1120000
+  },
+  {
+    "id": "H11-001",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-08",
+    "timeLabel": "13:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-002",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-08",
+    "timeLabel": "15:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-003",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-09",
+    "timeLabel": "13:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-004",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-10",
+    "timeLabel": "13:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-005",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-10",
+    "timeLabel": "15:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-006",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-12",
+    "timeLabel": "13:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-007",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-16",
+    "timeLabel": "13:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-008",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-16",
+    "timeLabel": "15:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-009",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-16",
+    "timeLabel": "17:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-010",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-17",
+    "timeLabel": "13:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-011",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-17",
+    "timeLabel": "15:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-012",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-18",
+    "timeLabel": "13:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-013",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-18",
+    "timeLabel": "15:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-014",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-18",
+    "timeLabel": "17:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-015",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-18",
+    "timeLabel": "19:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-016",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-18",
+    "timeLabel": "21:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-017",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-18",
+    "timeLabel": "13:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-018",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-18",
+    "timeLabel": "15:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-019",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-18",
+    "timeLabel": "17:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-020",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-19",
+    "timeLabel": "13:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-021",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-19",
+    "timeLabel": "15:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-022",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-19",
+    "timeLabel": "17:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-023",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-19",
+    "timeLabel": "19:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-024",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-19",
+    "timeLabel": "21:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-025",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-19",
+    "timeLabel": "13:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-026",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-22",
+    "timeLabel": "13:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-027",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-23",
+    "timeLabel": "13:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-028",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-25",
+    "timeLabel": "13:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-029",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-25",
+    "timeLabel": "15:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-030",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-25",
+    "timeLabel": "17:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-031",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-25",
+    "timeLabel": "19:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-032",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-25",
+    "timeLabel": "21:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-033",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-25",
+    "timeLabel": "13:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-034",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-25",
+    "timeLabel": "15:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-035",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-25",
+    "timeLabel": "17:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-036",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-25",
+    "timeLabel": "19:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-037",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-25",
+    "timeLabel": "21:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-038",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-26",
+    "timeLabel": "13:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-039",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-26",
+    "timeLabel": "15:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-040",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-26",
+    "timeLabel": "17:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-041",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-26",
+    "timeLabel": "19:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-042",
+    "propertyId": "stay_h11",
+    "status": "expired",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-27",
+    "timeLabel": "11:15",
+    "nights": 1,
+    "offeredRatePerNightVnd": 920000
+  },
+  {
+    "id": "H11-043",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-27",
+    "timeLabel": "13:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-044",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-27",
+    "timeLabel": "15:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-045",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-27",
+    "timeLabel": "17:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-046",
+    "propertyId": "stay_h11",
+    "status": "expired",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-28",
+    "timeLabel": "11:15",
+    "nights": 1,
+    "offeredRatePerNightVnd": 920000
+  },
+  {
+    "id": "H11-047",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-28",
+    "timeLabel": "13:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-048",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-29",
+    "timeLabel": "13:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-049",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-29",
+    "timeLabel": "15:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-050",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-29",
+    "timeLabel": "17:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-051",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-29",
+    "timeLabel": "19:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-052",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-29",
+    "timeLabel": "21:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-053",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-29",
+    "timeLabel": "13:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-054",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-30",
+    "timeLabel": "13:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-055",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-10-31",
+    "timeLabel": "13:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-056",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-01",
+    "timeLabel": "13:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-057",
+    "propertyId": "stay_h11",
+    "status": "expired",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-02",
+    "timeLabel": "11:15",
+    "nights": 2,
+    "offeredRatePerNightVnd": 920000
+  },
+  {
+    "id": "H11-058",
+    "propertyId": "stay_h11",
+    "status": "expired",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-02",
+    "timeLabel": "15:15",
+    "nights": 1,
+    "offeredRatePerNightVnd": 920000
+  },
+  {
+    "id": "H11-059",
+    "propertyId": "stay_h11",
+    "status": "expired",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-02",
+    "timeLabel": "19:15",
+    "nights": 2,
+    "offeredRatePerNightVnd": 920000
+  },
+  {
+    "id": "H11-060",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-02",
+    "timeLabel": "13:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-061",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-02",
+    "timeLabel": "15:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-062",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-02",
+    "timeLabel": "17:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-063",
+    "propertyId": "stay_h11",
+    "status": "expired",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-03",
+    "timeLabel": "11:15",
+    "nights": 2,
+    "offeredRatePerNightVnd": 920000
+  },
+  {
+    "id": "H11-064",
+    "propertyId": "stay_h11",
+    "status": "expired",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-05",
+    "timeLabel": "11:15",
+    "nights": 1,
+    "offeredRatePerNightVnd": 920000
+  },
+  {
+    "id": "H11-065",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-05",
+    "timeLabel": "13:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-066",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-05",
+    "timeLabel": "15:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-067",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-05",
+    "timeLabel": "17:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-068",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-05",
+    "timeLabel": "19:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-069",
+    "propertyId": "stay_h11",
+    "status": "expired",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-06",
+    "timeLabel": "11:15",
+    "nights": 2,
+    "offeredRatePerNightVnd": 920000
+  },
+  {
+    "id": "H11-070",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-06",
+    "timeLabel": "13:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-071",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-06",
+    "timeLabel": "15:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-072",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-06",
+    "timeLabel": "17:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-073",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-06",
+    "timeLabel": "19:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-074",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-06",
+    "timeLabel": "21:30",
+    "nights": 1,
+    "offeredRatePerNightVnd": 960000
+  },
+  {
+    "id": "H11-075",
+    "propertyId": "stay_h11",
+    "status": "rejected",
+    "bidMode": "auto",
+    "sessionDate": "2026-11-06",
+    "timeLabel": "13:30",
+    "nights": 2,
+    "offeredRatePerNightVnd": 960000
+  }
+]

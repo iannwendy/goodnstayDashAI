@@ -1,70 +1,25 @@
 {
-  "schemaVersion": "2.7.0",
-  "architecture": "goodNstay Pay-to-Lock • 10-Min Payment Hold • Multi-Entity Lifecycle • 0% Hotel Commission",
-  "generatedAt": "2026-11-06T19:45:00+07:00",
+  "schemaVersion": "3.0.0",
+  "architecture": "Optibide Partner Hub • Pure-Business Overview • Multi-Property • VI/EN/KO & VND/KRW/USD",
+  "generatedAt": "2026-11-13T10:55:00+07:00",
   "primaryReferenceDate": "2026-11-06",
   "tables": {
-    "hotelProfile": {
-      "file": "hotel_profile.json",
-      "pk": "hotelId",
-      "description": "Cấu hình khách sạn, TTL báo giá 60p, TTL tạm khóa thanh toán 10p (600s), ELO & 3 chi nhánh"
+    "hubConfig": {
+      "file": "partner_hub_config.json",
+      "pk": "schemaVersion",
+      "description": "Cấu hình cổng đối tác Optibide, tỷ giá VND/KRW/USD, tài khoản quản lý, kỳ lọc Today/7D/30D và 4 cơ sở (3 CN L'amour + Stay Hotel H11)"
     },
-    "usersRoles": {
-      "file": "users_roles.json",
-      "pk": "userId",
-      "description": "Phân quyền RBAC Quản lý vs. Lễ tân"
-    },
-    "perksCatalog": {
-      "file": "perks_catalog.json",
+    "bidRecords": {
+      "file": "bid_records.json",
       "pk": "id",
-      "description": "Danh mục đặc quyền mềm bù đắp điểm khớp"
+      "fk": "propertyId -> hubConfig.properties.id",
+      "description": "Dữ liệu các lượt báo giá & đơn đặt phòng hoàn tất (đủ 4 trạng thái accepted, expired, rejected, cancelled; kèm phiếu đặt phòng đa ngôn ngữ)"
     },
-    "roomClasses": {
-      "file": "room_classes.json",
-      "pk": "id",
-      "description": "4 hạng phòng gốc (Tổng 30 phòng vật lý)"
-    },
-    "roomsPms": {
-      "file": "rooms_pms.json",
-      "pk": "roomNumber",
-      "fk": "roomClassId -> roomClasses.id",
-      "description": "Trạng thái thực tế 30 mã phòng #101-#130 đêm 06/11/2026 (gồm 4 trạng thái: vacant_unlocked, payment_hold, booked_auction, booked_other)"
-    },
-    "calendar14dPms": {
-      "file": "calendar_14d_pms.json",
-      "pk": "dayOffset",
-      "description": "Lịch tồn kho 14 ngày vàng (06/11 - 19/11/2026) có đồng bộ paymentHoldRooms"
-    },
-    "systemBenchmarks": {
-      "file": "system_benchmarks.json",
-      "pk": "regionName",
-      "description": "Dữ liệu chuẩn so sánh toàn sàn Đà Nẵng theo kỳ Today / 7D / 30D"
-    },
-    "auctionSessions": {
-      "file": "auction_sessions.json",
-      "pk": "id",
-      "fk": "matchedRoomClassId -> roomClasses.id",
-      "description": "Bảng giao dịch gốc gồm 4 phiên Live + 68 phiên lịch sử đồng bộ 4 chiều trạng thái (Request / Bid / Payment / Reject)"
-    },
-    "matchBreakdowns": {
-      "file": "match_breakdowns.json",
-      "pk": "reqId",
-      "description": "Chi tiết chấm điểm Hard Rules & Soft Rules AI Match %"
-    },
-    "lossAutopsies": {
-      "file": "loss_autopsies.json",
-      "pk": "id",
-      "description": "Hồ sơ đối chiếu mổ xẻ phiên trượt"
-    },
-    "botRules": {
-      "file": "bot_rules.json",
-      "pk": "ruleId",
-      "description": "Các quy tắc Auto-Bid đang kích hoạt"
-    },
-    "lifecycleCatalog": {
-      "file": "lifecycle_catalog.json",
-      "pk": "version",
-      "description": "Đặc tả 9 bước vòng đời, 4 trạng thái phòng, 11 mã Reject và 18 kịch bản nghiệp vụ"
+    "hubInbox": {
+      "file": "hub_inbox.json",
+      "pk": "messages.id / notifications.id",
+      "fk": "propertyId -> hubConfig.properties.id",
+      "description": "Hộp thư tin nhắn khách đặt phòng & thông báo vận hành hiển thị trên Topbar theo từng cơ sở"
     }
   }
 }

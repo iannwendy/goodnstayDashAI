@@ -9,21 +9,12 @@ export interface LoadedMasterDataResult {
 }
 
 const STATIC_TABLE_PATHS: Record<MasterTableKey, string> = {
-  hotelProfile: "/master-data/hotel_profile.json",
-  usersRoles: "/master-data/users_roles.json",
-  perksCatalog: "/master-data/perks_catalog.json",
-  roomClasses: "/master-data/room_classes.json",
-  roomsPms: "/master-data/rooms_pms.json",
-  calendar14dPms: "/master-data/calendar_14d_pms.json",
-  systemBenchmarks: "/master-data/system_benchmarks.json",
-  auctionSessions: "/master-data/auction_sessions.json",
-  matchBreakdowns: "/master-data/match_breakdowns.json",
-  lossAutopsies: "/master-data/loss_autopsies.json",
-  botRules: "/master-data/bot_rules.json",
-  lifecycleCatalog: "/master-data/lifecycle_catalog.json",
+  hubConfig: "/master-data/partner_hub_config.json",
+  bidRecords: "/master-data/bid_records.json",
+  hubInbox: "/master-data/hub_inbox.json",
 };
 
-const LOCAL_FALLBACK_PREFIX = "gns_master_v28_";
+const LOCAL_FALLBACK_PREFIX = "gns_master_v30_";
 
 export async function loadMasterDataBundle(): Promise<LoadedMasterDataResult> {
   // 1. Direct live Master Data REST API (/api/master-data)

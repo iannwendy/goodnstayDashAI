@@ -319,10 +319,18 @@ export function App() {
     setAnalyzedTimeOverride(formatCurrentClock(locale));
   };
 
-  const formattedPeriodNet = formatBusinessMoney(vm.kpis.revenueVnd, currency);
+  const formattedPeriodNet = formatBusinessMoney(
+    vm.kpis.revenueVnd,
+    currency,
+    { rates: vm.currencyRates },
+  );
 
   return (
     <PartnerHubShell
+      brandName={vm.brandName}
+      partnerUser={vm.partnerUser}
+      inboxMessages={vm.inboxMessages}
+      inboxNotifications={vm.inboxNotifications}
       locale={locale}
       onChangeLocale={(next) => {
         setLocale(next);
@@ -458,7 +466,11 @@ export function App() {
                   stroke="#EF4444"
                   tick={{ fontSize: 11, fill: "#334155" }}
                   tickFormatter={(val) =>
-                    formatAxisTickMoney(Number(val), currency)
+                    formatAxisTickMoney(
+                      Number(val),
+                      currency,
+                      vm.currencyRates,
+                    )
                   }
                   width={74}
                   label={{
@@ -477,7 +489,7 @@ export function App() {
                     0,
                     (dataMax: number) =>
                       dataMax <= 0
-                        ? getZeroRevenueAxisMaxVnd(currency)
+                        ? getZeroRevenueAxisMaxVnd(currency, vm.currencyRates)
                         : Math.ceil(dataMax * 1.15),
                   ]}
                 />
@@ -519,7 +531,9 @@ export function App() {
                         </div>
                         <div className="text-red-300 font-medium tabular">
                           {copy.kpiRevenue}:{" "}
-                          {formatBusinessMoney(pt.revenueVnd, currency)}
+                          {formatBusinessMoney(pt.revenueVnd, currency, {
+                            rates: vm.currencyRates,
+                          })}
                         </div>
                         <div className="text-sky-300 font-medium tabular">
                           {copy.legendBookings}: {pt.bookingsCount}
@@ -795,10 +809,16 @@ export function App() {
               <div className="text-[12.5px] font-bold text-slate-900 mb-2">
                 {copy.overallGuestRating}
               </div>
-              <div className="flex items-center gap-2.5">
+              <div className="flex flex-wrap items-center gap-2.5">
                 <StarRow score={vm.trust.overallRating} size="md" />
                 <span className="text-[17px] font-bold text-slate-900 tabular">
                   {vm.trust.overallRating.toFixed(1)} / 5
+                </span>
+                <span
+                  data-testid="overall-review-count"
+                  className="text-[12.5px] font-medium text-slate-500 tabular"
+                >
+                  ({vm.trust.reviewCount} {copy.reviewsCountSuffix})
                 </span>
               </div>
             </div>
@@ -1013,6 +1033,7 @@ export function App() {
         booking={selectedBooking}
         onClose={() => setSelectedBookingRefId(null)}
         currency={currency}
+        currencyRates={vm.currencyRates}
         copy={copy}
       />
     </PartnerHubShell>

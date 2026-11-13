@@ -1,24 +1,20 @@
 import type {
-  AuctionSessionMasterRecord,
+  AppLocale,
+  BidOutcomeStatus,
+  CurrencyCode,
+  CurrencyRateMap,
   DateRangeKey,
   MasterDataBundle,
+  PropertyId,
 } from "@/data";
 import {
   formatBusinessMoney,
   formatDisplayDate,
   getDictionary,
-  localizeAmenityTag,
-  localizeGuestStayNote,
-  type AppLocale,
-  type CurrencyCode,
+  localizeAmenityCode,
 } from "@/lib/i18n";
 
-export type PropertyFilterKey =
-  | "all"
-  | "br_mykhe"
-  | "br_songhan"
-  | "br_anthuong"
-  | "stay_h11";
+export type PropertyFilterKey = "all" | PropertyId;
 
 export interface PropertyOptionItem {
   key: PropertyFilterKey;
@@ -61,7 +57,7 @@ export interface AdvisorPanelModel {
 }
 
 export interface BidBucketSummary {
-  key: "accepted" | "expired" | "rejected" | "cancelled";
+  key: BidOutcomeStatus;
   label: string;
   definition: string;
   colorHex: string;
@@ -81,13 +77,37 @@ export interface RecentBookingRow {
   checkInLabel: string;
   checkOutLabel: string;
   nights: number;
+  guestsCount: number;
   paidAtLabel: string;
   netRevenueVnd: number;
   guestNote: string;
   amenities: string[];
 }
 
+export interface InboxMessageViewItem {
+  id: string;
+  bookingCode: string;
+  guestName: string;
+  receivedAt: string;
+  unread: boolean;
+  preview: string;
+}
+
+export interface InboxNotificationViewItem {
+  id: string;
+  tone: "emerald" | "indigo" | "amber";
+  createdAt: string;
+  text: string;
+}
+
 export interface OverviewViewModel {
+  brandName: string;
+  currencyRates: CurrencyRateMap;
+  partnerUser: {
+    displayName: string;
+    initials: string;
+    roleBadge: string;
+  };
   selectedProperty: PropertyOptionItem;
   properties: PropertyOptionItem[];
   periodRangeLabel: string;
@@ -123,88 +143,8 @@ export interface OverviewViewModel {
     visibilityTone: "good" | "low";
   };
   completedBookings: RecentBookingRow[];
-}
-
-// Deterministic 30-day pattern for Stay Hotel H11 (newly onboarded property matching demo_new/1.png:
-// 0 Accepted, 8 Expired, 67 Rejected, 0 Cancelled = 75 Total Bids over 30d)
-const STAY_H11_30D_PATTERN: Array<{ expired: number; rejected: number }> = [
-  { expired: 0, rejected: 2 },
-  { expired: 0, rejected: 1 },
-  { expired: 0, rejected: 2 },
-  { expired: 0, rejected: 0 },
-  { expired: 0, rejected: 1 },
-  { expired: 0, rejected: 0 },
-  { expired: 0, rejected: 0 },
-  { expired: 0, rejected: 0 },
-  { expired: 0, rejected: 3 },
-  { expired: 0, rejected: 2 },
-  { expired: 0, rejected: 8 },
-  { expired: 0, rejected: 6 },
-  { expired: 0, rejected: 0 },
-  { expired: 0, rejected: 0 },
-  { expired: 0, rejected: 1 },
-  { expired: 0, rejected: 1 },
-  { expired: 0, rejected: 0 },
-  { expired: 0, rejected: 10 },
-  { expired: 0, rejected: 4 },
-  { expired: 1, rejected: 3 },
-  { expired: 1, rejected: 1 },
-  { expired: 0, rejected: 6 },
-  { expired: 0, rejected: 1 },
-  { expired: 0, rejected: 1 },
-  { expired: 0, rejected: 1 },
-  { expired: 3, rejected: 3 },
-  { expired: 1, rejected: 0 },
-  { expired: 0, rejected: 0 },
-  { expired: 1, rejected: 4 },
-  { expired: 1, rejected: 6 },
-];
-
-function classifySessionOutcome(
-  s: AuctionSessionMasterRecord,
-): "accepted" | "expired" | "rejected" | "cancelled" | null {
-  if (s.status === "live") return null;
-  if (s.status === "won") return "accepted";
-  if (s.status === "expired") return "expired";
-  if (s.status === "partner_declined" || s.status === "auto_closed") {
-    return "cancelled";
-  }
-  return "rejected";
-}
-
-function addIsoDays(isoDate: string, daysToAdd: number): string {
-  const ms = Date.parse(`${isoDate}T00:00:00Z`);
-  if (!Number.isFinite(ms)) return isoDate;
-  const next = new Date(ms + daysToAdd * 86_400_000);
-  return next.toISOString().slice(0, 10);
-}
-
-function parseStayIsoRange(
-  stayDatesLabel: string | undefined,
-  sessionDate: string,
-  nights: number,
-): { checkInIso: string; checkOutIso: string } {
-  const year = sessionDate.slice(0, 4) || "2026";
-  if (stayDatesLabel) {
-    const m = stayDatesLabel.match(
-      /(\d{1,2})\/(\d{1,2})\s*[–-]\s*(\d{1,2})\/(\d{1,2})/,
-    );
-    if (m) {
-      const ciD = m[1].padStart(2, "0");
-      const ciM = m[2].padStart(2, "0");
-      const coD = m[3].padStart(2, "0");
-      const coM = m[4].padStart(2, "0");
-      return {
-        checkInIso: `${year}-${ciM}-${ciD}`,
-        checkOutIso: `${year}-${coM}-${coD}`,
-      };
-    }
-  }
-  const safeNights = Math.max(1, nights || 1);
-  return {
-    checkInIso: sessionDate,
-    checkOutIso: addIsoDays(sessionDate, safeNights),
-  };
+  inboxMessages: InboxMessageViewItem[];
+  inboxNotifications: InboxNotificationViewItem[];
 }
 
 function buildIsoDatesInWindow(startDate: string, endDate: string): string[] {
@@ -220,7 +160,11 @@ function buildIsoDatesInWindow(startDate: string, endDate: string): string[] {
 }
 
 function safePct(numerator: number, denominator: number): number {
-  if (!Number.isFinite(numerator) || !Number.isFinite(denominator) || denominator <= 0) {
+  if (
+    !Number.isFinite(numerator) ||
+    !Number.isFinite(denominator) ||
+    denominator <= 0
+  ) {
     return 0;
   }
   return Number(((numerator / denominator) * 100).toFixed(1));
@@ -230,54 +174,24 @@ function buildPropertiesList(
   bundle: MasterDataBundle,
   locale: AppLocale,
 ): PropertyOptionItem[] {
-  const hp = bundle.hotelProfile;
-  const allLabel =
-    locale === "vi"
-      ? `${hp.hotelName} (Toàn hệ thống)`
-      : locale === "ko"
-        ? `${hp.hotelName} (전체 지점)`
-        : `${hp.hotelName} (All Properties)`;
-
-  const branchItems: PropertyOptionItem[] = hp.branches.map((b, idx) => ({
-    key: b.id as PropertyFilterKey,
-    label: b.name,
-    shortName: b.shortName,
-    districtLabel: b.district,
-    roomsCount: b.totalRooms,
-    badgeColor:
-      idx === 0 ? "#2563EB" : idx === 1 ? "#0D9488" : "#7C3AED",
-  }));
-
-  const h11Label =
-    locale === "vi"
-      ? "Stay Hotel H11 (Cơ sở mới)"
-      : locale === "ko"
-        ? "Stay Hotel H11 (신규 지점)"
-        : "Stay Hotel H11";
-
+  const cfg = bundle.hubConfig;
   return [
     {
       key: "all",
-      label: allLabel,
-      shortName: hp.hotelName,
-      districtLabel: hp.city,
-      roomsCount: hp.totalRooms,
-      badgeColor: "#1D4ED8",
+      label: cfg.chainOverview.label[locale],
+      shortName: cfg.chainOverview.shortName[locale],
+      districtLabel: cfg.chainOverview.district[locale],
+      roomsCount: cfg.chainOverview.roomsCount,
+      badgeColor: cfg.chainOverview.badgeColor,
     },
-    ...branchItems,
-    {
-      key: "stay_h11",
-      label: h11Label,
-      shortName: "Stay Hotel H11",
-      districtLabel:
-        locale === "vi"
-          ? "Cơ sở mới kích hoạt"
-          : locale === "ko"
-            ? "신규 입점 숙소"
-            : "Newly Onboarded",
-      roomsCount: 18,
-      badgeColor: "#64748B",
-    },
+    ...cfg.properties.map((p) => ({
+      key: p.id as PropertyFilterKey,
+      label: p.label[locale],
+      shortName: p.shortName[locale],
+      districtLabel: p.district[locale],
+      roomsCount: p.roomsCount,
+      badgeColor: p.badgeColor,
+    })),
   ];
 }
 
@@ -292,12 +206,24 @@ export function buildOverviewViewModel(
   },
 ): OverviewViewModel {
   const { propertyKey, periodKey, locale, currency } = params;
+  const cfg = bundle.hubConfig;
+  const rates = cfg.currencyRates;
   const copy = getDictionary(locale);
+
   const properties = buildPropertiesList(bundle, locale);
   const selectedProperty =
     properties.find((p) => p.key === propertyKey) ?? properties[0];
 
-  const periodMeta = bundle.systemBenchmarks.periodsMeta[periodKey];
+  const isChainAll = propertyKey === "all";
+  const selectedPropMaster = !isChainAll
+    ? cfg.properties.find((p) => p.id === propertyKey)
+    : undefined;
+  const chainMemberIds = new Set(
+    cfg.properties.filter((p) => p.isChainMember).map((p) => p.id),
+  );
+  const propertyLookup = new Map(cfg.properties.map((p) => [p.id, p]));
+
+  const periodMeta = cfg.periodsMeta[periodKey];
   const isoDates = buildIsoDatesInWindow(
     periodMeta.startDate,
     periodMeta.endDate,
@@ -306,187 +232,13 @@ export function buildOverviewViewModel(
     params.analyzedTimeText ??
     (locale === "vi" ? "15:08" : locale === "ko" ? "오후 03:08" : "03:08 PM");
 
-  // Branch: Stay Hotel H11 (newly onboarded zero-booking state matching demo_new/1.png)
-  if (propertyKey === "stay_h11") {
-    const sliceLen = isoDates.length;
-    const patternSlice = STAY_H11_30D_PATTERN.slice(
-      Math.max(0, STAY_H11_30D_PATTERN.length - sliceLen),
-    );
-
-    const dailySeries: OverviewDailyPoint[] = isoDates.map((iso, idx) => {
-      const p = patternSlice[idx] ?? { expired: 0, rejected: 1 };
-      return {
-        isoDate: iso,
-        dateLabel: formatDisplayDate(iso, locale, false),
-        tooltipDate: formatDisplayDate(iso, locale, true),
-        revenueVnd: 0,
-        bookingsCount: 0,
-        accepted: 0,
-        expired: p.expired,
-        rejected: p.rejected,
-        cancelled: 0,
-      };
-    });
-
-    const totalExpired = dailySeries.reduce((s, d) => s + d.expired, 0);
-    const totalRejected = dailySeries.reduce((s, d) => s + d.rejected, 0);
-    const totalBids = totalExpired + totalRejected;
-    const expPct = safePct(totalExpired, totalBids);
-    const rejPct = safePct(totalRejected, totalBids);
-    const zeroMoney = formatBusinessMoney(0, currency, { compact: false });
-
-    return {
-      selectedProperty,
-      properties,
-      periodRangeLabel: `${formatDisplayDate(periodMeta.startDate, locale, true)} – ${formatDisplayDate(periodMeta.endDate, locale, true)}`,
-      kpis: {
-        revenueVnd: 0,
-        revenueFormatted: formatBusinessMoney(0, currency, {
-          compact: true,
-          withPlus: true,
-        }),
-        totalBids,
-        acceptRatePct: 0,
-        acceptRateFormatted: "0.0%",
-        rating: 0,
-        ratingFormatted: "★0.0",
-        reviewCount: 0,
-        autoBidPct: 100,
-        autoBidFormatted: "100.0%",
-      },
-      dailySeries,
-      revenueAdvisor: {
-        pills: [
-          { label: copy.pillPeriodRevenue, value: zeroMoney, tone: "green" },
-          { label: copy.pillCompletedBookings, value: "0", tone: "indigo" },
-          { label: copy.pillAvgBooking, value: zeroMoney, tone: "blue" },
-        ],
-        analyzedAtText: `${copy.analyzedAtPrefix} ${timeStamp}`,
-        cards: [
-          {
-            id: "baseline-zero",
-            iconType: "info",
-            title:
-              locale === "vi"
-                ? "Giai đoạn khởi động cơ sở mới"
-                : locale === "ko"
-                  ? "신규 지점 초기 안정화 구간"
-                  : "goodNstay AI: Stable Revenue Baseline",
-            badgeText:
-              locale === "vi"
-                ? "Cân đối giá chào"
-                : locale === "ko"
-                  ? "요금 점검"
-                  : "Pricing & ADR",
-            badgeTone: "indigo",
-            body:
-              locale === "vi"
-                ? "Cơ sở đang gửi báo giá đều đặn nhưng chưa phát sinh đơn chốt đầu tiên. Bạn nên giảm nhẹ giá chào 5–10% hoặc tặng kèm bữa sáng để thu hút những lượt khách mở hàng và lấy đánh giá đầu tiên."
-                : locale === "ko"
-                  ? "입찰은 꾸준히 발송되고 있으나 아직 첫 확정 예약이 발생하지 않았습니다. 첫 투숙객 유치와 초기 리뷰 확보를 위해 시작 요금을 소폭 낮추거나 조식 혜택을 추가해 보세요."
-                  : "Revenue flow is maintaining predictable baseline pacing. Review opening room rates relative to nearby properties to capture your first completed bookings and guest reviews.",
-          },
-        ],
-      },
-      bidsBreakdown: {
-        accepted: {
-          key: "accepted",
-          label: copy.statusAccepted,
-          definition: copy.statusAcceptedDef,
-          colorHex: "#22C55E",
-          count: 0,
-          sharePct: 0,
-          shareLabel: "0.0%",
-        },
-        expired: {
-          key: "expired",
-          label: copy.statusExpired,
-          definition: copy.statusExpiredDef,
-          colorHex: "#F59E0B",
-          count: totalExpired,
-          sharePct: expPct,
-          shareLabel: `${expPct.toFixed(1)}%`,
-        },
-        rejected: {
-          key: "rejected",
-          label: copy.statusRejected,
-          definition: copy.statusRejectedDef,
-          colorHex: "#EF4444",
-          count: totalRejected,
-          sharePct: rejPct,
-          shareLabel: `${rejPct.toFixed(1)}%`,
-        },
-        cancelled: {
-          key: "cancelled",
-          label: copy.statusCancelled,
-          definition: copy.statusCancelledDef,
-          colorHex: "#9CA3AF",
-          count: 0,
-          sharePct: 0,
-          shareLabel: "0.0%",
-        },
-        total: totalBids,
-        totalShareLabel: totalBids > 0 ? "100%" : "0%",
-      },
-      bidsAdvisor: {
-        pills: [
-          {
-            label: copy.pillAcceptConversion,
-            value: "0.0%",
-            tone: "green",
-          },
-          {
-            label: copy.pillExpiredCost,
-            value: `${expPct.toFixed(1)}%`,
-            tone: "amber",
-          },
-          {
-            label: copy.pillRejectionRate,
-            value: `${rejPct.toFixed(1)}%`,
-            tone: "red",
-          },
-        ],
-        analyzedAtText: `${copy.analyzedAtPrefix} ${timeStamp}`,
-        cards: buildBidsAdvisorCards({
-          locale,
-          acceptPct: 0,
-          expiredPct: expPct,
-          rejectedPct: rejPct,
-        }),
-      },
-      trust: {
-        overallRating: 0,
-        reviewCount: 0,
-        criteria: [
-          { key: "cleanliness", label: copy.criteriaCleanliness, score: 0 },
-          { key: "service", label: copy.criteriaService, score: 0 },
-          { key: "checkin", label: copy.criteriaCheckin, score: 0 },
-          { key: "amenities", label: copy.criteriaAmenities, score: 0 },
-          { key: "value", label: copy.criteriaValue, score: 0 },
-        ],
-        eloScore: 800,
-        visibilityTone: "low",
-        visibilitySubtitle:
-          locale === "vi"
-            ? "Mức hiển thị khởi điểm — Hoàn tất thêm đơn đặt phòng để được ưu tiên đẩy lên đầu danh sách"
-            : locale === "ko"
-              ? "초기 노출 단계 — 첫 확정 예약과 리뷰가 쌓이면 상단 노출 우선순위가 올라갑니다"
-              : "Poor visibility",
-      },
-      completedBookings: [],
-    };
-  }
-
-  // Active hotel chain or specific branch from master-data
-  const branchMatch = (s: AuctionSessionMasterRecord) =>
-    propertyKey === "all" || (s.branchId ?? "br_mykhe") === propertyKey;
-
-  const historicalInWindow = bundle.auctionSessions.filter(
-    (s) =>
-      s.status !== "live" &&
-      branchMatch(s) &&
-      s.sessionDate >= periodMeta.startDate &&
-      s.sessionDate <= periodMeta.endDate,
+  const recordsInWindow = bundle.bidRecords.filter(
+    (r) =>
+      (isChainAll
+        ? chainMemberIds.has(r.propertyId)
+        : r.propertyId === propertyKey) &&
+      r.sessionDate >= periodMeta.startDate &&
+      r.sessionDate <= periodMeta.endDate,
   );
 
   const byDateMap = new Map<string, OverviewDailyPoint>();
@@ -505,21 +257,18 @@ export function buildOverviewViewModel(
   }
 
   let autoCount = 0;
-  for (const s of historicalInWindow) {
-    const bucket = classifySessionOutcome(s);
-    if (!bucket) continue;
-    if (s.bidMode === "auto") autoCount += 1;
+  for (const rec of recordsInWindow) {
+    if (rec.bidMode === "auto") autoCount += 1;
+    const pt = byDateMap.get(rec.sessionDate);
+    if (!pt) continue;
 
-    const pt = byDateMap.get(s.sessionDate);
-    if (pt) {
-      pt[bucket] += 1;
-      if (bucket === "accepted") {
-        const earned =
-          s.hotelEarnedBase ??
-          (s.offeredBasePrice ?? 0) * Math.max(1, s.nights || 1);
-        pt.revenueVnd += earned;
-        pt.bookingsCount += 1;
-      }
+    pt[rec.status] += 1;
+    if (rec.status === "accepted") {
+      const earned =
+        rec.netRevenueVnd ??
+        rec.offeredRatePerNightVnd * Math.max(1, rec.nights || 1);
+      pt.revenueVnd += earned;
+      pt.bookingsCount += 1;
     }
   }
 
@@ -528,92 +277,73 @@ export function buildOverviewViewModel(
   const totalExpired = dailySeries.reduce((s, d) => s + d.expired, 0);
   const totalRejected = dailySeries.reduce((s, d) => s + d.rejected, 0);
   const totalCancelled = dailySeries.reduce((s, d) => s + d.cancelled, 0);
-  const totalBids = totalAccepted + totalExpired + totalRejected + totalCancelled;
+  const totalBids =
+    totalAccepted + totalExpired + totalRejected + totalCancelled;
   const revenueVnd = dailySeries.reduce((s, d) => s + d.revenueVnd, 0);
 
   const acceptRatePct = safePct(totalAccepted, totalBids);
   const expiredPct = safePct(totalExpired, totalBids);
   const rejectedPct = safePct(totalRejected, totalBids);
   const cancelledPct = safePct(totalCancelled, totalBids);
+
+  const activeAutoBidDefault = isChainAll
+    ? cfg.chainOverview.autoBidEnabled
+    : (selectedPropMaster?.autoBidEnabled ?? true);
   const autoBidPct =
     totalBids > 0
       ? safePct(autoCount, totalBids)
-      : bundle.hotelProfile.autoBidEnabled
+      : activeAutoBidDefault
         ? 100
         : 0;
 
-  // Previous period revenue for growth comparison
-  const prevRevenueVnd =
-    propertyKey === "all"
-      ? periodMeta.previousNetRevenue
-      : (bundle.hotelProfile.branches.find((b) => b.id === propertyKey)
-          ?.previousPeriodRevenue[periodKey] ?? 0);
+  const prevRevenueVnd = isChainAll
+    ? periodMeta.previousNetRevenueVnd
+    : (selectedPropMaster?.previousPeriodRevenueVnd[periodKey] ?? 0);
 
   const growthPct =
     prevRevenueVnd > 0
-      ? Number((((revenueVnd - prevRevenueVnd) / prevRevenueVnd) * 100).toFixed(1))
+      ? Number(
+          (((revenueVnd - prevRevenueVnd) / prevRevenueVnd) * 100).toFixed(1),
+        )
       : 0;
 
-  // Build globally stable hotel-wide Booking ID map (#43..#71) across all won sessions
-  const allWonSortedNewestFirst = bundle.auctionSessions
-    .filter((s) => s.status === "won")
+  // Build sorted completed bookings list from explicit master-data records
+  const acceptedRecords = recordsInWindow
+    .filter((r) => r.status === "accepted")
     .sort((a, b) => {
       if (a.sessionDate !== b.sessionDate) {
         return b.sessionDate.localeCompare(a.sessionDate);
       }
-      return (b.timeLabel ?? "").localeCompare(a.timeLabel ?? "");
-    });
-  const globalBaseSeq = 42 + allWonSortedNewestFirst.length;
-  const bookingCodeBySessionId = new Map<string, string>();
-  allWonSortedNewestFirst.forEach((s, idx) => {
-    bookingCodeBySessionId.set(s.id, `#${globalBaseSeq - idx}`);
-  });
-
-  // Build sorted completed bookings list for active property & period
-  const wonSessions = historicalInWindow
-    .filter((s) => s.status === "won")
-    .sort((a, b) => {
-      if (a.sessionDate !== b.sessionDate) {
-        return b.sessionDate.localeCompare(a.sessionDate);
-      }
-      return (b.timeLabel ?? "").localeCompare(a.timeLabel ?? "");
+      return b.timeLabel.localeCompare(a.timeLabel);
     });
 
-  const completedBookings: RecentBookingRow[] = wonSessions.map((s, idx) => {
-    const bookingCode =
-      bookingCodeBySessionId.get(s.id) ?? `#${globalBaseSeq - idx}`;
-    const { checkInIso, checkOutIso } = parseStayIsoRange(
-      s.stayDatesLabel,
-      s.sessionDate,
-      s.nights,
-    );
-    const earned =
-      s.hotelEarnedBase ??
-      (s.offeredBasePrice ?? 0) * Math.max(1, s.nights || 1);
-    const branchObj = bundle.hotelProfile.branches.find(
-      (b) => b.id === s.branchId,
-    );
+  const completedBookings: RecentBookingRow[] = acceptedRecords.map((r) => {
+    const propMeta = propertyLookup.get(r.propertyId);
     const propName =
-      branchObj?.name ?? bundle.hotelProfile.hotelName;
-    const paidTime = s.timeLabel ?? "15:40";
-    const safeNights = Math.max(1, s.nights || 1);
+      propMeta?.label[locale] ?? cfg.chainOverview.shortName[locale];
+    const checkInIso = r.checkInDate ?? r.sessionDate;
+    const checkOutIso = r.checkOutDate ?? r.sessionDate;
+    const safeNights = Math.max(1, r.nights || 1);
+    const earned =
+      r.netRevenueVnd ?? r.offeredRatePerNightVnd * safeNights;
 
     return {
-      bookingCode,
-      refSessionId: s.id,
+      bookingCode: r.bookingCode ?? `#${r.id}`,
+      refSessionId: r.id,
       propertyName: propName,
-      roomName: s.offeredRoom ?? s.roomCategory ?? "Deluxe Double",
-      roomNumber: s.lockedRoomNumber ?? 108,
+      roomName: r.roomName?.[locale] ?? "Deluxe Double",
+      roomNumber: r.roomNumber ?? 108,
       checkInIso,
       checkOutIso,
       checkInLabel: formatDisplayDate(checkInIso, locale, true),
       checkOutLabel: formatDisplayDate(checkOutIso, locale, true),
       nights: safeNights,
-      paidAtLabel: `${formatDisplayDate(s.sessionDate, locale, true)} ${paidTime}`,
+      guestsCount: r.guestsCount ?? 2,
+      paidAtLabel: `${formatDisplayDate(r.sessionDate, locale, true)} ${r.timeLabel}`,
       netRevenueVnd: earned,
-      guestNote: localizeGuestStayNote(s.guestRequestTitle, safeNights, locale),
-      amenities: (s.amenitiesTags ?? ["Wifi"]).map((tag) =>
-        localizeAmenityTag(tag, locale),
+      guestNote: r.guestNote?.[locale] ?? "",
+      amenities: (r.amenities ?? ["wifi"]).map((code) =>
+        localizeAmenityCode(code, locale),
       ),
     };
   });
@@ -623,38 +353,66 @@ export function buildOverviewViewModel(
       ? Math.round(revenueVnd / completedBookings.length)
       : 0;
 
-  // Peak day lookup
   const peakPoint = dailySeries.reduce<OverviewDailyPoint | null>(
     (best, cur) => (!best || cur.revenueVnd > best.revenueVnd ? cur : best),
     null,
   );
 
+  const isNewlyOnboardedProperty =
+    !isChainAll &&
+    !selectedPropMaster?.isChainMember &&
+    (selectedPropMaster?.reviewCount ?? 0) === 0;
+
   const revenueAdvisorCards: AdvisorCardItem[] =
     revenueVnd <= 0
       ? [
-          {
-            id: "zero-rev",
-            iconType: "info",
-            title:
-              locale === "vi"
-                ? "Chưa phát sinh đơn hoàn tất trong kỳ"
-                : locale === "ko"
-                  ? "해당 기간 완료된 예약 없음"
-                  : "goodNstay AI: Stable Revenue Baseline",
-            badgeText:
-              locale === "vi"
-                ? "Cân đối giá chào"
-                : locale === "ko"
-                  ? "요금 점검"
-                  : "Pricing & ADR",
-            badgeTone: "indigo",
-            body:
-              locale === "vi"
-                ? "Chưa có đơn đặt phòng hoàn tất trong khoảng thời gian này. Hãy kiểm tra lại mức giá chào buổi tối và đảm bảo phòng trống đã được mở bán."
-                : locale === "ko"
-                  ? "선택한 기간에 확정된 예약이 없습니다. 저녁 시간대 제안 요금과 잔여 객실 오픈 상태를 점검해 보세요."
-                  : "No completed bookings recorded in this window. Keep monitoring evening offer rates to capture incoming demand.",
-          },
+          isNewlyOnboardedProperty
+            ? {
+                id: "baseline-zero",
+                iconType: "info",
+                title:
+                  locale === "vi"
+                    ? "Giai đoạn khởi động cơ sở mới"
+                    : locale === "ko"
+                      ? "신규 지점 초기 안정화 구간"
+                      : "goodNstay AI: Stable Revenue Baseline",
+                badgeText:
+                  locale === "vi"
+                    ? "Cân đối giá chào"
+                    : locale === "ko"
+                      ? "요금 점검"
+                      : "Pricing & ADR",
+                badgeTone: "indigo",
+                body:
+                  locale === "vi"
+                    ? "Cơ sở đang gửi báo giá đều đặn nhưng chưa phát sinh đơn chốt đầu tiên. Bạn nên giảm nhẹ giá chào 5–10% hoặc tặng kèm bữa sáng để thu hút những lượt khách mở hàng và lấy đánh giá đầu tiên."
+                    : locale === "ko"
+                      ? "입찰은 꾸준히 발송되고 있으나 아직 첫 확정 예약이 발생하지 않았습니다. 첫 투숙객 유치와 초기 리뷰 확보를 위해 시작 요금을 소폭 낮추거나 조식 혜택을 추가해 보세요."
+                      : "Revenue flow is maintaining predictable baseline pacing. Review opening room rates relative to nearby properties to capture your first completed bookings and guest reviews.",
+              }
+            : {
+                id: "zero-rev",
+                iconType: "info",
+                title:
+                  locale === "vi"
+                    ? "Chưa phát sinh đơn hoàn tất trong kỳ"
+                    : locale === "ko"
+                      ? "해당 기간 완료된 예약 없음"
+                      : "goodNstay AI: Stable Revenue Baseline",
+                badgeText:
+                  locale === "vi"
+                    ? "Cân đối giá chào"
+                    : locale === "ko"
+                      ? "요금 점검"
+                      : "Pricing & ADR",
+                badgeTone: "indigo",
+                body:
+                  locale === "vi"
+                    ? "Chưa có đơn đặt phòng hoàn tất trong khoảng thời gian này. Hãy kiểm tra lại mức giá chào buổi tối và đảm bảo phòng trống đã được mở bán."
+                    : locale === "ko"
+                      ? "선택한 기간에 확정된 예약이 없습니다. 저녁 시간대 제안 요금과 잔여 객실 오픈 상태를 점검해 보세요."
+                      : "No completed bookings recorded in this window. Keep monitoring evening offer rates to capture incoming demand.",
+              },
         ]
       : [
           {
@@ -698,10 +456,10 @@ export function buildOverviewViewModel(
             badgeTone: "blue",
             body:
               locale === "vi"
-                ? `Trung bình mỗi đơn hoàn tất mang về ${formatBusinessMoney(avgPerBookingVnd, currency)}. Bạn có thể gợi ý khách nâng lên phòng rộng hoặc kèm bữa sáng để tăng doanh thu trên mỗi lượt ở.`
+                ? `Trung bình mỗi đơn hoàn tất mang về ${formatBusinessMoney(avgPerBookingVnd, currency, { rates })}. Bạn có thể gợi ý khách nâng lên phòng rộng hoặc kèm bữa sáng để tăng doanh thu trên mỗi lượt ở.`
                 : locale === "ko"
-                  ? `예약 1건당 평균 실수령액은 ${formatBusinessMoney(avgPerBookingVnd, currency)}입니다. 상위 객실 타입이나 조식 포함 구성을 함께 제안해 객단가를 높여 보세요.`
-                  : `Average net payout stands at ${formatBusinessMoney(avgPerBookingVnd, currency)} per booking. Offer room upgrades or breakfast packages to lift total stay value.`,
+                  ? `예약 1건당 평균 실수령액은 ${formatBusinessMoney(avgPerBookingVnd, currency, { rates })}입니다. 상위 객실 타입이나 조식 포함 구성을 함께 제안해 객단가를 높여 보세요.`
+                  : `Average net payout stands at ${formatBusinessMoney(avgPerBookingVnd, currency, { rates })} per booking. Offer room upgrades or breakfast packages to lift total stay value.`,
           },
           {
             id: "peak-window",
@@ -721,17 +479,59 @@ export function buildOverviewViewModel(
             badgeTone: "green",
             body:
               locale === "vi"
-                ? `Ngày đạt doanh thu cao nhất là ${peakPoint?.tooltipDate ?? ""} với ${formatBusinessMoney(peakPoint?.revenueVnd ?? 0, currency)} (${peakPoint?.bookingsCount ?? 0} đơn). Với những ngày tương tự sắp tới, nên ưu tiên nhận khách lưu trú từ 2 đêm trở lên.`
+                ? `Ngày đạt doanh thu cao nhất là ${peakPoint?.tooltipDate ?? ""} với ${formatBusinessMoney(peakPoint?.revenueVnd ?? 0, currency, { rates })} (${peakPoint?.bookingsCount ?? 0} đơn). Với những ngày tương tự sắp tới, nên ưu tiên nhận khách lưu trú từ 2 đêm trở lên.`
                 : locale === "ko"
-                  ? `가장 높은 수익을 기록한 날은 ${peakPoint?.tooltipDate ?? ""} (${formatBusinessMoney(peakPoint?.revenueVnd ?? 0, currency)}, ${peakPoint?.bookingsCount ?? 0}건)입니다. 유사한 성수기 일정에는 2박 이상 연박 고객을 우선 유치해 보세요.`
-                  : `Highest daily revenue was ${formatBusinessMoney(peakPoint?.revenueVnd ?? 0, currency)} on ${peakPoint?.tooltipDate ?? ""} with ${peakPoint?.bookingsCount ?? 0} bookings. Prioritize multi-night stays on upcoming peak dates.`,
+                  ? `가장 높은 수익을 기록한 날은 ${peakPoint?.tooltipDate ?? ""} (${formatBusinessMoney(peakPoint?.revenueVnd ?? 0, currency, { rates })}, ${peakPoint?.bookingsCount ?? 0}건)입니다. 유사한 성수기 일정에는 2박 이상 연박 고객을 우선 유치해 보세요.`
+                  : `Highest daily revenue was ${formatBusinessMoney(peakPoint?.revenueVnd ?? 0, currency, { rates })} on ${peakPoint?.tooltipDate ?? ""} with ${peakPoint?.bookingsCount ?? 0} bookings. Prioritize multi-night stays on upcoming peak dates.`,
           },
         ];
 
-  const hp = bundle.hotelProfile;
-  const rc = hp.reviewCriteria5;
+  const trustSource = isChainAll
+    ? cfg.chainOverview
+    : (selectedPropMaster ?? cfg.chainOverview);
+  const rc = trustSource.reviewCriteria5;
+
+  const inboxMessages: InboxMessageViewItem[] = bundle.hubInbox.messages
+    .filter((m) =>
+      isChainAll
+        ? chainMemberIds.has(m.propertyId)
+        : m.propertyId === propertyKey,
+    )
+    .map((m) => ({
+      id: m.id,
+      bookingCode: m.bookingCode,
+      guestName: m.guestName,
+      receivedAt: m.receivedAt,
+      unread: m.unread,
+      preview: m.preview[locale],
+    }));
+
+  const inboxNotifications: InboxNotificationViewItem[] =
+    bundle.hubInbox.notifications
+      .filter((n) => {
+        if (isChainAll) {
+          return n.scope === "chain" || chainMemberIds.has(n.scope);
+        }
+        if (selectedPropMaster?.isChainMember) {
+          return n.scope === "chain" || n.scope === propertyKey;
+        }
+        return n.scope === propertyKey;
+      })
+      .map((n) => ({
+        id: n.id,
+        tone: n.tone,
+        createdAt: n.createdAt,
+        text: n.text[locale],
+      }));
 
   return {
+    brandName: cfg.brandName,
+    currencyRates: rates,
+    partnerUser: {
+      displayName: cfg.partnerUser.displayName[locale],
+      initials: cfg.partnerUser.initials[locale],
+      roleBadge: cfg.partnerUser.roleBadge[locale],
+    },
     selectedProperty,
     properties,
     periodRangeLabel: `${formatDisplayDate(periodMeta.startDate, locale, true)} – ${formatDisplayDate(periodMeta.endDate, locale, true)}`,
@@ -740,13 +540,14 @@ export function buildOverviewViewModel(
       revenueFormatted: formatBusinessMoney(revenueVnd, currency, {
         compact: true,
         withPlus: revenueVnd > 0,
+        rates,
       }),
       totalBids,
       acceptRatePct,
       acceptRateFormatted: `${acceptRatePct.toFixed(1)}%`,
-      rating: hp.reviewRating5,
-      ratingFormatted: `★${hp.reviewRating5.toFixed(1)}`,
-      reviewCount: hp.reviewCount,
+      rating: trustSource.reviewRating5,
+      ratingFormatted: `★${trustSource.reviewRating5.toFixed(1)}`,
+      reviewCount: trustSource.reviewCount,
       autoBidPct,
       autoBidFormatted: `${autoBidPct.toFixed(1)}%`,
     },
@@ -757,6 +558,7 @@ export function buildOverviewViewModel(
           label: copy.pillPeriodRevenue,
           value: formatBusinessMoney(revenueVnd, currency, {
             withPlus: revenueVnd > 0,
+            rates,
           }),
           tone: "green",
         },
@@ -769,6 +571,7 @@ export function buildOverviewViewModel(
           label: copy.pillAvgBooking,
           value: formatBusinessMoney(avgPerBookingVnd, currency, {
             withPlus: avgPerBookingVnd > 0,
+            rates,
           }),
           tone: "blue",
         },
@@ -840,48 +643,46 @@ export function buildOverviewViewModel(
         acceptPct: acceptRatePct,
         expiredPct,
         rejectedPct,
+        targetAcceptPct: periodMeta.targetAcceptRatePct,
       }),
     },
     trust: {
-      overallRating: hp.reviewRating5,
-      reviewCount: hp.reviewCount,
+      overallRating: trustSource.reviewRating5,
+      reviewCount: trustSource.reviewCount,
       criteria: [
         {
           key: "amenities",
           label: copy.criteriaAmenities,
-          score: rc.amenitiesExpectation,
+          score: rc.amenities,
         },
         {
           key: "checkin",
           label: copy.criteriaCheckin,
-          score: rc.checkinExperience,
+          score: rc.checkin,
         },
         {
           key: "cleanliness",
           label: copy.criteriaCleanliness,
-          score: rc.roomComfortCleanliness,
+          score: rc.cleanliness,
         },
         {
           key: "service",
           label: copy.criteriaService,
-          score: rc.staffHospitality,
+          score: rc.service,
         },
         {
           key: "value",
           label: copy.criteriaValue,
-          score: rc.valueForMoney,
+          score: rc.value,
         },
       ],
-      eloScore: hp.eloScore,
-      visibilityTone: "good",
-      visibilitySubtitle:
-        locale === "vi"
-          ? "Hiển thị ưu tiên cao — Báo giá của khách sạn được ưu tiên đưa lên nhóm đầu cho khách xem"
-          : locale === "ko"
-            ? "우수 노출 등급 — 고객 검색 시 호텔의 제안이 상단에 우선 표시됩니다"
-            : "High visibility · Top 12% in Da Nang",
+      eloScore: trustSource.eloScore,
+      visibilityTone: trustSource.visibilityTone,
+      visibilitySubtitle: trustSource.visibilitySubtitle[locale],
     },
     completedBookings,
+    inboxMessages,
+    inboxNotifications,
   };
 }
 
@@ -890,8 +691,11 @@ function buildBidsAdvisorCards(params: {
   acceptPct: number;
   expiredPct: number;
   rejectedPct: number;
+  targetAcceptPct: number;
 }): AdvisorCardItem[] {
-  const { locale, acceptPct, expiredPct, rejectedPct } = params;
+  const { locale, acceptPct, expiredPct, rejectedPct, targetAcceptPct } =
+    params;
+  const benchStr = `${targetAcceptPct.toFixed(1)}%`;
 
   if (locale === "vi") {
     return [
@@ -899,15 +703,15 @@ function buildBidsAdvisorCards(params: {
         id: "conv-gap",
         iconType: "alert",
         title:
-          acceptPct >= 35
+          acceptPct >= targetAcceptPct
             ? `Tỷ lệ khách chốt đạt mức tốt (${acceptPct.toFixed(1)}%)`
             : `Dư địa tăng thêm khách chốt (${acceptPct.toFixed(1)}%)`,
         badgeText: "Cân đối giá",
         badgeTone: "amber",
         body:
-          acceptPct >= 35
-            ? "Tỷ lệ khách đồng ý đặt phòng của bạn đang cao hơn mặt bằng chung (35%). Hãy tiếp tục duy trì chất lượng hình ảnh phòng và ưu đãi ăn sáng."
-            : "Tỷ lệ chốt đang thấp hơn ngưỡng tối ưu của khu vực (35%). Hãy tham khảo lại mặt bằng giá của các khách sạn lân cận vào ngày thường để tăng sức cạnh tranh.",
+          acceptPct >= targetAcceptPct
+            ? `Tỷ lệ khách đồng ý đặt phòng của bạn đang vượt mặt bằng khu vực (${benchStr}). Hãy tiếp tục duy trì chất lượng hình ảnh phòng và ưu đãi ăn sáng.`
+            : `Tỷ lệ chốt đang thấp hơn ngưỡng trung bình khu vực (${benchStr}). Hãy tham khảo lại mặt bằng giá của các khách sạn lân cận vào ngày thường để tăng sức cạnh tranh.`,
       },
       {
         id: "resp-cadence",
@@ -936,8 +740,7 @@ function buildBidsAdvisorCards(params: {
         title: `예약 전환율 점검 (${acceptPct.toFixed(1)}%)`,
         badgeText: "요금 마진",
         badgeTone: "amber",
-        body:
-          "권장 전환율 기준(35%)과 비교해 평일 객실 제안 요금 경쟁력을 점검하면 추가 예약을 확보할 수 있습니다.",
+        body: `지역 권장 전환율 기준(${benchStr})과 비교해 평일 객실 제안 요금 경쟁력을 점검하면 추가 예약을 확보할 수 있습니다.`,
       },
       {
         id: "resp-cadence",
@@ -966,9 +769,9 @@ function buildBidsAdvisorCards(params: {
       badgeText: "Price Margin",
       badgeTone: "amber",
       body:
-        acceptPct >= 35
-          ? "Acceptance rate is outperforming the 35% district benchmark. Keep room photos and breakfast inclusions consistent."
-          : "Acceptance rate is below optimal benchmark (35%). Review price points on competing properties in your district to ensure offer competitiveness.",
+        acceptPct >= targetAcceptPct
+          ? `Acceptance rate is outperforming the ${benchStr} district benchmark. Keep room photos and breakfast inclusions consistent.`
+          : `Acceptance rate is below optimal benchmark (${benchStr}). Review price points on competing properties in your district to ensure offer competitiveness.`,
     },
     {
       id: "resp-cadence",

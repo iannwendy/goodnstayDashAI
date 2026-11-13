@@ -1,7 +1,13 @@
-export type AppLocale = "vi" | "en" | "ko";
-export type CurrencyCode = "VND" | "KRW" | "USD";
+import type {
+  AmenityCode,
+  AppLocale,
+  CurrencyCode,
+  CurrencyRateMap,
+} from "@/data";
 
-const VND_PER_UNIT: Record<CurrencyCode, number> = {
+export type { AppLocale, CurrencyCode, CurrencyRateMap };
+
+const DEFAULT_VND_PER_UNIT: CurrencyRateMap = {
   VND: 1,
   KRW: 18.5,
   USD: 25_400,
@@ -22,9 +28,13 @@ const EN_MONTHS = [
   "Dec",
 ];
 
-export function convertFromVnd(amountVnd: number, currency: CurrencyCode): number {
+export function convertFromVnd(
+  amountVnd: number,
+  currency: CurrencyCode,
+  rates: CurrencyRateMap = DEFAULT_VND_PER_UNIT,
+): number {
   if (!Number.isFinite(amountVnd) || amountVnd === 0) return 0;
-  const rate = VND_PER_UNIT[currency];
+  const rate = rates[currency] || DEFAULT_VND_PER_UNIT[currency];
   if (currency === "VND") return Math.round(amountVnd);
   if (currency === "KRW") return Math.round(amountVnd / rate);
   return Number((amountVnd / rate).toFixed(2));
@@ -33,9 +43,9 @@ export function convertFromVnd(amountVnd: number, currency: CurrencyCode): numbe
 export function formatBusinessMoney(
   amountVnd: number,
   currency: CurrencyCode,
-  opts?: { compact?: boolean; withPlus?: boolean },
+  opts?: { compact?: boolean; withPlus?: boolean; rates?: CurrencyRateMap },
 ): string {
-  const converted = convertFromVnd(amountVnd, currency);
+  const converted = convertFromVnd(amountVnd, currency, opts?.rates);
   const abs = Math.abs(converted);
   const signPrefix =
     converted < 0 ? "-" : opts?.withPlus && converted > 0 ? "+" : "";
@@ -49,11 +59,17 @@ export function formatBusinessMoney(
   if (opts?.compact) {
     if (currency === "VND") {
       if (abs >= 1_000_000_000) {
-        const b = (abs / 1_000_000_000).toFixed(2).replace(/\.?0+$/, "").replace(".", ",");
+        const b = (abs / 1_000_000_000)
+          .toFixed(2)
+          .replace(/\.?0+$/, "")
+          .replace(".", ",");
         return `${signPrefix}${b} tỷ ₫`;
       }
       if (abs >= 1_000_000) {
-        const m = (abs / 1_000_000).toFixed(1).replace(/\.0$/, "").replace(".", ",");
+        const m = (abs / 1_000_000)
+          .toFixed(1)
+          .replace(/\.0$/, "")
+          .replace(".", ",");
         return `${signPrefix}${m}tr ₫`;
       }
       if (abs >= 1_000) {
@@ -97,15 +113,19 @@ export function formatBusinessMoney(
   })}`;
 }
 
-export function getZeroRevenueAxisMaxVnd(currency: CurrencyCode): number {
-  if (currency === "KRW") return 4 * VND_PER_UNIT.KRW;
-  if (currency === "USD") return 4 * VND_PER_UNIT.USD;
+export function getZeroRevenueAxisMaxVnd(
+  currency: CurrencyCode,
+  rates: CurrencyRateMap = DEFAULT_VND_PER_UNIT,
+): number {
+  if (currency === "KRW") return 4 * (rates.KRW || DEFAULT_VND_PER_UNIT.KRW);
+  if (currency === "USD") return 4 * (rates.USD || DEFAULT_VND_PER_UNIT.USD);
   return 4_000_000;
 }
 
 export function formatAxisTickMoney(
   amountVnd: number,
   currency: CurrencyCode,
+  rates: CurrencyRateMap = DEFAULT_VND_PER_UNIT,
 ): string {
   if (amountVnd <= 0) {
     if (currency === "VND") return "0 ₫";
@@ -115,6 +135,7 @@ export function formatAxisTickMoney(
   return formatBusinessMoney(amountVnd, currency, {
     compact: true,
     withPlus: true,
+    rates,
   });
 }
 
@@ -132,49 +153,43 @@ export function formatDisplayDate(
     return includeYear ? `${dStr}/${mStr}/${y}` : `${dStr}/${mStr}`;
   }
   if (locale === "ko") {
-    return includeYear ? `${y}.${mStr}.${dStr}` : `${Number(mStr)}월 ${Number(dStr)}일`;
+    return includeYear
+      ? `${y}.${mStr}.${dStr}`
+      : `${Number(mStr)}월 ${Number(dStr)}일`;
   }
   const mon = EN_MONTHS[mIdx];
   return includeYear ? `${mon} ${dStr}, ${y}` : `${mon} ${dStr}`;
 }
 
-const AMENITY_TRANSLATIONS: Record<string, { en: string; ko: string }> = {
-  "Bữa sáng": { en: "Breakfast Included", ko: "조식 포함" },
-  Wifi: { en: "Free Wi-Fi", ko: "무료 와이파이" },
-  "Hồ bơi": { en: "Swimming Pool", ko: "수영장" },
-  "Thang máy": { en: "Elevator", ko: "엘리베이터" },
-  "Bãi đậu xe": { en: "Free Parking", ko: "무료 주차" },
-  "Trả phòng trễ": { en: "Late Check-out", ko: "레이트 체크아웃" },
-  "Bồn tắm": { en: "Bathtub", ko: "욕조" },
-  "Truyền hình (OTT)": { en: "Smart TV (OTT)", ko: "스마트 TV (OTT)" },
-  "View biển": { en: "Ocean View", ko: "오션뷰" },
-  "Ban công": { en: "Private Balcony", ko: "개별 발코니" },
-  "Đưa đón sân bay": { en: "Airport Transfer", ko: "공항 픽업" },
+const AMENITY_LABELS: Record<
+  AmenityCode,
+  { vi: string; en: string; ko: string }
+> = {
+  breakfast: { vi: "Bữa sáng", en: "Breakfast Included", ko: "조식 포함" },
+  wifi: { vi: "Wifi", en: "Free Wi-Fi", ko: "무료 와이파이" },
+  pool: { vi: "Hồ bơi", en: "Swimming Pool", ko: "수영장" },
+  elevator: { vi: "Thang máy", en: "Elevator", ko: "엘리베이터" },
+  parking: { vi: "Bãi đậu xe", en: "Free Parking", ko: "무료 주차" },
+  late_checkout: {
+    vi: "Trả phòng trễ",
+    en: "Late Check-out",
+    ko: "레이트 체크아웃",
+  },
+  bathtub: { vi: "Bồn tắm", en: "Bathtub", ko: "욕조" },
+  ott_tv: {
+    vi: "Truyền hình (OTT)",
+    en: "Smart TV (OTT)",
+    ko: "스마트 TV (OTT)",
+  },
 };
 
-export function localizeAmenityTag(tag: string, locale: AppLocale): string {
-  if (locale === "vi") return tag;
-  const hit = AMENITY_TRANSLATIONS[tag];
-  if (hit) return locale === "ko" ? hit.ko : hit.en;
-  return tag;
-}
-
-export function localizeGuestStayNote(
-  rawNote: string | undefined,
-  nights: number,
+export function localizeAmenityCode(
+  code: AmenityCode | string,
   locale: AppLocale,
 ): string {
-  if (locale === "vi") {
-    return rawNote ?? "2 người lớn • Đã thanh toán giữ phòng trước khi đến";
-  }
-  const guestsMatch = rawNote?.match(/(\d+)\s*người lớn/i);
-  const adults = guestsMatch ? Number(guestsMatch[1]) : 2;
-  const safeNights = Math.max(1, nights || 1);
-
-  if (locale === "ko") {
-    return `성인 ${adults}명 · ${safeNights}박 사전 결제 확정 예약`;
-  }
-  return `${adults} adults · ${safeNights}-night prepaid confirmed stay`;
+  const hit = AMENITY_LABELS[code as AmenityCode];
+  if (hit) return hit[locale];
+  return code;
 }
 
 export interface OverviewCopy {
@@ -200,8 +215,6 @@ export interface OverviewCopy {
   helpTitle: string;
   helpSubtitle: string;
   helpItems: Array<{ title: string; body: string }>;
-  userDisplayName: string;
-  userRoleBadge: string;
   pageTitle: string;
   periodOptions: {
     "30d": string;
@@ -255,6 +268,7 @@ export interface OverviewCopy {
   ratingsTitle: string;
   ratingsHint: string;
   overallGuestRating: string;
+  reviewsCountSuffix: string;
   ratingBreakdownHeading: string;
   criteriaAmenities: string;
   criteriaCheckin: string;
@@ -287,6 +301,8 @@ export interface OverviewCopy {
   bookingFieldRoom: string;
   bookingFieldStay: string;
   bookingFieldNights: string;
+  bookingFieldGuests: string;
+  guestsUnit: string;
   bookingFieldPaidAt: string;
   bookingFieldNetPayout: string;
   bookingFieldPayoutNote: string;
@@ -332,8 +348,6 @@ const VI_COPY: OverviewCopy = {
       body: "Bảng Tình trạng báo giá chỉ rõ bao nhiêu khách chọn nơi khác hoặc quá hạn phản hồi; cuối trang là danh sách các đơn đã thanh toán kèm phiếu chi tiết.",
     },
   ],
-  userDisplayName: "Nguyễn Bảo Minh",
-  userRoleBadge: "Quản lý khách sạn",
   pageTitle: "Tổng quan hoạt động",
   periodOptions: {
     "30d": "30 ngày qua",
@@ -398,6 +412,7 @@ const VI_COPY: OverviewCopy = {
   ratingsHint:
     "Điểm đánh giá thực tế của khách lưu trú kết hợp độ uy tín phản hồi quyết định việc khách sạn được ưu tiên hiện lên đầu cho khách mới.",
   overallGuestRating: "Điểm hài lòng chung của khách",
+  reviewsCountSuffix: "lượt đánh giá",
   ratingBreakdownHeading: "Điểm chi tiết từng hạng mục",
   criteriaAmenities: "Tiện nghi trong phòng",
   criteriaCheckin: "Trải nghiệm nhận phòng",
@@ -432,6 +447,8 @@ const VI_COPY: OverviewCopy = {
   bookingFieldRoom: "Hạng phòng & Số phòng",
   bookingFieldStay: "Thời gian lưu trú",
   bookingFieldNights: "đêm",
+  bookingFieldGuests: "Số khách lưu trú",
+  guestsUnit: "khách",
   bookingFieldPaidAt: "Thời điểm thanh toán",
   bookingFieldNetPayout: "Tiền phòng khách sạn thực nhận",
   bookingFieldPayoutNote:
@@ -478,8 +495,6 @@ const EN_COPY: OverviewCopy = {
       body: "See why bids won or missed, check property visibility score, and open any completed booking slip in one click.",
     },
   ],
-  userDisplayName: "Kim Ha-yoon",
-  userRoleBadge: "Property Manager",
   pageTitle: "Dashboard overview",
   periodOptions: {
     "30d": "Last Month",
@@ -543,6 +558,7 @@ const EN_COPY: OverviewCopy = {
   ratingsHint:
     "Verified guest ratings and response reliability determine how prominently your property appears to travelers.",
   overallGuestRating: "Overall Guest Rating",
+  reviewsCountSuffix: "reviews",
   ratingBreakdownHeading: "Rating Breakdown",
   criteriaAmenities: "Amenities",
   criteriaCheckin: "Check-in Experience",
@@ -576,6 +592,8 @@ const EN_COPY: OverviewCopy = {
   bookingFieldRoom: "Room Type & Assigned Unit",
   bookingFieldStay: "Stay Dates",
   bookingFieldNights: "nights",
+  bookingFieldGuests: "Guests",
+  guestsUnit: "guests",
   bookingFieldPaidAt: "Paid At",
   bookingFieldNetPayout: "Hotel Net Payout",
   bookingFieldPayoutNote:
@@ -621,8 +639,6 @@ const KO_COPY: OverviewCopy = {
       body: "입찰 수락·만료·거절 비중을 비교하고 최근 확정 예약 상세 전표를 바로 열람할 수 있습니다.",
     },
   ],
-  userDisplayName: "김하윤",
-  userRoleBadge: "호텔 지배인",
   pageTitle: "대시보드 개요",
   periodOptions: {
     "30d": "최근 30일",
@@ -630,15 +646,19 @@ const KO_COPY: OverviewCopy = {
     today: "오늘",
   },
   kpiRevenue: "순수익",
-  kpiRevenueHint: "선택한 기간 동안 결제 완료된 예약에서 발생한 호텔 실수령 객실 수익입니다.",
+  kpiRevenueHint:
+    "선택한 기간 동안 결제 완료된 예약에서 발생한 호텔 실수령 객실 수익입니다.",
   kpiTotalBids: "총 입찰 수",
-  kpiTotalBidsHint: "선택한 기간 동안 고객 요청에 발송한 총 객실 제안 건수입니다.",
+  kpiTotalBidsHint:
+    "선택한 기간 동안 고객 요청에 발송한 총 객실 제안 건수입니다.",
   kpiAcceptRate: "수락률",
-  kpiAcceptRateHint: "발송한 객실 제안 중 고객이 선택하여 결제를 완료한 비율입니다.",
+  kpiAcceptRateHint:
+    "발송한 객실 제안 중 고객이 선택하여 결제를 완료한 비율입니다.",
   kpiRating: "평점",
   kpiRatingHint: "실제 투숙 완료 고객이 남긴 5점 만점 기준 평균 만족도입니다.",
   kpiAutoBid: "자동 입찰",
-  kpiAutoBidHint: "호텔 기준 요금 범위 내에서 자동으로 즉시 응답된 비율입니다.",
+  kpiAutoBidHint:
+    "호텔 기준 요금 범위 내에서 자동으로 즉시 응답된 비율입니다.",
   revenueTimelineTitle: "수익 타임라인",
   revenueTimelineSubtitle:
     "선택한 기간의 일별 순수익(선)과 확정 예약 건수(막대)를 보여줍니다.",
@@ -659,9 +679,11 @@ const KO_COPY: OverviewCopy = {
   statusAccepted: "수락됨",
   statusAcceptedDef: "고객이 호텔의 제안을 수락하고 예약 결제를 완료했습니다.",
   statusExpired: "만료됨",
-  statusExpiredDef: "응답 제한 시간 내에 입찰 또는 선택이 이루어지지 않아 종료되었습니다.",
+  statusExpiredDef:
+    "응답 제한 시간 내에 입찰 또는 선택이 이루어지지 않아 종료되었습니다.",
   statusRejected: "거절됨",
-  statusRejectedDef: "고객이 다른 숙소를 선택했거나 제안을 거절했습니다.",
+  statusRejectedDef:
+    "고객이 다른 숙소를 선택했거나 제안을 거절했습니다.",
   statusCancelled: "호텔 측 취소",
   statusCancelledDef: "객실 마감 등의 사유로 호텔에서 제안을 철회했습니다.",
   breakdownHeading: "입찰 상태별 상세 내역 및 정의",
@@ -678,6 +700,7 @@ const KO_COPY: OverviewCopy = {
   ratingsHint:
     "투숙객 평점과 응답 신뢰도가 높을수록 고객 검색 결과 상단에 우선 노출됩니다.",
   overallGuestRating: "전체 투숙객 평점",
+  reviewsCountSuffix: "개 리뷰",
   ratingBreakdownHeading: "항목별 상세 평점",
   criteriaAmenities: "객실 편의시설",
   criteriaCheckin: "체크인 경험",
@@ -710,9 +733,12 @@ const KO_COPY: OverviewCopy = {
   bookingFieldRoom: "객실 타입 및 배정 호수",
   bookingFieldStay: "투숙 일정",
   bookingFieldNights: "박",
+  bookingFieldGuests: "투숙 인원",
+  guestsUnit: "명",
   bookingFieldPaidAt: "결제 완료 시각",
   bookingFieldNetPayout: "호텔 실수령 정산금",
-  bookingFieldPayoutNote: "정기 정산 주기에 따라 호텔 계좌로 입금되는 순수익입니다.",
+  bookingFieldPayoutNote:
+    "정기 정산 주기에 따라 호텔 계좌로 입금되는 순수익입니다.",
   bookingFieldGuestNote: "고객 요청 사항",
   bookingFieldAmenities: "포함 혜택",
 };

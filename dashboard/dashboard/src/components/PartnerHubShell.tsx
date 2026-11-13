@@ -17,6 +17,7 @@ import {
   X,
   CheckCircle2,
   Sparkles,
+  AlertCircle,
 } from "lucide-react";
 import {
   Dialog,
@@ -27,11 +28,21 @@ import {
 } from "@/components/ui/dialog";
 import type { AppLocale, CurrencyCode, OverviewCopy } from "@/lib/i18n";
 import type {
+  InboxMessageViewItem,
+  InboxNotificationViewItem,
   PropertyFilterKey,
   PropertyOptionItem,
 } from "@/services/overviewAnalytics";
 
 interface PartnerHubShellProps {
+  brandName: string;
+  partnerUser: {
+    displayName: string;
+    initials: string;
+    roleBadge: string;
+  };
+  inboxMessages: InboxMessageViewItem[];
+  inboxNotifications: InboxNotificationViewItem[];
   locale: AppLocale;
   onChangeLocale: (next: AppLocale) => void;
   currency: CurrencyCode;
@@ -47,9 +58,11 @@ interface PartnerHubShellProps {
 
 function BrandLogo({
   collapsed,
+  brandName,
   brandSub,
 }: {
   collapsed: boolean;
+  brandName: string;
   brandSub: string;
 }) {
   return (
@@ -75,7 +88,7 @@ function BrandLogo({
       {!collapsed && (
         <div className="leading-tight min-w-0">
           <div className="text-[17px] font-bold tracking-tight text-blue-700 truncate">
-            Optibide
+            {brandName}
           </div>
           <div className="text-[11px] font-semibold text-amber-500 truncate">
             {brandSub}
@@ -108,6 +121,10 @@ function HotelThumbnail({ color }: { color: string }) {
 }
 
 export function PartnerHubShell({
+  brandName,
+  partnerUser,
+  inboxMessages,
+  inboxNotifications,
   locale,
   onChangeLocale,
   currency,
@@ -303,7 +320,11 @@ export function PartnerHubShell({
           }`}
         >
           {!sidebarCollapsed && (
-            <BrandLogo collapsed={false} brandSub={copy.brandSub} />
+            <BrandLogo
+              collapsed={false}
+              brandName={brandName}
+              brandSub={copy.brandSub}
+            />
           )}
           <button
             type="button"
@@ -341,9 +362,13 @@ export function PartnerHubShell({
           <DialogHeader className="px-4 py-3.5 border-b border-slate-100 text-left shrink-0">
             <DialogTitle className="sr-only">{copy.openMenuLabel}</DialogTitle>
             <DialogDescription className="sr-only">
-              Optibide {copy.brandSub}
+              {brandName} {copy.brandSub}
             </DialogDescription>
-            <BrandLogo collapsed={false} brandSub={copy.brandSub} />
+            <BrandLogo
+              collapsed={false}
+              brandName={brandName}
+              brandSub={copy.brandSub}
+            />
           </DialogHeader>
           <div className="py-1 flex-1 overflow-y-auto">
             {renderSidebarLinks(false, "mobile-")}
@@ -433,9 +458,12 @@ export function PartnerHubShell({
                 onClick={() =>
                   setActivePopover((p) => (p === "messages" ? null : "messages"))
                 }
-                className="hidden sm:flex w-8 h-8 rounded-lg items-center justify-center text-slate-600 hover:bg-slate-100 transition-colors"
+                className="hidden sm:flex w-8 h-8 rounded-lg items-center justify-center text-slate-600 hover:bg-slate-100 transition-colors relative"
               >
                 <MessageSquare className="w-[17px] h-[17px]" />
+                {inboxMessages.some((m) => m.unread) && (
+                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-600 absolute top-1.5 right-1.5" />
+                )}
               </button>
 
               <button
@@ -450,7 +478,7 @@ export function PartnerHubShell({
                 className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-600 hover:bg-slate-100 transition-colors relative"
               >
                 <Bell className="w-[17px] h-[17px]" />
-                {completedCount > 0 && (
+                {(completedCount > 0 || inboxNotifications.length > 0) && (
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 absolute top-1.5 right-2" />
                 )}
               </button>
@@ -472,7 +500,7 @@ export function PartnerHubShell({
               {activePopover === "messages" && (
                 <div
                   data-testid="messages-popover"
-                  className="fixed left-3 right-3 top-28 sm:absolute sm:left-auto sm:right-0 sm:top-10 sm:w-72 rounded-xl bg-white border border-slate-200 shadow-lg p-3.5 z-30"
+                  className="fixed left-3 right-3 top-28 sm:absolute sm:left-auto sm:right-0 sm:top-10 sm:w-80 rounded-xl bg-white border border-slate-200 shadow-lg p-3.5 z-30"
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-[12.5px] font-semibold text-slate-900">
@@ -487,16 +515,46 @@ export function PartnerHubShell({
                       <X className="w-3.5 h-3.5" />
                     </button>
                   </div>
-                  <p className="text-[12px] text-slate-500">
-                    {copy.messagesEmpty}
-                  </p>
+                  {inboxMessages.length === 0 ? (
+                    <p className="text-[12px] text-slate-500 m-0">
+                      {copy.messagesEmpty}
+                    </p>
+                  ) : (
+                    <div className="space-y-2 max-h-64 overflow-y-auto">
+                      {inboxMessages.map((msg) => (
+                        <div
+                          key={msg.id}
+                          className={`rounded-lg border p-2.5 text-[12px] min-w-0 ${
+                            msg.unread
+                              ? "bg-indigo-50/60 border-indigo-100"
+                              : "bg-slate-50/70 border-slate-200/80"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between gap-2 mb-1">
+                            <span className="font-semibold text-slate-900 truncate">
+                              {msg.guestName}{" "}
+                              <span className="text-indigo-600 tabular">
+                                {msg.bookingCode}
+                              </span>
+                            </span>
+                            <span className="text-[11px] text-slate-400 tabular shrink-0">
+                              {msg.receivedAt}
+                            </span>
+                          </div>
+                          <p className="text-slate-600 leading-snug m-0 break-words">
+                            {msg.preview}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 
               {activePopover === "notifications" && (
                 <div
                   data-testid="notifications-popover"
-                  className="fixed left-3 right-3 top-28 sm:absolute sm:left-auto sm:right-0 sm:top-10 sm:w-80 rounded-xl bg-white border border-slate-200 shadow-lg p-3.5 z-30 space-y-2.5"
+                  className="fixed left-3 right-3 top-28 sm:absolute sm:left-auto sm:right-0 sm:top-10 sm:w-80 rounded-xl bg-white border border-slate-200 shadow-lg p-3.5 z-30 space-y-2.5 max-h-80 overflow-y-auto"
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-[12.5px] font-semibold text-slate-900">
@@ -511,26 +569,49 @@ export function PartnerHubShell({
                       <X className="w-3.5 h-3.5" />
                     </button>
                   </div>
-                  <div className="flex items-start gap-2.5 rounded-lg bg-emerald-50/70 border border-emerald-100 p-2.5 text-[12px] text-slate-700">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                    <span>
-                      {locale === "vi"
-                        ? `Đang ghi nhận ${completedCount} đơn đặt phòng đã thanh toán đủ 100% trong kỳ đang xem.`
-                        : locale === "ko"
-                          ? `선택한 기간 동안 ${completedCount}건의 100% 결제 완료 예약이 확인되었습니다.`
-                          : `${completedCount} completed and prepaid bookings recorded in this period.`}
-                    </span>
-                  </div>
-                  <div className="flex items-start gap-2.5 rounded-lg bg-indigo-50/60 border border-indigo-100 p-2.5 text-[12px] text-slate-700">
-                    <Sparkles className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5" />
-                    <span>
-                      {locale === "vi"
-                        ? "Chế độ Báo giá tự động ban đêm đang hoạt động ổn định."
-                        : locale === "ko"
-                          ? "심야 자동 입찰 응답 규칙이 정상 작동 중입니다."
-                          : "Overnight AutoBid standby protection is active."}
-                    </span>
-                  </div>
+                  {completedCount > 0 && (
+                    <div className="flex items-start gap-2.5 rounded-lg bg-emerald-50/70 border border-emerald-100 p-2.5 text-[12px] text-slate-700">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                      <span className="min-w-0 break-words">
+                        {locale === "vi"
+                          ? `Đang ghi nhận ${completedCount} đơn đặt phòng đã thanh toán đủ 100% trong kỳ đang xem.`
+                          : locale === "ko"
+                            ? `선택한 기간 동안 ${completedCount}건의 100% 결제 완료 예약이 확인되었습니다.`
+                            : `${completedCount} completed and prepaid bookings recorded in this period.`}
+                      </span>
+                    </div>
+                  )}
+                  {inboxNotifications.map((item) => {
+                    const boxCls =
+                      item.tone === "emerald"
+                        ? "bg-emerald-50/70 border-emerald-100"
+                        : item.tone === "amber"
+                          ? "bg-amber-50/75 border-amber-200/80"
+                          : "bg-indigo-50/60 border-indigo-100";
+                    const IconComp =
+                      item.tone === "emerald"
+                        ? CheckCircle2
+                        : item.tone === "amber"
+                          ? AlertCircle
+                          : Sparkles;
+                    const iconCls =
+                      item.tone === "emerald"
+                        ? "text-emerald-600"
+                        : item.tone === "amber"
+                          ? "text-amber-600"
+                          : "text-indigo-600";
+                    return (
+                      <div
+                        key={item.id}
+                        className={`flex items-start gap-2.5 rounded-lg border p-2.5 text-[12px] text-slate-700 ${boxCls}`}
+                      >
+                        <IconComp
+                          className={`w-4 h-4 shrink-0 mt-0.5 ${iconCls}`}
+                        />
+                        <span className="min-w-0 break-words">{item.text}</span>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -538,13 +619,14 @@ export function PartnerHubShell({
             {/* User Profile */}
             <div className="flex items-center gap-2 pl-1 sm:pl-2 border-l border-slate-200/80">
               <span className="hidden md:inline text-[13px] font-medium text-slate-700">
-                {copy.userDisplayName}
+                {partnerUser.displayName}
               </span>
               <div
-                title={`${copy.userDisplayName} · ${copy.userRoleBadge}`}
+                data-testid="topbar-user-avatar"
+                title={`${partnerUser.displayName} · ${partnerUser.roleBadge}`}
                 className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-600 to-sky-500 text-white text-[11.5px] font-bold flex items-center justify-center shrink-0 ring-2 ring-slate-100"
               >
-                {locale === "vi" ? "BM" : "KH"}
+                {partnerUser.initials}
               </div>
             </div>
           </div>

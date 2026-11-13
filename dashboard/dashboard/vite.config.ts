@@ -15,18 +15,9 @@ const DIST_MASTER_DATA_DIR = fileURLToPath(
 );
 
 const TABLE_FILE_MAP: Record<string, string> = {
-  hotelProfile: "hotel_profile.json",
-  usersRoles: "users_roles.json",
-  perksCatalog: "perks_catalog.json",
-  roomClasses: "room_classes.json",
-  roomsPms: "rooms_pms.json",
-  calendar14dPms: "calendar_14d_pms.json",
-  systemBenchmarks: "system_benchmarks.json",
-  auctionSessions: "auction_sessions.json",
-  matchBreakdowns: "match_breakdowns.json",
-  lossAutopsies: "loss_autopsies.json",
-  botRules: "bot_rules.json",
-  lifecycleCatalog: "lifecycle_catalog.json",
+  hubConfig: "partner_hub_config.json",
+  bidRecords: "bid_records.json",
+  hubInbox: "hub_inbox.json",
 };
 
 function readAllMasterTables() {
@@ -89,7 +80,10 @@ function attachMasterDataMiddleware(
       }
 
       if (req.method === "POST" && subPath === "/reset") {
-        for (const filename of Object.values(TABLE_FILE_MAP)) {
+        for (const filename of [
+          ...Object.values(TABLE_FILE_MAP),
+          "schema_manifest.json",
+        ]) {
           const seedFile = path.join(SEED_DATA_DIR, filename);
           const targetFile = path.join(MASTER_DATA_DIR, filename);
           if (fs.existsSync(seedFile)) {
@@ -125,10 +119,22 @@ function attachMasterDataMiddleware(
         req.on("end", () => {
           try {
             const parsed = JSON.parse(rawBody);
+            if (
+              typeof parsed !== "object" ||
+              parsed === null ||
+              Array.isArray(parsed) ||
+              !("data" in parsed) ||
+              (parsed as { data?: unknown }).data === undefined
+            ) {
+              throw new Error(
+                'Invalid payload: expected JSON object with "data" field',
+              );
+            }
             const targetFile = path.join(MASTER_DATA_DIR, filename);
             fs.writeFileSync(
               targetFile,
-              JSON.stringify(parsed.data, null, 2),
+              JSON.stringify((parsed as { data: unknown }).data, null, 2) +
+                "\n",
               "utf-8",
             );
             res.statusCode = 200;
@@ -167,7 +173,7 @@ function attachMasterDataMiddleware(
 
 function masterDataApiPlugin(): Plugin {
   return {
-    name: "revbid-master-data-api",
+    name: "optibide-partner-hub-master-data-api",
     configureServer(server) {
       attachMasterDataMiddleware(server.middlewares);
     },
