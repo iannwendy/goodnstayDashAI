@@ -17,9 +17,17 @@ skills/system/
 .DS_Store
 ._*
 ~$*.docx
+~$*.xlsx
 __pycache__/
 *.py[cod]
 .pytest_cache/
 ota-rate-shopping-demo/dist/
 ota-rate-shopping-demo/node_modules
 *.tsbuildinfo
+
+# Báo cáo Bug QA, tệp theo dõi & ảnh demo cục bộ
+/bug_report_3-11-2026/
+/bug_report_13-11-2026/
+/dashboard/demo_new/
+/gns_Bug_Report_Tracking (2).xlsx
+/~$gns_Bug_Report_Tracking (2).xlsx
