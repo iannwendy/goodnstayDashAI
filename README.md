@@ -24,7 +24,7 @@ goodNstay/
 │   └── uploaded_jira_tickets.json    # Sổ đối soát các mã ticket OP-XXXX đã đẩy lên Board #135
 │
 ├── dashboard/                        # Nghiệp vụ Partner Auction Dashboard v2
-│   ├── partner-auction-dashboard-v2/ # Source code ứng dụng Dashboard v2 (React + TypeScript + Vite + Playwright)
+│   ├── dashboard/                    # Source code ứng dụng Dashboard v2 (React + TypeScript + Vite + Playwright)
 │   ├── diagrams/                     # Sơ đồ Use Case, Booking Lifecycle & State Flow (.drawio / .svg / .png)
 │   ├── SRS.docx                      # Tài liệu đặc tả yêu cầu phần mềm (SRS)
 │   ├── goodNstay_Dashboard_Metrics_Summary.xlsx
@@ -52,4 +52,4 @@ goodNstay/
   - `AGENTS.md`, `CLAUDE.md`: Chứa tài khoản test nội bộ và quy tắc bộ nhớ cá nhân hóa trên máy.
   - `skills/system/`, `.playwright-mcp/`, `node_modules/`, `dist/`, `__pycache__/`, `.DS_Store`: Thư mục cache/build sinh tự động.
 - **Được phép Commit & Push lên GitHub (`origin/main` — `https://github.com/iannwendy/goodnstayDashAI`):**
-  - Toàn bộ `.agents/skills/`, `API Test/`, `bug_report_3-11-2026/`, `dashboard/` (bao gồm `dashboard/partner-auction-dashboard-v2/`), `ota-rate-shopping-demo/`, `docs/`, `.env.jira.example`, `.gitignore`, và `README.md`.
+  - Toàn bộ `.agents/skills/`, `API Test/`, `bug_report_3-11-2026/`, `dashboard/` (bao gồm `dashboard/dashboard/`), `ota-rate-shopping-demo/`, `docs/`, `.env.jira.example`, `.gitignore`, và `README.md`.

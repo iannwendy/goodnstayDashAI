@@ -1,6 +1,6 @@
 # Partner Auction Dashboard v2 — Agent Engineering & Mandatory Testing Rules
 
-Mọi AI Agent làm việc trong thư mục `dashboard/partner-auction-dashboard-v2` **BẮT BUỘC** tuân thủ quy trình kiểm thử tự động dưới đây sau **mỗi lần** thêm tính năng mới, chỉnh sửa tính năng cũ, cập nhật dữ liệu mẫu hoặc sửa lỗi giao diện:
+Mọi AI Agent làm việc trong thư mục `dashboard/dashboard` **BẮT BUỘC** tuân thủ quy trình kiểm thử tự động dưới đây sau **mỗi lần** thêm tính năng mới, chỉnh sửa tính năng cũ, cập nhật dữ liệu mẫu hoặc sửa lỗi giao diện:
 
 ## 1. Quy Tắc Bắt Buộc Sau Mỗi Lần Chỉnh Sửa Code ("Code Xong Phải Test Kỹ + Thêm Testcase")
 

@@ -9,7 +9,9 @@ import os
 import shutil
 from datetime import date, timedelta
 
-BASE_DIR = "/Users/iannwendy/Desktop/goodNstay/dashboard/partner-auction-dashboard-v2/master-data"
+BASE_DIR = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..", "master-data")
+)
 SEED_DIR = os.path.join(BASE_DIR, "seed")
 os.makedirs(BASE_DIR, exist_ok=True)
 os.makedirs(SEED_DIR, exist_ok=True)

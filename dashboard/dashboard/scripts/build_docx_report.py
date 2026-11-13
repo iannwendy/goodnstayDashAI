@@ -14,8 +14,12 @@ from docx.enum.table import WD_TABLE_ALIGNMENT, WD_ALIGN_VERTICAL
 from docx.oxml import OxmlElement, parse_xml
 from docx.oxml.ns import nsdecls, qn
 
-MASTER_DIR = "/Users/iannwendy/Desktop/goodNstay/dashboard/partner-auction-dashboard-v2/master-data"
-OUT_DOCX = "/Users/iannwendy/Desktop/goodNstay/dashboard/partner-auction-dashboard-v2/Partner_Auction_Dashboard_v2_Bao_Cao_Master_Data_Va_Cong_Thuc.docx"
+PROJECT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+MASTER_DIR = os.path.join(PROJECT_DIR, "master-data")
+OUT_DOCX = os.path.join(
+    PROJECT_DIR,
+    "Partner_Auction_Dashboard_v2_Bao_Cao_Master_Data_Va_Cong_Thuc.docx",
+)
 
 # Load real Master Data to guarantee 100% numeric reconciliation
 with open(os.path.join(MASTER_DIR, "hotel_profile.json"), encoding="utf-8") as f:

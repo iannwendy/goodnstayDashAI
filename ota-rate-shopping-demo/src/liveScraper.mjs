@@ -18,7 +18,7 @@ const require = createRequire(import.meta.url);
 
 const playwrightPath = path.resolve(
   __dirname,
-  "../../dashboard/partner-auction-dashboard-v2/node_modules/playwright"
+  "../../dashboard/dashboard/node_modules/playwright"
 );
 const { chromium } = require(playwrightPath);
 

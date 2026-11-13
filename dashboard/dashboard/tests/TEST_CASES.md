@@ -1,4 +1,4 @@
-# Danh Mục Test Case Tự Động — Optibide Partner Hub (`dashboard/partner-auction-dashboard-v2/tests/`)
+# Danh Mục Test Case Tự Động — Optibide Partner Hub (`dashboard/dashboard/tests/`)
 
 Tài liệu này liệt kê toàn bộ các nhóm Test Case tự động bảo vệ chất lượng cho **Optibide Partner Hub — Dashboard Overview** (giao diện quản lý khách sạn thương mại dành cho người dùng thuần kinh doanh).  
 **Quy tắc bắt buộc**: Mỗi khi thêm tính năng mới hoặc chỉnh sửa logic/giao diện hiện có, phải chạy lại toàn bộ `npm test` + `npm run build` và cập nhật danh mục mã Test Case vào tài liệu này.

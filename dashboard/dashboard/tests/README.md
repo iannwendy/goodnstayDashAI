@@ -27,7 +27,7 @@ tests/
 
 ## Các Lệnh Chạy Kiểm Thử
 
-Chạy từ thư mục `dashboard/partner-auction-dashboard-v2`:
+Chạy từ thư mục `dashboard/dashboard`:
 
 ```bash
 # 1. Chạy TOÀN BỘ (Unit + Data Contract + Logic + Typecheck + E2E + Responsive + Tự động Reset Seed)
