@@ -1,0 +1,179 @@
+{
+  "board_name": "Internship Program 2026",
+  "board_id": 135,
+  "board_url": "https://optibide-org.atlassian.net/jira/software/c/projects/OP/boards/135/backlog",
+  "total_uploaded": 7,
+  "tickets": [
+    {
+      "bug_id": "BUG-046",
+      "issue_key": "OP-1781",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1781",
+      "title": "[Global Home - Header & Navigation Drawer] \"Log in\" Action Disappears on All Viewports <= 1439px (Laptop, Tablet & Mobile) With 222px Blank Header Space on Mobile & No Drawer Fallback",
+      "severity": "S1 – Critical",
+      "priority_label": "P0",
+      "expected_attachments": 2,
+      "uploaded_attachments": 2,
+      "inline_embedded_count": 2,
+      "attachment_names": [
+        "bug46a_missing_login_laptop_1280x800.png",
+        "bug46b_missing_login_mobile_deadspace_390x844.png"
+      ],
+      "warnings": [],
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 2,
+      "verified_priority": "Highest",
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": [],
+      "attachment_urls": [
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12479",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12480"
+      ]
+    },
+    {
+      "bug_id": "BUG-047",
+      "issue_key": "OP-1782",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1782",
+      "title": "[Global Home - Mobile Navigation Drawer] Hamburger Drawer Overflows Off Left Viewport Edge (-10px to -25px on <= 399px Viewports), Clipping Left Border & Action Buttons",
+      "severity": "S2 – Major",
+      "priority_label": "P1",
+      "expected_attachments": 2,
+      "uploaded_attachments": 2,
+      "inline_embedded_count": 2,
+      "attachment_names": [
+        "bug47a_mobile_drawer_left_overflow_touch_375x667.png",
+        "bug47b_mobile_drawer_buttons_clipped_390x844.png"
+      ],
+      "warnings": [],
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 2,
+      "verified_priority": "High",
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": [],
+      "attachment_urls": [
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12481",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12482"
+      ]
+    },
+    {
+      "bug_id": "BUG-048",
+      "issue_key": "OP-1783",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1783",
+      "title": "[Global Home - Hero Travelers Popover] Travelers Dialog Hardcodes left: 16px Detached From Trigger (311px Offset on 1920px) & Clamps Height Hiding Cancel/OK Behind Inner Scrollbar",
+      "severity": "S2 – Major",
+      "priority_label": "P1",
+      "expected_attachments": 2,
+      "uploaded_attachments": 2,
+      "inline_embedded_count": 2,
+      "attachment_names": [
+        "bug48a_travelers_popover_detached_left16_1920x1080.png",
+        "bug48b_travelers_popover_clamped_scroll_768x1024.png"
+      ],
+      "warnings": [],
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 2,
+      "verified_priority": "High",
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": [],
+      "attachment_urls": [
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12483",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12484"
+      ]
+    },
+    {
+      "bug_id": "BUG-049",
+      "issue_key": "OP-1784",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1784",
+      "title": "[Global Home - Hero Property Type Popover] Property Portal Clips \"Clear / Done\" Footer Buttons on 1440×860–900 Desktop Viewports Due to overflow: hidden & Late Flip Threshold",
+      "severity": "S3 – Moderate",
+      "priority_label": "P2",
+      "expected_attachments": 1,
+      "uploaded_attachments": 1,
+      "inline_embedded_count": 1,
+      "attachment_names": [
+        "bug49_property_portal_clips_footer_1440x900.png"
+      ],
+      "warnings": [],
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 1,
+      "verified_priority": "Medium",
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": [],
+      "attachment_urls": [
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12485"
+      ]
+    },
+    {
+      "bug_id": "BUG-050",
+      "issue_key": "OP-1785",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1785",
+      "title": "[Global Home - Destination Carousel Responsive] Featured Card Locked at 620×316px Overflows Mobile/Tablet Carousel (358×280px), Clipping Top 36px & Slicing Title (\"Rome\" -> \"e\"/\"me\")",
+      "severity": "S2 – Major",
+      "priority_label": "P1",
+      "expected_attachments": 2,
+      "uploaded_attachments": 2,
+      "inline_embedded_count": 2,
+      "attachment_names": [
+        "bug50a_dest_featured_card_clipped_390x844.png",
+        "bug50b_dest_featured_card_clipped_375x667.png"
+      ],
+      "warnings": [],
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 2,
+      "verified_priority": "High",
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": [],
+      "attachment_urls": [
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12486",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12487"
+      ]
+    },
+    {
+      "bug_id": "BUG-051",
+      "issue_key": "OP-1786",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1786",
+      "title": "[Global Home - Partner Network Responsive] Editorial Banner Photo (.gns-home-partners-photo) Locked at 563×237px on 758px–1439px Viewports, Leaving Up to 669px Blank Gap",
+      "severity": "S3 – Moderate",
+      "priority_label": "P2",
+      "expected_attachments": 1,
+      "uploaded_attachments": 1,
+      "inline_embedded_count": 1,
+      "attachment_names": [
+        "bug51_partners_editorial_photo_563px_gap_1280x800.png"
+      ],
+      "warnings": [],
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 1,
+      "verified_priority": "Medium",
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": [],
+      "attachment_urls": [
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12488"
+      ]
+    },
+    {
+      "bug_id": "BUG-052",
+      "issue_key": "OP-1787",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1787",
+      "title": "[Accommodation - Location Picker (Korea)] Submitting Bid Request Fails With HTTP 400 INVALID_DISTRICT_CODE / INVALID_CITY_CODE Due to Shifted Administrative Levels",
+      "severity": "S2 – Major",
+      "priority_label": "P1",
+      "expected_attachments": 2,
+      "uploaded_attachments": 2,
+      "inline_embedded_count": 2,
+      "attachment_names": [
+        "bug52a_kr_invalid_district_code_gapyeong_1440x900.png",
+        "bug52b_kr_invalid_city_code_seoul_gangnam_1440x900.png"
+      ],
+      "warnings": [],
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 2,
+      "verified_priority": "High",
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": [],
+      "attachment_urls": [
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12489",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12490"
+      ]
+    }
+  ]
+}

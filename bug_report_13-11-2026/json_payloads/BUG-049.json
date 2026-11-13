@@ -1,0 +1,28 @@
+{
+  "title": "[Global Home - Hero Property Type Popover] Property Portal Clips \"Clear / Done\" Footer Buttons on 1440×860–900 Desktop Viewports Due to overflow: hidden & Late Flip Threshold",
+  "environment": "Staging (STAG) · Desktop 1440×900 (MacBook Pro 15\"/Desktop standard) & 1440×860–905 · Chrome 145 · en-US (https://web.stag.goodnstay.com/en-US/home)",
+  "test_account": "Guest Session (data-gns-home-session=\"guest\")",
+  "steps_to_reproduce": [
+    "Open https://web.stag.goodnstay.com/en-US/home on a standard 1440×900 Desktop viewport without scrolling (window.scrollY = 0).",
+    "Click the 'Property type (optional) · Select property type' field (.gns-home-hero-field-property) in the Hero Request Form.",
+    "Observe the bottom footer ('Clear' and 'Done' buttons) of the opened .gns-home-prop-portal dropdown and try scrolling inside the dropdown.",
+    "Inspect getBoundingClientRect(), scrollHeight, clientHeight, maxHeight, and computed overflow of .gns-home-prop-portal in F12 DevTools."
+  ],
+  "actual_result": "- At 1440×900 (scrollY = 0), .gns-home-prop-portal opens downward starting at top: 731px (left: 307px, width: 263px) and clamps inline max-height: 161px (bottom: 892px, clientHeight: 159px) while its content requires scrollHeight: 176px.\n- Because .gns-home-prop-portal sets overflow: hidden / overflow-y: hidden and its upward-flip threshold triggers too late (it flips upward at 1440×800 to top: 488px..664px, but fails to flip when remaining space is 121px–161px at 1440×860–900), the bottom 'Clear' and 'Done' buttons (top: 866px, bottom: 899px) extend 7px past the 892px container bottom at 1440×900 (and up to 47px clipped at 1440×860) and cannot be scrolled into view.",
+  "expected_result": "- Whenever available viewport space below the trigger is less than the portal's required content height (176px + 8px viewport margin = 184px), .gns-home-prop-portal must flip above the trigger (as it already does at 1440×800) or enable overflow-y: auto on its inner list while keeping the 'Clear / Done' footer fully visible.",
+  "evidence": {
+    "url": "https://web.stag.goodnstay.com/en-US/home",
+    "datetime": "13/11/2026 10:56 ICT",
+    "console": "0 uncaught JS errors; .gns-home-prop-portal metrics at 1440×900: rect={x:307, y:731, w:263, h:161, bottom:892}, maxHeight='161px', scrollHeight=176, clientHeight=159, overflow='hidden', Done button bottom=899 (clipped by 7px).",
+    "network": "GET https://web.stag.goodnstay.com/en-US/home -> 200 OK; CSS chunk /_next/static/chunks/1on6851uk1eki.css.",
+    "notes": "Root Cause (Portal Flip Threshold < Natural Content Height + overflow: hidden): Portal positioner checks a hardcoded minimum flip height (~140–150px) smaller than the actual 176px content height, clamping max-height to (window.innerHeight - triggerBottom - 8) with overflow: hidden.",
+    "reference_url": "https://web.stag.goodnstay.com/en-US/home"
+  },
+  "classification": "Confirmed Bug — Desktop UI Popover Clipping Defect",
+  "severity": "S3 – Moderate",
+  "priority_label": "P2",
+  "reproducibility": "Always (100% — 5/5 attempts at 1440×900 with scrollY = 0)",
+  "attachments": [
+    "../bug49_property_portal_clips_footer_1440x900.png"
+  ]
+}

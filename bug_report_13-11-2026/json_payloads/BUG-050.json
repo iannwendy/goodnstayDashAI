@@ -1,0 +1,29 @@
+{
+  "title": "[Global Home - Destination Carousel Responsive] Featured Card Locked at 620×316px Overflows Mobile/Tablet Carousel (358×280px), Clipping Top 36px & Slicing Title (\"Rome\" -> \"e\"/\"me\")",
+  "environment": "Staging (STAG) · Mobile 390×844 (iPhone 14/15), 375×667 (iPhone SE), 360×800 & Tablet 768×1024 · Chrome 145 · en-US (https://web.stag.goodnstay.com/en-US/home)",
+  "test_account": "Guest Session (data-gns-home-session=\"guest\")",
+  "steps_to_reproduce": [
+    "Open https://web.stag.goodnstay.com/en-US/home on Mobile 390×844 (iPhone 14/15) or 375×667 (iPhone SE).",
+    "Scroll down to the 'EXPLORE BY DESTINATION · Places that make you want to go' section (.gns-home-dest).",
+    "Observe the visible featured destination card (.gns-home-dest-card-featured, 'HERITAGE & DISCOVERY · Rome') inside .gns-home-dest-carousel.",
+    "Measure getBoundingClientRect() and computed width/height of .gns-home-dest-carousel vs .gns-home-dest-card-featured and its <h3> title in F12 DevTools."
+  ],
+  "actual_result": "- While .gns-home-dest-carousel shrinks responsively to 358×280px on 390×844 (343×280px on 375×667, 705×280px on 768×1024) with overflow: hidden, high-specificity desktop selector .gns-home .gns-home-dest-carousel .gns-home-dest-card.gns-home-dest-card-featured[data-gns-home-card] keeps the featured card hardcoded at width: 620px; height: 316px across all viewports.\n- Vertically, because the card is 316px tall inside a 280px-tall overflow: hidden container, the top 36px of the featured card is permanently clipped off (e.g., card top: 166px vs carousel top: 202px on 375×667).\n- Horizontally, the oversized 620px card extends out of the 358px/343px viewport frame at negative x-coordinates, slicing off the front-face eyebrow ('HERITAGE & DISCOVERY' -> 'DISCOVERY' / 'GE & DISCOVERY') and destination <h3> 'Rome' (x = -44px on 390×844 leaving only 'e' visible; x = -18px vs carousel left: 16px on 375×667 leaving only 'me' visible).",
+  "expected_result": "- Responsive media queries (< 1440px / <= 757px) must match or exceed the specificity of .gns-home-dest-card-featured[data-gns-home-card] so featured destination cards scale proportionally to fit within the carousel's height (<= 280px) and mobile viewport width (<= calc(100vw - 32px)), keeping the full destination title ('Rome') and category eyebrow 100% readable without clipping.",
+  "evidence": {
+    "url": "https://web.stag.goodnstay.com/en-US/home",
+    "datetime": "13/11/2026 10:59 ICT",
+    "console": "0 uncaught JS errors; computed style on .gns-home-dest-card-featured[data-gns-home-card]: width='620px', height='316px' inside .gns-home-dest-carousel (width='358px'/'343px', height='280px', overflow='hidden').",
+    "network": "GET https://web.stag.goodnstay.com/en-US/home -> 200 OK; CSS chunk /_next/static/chunks/1on6851uk1eki.css.",
+    "notes": "Root Cause (CSS Specificity Lock): Desktop rule .gns-home .gns-home-dest-carousel .gns-home-dest-card.gns-home-dest-card-featured[data-gns-home-card] { width: 620px; height: 316px; } has specificity (0,5,0) and lacks a matching responsive override on tablet/mobile breakpoints.",
+    "reference_url": "https://web.stag.goodnstay.com/en-US/home"
+  },
+  "classification": "Confirmed Bug — Mobile & Tablet Responsive CSS Specificity / Clipping Defect",
+  "severity": "S2 – Major",
+  "priority_label": "P1",
+  "reproducibility": "Always (100% — 5/5 attempts across 390×844, 375×667, 360×800, 768×1024)",
+  "attachments": [
+    "../bug50a_dest_featured_card_clipped_390x844.png",
+    "../bug50b_dest_featured_card_clipped_375x667.png"
+  ]
+}

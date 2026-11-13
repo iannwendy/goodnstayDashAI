@@ -1,0 +1,29 @@
+{
+  "title": "[Global Home - Mobile Navigation Drawer] Hamburger Drawer Overflows Off Left Viewport Edge (-10px to -25px on <= 399px Viewports), Clipping Left Border & Action Buttons",
+  "environment": "Staging (STAG) · Mobile <= 399px (iPhone 14/15 390×844, iPhone SE 375×667, Android 360×800, 320×568) · Chrome 145 · en-US (https://web.stag.goodnstay.com/en-US/home)",
+  "test_account": "Guest Session (data-gns-home-session=\"guest\")",
+  "steps_to_reproduce": [
+    "Open https://web.stag.goodnstay.com/en-US/home on a mobile viewport <= 399px (e.g., 390×844 iPhone 14/15, 375×667 iPhone SE, or 360×800 Android).",
+    "Click the Hamburger Menu button (.gns-home-header-menu) at the top-right of the Header.",
+    "Wait 450ms for the drawer entrance transition to complete (inline style opacity: 1; transform: none).",
+    "Inspect getBoundingClientRect() of <aside class='gns-home-drawer'> and its inner buttons (.gns-home-drawer-register, .gns-home-drawer-pref, .gns-home-drawer-join)."
+  ],
+  "actual_result": "- JS inline positioning anchors <aside class='gns-home-drawer'> to right: var(--gns-drawer-right) matching the Hamburger button's right offset (28px with mobile overlay scrollbars; 43px when a 15px classic scrollbar reduces clientWidth), while CSS sets width: min(372px, -16px + 100vw).\n- Because --gns-drawer-right (28px–43px) is larger than the 16px deduction in 100vw - 16px, the drawer overflows past the left edge of the screen (x < 0) on every viewport <= 399px:\n  • Touch / Overlay Scrollbar: 390×844 -> width: 372px, right: 362px (28px gap), left: -10px; 375×667 -> width: 359px, right: 347px (28px gap), left: -12px; 360×800 -> width: 344px, right: 332px, left: -12px.\n  • Classic 15px Scrollbar at 390×844 (clientWidth = 375px): --gns-drawer-right = 43px while 100vw = 390px (width: 372px), pushing the drawer to left: -25px and slicing off the left edge of every inner button ('Create Account Free', 'Accommodation', 'Support', 'English', 'USD $', 'Join as Partner', 'Help Center') at left: -8px.",
+  "expected_result": "- <aside class='gns-home-drawer'> must stay strictly within horizontal viewport bounds (left >= 8px and right <= clientWidth - 8px) across all mobile widths (320px–430px), with symmetrical or clamped horizontal margins and zero clipping of borders, rounded corners, or action buttons (Confluence Design & Responsive Standards 171376745).",
+  "evidence": {
+    "url": "https://web.stag.goodnstay.com/en-US/home",
+    "datetime": "13/11/2026 10:58 ICT",
+    "console": "0 uncaught JS errors; inline style on <aside class='gns-home-drawer'> reads: 'transform-origin: right top; --gns-drawer-right: 28px; --gns-drawer-top: 83px; opacity: 1; transform: none;' (or --gns-drawer-right: 43px with classic scrollbar).",
+    "network": "GET https://web.stag.goodnstay.com/en-US/home -> 200 OK; CSS chunk /_next/static/chunks/1on6851uk1eki.css.",
+    "notes": "Root Cause (JS + CSS Width/Anchor Mismatch): JS computes --gns-drawer-right from window.innerWidth - menuButtonRect.right (28px or 43px), whereas CSS computes .gns-home-drawer { right: var(--gns-drawer-right); width: min(372px, -16px + 100vw); max-width: calc(-16px + 100vw); }. Fix: clamp max-width to calc(100% - var(--gns-drawer-right) - 16px) or center/clamp right: 8px; width: calc(100% - 16px) on mobile.",
+    "reference_url": "https://web.stag.goodnstay.com/en-US/home"
+  },
+  "classification": "Confirmed Bug — Mobile Responsive Layout Overflow & Clipping",
+  "severity": "S2 – Major",
+  "priority_label": "P1",
+  "reproducibility": "Always (100% — 5/5 attempts across 390×844, 375×667, 360×800, 320×568)",
+  "attachments": [
+    "../bug47a_mobile_drawer_left_overflow_touch_375x667.png",
+    "../bug47b_mobile_drawer_buttons_clipped_390x844.png"
+  ]
+}

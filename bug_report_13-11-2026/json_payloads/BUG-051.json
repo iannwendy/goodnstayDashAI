@@ -1,0 +1,27 @@
+{
+  "title": "[Global Home - Partner Network Responsive] Editorial Banner Photo (.gns-home-partners-photo) Locked at 563×237px on 758px–1439px Viewports, Leaving Up to 669px Blank Gap",
+  "environment": "Staging (STAG) · Laptop & Tablet 758px–1439px (1366×768, 1280×800, 1024×768, 820×1180, 768×1024) · Chrome 145 · en-US (https://web.stag.goodnstay.com/en-US/home)",
+  "test_account": "Guest Session (data-gns-home-session=\"guest\")",
+  "steps_to_reproduce": [
+    "Open https://web.stag.goodnstay.com/en-US/home on any Laptop or Tablet viewport between 758px and 1439px wide (e.g., 1280×800, 1024×768, or 768×1024).",
+    "Scroll down to the 'GROW WITH goodNstay · PARTNER NETWORK' section (.gns-home-partners).",
+    "Inspect the top editorial banner (.gns-home-partners-editorial) and measure getBoundingClientRect() of the container vs <img class='gns-home-partners-photo'>."
+  ],
+  "actual_result": "- At @media (max-width: 1439px), .gns-home-partners-editorial switches from a 505×191px right-column card to a full-width 160px-tall banner (1232×160px at 1280×800, 961×160px at 1024×768, 705×160px at 768×1024), and the overlay .gns-home-partners-photo-veil stretches across 100% width.\n- However, <img class='gns-home-partners-photo'> retains its desktop hardcoded dimensions width: 563px; height: 237px (only overridden at <= 757px mobile), abruptly cutting off at x = 587px (24px + 563px) and leaving a solid empty dark-blue gap across the right half of the banner: 669px blank (54% of banner width) at 1280×800, 398px blank at 1024×768, and 142px blank at 768×1024, while cropping 77px vertically.",
+  "expected_result": "- Across all 758px–1439px viewports where .gns-home-partners-editorial spans full container width, .gns-home-partners-photo must use width: 100%; height: 100%; object-fit: cover (with appropriate object-position) so the editorial banner image fills the entire banner width without an abrupt cutoff or empty gap.",
+  "evidence": {
+    "url": "https://web.stag.goodnstay.com/en-US/home",
+    "datetime": "13/11/2026 10:58 ICT",
+    "console": "0 uncaught JS errors; at 1280×800 .gns-home-partners-editorial rect={x:24, w:1232, h:160, right:1256} vs .gns-home-partners-photo rect={x:24, w:563, h:237, right:587} -> 669px unfilled width.",
+    "network": "GET https://web.stag.goodnstay.com/en-US/home -> 200 OK; CSS chunk /_next/static/chunks/1on6851uk1eki.css.",
+    "notes": "Root Cause (Missing Tablet/Laptop Media Query Rule): @media (max-width: 1439px) resizes .gns-home-partners-editorial to width: 100%; height: 160px, and @media (max-width: 757px) resizes .gns-home-partners-photo for mobile, leaving 758px–1439px inheriting desktop fixed width: 563px; height: 237px.",
+    "reference_url": "https://web.stag.goodnstay.com/en-US/home"
+  },
+  "classification": "Confirmed Bug — Laptop & Tablet Responsive Banner Image Cutoff",
+  "severity": "S3 – Moderate",
+  "priority_label": "P2",
+  "reproducibility": "Always (100% — 5/5 attempts across 1366×768, 1280×800, 1024×768, 820×1180, 768×1024)",
+  "attachments": [
+    "../bug51_partners_editorial_photo_563px_gap_1280x800.png"
+  ]
+}
