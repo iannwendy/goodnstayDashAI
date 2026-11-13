@@ -4,9 +4,9 @@
 .env.jira
 .env.*
 !.env.example
-!.env.jira.example
 /AGENTS.md
 /CLAUDE.md
+/docs/
 
 # Bộ nhớ đệm công cụ trình duyệt & kỹ năng AI cục bộ
 .playwright-mcp/
@@ -29,5 +29,5 @@ ota-rate-shopping-demo/node_modules
 /bug_report_3-11-2026/
 /bug_report_13-11-2026/
 /dashboard/demo_new/
-/gns_Bug_Report_Tracking (2).xlsx
-/~$gns_Bug_Report_Tracking (2).xlsx
+/gns_Bug_Report_Tracking*.xlsx
+/~$gns_Bug_Report_Tracking*.xlsx
