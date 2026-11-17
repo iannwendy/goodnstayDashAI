@@ -1,0 +1,2126 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>So sánh Dashboard Cũ & Mới (Góc nhìn Kinh doanh Khách sạn) — goodNstay / Optibide Partner Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-page: #F8F9FB;
+      --bg-card: #FFFFFF;
+      --bg-subtle: #F1F5F9;
+      --bg-indigo-soft: #EEF2FF;
+      --bg-emerald-soft: #ECFDF5;
+      --bg-amber-soft: #FFFBEB;
+      --bg-rose-soft: #FEF2F2;
+      --bg-sky-soft: #F0F9FF;
+
+      --text-main: #0F172A;
+      --text-secondary: #334155;
+      --text-muted: #64748B;
+
+      --indigo-600: #4F46E5;
+      --indigo-700: #4338CA;
+      --indigo-200: #C7D2FE;
+
+      --emerald-600: #16A34A;
+      --emerald-700: #15803D;
+      --emerald-200: #BBF7D0;
+
+      --amber-600: #D97706;
+      --amber-700: #B45309;
+      --amber-200: #FDE68A;
+
+      --rose-600: #DC2626;
+      --rose-700: #B91C1C;
+      --rose-200: #FECACA;
+
+      --sky-600: #0284C7;
+      --sky-700: #0369A1;
+      --sky-200: #BAE6FD;
+
+      --border-light: #E2E8F0;
+      --border-strong: #CBD5E1;
+
+      --radius-xl: 18px;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
+      --shadow-md: 0 8px 24px -6px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: clip;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: "Be Vietnam Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 14.5px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: clip;
+    }
+
+    code, .mono {
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88em;
+    }
+
+    /* Top Cross-Report Navigation Bar */
+    .cross-nav {
+      background: #0F172A;
+      color: #F8FAFC;
+      border-bottom: 1px solid #1E293B;
+      padding: 10px 16px;
+    }
+
+    .cross-nav-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .cross-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 13.5px;
+      letter-spacing: -0.01em;
+      color: #FFFFFF;
+    }
+
+    .cross-brand-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #4F46E5 0%, #2563EB 100%);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 13px;
+      color: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(79, 70, 229, 0.4);
+      flex-shrink: 0;
+    }
+
+    .cross-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cross-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 9px;
+      font-size: 12.5px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.18s ease;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #CBD5E1;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .cross-link:hover {
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.28);
+    }
+
+    .cross-link.active {
+      background: #4F46E5;
+      color: #FFFFFF;
+      border-color: #6366F1;
+      box-shadow: 0 2px 10px rgba(79, 70, 229, 0.45);
+    }
+
+    /* Sticky Section Jump Bar */
+    .sticky-subnav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-light);
+      padding: 8px 16px;
+    }
+
+    .sticky-subnav-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .jump-list {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding-bottom: 2px;
+    }
+
+    .jump-list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .jump-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-decoration: none;
+      white-space: nowrap;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .jump-pill:hover {
+      background: var(--bg-subtle);
+      color: var(--text-main);
+    }
+
+    .jump-pill.current {
+      background: var(--bg-indigo-soft);
+      color: var(--indigo-600);
+      border-color: var(--indigo-200);
+    }
+
+    .print-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-light);
+      background: #FFFFFF;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .print-btn:hover {
+      border-color: var(--indigo-600);
+      color: var(--indigo-600);
+      background: var(--bg-indigo-soft);
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px 16px 72px;
+    }
+
+    @media (min-width: 640px) {
+      .container {
+        padding: 36px 24px 84px;
+      }
+    }
+
+    /* Hero Header */
+    .hero-card {
+      background: linear-gradient(135deg, #FFFFFF 0%, #F5F7FF 100%);
+      border: 1px solid var(--indigo-200);
+      border-radius: var(--radius-xl);
+      padding: 28px 24px;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (min-width: 768px) {
+      .hero-card {
+        padding: 36px 40px;
+      }
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: var(--bg-indigo-soft);
+      border: 1px solid var(--indigo-200);
+      color: var(--indigo-700);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      margin: 0 0 12px;
+      font-size: clamp(22px, 3.2vw, 32px);
+      font-weight: 800;
+      line-height: 1.26;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+    }
+
+    .hero-title .accent {
+      color: var(--indigo-600);
+    }
+
+    .hero-lead {
+      margin: 0;
+      max-width: 960px;
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .hero-meta-row {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px dashed var(--indigo-200);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 11px;
+      border-radius: 8px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-light);
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .meta-chip strong {
+      color: var(--text-main);
+      font-weight: 700;
+    }
+
+    /* Section Headers */
+    .section-block {
+      margin-top: 44px;
+      scroll-margin-top: 68px;
+    }
+
+    .section-header {
+      margin-bottom: 20px;
+    }
+
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--indigo-600);
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      margin: 0 0 8px;
+      font-size: clamp(19px, 2.4vw, 24px);
+      font-weight: 800;
+      letter-spacing: -0.015em;
+      color: var(--text-main);
+    }
+
+    .section-desc {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 14px;
+      max-width: 920px;
+    }
+
+    /* Cards & Grids */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 22px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    @media (min-width: 768px) {
+      .card {
+        padding: 26px;
+      }
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 900px) {
+      .grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 768px) {
+      .grid-3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1100px) {
+      .grid-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 640px) {
+      .grid-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1120px) {
+      .grid-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    /* Positioning Cards (Old vs New) */
+    .pos-card {
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .pos-card.old-ver {
+      border-top: 5px solid #475569;
+    }
+
+    .pos-card.new-ver {
+      border-color: var(--indigo-200);
+      border-top: 5px solid var(--indigo-600);
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFBFF 100%);
+      box-shadow: var(--shadow-md);
+    }
+
+    .ver-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
+    .ver-pill.slate {
+      background: #F1F5F9;
+      color: #334155;
+      border: 1px solid #CBD5E1;
+    }
+
+    .ver-pill.indigo {
+      background: var(--bg-indigo-soft);
+      color: var(--indigo-700);
+      border: 1px solid var(--indigo-200);
+    }
+
+    .pos-heading {
+      margin: 10px 0 6px;
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.35;
+    }
+
+    .pos-tagline {
+      margin: 0;
+      font-size: 13.5px;
+      color: var(--text-secondary);
+    }
+
+    .pos-kv-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .pos-kv-item {
+      padding: 11px 13px;
+      border-radius: 11px;
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      font-size: 13px;
+    }
+
+    .pos-card.new-ver .pos-kv-item {
+      background: #FFFFFF;
+      border-color: #E0E7FF;
+    }
+
+    .pos-kv-label {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--text-muted);
+      margin-bottom: 3px;
+    }
+
+    .pos-kv-val {
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    /* Semantic Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+
+    .badge-indigo {
+      background: var(--bg-indigo-soft);
+      color: var(--indigo-700);
+      border: 1px solid var(--indigo-200);
+    }
+
+    .badge-emerald {
+      background: var(--bg-emerald-soft);
+      color: var(--emerald-700);
+      border: 1px solid var(--emerald-200);
+    }
+
+    .badge-amber {
+      background: var(--bg-amber-soft);
+      color: var(--amber-700);
+      border: 1px solid var(--amber-200);
+    }
+
+    .badge-rose {
+      background: var(--bg-rose-soft);
+      color: var(--rose-700);
+      border: 1px solid var(--rose-200);
+    }
+
+    .badge-sky {
+      background: var(--bg-sky-soft);
+      color: var(--sky-700);
+      border: 1px solid var(--sky-200);
+    }
+
+    .badge-slate {
+      background: #F1F5F9;
+      color: #475569;
+      border: 1px solid #CBD5E1;
+    }
+
+    /* Interactive Filter Controls */
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .filter-btn {
+      padding: 7px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--border-light);
+      background: #FFFFFF;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--indigo-600);
+      color: var(--indigo-600);
+    }
+
+    .filter-btn.active {
+      background: var(--indigo-600);
+      border-color: var(--indigo-600);
+      color: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.28);
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1 1 250px;
+      max-width: 360px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 8px 34px 8px 13px;
+      border-radius: 10px;
+      border: 1px solid var(--border-strong);
+      background: #FFFFFF;
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--text-main);
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--indigo-600);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+    }
+
+    .search-clear {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 14px;
+      padding: 2px 5px;
+      display: none;
+    }
+
+    /* Tables */
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-light);
+      background: #FFFFFF;
+    }
+
+    table.comp-table {
+      width: 100%;
+      min-width: 820px;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    table.comp-table thead tr {
+      background: #F8FAFC;
+      border-bottom: 1.5px solid var(--border-light);
+    }
+
+    table.comp-table th {
+      padding: 13px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--text-secondary);
+      vertical-align: middle;
+    }
+
+    table.comp-table td {
+      padding: 15px 16px;
+      font-size: 13.5px;
+      vertical-align: top;
+      border-bottom: 1px solid #F1F5F9;
+      color: var(--text-secondary);
+    }
+
+    table.comp-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    table.comp-table tbody tr:hover {
+      background: #FAFBFD;
+    }
+
+    .old-quote {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: #F1F5F9;
+      border: 1px solid #CBD5E1;
+      color: #334155;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11.5px;
+      font-weight: 600;
+      margin: 2px 3px 2px 0;
+    }
+
+    .new-quote {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: var(--bg-emerald-soft);
+      border: 1px solid var(--emerald-200);
+      color: var(--emerald-700);
+      font-size: 12px;
+      font-weight: 700;
+      margin: 2px 3px 2px 0;
+    }
+
+    .new-quote.indigo {
+      background: var(--bg-indigo-soft);
+      border-color: var(--indigo-200);
+      color: var(--indigo-700);
+    }
+
+    .plain-explain {
+      margin-top: 6px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .group-row td {
+      background: #F1F5F9 !important;
+      font-weight: 800;
+      font-size: 12.5px;
+      color: var(--text-main) !important;
+      padding: 10px 16px !important;
+      letter-spacing: 0.01em;
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light) !important;
+    }
+
+    /* Shared Core Mini Cards */
+    .shared-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .shared-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--bg-indigo-soft);
+      color: var(--indigo-600);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      margin-bottom: 10px;
+    }
+
+    .shared-title {
+      margin: 0 0 6px;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .shared-body {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Pros & Cons Lists */
+    .pro-con-box {
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      border: 1px solid var(--border-light);
+    }
+
+    .pro-con-box.pro {
+      background: #F8FEFA;
+      border-color: var(--emerald-200);
+    }
+
+    .pro-con-box.con {
+      background: #FFFDF7;
+      border-color: var(--amber-200);
+    }
+
+    .pro-con-title {
+      margin: 0 0 12px;
+      font-size: 14.5px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pro-con-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+
+    .pro-con-list li {
+      font-size: 13.3px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      padding-left: 22px;
+      position: relative;
+    }
+
+    .pro-con-list li::before {
+      position: absolute;
+      left: 0;
+      top: 1px;
+      font-weight: 800;
+    }
+
+    .pro-con-box.pro .pro-con-list li::before {
+      content: "✓";
+      color: var(--emerald-600);
+    }
+
+    .pro-con-box.con .pro-con-list li::before {
+      content: "!";
+      color: var(--amber-600);
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    /* Persona Cards */
+    .persona-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 22px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .persona-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .persona-role {
+      font-size: 16.5px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin: 0;
+    }
+
+    .persona-sub {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin: 3px 0 0;
+    }
+
+    .score-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: var(--bg-page);
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border-light);
+    }
+
+    .score-row {
+      display: grid;
+      grid-template-columns: 135px 1fr 48px;
+      align-items: center;
+      gap: 10px;
+      font-size: 12.5px;
+    }
+
+    @media (max-width: 440px) {
+      .score-row {
+        grid-template-columns: 112px 1fr 44px;
+        font-size: 11.5px;
+      }
+    }
+
+    .score-track {
+      height: 9px;
+      border-radius: 999px;
+      background: #E2E8F0;
+      overflow: hidden;
+    }
+
+    .score-fill-old {
+      height: 100%;
+      border-radius: 999px;
+      background: #64748B;
+    }
+
+    .score-fill-new {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #4F46E5 0%, #10B981 100%);
+    }
+
+    /* Roadmap Cards */
+    .roadmap-card {
+      background: #FFFFFF;
+      border: 1px solid var(--indigo-200);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      position: relative;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .roadmap-menu-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: var(--bg-indigo-soft);
+      color: var(--indigo-700);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .empty-filter-msg {
+      display: none;
+      padding: 28px 16px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13.5px;
+    }
+
+    .footer-note {
+      margin-top: 52px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    .hidden-row {
+      display: none !important;
+    }
+
+    .hidden-persona {
+      display: none !important;
+    }
+
+    /* Print Stylesheet */
+    @media print {
+      body {
+        background: #FFFFFF;
+        font-size: 12px;
+      }
+      .sticky-subnav,
+      .toolbar,
+      .print-btn {
+        display: none !important;
+      }
+      .cross-nav {
+        background: #FFFFFF;
+        color: #0F172A;
+        border-bottom: 2px solid #0F172A;
+      }
+      .cross-link {
+        color: #0F172A;
+        border-color: #CBD5E1;
+      }
+      .cross-link.active {
+        background: #EEF2FF;
+        color: #4F46E5;
+      }
+      .container {
+        max-width: 100%;
+        padding: 12px 0;
+      }
+      .card, .pos-card, .persona-card, .roadmap-card, .hero-card {
+        box-shadow: none !important;
+        break-inside: avoid;
+      }
+      .table-wrap {
+        overflow: visible !important;
+      }
+      table.comp-table {
+        min-width: 0 !important;
+      }
+      .hidden-row {
+        display: table-row !important;
+      }
+      .persona-card.hidden-persona {
+        display: flex !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Cross-Navigation Bar -->
+  <nav class="cross-nav" aria-label="Điều hướng bộ báo cáo đối chiếu">
+    <div class="cross-nav-inner">
+      <div class="cross-brand">
+        <span class="cross-brand-badge">gN</span>
+        <span>goodNstay · Bộ Báo Cáo Chuyển Đổi Sản Phẩm Đối Tác Khách Sạn</span>
+      </div>
+      <div class="cross-links">
+        <a class="cross-link" href="./so-sanh-masterdata-cu-va-moi.html">
+          <span>1. So sánh Master Data (v2.7.0 → v3.0.0)</span>
+        </a>
+        <a class="cross-link active" href="./so-sanh-dashboard-cu-va-moi.html" aria-current="page">
+          <span>2. So sánh Dashboard Cũ &amp; Mới (Góc nhìn Business)</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Sticky Quick-Jump Bar -->
+  <div class="sticky-subnav">
+    <div class="sticky-subnav-inner">
+      <div class="jump-list" id="jumpNav">
+        <a class="jump-pill current" href="#dinh-vi">1. Chuyển dịch Định vị</a>
+        <a class="jump-pill" href="#ngon-ngu-kinh-doanh">2. Cách mạng Ngôn ngữ</a>
+        <a class="jump-pill" href="#giong-va-khac">3. Giống &amp; Khác Chức năng</a>
+        <a class="jump-pill" href="#danh-gia-hay-do">4. Đánh giá Hay / Dở</a>
+        <a class="jump-pill" href="#chan-dung-va-lo-trinh">5. 4 Chân dung &amp; Lộ trình</a>
+      </div>
+      <button type="button" class="print-btn" onclick="window.print()">
+        <span>🖨️ In / Lưu PDF</span>
+      </button>
+    </div>
+  </div>
+
+  <main class="container">
+
+    <!-- HERO SUMMARY -->
+    <header class="hero-card">
+      <div class="hero-eyebrow">
+        <span>🏨 BÁO CÁO ĐỐI CHIẾU SẢN PHẨM DƯỚI GÓC NHÌN KINH DOANH KHÁCH SẠN</span>
+      </div>
+      <h1 class="hero-title">
+        Từ <span class="accent">Bàn Điều Hành Đấu Giá Kỹ Thuật</span> sang <span class="accent">Cổng Quản Trị Đối Tác Khách Sạn Thương Mại</span>
+      </h1>
+      <p class="hero-lead">
+        Tài liệu này đặt <strong>Dashboard Bản Cũ</strong> (<em>Partner Auction Dashboard v2 — giao diện shadcn/ui</em>) cạnh <strong>Dashboard Hiện Tại</strong> (<em>Optibide Partner Hub — giao diện Tổng quan Thuần Kinh Doanh</em>) dưới lăng kính đời thực của <strong>Chủ đầu tư khách sạn, Giám đốc điều hành (GM), Quản lý doanh thu, Lễ tân ca trực và Đội phát triển đối tác (BD)</strong>: hai phiên bản nói chuyện với chủ khách sạn khác nhau ra sao, giữ lại giá trị cốt lõi nào, đánh đổi những công cụ gì và nên kết hợp thế nào ở giai đoạn tiếp theo.
+      </p>
+      <div class="hero-meta-row">
+        <span class="meta-chip"><strong>Bản cũ đối chiếu:</strong> Partner Auction Dashboard v2 (shadcn/ui · 4 Tab tác nghiệp)</span>
+        <span class="meta-chip"><strong>Bản hiện tại:</strong> Optibide Partner Hub (Overview · Việt / Anh / Hàn · VND / KRW / USD)</span>
+        <span class="meta-chip"><strong>Chuỗi khách sạn mẫu:</strong> L'amour Boutique Hotel Đà Nẵng (30 phòng · 3 chi nhánh) &amp; Stay Hotel H11 (Cơ sở mới)</span>
+      </div>
+    </header>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 1: EXECUTIVE POSITIONING                                    -->
+    <!-- =================================================================== -->
+    <section id="dinh-vi" class="section-block">
+      <div class="section-header">
+        <div class="section-tag">Phần 1 · Bức tranh tổng thể</div>
+        <h2 class="section-title">Cuộc Chuyển Dịch Định Vị Kinh Doanh: Đổi "Người Ngồi Trước Màn Hình"</h2>
+        <p class="section-desc">
+          Sự thay đổi giữa hai phiên bản không đơn thuần là đổi màu sắc hay sắp xếp lại biểu đồ, mà là bước chuyển từ một <strong>bàn điều khiển nội bộ giàu tính kỹ thuật</strong> sang một <strong>phần mềm quản lý đối tác khách sạn thương mại (Extranet SaaS)</strong> sẵn sàng đem đi ký hợp đồng với chủ khách sạn thực tế.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <!-- Old Dashboard Positioning -->
+        <article class="pos-card old-ver">
+          <div>
+            <span class="ver-pill slate">BẢN CŨ · Partner Auction Dashboard v2 (shadcn/ui)</span>
+            <h3 class="pos-heading">"Bàn Điều Hành Đấu Giá &amp; Mô Phỏng Kỹ Thuật Đa Năng"</h3>
+            <p class="pos-tagline">
+              Gom toàn bộ hoạt động báo giá trực tiếp, sơ đồ 30 phòng vật lý, đối sánh thị trường và kiểm thử vòng đời đơn vào chung một màn hình dày đặc thông tin.
+            </p>
+          </div>
+          <ul class="pos-kv-list">
+            <li class="pos-kv-item">
+              <span class="pos-kv-label">Đối tượng phục vụ chính</span>
+              <span class="pos-kv-val">Đội ngũ sản phẩm nội bộ, chuyên viên quản lý doanh thu am hiểu sâu quy tắc sàn và cần thao tác thử nghiệm luồng vận hành.</span>
+            </li>
+            <li class="pos-kv-item">
+              <span class="pos-kv-label">Ngôn ngữ giao diện</span>
+              <span class="pos-kv-val">Tiếng Việt pha lẫn nhiều thuật ngữ hệ thống và từ viết tắt chuyên ngành (<code>×1.265</code>, <code>ADR</code>, <code>ELO</code>, <code>Pay-to-Lock 10p</code>, <code>REJ_*</code>).</span>
+            </li>
+            <li class="pos-kv-item">
+              <span class="pos-kv-label">Thị trường &amp; Tiền tệ</span>
+              <span class="pos-kv-val">Cố định 1 ngôn ngữ <strong>Tiếng Việt</strong> và 1 đơn vị tiền tệ <strong>VNĐ (₫)</strong> — chỉ phù hợp vận hành nội địa.</span>
+            </li>
+            <li class="pos-kv-item">
+              <span class="pos-kv-label">Độ phức tạp nhận thức</span>
+              <span class="pos-kv-val">Cao — gồm 4 thanh Tab lớn, 7 hộp thoại bật lên và bảng 18 kịch bản trạng thái; chủ khách sạn mới nhìn lần đầu cần 15–30 phút giải thích.</span>
+            </li>
+            <li class="pos-kv-item">
+              <span class="pos-kv-label">Mức sẵn sàng đi chào khách sạn thật</span>
+              <span class="pos-kv-val"><span class="badge badge-amber">Cần che bớt nút mô phỏng</span> Vẫn còn nút <em>"Mô phỏng khách TT 100%"</em>, <em>"Khách từ chối"</em>, <em>"Reset dữ liệu"</em> ngay trên bàn làm việc chính.</span>
+            </li>
+          </ul>
+        </article>
+
+        <!-- Current Dashboard Positioning -->
+        <article class="pos-card new-ver">
+          <div>
+            <span class="ver-pill indigo">BẢN HIỆN TẠI · Optibide Partner Hub (Pure-Business Overview)</span>
+            <h3 class="pos-heading">"Cổng Quản Trị Kinh Doanh Khách Sạn Thương Mại Quốc Tế"</h3>
+            <p class="pos-tagline">
+              Chuẩn mực, sáng thoáng như cổng đối tác của các kênh đặt phòng lớn (<em>Booking.com Pulse / Agoda YCS</em>), nói trọn vẹn ngôn ngữ tiền thu về – lượng đơn – uy tín – phiếu đón khách.
+            </p>
+          </div>
+          <ul class="pos-kv-list">
+            <li class="pos-kv-item">
+              <span class="pos-kv-label">Đối tượng phục vụ chính</span>
+              <span class="pos-kv-val">Chủ đầu tư khách sạn, Giám đốc cơ sở (GM), Quản lý chi nhánh và Lễ tân — người không cần biết công nghệ nhìn vào 5 giây là hiểu ngay.</span>
+            </li>
+            <li class="pos-kv-item">
+              <span class="pos-kv-label">Ngôn ngữ giao diện</span>
+              <span class="pos-kv-val">Ngôn ngữ kinh doanh khách sạn đời thường, ấm áp, đi kèm <strong>Trợ lý AI goodNstay</strong> tư vấn hành động bằng lời văn tự nhiên.</span>
+            </li>
+            <li class="pos-kv-item">
+              <span class="pos-kv-label">Thị trường &amp; Tiền tệ</span>
+              <span class="pos-kv-val">Mở rộng quốc tế thật 100%: chuyển tức thì <strong>3 ngôn ngữ (Việt · Anh · Hàn)</strong> và <strong>3 đồng tiền (VND ₫ · KRW ₩ · USD $)</strong>.</span>
+            </li>
+            <li class="pos-kv-item">
+              <span class="pos-kv-label">Độ phức tạp nhận thức</span>
+              <span class="pos-kv-val">Rất thấp — cuộn dọc 5 khu vực mạch lạc từ trên xuống, có cả kịch bản riêng đầy tinh tế cho <strong>khách sạn mới lên sàn chưa có đơn (0 ₫)</strong>.</span>
+            </li>
+            <li class="pos-kv-item">
+              <span class="pos-kv-label">Mức sẵn sàng đi chào khách sạn thật</span>
+              <span class="pos-kv-val"><span class="badge badge-emerald">Sẵn sàng thương mại 100%</span> Xoá sạch mọi công cụ kiểm thử nội bộ; đội Phát triển Đối tác (BD) mở lên giới thiệu ký hợp đồng được ngay.</span>
+            </li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 2: BUSINESS LANGUAGE TRANSFORMATION                         -->
+    <!-- =================================================================== -->
+    <section id="ngon-ngu-kinh-doanh" class="section-block">
+      <div class="section-header">
+        <div class="section-tag">Phần 2 · Trọng tâm 1</div>
+        <h2 class="section-title">Cuộc Cách Mạng Về Ngôn Ngữ Kinh Doanh: Bản Cũ Nói Gì &amp; Bản Mới Dịch Lại Ra Sao?</h2>
+        <p class="section-desc">
+          Chủ khách sạn truyền thống không vận hành cơ sở bằng <em>mã lỗi hệ thống</em> hay <em>hệ số nhân thuế phí phía du khách</em>. Bảng dưới đây đối chiếu trực diện cách Bản hiện tại "phiên dịch" các khái niệm kỹ thuật của Bản cũ sang đúng ngôn ngữ thương trường khách sạn.
+        </p>
+      </div>
+
+      <div class="toolbar">
+        <div class="filter-pills" id="langFilterPills" role="tablist" aria-label="Lọc theo nhóm ngôn ngữ kinh doanh">
+          <button type="button" class="filter-btn active" data-lang-cat="all">Tất cả (10)</button>
+          <button type="button" class="filter-btn" data-lang-cat="pricing">💰 Tiền phòng &amp; Hoa hồng</button>
+          <button type="button" class="filter-btn" data-lang-cat="lifecycle">🔄 Trạng thái Đơn &amp; Giữ phòng</button>
+          <button type="button" class="filter-btn" data-lang-cat="metrics">📊 Chỉ số &amp; Uy tín hiển thị</button>
+          <button type="button" class="filter-btn" data-lang-cat="trust">🛡️ Niềm tin Thương mại</button>
+          <button type="button" class="filter-btn" data-lang-cat="advisor">🤖 Giọng văn Cố vấn AI</button>
+        </div>
+        <div class="search-box">
+          <input
+            type="search"
+            id="langSearchInput"
+            class="search-input"
+            placeholder="Tìm thuật ngữ (vd: 1.265, ELO, REJ, ADR, giữ phòng...)"
+            aria-label="Tìm kiếm thuật ngữ so sánh"
+          />
+          <button type="button" id="langSearchClear" class="search-clear" title="Xoá tìm kiếm">✕</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="comp-table" id="langTable">
+          <thead>
+            <tr>
+              <th style="width: 17%;">Mảng nghiệp vụ</th>
+              <th style="width: 29%;">Bản Cũ diễn đạt thế nào?<br /><span style="font-weight: 500; text-transform: none; color: #64748B;">( kèm bản chất thực tế đằng sau )</span></th>
+              <th style="width: 26%;">Bản Hiện Tại nói lại ra sao?<br /><span style="font-weight: 500; text-transform: none; color: #4F46E5;">( chuẩn ngôn ngữ chủ khách sạn )</span></th>
+              <th style="width: 28%;">Ý nghĩa thực tế với Chủ khách sạn, Kế toán &amp; Lễ tân</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Row 1: Pricing & Markup -->
+            <tr data-cat="pricing">
+              <td>
+                <span class="badge badge-emerald">Tiền phòng &amp; Phí</span>
+                <div style="font-weight: 700; color: #0F172A; margin-top: 6px;">Công thức giá &amp; Hoa hồng</div>
+              </td>
+              <td>
+                <span class="old-quote">Giá khách trả = Giá gốc × 1.265</span>
+                <span class="old-quote">0% hoa hồng KS</span>
+                <span class="old-quote">Nút "Công thức"</span>
+                <div class="plain-explain">
+                  <strong>Bản chất:</strong> Giải thích rằng khách sạn đặt giá 1 triệu thì nhận đủ 1 triệu, còn sàn cộng thêm 15% phí dịch vụ + 10% thuế GTGT lên phía người đặt phòng (thành 1.265.000 ₫).
+                </div>
+              </td>
+              <td>
+                <span class="new-quote">Doanh thu thực nhận</span>
+                <span class="new-quote">Tiền phòng khách sạn thực nhận</span>
+                <div class="plain-explain">
+                  Ghi rõ trong phiếu đơn: <em>"Khoản tiền ròng chuyển về tài khoản đối tác theo kỳ đối soát định kỳ (không trừ thêm hoa hồng)."</em>
+                </div>
+              </td>
+              <td>
+                Chủ khách sạn và kế toán <strong>chỉ quan tâm số tiền ròng chảy về tài khoản ngân hàng của mình</strong>. Không phơi bày phép nhân <code>×1.265</code> giúp đối tác không bị rối mắt hoặc hiểu lầm rằng khách sạn đang phải gánh thêm thuế phí phức tạp.
+              </td>
+            </tr>
+
+            <!-- Row 2: Top Revenue KPI -->
+            <tr data-cat="pricing">
+              <td>
+                <span class="badge badge-emerald">Tiền phòng &amp; Phí</span>
+                <div style="font-weight: 700; color: #0F172A; margin-top: 6px;">Chỉ số tiền thu đầu trang</div>
+              </td>
+              <td>
+                <span class="old-quote">Thực nhận kỳ</span>
+                <span class="old-quote">ADR bình quân</span>
+                <span class="old-quote">Giá gốc: 120,8tr đ</span>
+                <div class="plain-explain">
+                  <strong>Bản chất:</strong> Tách riêng thẻ tổng tiền thực nhận và thẻ giá bình quân mỗi đêm (<em>Average Daily Rate</em>), buộc người xem ghép 2 ô để hiểu bức tranh thu nhập.
+                </div>
+              </td>
+              <td>
+                <span class="new-quote">+31,8tr ₫ · Doanh thu thực nhận</span>
+                <span class="new-quote indigo">Bình quân mỗi đơn</span>
+                <div class="plain-explain">
+                  Đặt 1 con số tiền thực nhận màu xanh lá nổi bật nhất ở ô đầu tiên; phần thu bình quân mỗi đơn đặt gọn trong hộp tóm tắt ngay dưới biểu đồ doanh thu.
+                </div>
+              </td>
+              <td>
+                Chủ đầu tư mở điện thoại giữa cuộc họp chỉ mất <strong>đúng 3 giây</strong> để biết kỳ này toàn chuỗi thu về bao nhiêu tiền thật, và khi đổi sang đồng <code>KRW (₩)</code> hay <code>USD ($)</code> con số vẫn gọn gàng, tự nhiên.
+              </td>
+            </tr>
+
+            <!-- Row 3: Hold & Settlement Lifecycle -->
+            <tr data-cat="lifecycle">
+              <td>
+                <span class="badge badge-sky">Đơn &amp; Giữ phòng</span>
+                <div style="font-weight: 700; color: #0F172A; margin-top: 6px;">Trạng thái khóa phòng &amp; Thanh toán</div>
+              </td>
+              <td>
+                <span class="old-quote">Pay-to-Lock 10p</span>
+                <span class="old-quote">checkout_hold_10m</span>
+                <span class="old-quote">standby_hold_conflict</span>
+                <span class="old-quote">paid_escrow_100</span>
+                <span class="old-quote">settled_t_plus_7</span>
+                <div class="plain-explain">
+                  <strong>Bản chất:</strong> Mô tả cơ chế kỹ thuật chống đặt trùng phòng (giữ chỗ tạm 10 phút như giữ ghế rạp phim khi khách đang bấm thẻ ngân hàng, thu tiền vào tài khoản tạm giữ rồi đối soát sau trả phòng).
+                </div>
+              </td>
+              <td>
+                <span class="new-quote">Hoàn tất · Đã thanh toán</span>
+                <div class="plain-explain">
+                  Đi kèm lời khẳng định rõ ràng cho quầy lễ tân: <em>"Đơn đã thanh toán đủ 100% — phòng đã được giữ chắc chắn cho khách lưu trú."</em>
+                </div>
+              </td>
+              <td>
+                Nhân viên lễ tân trực quầy không cần biết máy chủ đang đếm ngược 600 giây hay cổng thẻ đang xác thực 3DS. Họ chỉ cần một tín hiệu dứt khoát: <strong>Đơn này đã thu đủ tiền 100% chưa để yên tâm xếp phòng đón khách</strong>.
+              </td>
+            </tr>
+
+            <!-- Row 4: Rejection Codes & 8-Step Funnel -->
+            <tr data-cat="lifecycle">
+              <td>
+                <span class="badge badge-sky">Đơn &amp; Giữ phòng</span>
+                <div style="font-weight: 700; color: #0F172A; margin-top: 6px;">Kết quả báo giá &amp; Lý do trượt đơn</div>
+              </td>
+              <td>
+                <span class="old-quote">Phễu 8 bước RACE</span>
+                <span class="old-quote">11 mã REJ_*</span>
+                <span class="old-quote">REJ_COMPETITOR_WON_PRICE</span>
+                <span class="old-quote">REJ_HOLD_EXPIRED_10M</span>
+                <span class="old-quote">REJ_FLOOR_GUARDRAIL_BLOCKED</span>
+                <div class="plain-explain">
+                  <strong>Bản chất:</strong> Chia nhỏ từng chặng rơi rụng từ lúc lọc hạng phòng đến lúc lỗi thẻ ngân hàng để kỹ sư và bộ phận phân tích truy vết điểm nghẽn chuyển đổi.
+                </div>
+              </td>
+              <td>
+                <span class="new-quote">Khách đã đặt</span>
+                <span class="new-quote indigo">Quá hạn phản hồi</span>
+                <span class="new-quote indigo">Khách chọn nơi khác</span>
+                <span class="new-quote indigo">Khách sạn tự hủy</span>
+                <div class="plain-explain">
+                  Gom toàn bộ kết quả vào <strong>4 trạng thái kinh doanh tự nhiên</strong> kèm cột <em>"Giải thích dễ hiểu"</em> bằng lời văn lễ tân thường ngày.
+                </div>
+              </td>
+              <td>
+                Bất kỳ lễ tân mới vào nghề nào nhìn bảng 4 dòng cũng trả lời ngay được với chủ khách sạn: <strong>Chốt được bao nhiêu đơn, để tuột bao nhiêu khách vì trả lời trễ, và bao nhiêu khách xem xong nhưng chọn khách sạn lân cận</strong>.
+              </td>
+            </tr>
+
+            <!-- Row 5: Booking Identifier -->
+            <tr data-cat="lifecycle">
+              <td>
+                <span class="badge badge-sky">Đơn &amp; Giữ phòng</span>
+                <div style="font-weight: 700; color: #0F172A; margin-top: 6px;">Mã hồ sơ vs Phiếu đặt phòng</div>
+              </td>
+              <td>
+                <span class="old-quote">#CRQ-9042</span>
+                <span class="old-quote">#CRQ-8924</span>
+                <span class="old-quote">Khóa cứng #108</span>
+                <div class="plain-explain">
+                  <strong>Bản chất:</strong> Dùng mã yêu cầu đấu giá của hệ thống (<em>Customer Request ID</em>) và dòng ghi chú kỹ thuật ngắn trong bảng lịch sử phiên.
+                </div>
+              </td>
+              <td>
+                <span class="new-quote">Mã đơn #71, #70, #69</span>
+                <span class="new-quote indigo">👁 Xem chi tiết (Phiếu đặt phòng)</span>
+                <div class="plain-explain">
+                  Mở ra <strong>Phiếu chi tiết đặt phòng</strong> trình bày sạch đẹp: Cơ sở, Hạng phòng &amp; Số phòng <code>#108</code>, Ngày nhận – trả, Số khách, Ghi chú khách dặn và Tiền thực nhận.
+                </div>
+              </td>
+              <td>
+                Khi khách bước vào quầy đọc mã đặt phòng <code>#71</code>, lễ tân bấm <em>Xem chi tiết</em> là thấy ngay khách đi mấy người, ở mấy đêm và có dặn <em>"chuẩn bị chỗ đậu xe 7 chỗ / thêm 2 khăn tắm lớn"</em> hay không.
+              </td>
+            </tr>
+
+            <!-- Row 6: ELO Score -->
+            <tr data-cat="metrics">
+              <td>
+                <span class="badge badge-indigo">Chỉ số &amp; Uy tín</span>
+                <div style="font-weight: 700; color: #0F172A; margin-top: 6px;">Điểm xếp hạng ưu tiên trên sàn</div>
+              </td>
+              <td>
+                <span class="old-quote">điểm ELO (1680)</span>
+                <span class="old-quote">SLA phản hồi / TTL 60p</span>
+                <div class="plain-explain">
+                  <strong>Bản chất:</strong> Hệ thống chấm điểm phong độ của khách sạn dựa trên tốc độ báo giá, việc giữ đúng cam kết phòng và điểm khách chấm sau trả phòng để xếp thứ tự ưu tiên hiển thị.
+                </div>
+              </td>
+              <td>
+                <span class="new-quote indigo">Điểm uy tín hiển thị · 1680</span>
+                <div class="plain-explain">
+                  Kèm lời giải thích cụ thể ngay bên dưới con số: <em>"Hiển thị ưu tiên cao — Báo giá của khách sạn được ưu tiên đưa lên nhóm đầu cho khách xem"</em> (bản Tiếng Anh vẫn giữ nhãn chuẩn <code>ELO Score</code>).
+                </div>
+              </td>
+              <td>
+                Chủ khách sạn truyền thống nghe <em>"điểm ELO"</em> thường bỡ ngỡ như thuật ngữ cờ vua/trò chơi điện tử; nhưng nghe <strong>"Điểm uy tín hiển thị — giúp khách thấy báo giá của bạn trước đối thủ"</strong> thì hiểu ngay lợi ích sát sườn để nhắc nhân viên phản hồi nhanh.
+              </td>
+            </tr>
+
+            <!-- Row 7: Guest Ratings vs AI Match % -->
+            <tr data-cat="metrics">
+              <td>
+                <span class="badge badge-indigo">Chỉ số &amp; Uy tín</span>
+                <div style="font-weight: 700; color: #0F172A; margin-top: 6px;">Thước đo chất lượng cơ sở</div>
+              </td>
+              <td>
+                <span class="old-quote">AI Match 96%</span>
+                <span class="old-quote">Hard Rules / Soft Score</span>
+                <span class="old-quote">Thiếu bữa sáng -5%</span>
+                <div class="plain-explain">
+                  <strong>Bản chất:</strong> Chấm phần trăm cơ sở vật chất của khách sạn khớp với danh sách tiện nghi khách tích chọn lúc tìm phòng.
+                </div>
+              </td>
+              <td>
+                <span class="new-quote">Điểm đánh giá ★4.8 / 5</span>
+                <span class="new-quote indigo">5 tiêu chí lưu trú thực tế</span>
+                <div class="plain-explain">
+                  Hiển thị rõ số lượt đánh giá thật (<em>142 lượt đánh giá</em>) và điểm 5 mảng: <em>Tiện nghi · Nhận phòng · Độ sạch sẽ · Thái độ phục vụ · Xứng đáng chi phí</em>.
+                </div>
+              </td>
+              <td>
+                Giám đốc khách sạn họp giao ban đầu tuần với bộ phận Buồng phòng và Lễ tân bằng <strong>điểm sạch sẽ và thái độ phục vụ từ khách đã ở thật</strong>, giúp chấn chỉnh chất lượng dịch vụ trực tiếp và quen thuộc.
+              </td>
+            </tr>
+
+            <!-- Row 8: Auto-Bid Framing -->
+            <tr data-cat="metrics">
+              <td>
+                <span class="badge badge-indigo">Chỉ số &amp; Uy tín</span>
+                <div style="font-weight: 700; color: #0F172A; margin-top: 6px;">Cơ chế trả lời khách tự động</div>
+              </td>
+              <td>
+                <span class="old-quote">Auto-Bid One-Shot ≥650k</span>
+                <span class="old-quote">botRules · RULE-01</span>
+                <span class="old-quote">Trần ≤4 phòng &amp; ≤8 khách</span>
+                <div class="plain-explain">
+                  <strong>Bản chất:</strong> Bộ quy tắc máy tự động gửi giá chào trong vòng ~1 phút khi lễ tân bận, miễn là không thấp hơn mức giá sàn bảo vệ của chủ khách sạn.
+                </div>
+              </td>
+              <td>
+                <span class="new-quote indigo">Báo giá tự động (AutoBid)</span>
+                <div class="plain-explain">
+                  Giải thích nhẹ nhàng trong nút <code>(i)</code>: <em>"Tỷ lệ yêu cầu hỏi phòng được hệ thống tự động phản hồi kịp thời theo khung giá an toàn của khách sạn."</em>
+                </div>
+              </td>
+              <td>
+                Xoá bỏ cảm giác "phó mặc giá phòng cho robot phức tạp", biến tính năng này thành <strong>người trợ lý trực thay ca trưa và ca đêm sau 22h</strong> để khách sạn không bỏ lỡ khách hỏi phòng muộn.
+              </td>
+            </tr>
+
+            <!-- Row 9: Simulation Buttons vs Commercial Trust -->
+            <tr data-cat="trust">
+              <td>
+                <span class="badge badge-amber">Niềm tin thương mại</span>
+                <div style="font-weight: 700; color: #0F172A; margin-top: 6px;">Công cụ trên màn hình chính</div>
+              </td>
+              <td>
+                <span class="old-quote">Mô phỏng khách TT 100%</span>
+                <span class="old-quote">Mô phỏng lỗi thẻ / 3DS</span>
+                <span class="old-quote">Khách từ chối</span>
+                <span class="old-quote">Reset dữ liệu gốc</span>
+                <div class="plain-explain">
+                  <strong>Bản chất:</strong> Các nút bấm giả lập hành vi du khách đặt ngay trên thẻ phiên Live để đội dự án kiểm thử sự thay đổi của sơ đồ phòng và doanh thu tức thì.
+                </div>
+              </td>
+              <td>
+                <span class="new-quote">Xoá 100% nút giả lập nội bộ</span>
+                <span class="new-quote indigo">Tin nhắn khách · Thông báo · Trợ giúp ?</span>
+                <div class="plain-explain">
+                  Thay hoàn toàn bằng thanh tiện ích của phần mềm thương mại thật: hộp thư khách hỏi chỗ đậu xe, chuông báo đơn mới thanh toán và cẩm nang đọc nhanh 30 giây.
+                </div>
+              </td>
+              <td>
+                Đây là khác biệt sống còn khi đi bán hàng: nếu chủ khách sạn 4 sao nhìn thấy nút <em>"Mô phỏng khách thanh toán"</em>, họ sẽ nghĩ sản phẩm mới là bản thử nghiệm. Giao diện sạch bóng nút test tạo <strong>uy tín thương mại ngay từ cái nhìn đầu tiên</strong>.
+              </td>
+            </tr>
+
+            <!-- Row 10: Advisory Tone -->
+            <tr data-cat="advisor">
+              <td>
+                <span class="badge badge-rose">Giọng văn Cố vấn</span>
+                <div style="font-weight: 700; color: #0F172A; margin-top: 6px;">Cách phân tích &amp; Đưa lời khuyên</div>
+              </td>
+              <td>
+                <span class="old-quote">Loss Autopsy (Mổ xẻ phiên trượt)</span>
+                <span class="old-quote">Telemetry dừng mắt 42s</span>
+                <span class="old-quote">Xếp hạng Pareto nguyên nhân trượt</span>
+                <div class="plain-explain">
+                  <strong>Bản chất:</strong> Bảng chẩn đoán chuyên sâu so sánh từng chỉ số giữa khách sạn với đối thủ thắng cuộc ẩn danh và tính xác suất thắng nếu sửa quy tắc.
+                </div>
+              </td>
+              <td>
+                <span class="new-quote indigo">✨ Trợ lý AI goodNstay</span>
+                <span class="new-quote">Cẩm nang Doanh thu &amp; Nhu cầu khách</span>
+                <div class="plain-explain">
+                  Đưa ra 3 lời khuyên kinh doanh ấm áp, thực tế ngay dưới mỗi biểu đồ: <em>giữ giá tốt tối cuối tuần, gợi ý nâng hạng phòng kèm bữa sáng, ưu tiên khách ở từ 2 đêm</em>.
+                </div>
+              </td>
+              <td>
+                Thay vì cảm giác bị "mổ xẻ lỗi vận hành" bằng biểu đồ thống kê khô khan, chủ khách sạn cảm thấy như đang có một <strong>Giám đốc Doanh thu tận tâm ngồi cạnh nhắc việc sinh lời mỗi ngày</strong>.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="langEmptyMsg" class="empty-filter-msg">
+          Không tìm thấy dòng đối chiếu nào khớp với từ khoá bạn vừa nhập. Hãy thử từ khoá khác (ví dụ: <em>hoa hồng, ELO, giữ phòng, AI, mô phỏng</em>).
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 3: SHARED CORE & INTERACTIVE FEATURE MATRIX                 -->
+    <!-- =================================================================== -->
+    <section id="giong-va-khac" class="section-block">
+      <div class="section-header">
+        <div class="section-tag">Phần 3 · Trọng tâm 2</div>
+        <h2 class="section-title">Hai Bản Giống Nhau Cái Gì &amp; Khác Nhau Chức Năng Gì?</h2>
+        <p class="section-desc">
+          Dù lột xác hoàn toàn về diện mạo và cách giao tiếp, cả hai phiên bản vẫn đứng chung trên một <strong>nền tảng nghiệp vụ cốt lõi của goodNstay</strong>, đồng thời phân tách rõ rệt giữa <em>tầm nhìn quản trị thương mại tổng quan</em> và <em>bộ công cụ tác nghiệp chi tiết</em>.
+        </p>
+      </div>
+
+      <!-- 4 Shared Core Pillars -->
+      <div class="grid-4" style="margin-bottom: 24px;">
+        <div class="shared-card">
+          <div class="shared-icon">🤝</div>
+          <h3 class="shared-title">1. Chung Triết lý Kinh doanh</h3>
+          <p class="shared-body">
+            Khách sạn chủ động gửi báo giá đón khách có nhu cầu lưu trú thật, minh bạch 100% số tiền thực thu về cơ sở và chỉ giữ phòng chắc chắn khi khách đã hoàn tất thanh toán.
+          </p>
+        </div>
+        <div class="shared-card">
+          <div class="shared-icon">🏨</div>
+          <h3 class="shared-title">2. Chung Mô hình Chuỗi &amp; Kỳ lọc</h3>
+          <p class="shared-body">
+            Cùng quản lý toàn chuỗi <strong>L'amour Boutique Hotel (30 phòng)</strong> hoặc xem riêng từng chi nhánh (<em>Mỹ Khê, Sông Hàn, An Thượng</em>) theo 3 khung thời gian: <strong>Hôm nay · 7 ngày · 30 ngày</strong>.
+          </p>
+        </div>
+        <div class="shared-card">
+          <div class="shared-icon">📈</div>
+          <h3 class="shared-title">3. Chung 5 Trụ cột Sức khoẻ</h3>
+          <p class="shared-body">
+            Đều lấy 5 thước đo làm kim chỉ nam: <em>Doanh thu thực nhận, Tổng lượt báo giá, Tỷ lệ khách chốt đơn, Tỷ lệ báo giá tự động</em> và <em>Điểm uy tín ưu tiên hiển thị</em>.
+          </p>
+        </div>
+        <div class="shared-card">
+          <div class="shared-icon">📱</div>
+          <h3 class="shared-title">4. Chung Độ bền &amp; Đa màn hình</h3>
+          <p class="shared-body">
+            Tự động duy trì số liệu ổn định ngay cả khi mạng quầy lễ tân chập chờn tạm thời, và hiển thị mượt mà từ màn hình máy tính lớn (<code>1440px</code>) tới điện thoại di động (<code>360px</code>).
+          </p>
+        </div>
+      </div>
+
+      <!-- Interactive Feature Matrix Tabs -->
+      <div class="toolbar">
+        <div class="filter-pills" id="featFilterPills" role="tablist" aria-label="Lọc ma trận chức năng">
+          <button type="button" class="filter-btn active" data-feat-mode="all">Tất cả hạng mục (20)</button>
+          <button type="button" class="filter-btn" data-feat-mode="same">🤝 Điểm giống nhau — Nền tảng chung (4)</button>
+          <button type="button" class="filter-btn" data-feat-mode="new_only">✨ Chức năng MỚI chỉ có ở Bản hiện tại (8)</button>
+          <button type="button" class="filter-btn" data-feat-mode="old_only">🧰 Chức năng CŨ đã lược bỏ / chờ tách trang con (8)</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="comp-table" id="featTable">
+          <thead>
+            <tr>
+              <th style="width: 24%;">Hạng mục nghiệp vụ khách sạn</th>
+              <th style="width: 29%;">Bản Cũ (<code>shadcn/ui</code> v2)</th>
+              <th style="width: 29%;">Bản Hiện Tại (<code>Optibide Partner Hub</code>)</th>
+              <th style="width: 18%;">Phân loại thay đổi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Group A -->
+            <tr class="group-row" data-group="A">
+              <td colspan="4">(A) Khung phần mềm, Điều hướng &amp; Quy mô quản lý</td>
+            </tr>
+            <tr data-fmode="same" data-group="A">
+              <td><strong>Lọc theo Toàn chuỗi / Từng chi nhánh &amp; 3 kỳ thời gian</strong></td>
+              <td>Chuyển đổi nhanh giữa Toàn chuỗi L'amour (30 phòng) và 3 chi nhánh <em>Mỹ Khê, Sông Hàn, An Thượng</em> theo <em>Hôm nay / 7 ngày / 30 ngày</em>.</td>
+              <td>Ô chọn cơ sở có ảnh đại diện khách sạn trên đầu trang (Toàn hệ thống + từng chi nhánh) kết hợp ô chọn kỳ <em>30 ngày qua / 7 ngày qua / Hôm nay</em>.</td>
+              <td><span class="badge badge-indigo">🤝 Nền tảng chung</span></td>
+            </tr>
+            <tr data-fmode="new_only" data-group="A">
+              <td><strong>Khung cổng đối tác chuẩn SaaS &amp; Thanh menu trái 8 phân hệ</strong></td>
+              <td>Không có thanh menu trái; dồn tất cả vào 4 thanh Tab ngang (<em>Đấu giá Live · Hiệu suất &amp; Thị phần · Quỹ phòng · Vòng đời &amp; Case</em>).</td>
+              <td>Thanh menu trái đóng/mở gọn gàng (và ngăn kéo trượt trên điện thoại) định hình rõ 8 phân hệ khách sạn: <em>Tổng quan, Lịch đặt phòng, Đối soát, Quản lý phòng, Quản lý báo giá, Tin nhắn, Tiếp thị, Đăng xuất</em>.</td>
+              <td><span class="badge badge-emerald">✨ Mới ở Bản hiện tại</span></td>
+            </tr>
+
+            <!-- Group B -->
+            <tr class="group-row" data-group="B">
+              <td colspan="4">(B) Đa ngôn ngữ &amp; Đa tiền tệ quốc tế</td>
+            </tr>
+            <tr data-fmode="new_only" data-group="B">
+              <td><strong>Chuyển đổi 3 Ngôn ngữ trực tiếp (Việt – Anh – Hàn)</strong></td>
+              <td>Chỉ có duy nhất Tiếng Việt; không thể gửi cho chủ đầu tư người Hàn Quốc hoặc quản lý chuỗi nước ngoài sử dụng ngay.</td>
+              <td>Đổi tức thì <strong>Tiếng Việt · English · 한국어</strong> trên thanh đầu trang — dịch đồng bộ từ tiêu đề, trục biểu đồ, lời khuyên AI cho tới phiếu đặt phòng và tin nhắn khách.</td>
+              <td><span class="badge badge-emerald">✨ Mới ở Bản hiện tại</span></td>
+            </tr>
+            <tr data-fmode="new_only" data-group="B">
+              <td><strong>Chuyển đổi &amp; Quy đổi 3 Đồng tiền (VND – KRW – USD)</strong></td>
+              <td>Chỉ hiển thị tiền Việt Nam Đồng (<code>₫</code>).</td>
+              <td>Hỗ trợ <strong>VND (₫) · KRW (₩) · USD ($)</strong> quy đổi nhất quán theo tỷ giá chuẩn trên mọi thẻ doanh thu, trục tung biểu đồ và tổng kết thực nhận cuối trang.</td>
+              <td><span class="badge badge-emerald">✨ Mới ở Bản hiện tại</span></td>
+            </tr>
+
+            <!-- Group C -->
+            <tr class="group-row" data-group="C">
+              <td colspan="4">(C) Trải nghiệm cho Khách sạn mới lên sàn (Onboarding 0 đơn)</td>
+            </tr>
+            <tr data-fmode="new_only" data-group="C">
+              <td><strong>Kịch bản riêng cho Cơ sở mới khai trương chưa có doanh thu</strong></td>
+              <td>Chưa có chế độ hiển thị riêng cho khách sạn mới mở (luôn giả định cơ sở đã có lịch sử đơn thắng và biểu đồ đầy đặn).</td>
+              <td>Tích hợp sẵn cơ sở mẫu <strong>Stay Hotel H11 (Cơ sở mới · 18 phòng)</strong>: có 75 lượt báo giá nhưng <code>0 ₫</code> doanh thu, đường biểu đồ phẳng mượt sát vạch 0, khung trống trang nhã và lời khuyên mở hàng khích lệ.</td>
+              <td><span class="badge badge-emerald">✨ Mới ở Bản hiện tại</span></td>
+            </tr>
+
+            <!-- Group D -->
+            <tr class="group-row" data-group="D">
+              <td colspan="4">(D) Phân tích Doanh thu &amp; Cố vấn Kinh doanh AI</td>
+            </tr>
+            <tr data-fmode="same" data-group="D">
+              <td><strong>Biểu đồ theo dõi Doanh thu thực nhận &amp; Số đơn hoàn tất</strong></td>
+              <td>Biểu đồ cột kết hợp đường theo dõi doanh thu thực thu và lượng đơn thắng theo khung giờ trong ngày hoặc theo tuần/ngày.</td>
+              <td>Biểu đồ 2 trục tung trực quan: đường cong đỏ san hô thể hiện <em>Doanh thu thực nhận mỗi ngày</em> kết hợp cột xanh dương thể hiện <em>Số đơn hoàn tất</em>.</td>
+              <td><span class="badge badge-indigo">🤝 Nền tảng chung</span></td>
+            </tr>
+            <tr data-fmode="new_only" data-group="D">
+              <td><strong>Cố vấn kinh doanh <em>Trợ lý AI goodNstay</em> viết lời khuyên đời thường</strong></td>
+              <td>Chưa có hộp cố vấn ngôn ngữ tự nhiên gắn dưới biểu đồ doanh thu; người quản lý phải tự đọc con số và tự suy luận.</td>
+              <td>2 khung cố vấn thu gọn/mở rộng ngay dưới biểu đồ Doanh thu &amp; Báo giá, tự động tóm tắt chỉ số và gợi ý giữ giá cuối tuần, bán kèm bữa sáng, ưu tiên khách ở từ 2 đêm.</td>
+              <td><span class="badge badge-emerald">✨ Mới ở Bản hiện tại</span></td>
+            </tr>
+            <tr data-fmode="old_only" data-group="D">
+              <td><strong>Bấm vào thẻ KPI để bóc tách doanh thu từng Hạng phòng &amp; Mã phòng</strong></td>
+              <td>Bấm vào bất kỳ thẻ KPI nào cũng mở hộp thoại bóc tách sâu (<code>KpiDrilldownModal</code>) xem tỷ trọng doanh thu giữa phòng Deluxe / Suite / Family và từng phòng cụ thể.</td>
+              <td>5 thẻ KPI đầu trang có nút <code>(i)</code> giải thích ý nghĩa ngắn gọn, dễ hiểu; đã lược bỏ hộp thoại bóc tách đa tầng để giữ trang Tổng quan nhẹ nhàng.</td>
+              <td><span class="badge badge-amber">🧰 Đã lược bỏ / Chờ tách trang</span></td>
+            </tr>
+
+            <!-- Group E -->
+            <tr class="group-row" data-group="E">
+              <td colspan="4">(E) Tác nghiệp Đấu giá Trực tiếp, Gắn ưu đãi phòng &amp; Cấu hình Tự động</td>
+            </tr>
+            <tr data-fmode="old_only" data-group="E">
+              <td><strong>Sàn báo giá trực tiếp đếm ngược 60 phút &amp; Gửi giá 1-chạm</strong></td>
+              <td>Hiển thị danh sách khách đang hỏi phòng theo thời gian thực kèm đồng hồ đếm ngược từng giây, nút gửi ngay mức giá gợi ý hoặc chủ động bỏ qua phiên.</td>
+              <td>Trang Tổng quan chỉ thống kê kết quả báo giá (chế độ xem báo cáo); phần xử lý báo giá trực tiếp chờ xây dựng riêng tại mục <strong>Quản lý báo giá</strong> trên menu trái.</td>
+              <td><span class="badge badge-amber">🧰 Đã lược bỏ / Chờ tách trang</span></td>
+            </tr>
+            <tr data-fmode="old_only" data-group="E">
+              <td><strong>Đóng gói đặc quyền mềm (Tặng bữa sáng / Nhận phòng sớm) khi chào giá</strong></td>
+              <td>Hộp thoại <code>CustomBidModal</code> cho phép tích chọn tặng kèm <em>Buffet sáng, Nhận phòng sớm, Nâng hạng phòng</em> để tăng cơ hội khách chốt mà không cần hạ giá phòng.</td>
+              <td>Chỉ hiển thị các tiện ích đã đi kèm trong <em>Phiếu chi tiết đặt phòng</em>; chưa có màn hình cấu hình gói ưu đãi hoặc gửi báo giá tuỳ chỉnh.</td>
+              <td><span class="badge badge-amber">🧰 Đã lược bỏ / Chờ tách trang</span></td>
+            </tr>
+            <tr data-fmode="old_only" data-group="E">
+              <td><strong>Bật/tắt &amp; Thiết lập danh sách Quy tắc Báo giá tự động</strong></td>
+              <td>Công tắc bật/tắt Auto-Bid ngay trên thanh đầu trang kèm danh sách thêm/xoá từng quy tắc tự động theo mức giá sàn bảo vệ.</td>
+              <td>Chỉ hiển thị tỷ lệ phần trăm <em>Báo giá tự động</em> đạt được trên thẻ KPI và thông báo trạng thái hoạt động ổn định, chưa có nút cài đặt quy tắc.</td>
+              <td><span class="badge badge-amber">🧰 Đã lược bỏ / Chờ tách trang</span></td>
+            </tr>
+
+            <!-- Group F -->
+            <tr class="group-row" data-group="F">
+              <td colspan="4">(F) Quản trị Buồng phòng 14 ngày &amp; Xả phòng trống ban đêm</td>
+            </tr>
+            <tr data-fmode="old_only" data-group="F">
+              <td><strong>Sơ đồ 30 phòng vật lý (<code>#101–#130</code>) &amp; Lịch trống 14 ngày tới</strong></td>
+              <td>Xem chi tiết từng số phòng trong 14 ngày vàng (<code>RoomScheduleExplorer</code>), bấm trực tiếp vào ô phòng để Khóa/Mở bán ngay khi có khách lẻ đặt tại quầy.</td>
+              <td>Đã rút khỏi trang Tổng quan để tránh rối mắt; quy hoạch đưa vào 2 mục riêng trên thanh menu trái là <strong>Lịch đặt phòng</strong> và <strong>Quản lý phòng</strong>.</td>
+              <td><span class="badge badge-amber">🧰 Đã lược bỏ / Chờ tách trang</span></td>
+            </tr>
+            <tr data-fmode="old_only" data-group="F">
+              <td><strong>Công tắc "Xả phòng trống ban đêm" 1-chạm sau 18h00</strong></td>
+              <td>Nút gạt kích hoạt giảm ngay <code>15%</code> giá sàn sau 18h tối cho các phòng còn trống trong đêm để thu hồi doanh thu trước giờ ngủ.</td>
+              <td>Chưa có nút bật/tắt xả phòng đêm trên trang Tổng quan; đã chuẩn bị sẵn mục con <strong>Ưu đãi giờ chót</strong> dưới phân hệ <em>Khuyến mãi &amp; Tiếp thị</em>.</td>
+              <td><span class="badge badge-amber">🧰 Đã lược bỏ / Chờ tách trang</span></td>
+            </tr>
+
+            <!-- Group G -->
+            <tr class="group-row" data-group="G">
+              <td colspan="4">(G) Đối sánh Giá thị trường &amp; Phân tích Lý do mất khách</td>
+            </tr>
+            <tr data-fmode="same" data-group="G">
+              <td><strong>Thống kê tổng quan tỷ trọng Đơn chốt vs Đơn trượt / Quá hạn</strong></td>
+              <td>Biểu đồ tỷ trọng nguyên nhân trượt phiên và bộ đếm theo từng nhóm kết quả trong kỳ đang chọn.</td>
+              <td>Biểu đồ cột chồng 4 màu theo ngày + bảng tổng hợp số lượt &amp; tỷ trọng (%) cho 4 nhóm: <em>Khách đã đặt, Quá hạn phản hồi, Khách chọn nơi khác, Khách sạn tự hủy</em>.</td>
+              <td><span class="badge badge-indigo">🤝 Nền tảng chung</span></td>
+            </tr>
+            <tr data-fmode="old_only" data-group="G">
+              <td><strong>Biểu đồ đối sánh Giá chào với mặt bằng khu vực &amp; Chi tiết đối thủ thắng</strong></td>
+              <td>So sánh trực tiếp đường giá chào &amp; tỷ lệ thắng của khách sạn với trung bình sàn khu vực Đà Nẵng (<code>SelectionBenchmarkLinePanel</code>) và xem chênh lệch giá cụ thể từng ca thua.</td>
+              <td>Mới đối chiếu tỷ lệ khách chốt với ngưỡng khuyến nghị khu vực trong lời khuyên AI, chưa có biểu đồ so kè giá trực tiếp với đối thủ lân cận.</td>
+              <td><span class="badge badge-amber">🧰 Đã lược bỏ / Chờ tách trang</span></td>
+            </tr>
+
+            <!-- Group H -->
+            <tr class="group-row" data-group="H">
+              <td colspan="4">(H) Đơn đặt phòng, Đánh giá lưu trú, Hộp thư khách &amp; Phân quyền nhân sự</td>
+            </tr>
+            <tr data-fmode="same" data-group="H">
+              <td><strong>Theo dõi Điểm uy tín hiển thị của cơ sở trên sàn</strong></td>
+              <td>Hiển thị điểm ELO của chuỗi/cơ sở để phản ánh độ uy tín phản hồi và chất lượng giữ cam kết phòng.</td>
+              <td>Làm nổi bật <strong>Điểm uy tín hiển thị</strong> (ví dụ <code>1680</code> cho toàn hệ thống, <code>1720</code> tại Mỹ Khê, <code>800</code> cho cơ sở mới) kèm lời giải thích mức độ ưu tiên xuất hiện trước mắt khách.</td>
+              <td><span class="badge badge-indigo">🤝 Nền tảng chung</span></td>
+            </tr>
+            <tr data-fmode="new_only" data-group="H">
+              <td><strong>Bảng chấm sao 5 tiêu chí hài lòng thực tế của khách lưu trú</strong></td>
+              <td>Trên giao diện React cũ chưa trình bày bảng điểm 5 tiêu chí hậu lưu trú chi tiết trên trang chính.</td>
+              <td>Hiển thị đầy đủ điểm tổng <code>★4.8 / 5</code> và 5 hàng chấm sao trực quan: <em>Tiện nghi · Nhận phòng · Độ sạch sẽ · Thái độ phục vụ · Xứng đáng chi phí</em>.</td>
+              <td><span class="badge badge-emerald">✨ Mới ở Bản hiện tại</span></td>
+            </tr>
+            <tr data-fmode="new_only" data-group="H">
+              <td><strong>Phiếu chi tiết đặt phòng chuẩn lễ tân &amp; Phân trang gọn đẹp</strong></td>
+              <td>Bảng lịch sử pha trộn cả phiên trượt, phiên lỗi thẻ và phiên thắng; không có phiếu đặt phòng riêng biệt cho quầy lễ tân.</td>
+              <td>Bảng <strong>Đơn đặt phòng gần đây</strong> chỉ lọc riêng các đơn <em>Hoàn tất · Đã thanh toán</em>, chọn xem 5/10/20 dòng và mở <strong>Phiếu chi tiết đặt phòng</strong> sạch sẽ.</td>
+              <td><span class="badge badge-emerald">✨ Mới ở Bản hiện tại</span></td>
+            </tr>
+            <tr data-fmode="new_only" data-group="H">
+              <td><strong>Hộp thư Tin nhắn khách đặt phòng, Chuông thông báo &amp; Cẩm nang 30 giây</strong></td>
+              <td>Chưa có hộp thư tin nhắn của khách hay trung tâm thông báo vận hành trên thanh đầu trang.</td>
+              <td>Xem ngay tin nhắn khách dặn trước giờ nhận phòng (<code>#71</code> hỏi chỗ đậu ô tô 7 chỗ, <code>#69</code> xin thêm khăn tắm), thông báo đơn mới thanh toán và hướng dẫn đọc nhanh <code>?</code>.</td>
+              <td><span class="badge badge-emerald">✨ Mới ở Bản hiện tại</span></td>
+            </tr>
+            <tr data-fmode="old_only" data-group="H">
+              <td><strong>Phân quyền nhân sự trực tiếp: <em>Quản lý</em> vs <em>Lễ tân ca trực</em></strong></td>
+              <td>Nút chuyển vai trò kiểm soát chặt: <em>Lễ tân</em> bị khóa cứng không thể chào giá thấp hơn giá sàn bảo vệ và không được tự ý sửa quy tắc Auto-Bid; chỉ <em>Quản lý</em> mới có quyền duyệt vượt sàn.</td>
+              <td>Chưa tách giao diện phân quyền theo ca trực (mặc định hiển thị góc nhìn của Quản lý khách sạn).</td>
+              <td><span class="badge badge-amber">🧰 Đã lược bỏ / Chờ tách trang</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 4: BALANCED PROS & CONS ANALYSIS                            -->
+    <!-- =================================================================== -->
+    <section id="danh-gia-hay-do" class="section-block">
+      <div class="section-header">
+        <div class="section-tag">Phần 4 · Trọng tâm 3</div>
+        <h2 class="section-title">Đánh Giá Thẳng Thắn: Cái Nào Hay / Dở Ở Điểm Nào?</h2>
+        <p class="section-desc">
+          Nhìn từ thực tế vận hành khách sạn từ 10 đến 50 phòng, <strong>không có phiên bản nào hoàn hảo tuyệt đối nếu đứng một mình</strong>: Bản cũ cực mạnh về "tay lái tác chiến" nhưng vướng rào cản thương mại hoá; Bản hiện tại xuất sắc về "diện mạo thương mại &amp; tư duy chủ đầu tư" nhưng đang thiếu các trang con để nhân viên thao tác hàng ngày.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <!-- Old Dashboard Pros & Cons -->
+        <div class="card" style="display: flex; flex-direction: column; gap: 18px;">
+          <div>
+            <span class="ver-pill slate">ĐÁNH GIÁ BẢN CŨ · shadcn/ui (Partner Auction v2)</span>
+            <h3 style="margin: 10px 0 4px; font-size: 18px; font-weight: 800;">Mạnh về Tác chiến Nội bộ — Yếu về Cảm xúc Thương mại</h3>
+          </div>
+
+          <div class="pro-con-box pro">
+            <h4 class="pro-con-title" style="color: var(--emerald-700);">✅ Điểm HAY (Giá trị thực chiến rất đáng giữ lại)</h4>
+            <ul class="pro-con-list">
+              <li><strong>Xử lý trọn vòng việc ngay trên một màn hình:</strong> Khi khách vừa gửi nhu cầu tìm phòng, lễ tân hoặc quản lý có thể chốt gửi báo giá ngay lập tức mà không cần chuyển trang.</li>
+              <li><strong>Vũ khí "Tặng đặc quyền mềm" cực hợp tâm lý chủ khách sạn:</strong> Cho phép tặng kèm bữa sáng hoặc nhận phòng sớm (chi phí gốc rất thấp) để thắng đơn mà không làm tụt mặt bằng giá phòng niêm yết.</li>
+              <li><strong>Nắm chắc tồn kho 30 phòng suốt 14 ngày tới:</strong> Nhìn rõ phòng nào trống, phòng nào đã bán qua kênh khác, bấm khóa phòng ngay khi có khách vãng lai vào quầy và bật <em>Xả phòng đêm sau 18h</em> chỉ bằng 1 gạt tay.</li>
+              <li><strong>Biết rõ vì sao mất khách về tay đối thủ:</strong> Đối sánh trực tiếp giá chào của mình với mặt bằng khu vực Đà Nẵng và chỉ rõ chênh lệch giá ở từng ca trượt đơn.</li>
+              <li><strong>Bảo vệ biên lợi nhuận nhờ phân quyền Quản lý – Lễ tân:</strong> Ngăn chặn triệt để rủi ro nhân viên ca tối tự ý hạ giá bán rẻ dưới mức sàn cho phép của chủ khách sạn.</li>
+            </ul>
+          </div>
+
+          <div class="pro-con-box con">
+            <h4 class="pro-con-title" style="color: var(--amber-700);">⚠️ Điểm DỞ (Rào cản khi đem đi ký hợp đồng đại trà)</h4>
+            <ul class="pro-con-list">
+              <li><strong>Ngôn ngữ quá thiên về kỹ thuật &amp; thuật toán:</strong> Phơi bày công thức <code>×1.265</code>, máy trạng thái <code>checkout_hold_10m</code> và hàng loạt mã <code>REJ_*</code> khiến chủ khách sạn truyền thống thấy khó gần, nặng nề.</li>
+              <li><strong>Trộn lẫn nút mô phỏng kiểm thử ngay trên giao diện thật:</strong> Các nút <em>"Mô phỏng khách TT 100%"</em>, <em>"Mô phỏng lỗi thẻ"</em>, <em>"Reset dữ liệu"</em> dễ làm đối tác nghi ngờ tính hoàn thiện thương mại khi xem demo.</li>
+              <li><strong>Đóng kín ở Tiếng Việt &amp; VNĐ:</strong> Bỏ lỡ nhóm chủ đầu tư khách sạn Hàn Quốc tại Đà Nẵng, Nha Trang, Phú Quốc và khả năng mở rộng sang thị trường Hàn Quốc / quốc tế.</li>
+              <li><strong>Quá tải mật độ thông tin &amp; thiếu kịch bản cơ sở mới:</strong> Quá nhiều bảng biểu và công tắc khiến chủ khách sạn muốn xem nhanh kết quả kinh doanh cuối ngày bị ngợp; chưa xử lý tinh tế giao diện cho khách sạn mới lên sàn còn <code>0</code> doanh thu.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Current Dashboard Pros & Cons -->
+        <div class="card" style="display: flex; flex-direction: column; gap: 18px; border-color: var(--indigo-200);">
+          <div>
+            <span class="ver-pill indigo">ĐÁNH GIÁ BẢN HIỆN TẠI · Optibide Partner Hub</span>
+            <h3 style="margin: 10px 0 4px; font-size: 18px; font-weight: 800;">Đột phá Thương mại Quốc tế — Nhưng đang chờ lắp "Tay lái Tác nghiệp"</h3>
+          </div>
+
+          <div class="pro-con-box pro">
+            <h4 class="pro-con-title" style="color: var(--emerald-700);">✅ Điểm HAY (Bước tiến lớn về sản phẩm thương mại)</h4>
+            <ul class="pro-con-list">
+              <li><strong>Diện mạo chuẩn phần mềm đối tác khách sạn quốc tế:</strong> Sáng sủa, sang trọng và đáng tin cậy ngang tầm các cổng quản lý đối tác lớn; chủ khách sạn không rành máy tính nhìn <strong>5 giây là hiểu trọn sức khoẻ cơ sở</strong>.</li>
+              <li><strong>Ngôn ngữ đời thường kết hợp Trợ lý AI đồng hành:</strong> Biến các con số khô khan thành lời khuyên kinh doanh sát sườn (giữ giá cuối tuần, gợi ý bán kèm bữa sáng, duy trì báo giá tự động ca đêm).</li>
+              <li><strong>Đa ngôn ngữ (Việt – Anh – Hàn) &amp; Đa tiền tệ (VND – KRW – USD) hoạt động thật:</strong> Vũ khí sắc bén để đội Phát triển Đối tác (BD) đi thuyết phục cả chủ khách sạn Việt lẫn chuỗi khách sạn Hàn Quốc ngay trên cùng một đường dẫn.</li>
+              <li><strong>Xử lý cực kỳ tinh tế bài toán "Khách sạn mới mở chưa có đơn":</strong> Cơ sở <em>Stay Hotel H11</em> lên hình vẫn đẹp, chuyên nghiệp và có lời khuyên mở hàng riêng thay vì để màn hình trống rỗng gây hoang mang.</li>
+              <li><strong>Bổ sung đúng thứ lễ tân &amp; quản lý cần khi đón khách:</strong> Có Hộp thư tin nhắn khách đặt phòng, Chuông thông báo vận hành, Điểm đánh giá 5 tiêu chí lưu trú và Phiếu đặt phòng sạch gọn để tra cứu khi khách nhận phòng.</li>
+            </ul>
+          </div>
+
+          <div class="pro-con-box con">
+            <h4 class="pro-con-title" style="color: var(--amber-700);">⚠️ Điểm DỞ / Giới hạn hiện tại (Cần nhìn rõ để hoàn thiện)</h4>
+            <ul class="pro-con-list">
+              <li><strong>7 phân hệ trên thanh menu trái mới dừng ở cổng chờ:</strong> Hiện mới hoàn thiện trang <em>Tổng quan hoạt động</em>; khi bấm sang <em>Lịch đặt phòng, Đối soát doanh thu, Quản lý phòng, Quản lý báo giá, Tin nhắn, Tiếp thị</em> mới chỉ hiện thông báo hẹn đợt cập nhật tới.</li>
+              <li><strong>Tính chất "chỉ đọc" (Read-only monitoring), chưa thao tác được:</strong> Quản lý và lễ tân hiện chỉ xem số liệu chứ chưa thể tự tay gửi báo giá cho khách đang hỏi, chưa cài đặt được mức giá sàn tự động hay bật xả phòng tối.</li>
+              <li><strong>Mất chiều sâu đối sánh giá khu vực &amp; chi tiết từng ca trượt:</strong> Khi thấy nhiều lượt <em>"Khách chọn nơi khác"</em>, người quản lý chưa bấm vào xem sâu được mình đang chào cao hơn đối thủ cùng quận bao nhiêu tiền để chỉnh giá ngay.</li>
+              <li><strong>Chưa có chế độ phân quyền Quản lý vs Lễ tân:</strong> Chưa tách quyền xem tổng doanh thu chuỗi của chủ khách sạn với màn hình tác nghiệp giới hạn quyền hạ giá của nhân viên lễ tân ca trực.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 5: 4 PERSONAS & STRATEGIC ROADMAP                           -->
+    <!-- =================================================================== -->
+    <section id="chan-dung-va-lo-trinh" class="section-block">
+      <div class="section-header">
+        <div class="section-tag">Phần 5 · Góc nhìn người dùng thật &amp; Lộ trình chiến lược</div>
+        <h2 class="section-title">Chấm Điểm Theo 4 Chân Dung Khách Sạn &amp; Chiến Lược Kết Hợp "Best of Both Worlds"</h2>
+        <p class="section-desc">
+          Mỗi vị trí trong khách sạn mở phần mềm lên với một câu hỏi hoàn toàn khác nhau. Hãy bấm lọc từng chân dung dưới đây để xem phiên bản nào đang đáp ứng tốt nhất và cần ghép nối ra sao.
+        </p>
+      </div>
+
+      <div class="toolbar">
+        <div class="filter-pills" id="personaPills" role="tablist" aria-label="Chọn chân dung người dùng trong khách sạn">
+          <button type="button" class="filter-btn active" data-persona="all">Tất cả 4 chân dung</button>
+          <button type="button" class="filter-btn" data-persona="owner">👔 1. Chủ đầu tư / Chủ khách sạn</button>
+          <button type="button" class="filter-btn" data-persona="bd">🤝 2. Đội Kinh doanh &amp; Đối tác (BD Việt - Hàn)</button>
+          <button type="button" class="filter-btn" data-persona="gm">📊 3. Quản lý Doanh thu (GM / Revenue)</button>
+          <button type="button" class="filter-btn" data-persona="frontdesk">🛎️ 4. Nhân viên Lễ tân ca trực</button>
+        </div>
+      </div>
+
+      <div class="grid-2" id="personaGrid" style="margin-bottom: 32px;">
+        <!-- Persona 1: Hotel Owner -->
+        <article class="persona-card" data-pcard="owner">
+          <div class="persona-header">
+            <div>
+              <h3 class="persona-role">👔 1. Chủ đầu tư / Chủ khách sạn</h3>
+              <p class="persona-sub">Mở điện thoại 2 phút mỗi tối để kiểm tra tiền thực về, lượng đơn chốt, uy tín cơ sở &amp; đánh giá của khách.</p>
+            </div>
+            <span class="badge badge-emerald">Bản Hiện Tại thắng áp đảo</span>
+          </div>
+          <div class="score-bars">
+            <div class="score-row">
+              <span>Bản Cũ (shadcn/ui)</span>
+              <div class="score-track"><div class="score-fill-old" style="width: 58%;"></div></div>
+              <strong class="mono">5.8/10</strong>
+            </div>
+            <div class="score-row">
+              <span style="color: var(--indigo-700); font-weight: 700;">Bản Hiện Tại (Hub)</span>
+              <div class="score-track"><div class="score-fill-new" style="width: 95%;"></div></div>
+              <strong class="mono" style="color: var(--emerald-700);">9.5/10</strong>
+            </div>
+          </div>
+          <p style="margin: 0; font-size: 13.3px; color: var(--text-secondary);">
+            <strong>Lý do thực tế:</strong> Chủ khách sạn không trực tiếp ngồi canh từng đồng hồ 60 phút. Họ cần con số <em>Doanh thu thực nhận</em> rõ ràng, so sánh nhanh giữa chi nhánh Mỹ Khê – Sông Hàn – An Thượng, kiểm tra 5 tiêu chí khách khen chê và đọc 3 gạch đầu dòng tư vấn của AI. Bản hiện tại đáp ứng trọn vẹn nhu cầu này mà không làm họ nhức đầu vì mã kỹ thuật.
+          </p>
+        </article>
+
+        <!-- Persona 2: Sales & BD -->
+        <article class="persona-card" data-pcard="bd">
+          <div class="persona-header">
+            <div>
+              <h3 class="persona-role">🤝 2. Đội Phát triển Đối tác (Sales / BD Việt – Hàn)</h3>
+              <p class="persona-sub">Mang máy tính bảng đi gặp chủ khách sạn mới để thuyết phục ký hợp đồng hợp tác lên sàn goodNstay.</p>
+            </div>
+            <span class="badge badge-emerald">Bản Hiện Tại thắng áp đảo</span>
+          </div>
+          <div class="score-bars">
+            <div class="score-row">
+              <span>Bản Cũ (shadcn/ui)</span>
+              <div class="score-track"><div class="score-fill-old" style="width: 48%;"></div></div>
+              <strong class="mono">4.8/10</strong>
+            </div>
+            <div class="score-row">
+              <span style="color: var(--indigo-700); font-weight: 700;">Bản Hiện Tại (Hub)</span>
+              <div class="score-track"><div class="score-fill-new" style="width: 98%;"></div></div>
+              <strong class="mono" style="color: var(--emerald-700);">9.8/10</strong>
+            </div>
+          </div>
+          <p style="margin: 0; font-size: 13.3px; color: var(--text-secondary);">
+            <strong>Lý do thực tế:</strong> Khi gặp chủ khách sạn người Hàn hoặc chuỗi boutique cao cấp, việc bấm 1 nút chuyển toàn bộ giao diện sang <code>한국어 + KRW (₩)</code> hoặc <code>English + USD ($)</code>, không dính bất kỳ nút <em>"Mô phỏng kiểm thử"</em> nào, lại có sẵn mẫu cơ sở mới mở <em>Stay Hotel H11</em> giúp tăng tỷ lệ gật đầu hợp tác lên gấp nhiều lần.
+          </p>
+        </article>
+
+        <!-- Persona 3: GM / Revenue Manager -->
+        <article class="persona-card" data-pcard="gm">
+          <div class="persona-header">
+            <div>
+              <h3 class="persona-role">📊 3. Giám đốc Điều hành / Quản lý Doanh thu (GM)</h3>
+              <p class="persona-sub">Chịu trách nhiệm lấp đầy phòng trống, điều chỉnh giá sàn ngày thường/cuối tuần và thắng đối thủ cùng khu vực.</p>
+            </div>
+            <span class="badge badge-indigo">Cần kết hợp cả 2 bản</span>
+          </div>
+          <div class="score-bars">
+            <div class="score-row">
+              <span>Bản Cũ (Tác chiến giá)</span>
+              <div class="score-track"><div class="score-fill-old" style="width: 88%;"></div></div>
+              <strong class="mono">8.8/10</strong>
+            </div>
+            <div class="score-row">
+              <span style="color: var(--indigo-700); font-weight: 700;">Bản Hiện Tại (Báo cáo)</span>
+              <div class="score-track"><div class="score-fill-new" style="width: 76%;"></div></div>
+              <strong class="mono" style="color: var(--indigo-700);">7.6/10</strong>
+            </div>
+          </div>
+          <p style="margin: 0; font-size: 13.3px; color: var(--text-secondary);">
+            <strong>Lý do thực tế:</strong> GM rất thích trang <em>Tổng quan</em> mới để xuất báo cáo sạch đẹp gửi Chủ đầu tư. Tuy nhiên, để làm ra doanh thu đó mỗi ngày, GM rất cần lấy lại 3 công cụ sắc bén từ Bản cũ: <strong>(1) Cài đặt khung giá sàn Báo giá tự động, (2) Công tắc xả phòng trống sau 18h tối, và (3) Biểu đồ so sánh giá với mặt bằng đối thủ khu vực</strong>.
+          </p>
+        </article>
+
+        <!-- Persona 4: Front-Desk Receptionist -->
+        <article class="persona-card" data-pcard="frontdesk">
+          <div class="persona-header">
+            <div>
+              <h3 class="persona-role">🛎️ 4. Nhân viên Lễ tân Ca trực</h3>
+              <p class="persona-sub">Trực quầy đón khách nhận phòng, trả lời tin nhắn khách hỏi, báo giá nhanh ca ngày và khóa phòng khi có khách lẻ.</p>
+            </div>
+            <span class="badge badge-amber">Cần mở thêm trang tác nghiệp</span>
+          </div>
+          <div class="score-bars">
+            <div class="score-row">
+              <span>Bản Cũ (Sàn Live &amp; Phòng)</span>
+              <div class="score-track"><div class="score-fill-old" style="width: 85%;"></div></div>
+              <strong class="mono">8.5/10</strong>
+            </div>
+            <div class="score-row">
+              <span style="color: var(--indigo-700); font-weight: 700;">Bản Hiện Tại (Đón khách)</span>
+              <div class="score-track"><div class="score-fill-new" style="width: 68%;"></div></div>
+              <strong class="mono" style="color: var(--amber-700);">6.8/10</strong>
+            </div>
+          </div>
+          <p style="margin: 0; font-size: 13.3px; color: var(--text-secondary);">
+            <strong>Lý do thực tế:</strong> Bản hiện tại cho Lễ tân <em>Phiếu chi tiết đặt phòng</em> và <em>Hộp thư tin nhắn khách</em> rất tiện khi làm thủ tục Check-in. Nhưng ca trực vẫn thiếu màn hình <strong>Báo giá trực tiếp kèm tặng bữa sáng</strong>, <strong>Lịch khóa/mở 30 phòng 14 ngày</strong> khi có khách vãng lai vào quầy và <strong>chế độ tài khoản Lễ tân</strong> (ẩn tổng doanh thu chuỗi &amp; khóa quyền bán dưới giá sàn).
+          </p>
+        </article>
+      </div>
+
+      <!-- Strategic Synthesis Box: Best of Both Worlds -->
+      <div class="card" style="background: linear-gradient(135deg, #FFFFFF 0%, #F5F7FF 100%); border-color: var(--indigo-200);">
+        <div style="margin-bottom: 18px;">
+          <span class="badge badge-indigo">🎯 KHUYẾN NGHỊ CHIẾN LƯỢC SẢN PHẨM ("BEST OF BOTH WORLDS")</span>
+          <h3 style="margin: 10px 0 6px; font-size: 20px; font-weight: 800; color: var(--text-main);">
+            Giữ 100% "Vỏ Thương Mại &amp; Ngôn Ngữ Chủ Khách Sạn" của Bản Hiện Tại — Đưa "Vũ Khí Thực Chiến" của Bản Cũ vào đúng các Trang Con trên Menu Trái
+          </h3>
+          <p style="margin: 0; font-size: 14px; color: var(--text-secondary);">
+            Tuyệt đối <strong>không quay lại cách nhồi nhét mọi thứ lên một màn hình</strong> và <strong>không bao giờ mang mã kỹ thuật (<code>×1.265</code>, <code>REJ_*</code>, nút mô phỏng test) trở lại</strong>. Thay vào đó, hãy giữ nguyên trang <em>Tổng quan hoạt động</em> hiện tại làm "mặt tiền" cho Chủ khách sạn, rồi lần lượt chuyển ngữ kinh doanh các tính năng đắt giá nhất của Bản cũ lắp vào đúng các mục đang chờ trên thanh menu trái:
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <div class="roadmap-card">
+            <div class="roadmap-menu-tag">🔨 Menu 1 · Quản lý báo giá (Bidding Management)</div>
+            <p style="margin: 0; font-size: 13.3px; color: var(--text-secondary);">
+              Đưa <strong>Danh sách khách đang hỏi phòng</strong>, nút <strong>Gửi giá nhanh / Đóng gói tặng kèm bữa sáng, trả phòng trễ</strong> và phần <strong>Cài đặt khung giá an toàn Báo giá tự động</strong> từ Bản cũ sang đây. Bổ sung lại <strong>Phân quyền Quản lý – Lễ tân</strong> để lễ tân thoải mái chốt khách trong khung giá cho phép mà không chạm vào giá sàn của chủ.
+            </p>
+          </div>
+
+          <div class="roadmap-card">
+            <div class="roadmap-menu-tag">📅 Menu 2 · Lịch đặt phòng &amp; Quản lý phòng</div>
+            <p style="margin: 0; font-size: 13.3px; color: var(--text-secondary);">
+              Đưa <strong>Sơ đồ 30 phòng trong 14 ngày tới</strong> từ Bản cũ vào đây, nhưng đổi sạch các nhãn kỹ thuật (<code>vacant_unlocked</code>, <code>payment_hold</code>) thành ngôn ngữ buồng phòng đời thực: <em>Phòng trống đang mở bán · Đang chờ khách thanh toán · Đã đặt chắc chắn · Khóa bán tại quầy</em>.
+            </p>
+          </div>
+
+          <div class="roadmap-card">
+            <div class="roadmap-menu-tag">📣 Menu 3 · Khuyến mãi &amp; Tiếp thị (Ưu đãi giờ chót)</div>
+            <p style="margin: 0; font-size: 13.3px; color: var(--text-secondary);">
+              Đưa công tắc <strong>Xả phòng trống sau 18h tối</strong>, <strong>Gói nâng hạng phòng kèm bữa sáng</strong> và biểu đồ <strong>So sánh mức giá của bạn với mặt bằng khách sạn lân cận</strong> vào đây dưới dạng các chương trình kích cầu thân thiện, hỗ trợ đủ 3 thứ tiếng Việt – Anh – Hàn.
+            </p>
+          </div>
+
+          <div class="roadmap-card">
+            <div class="roadmap-menu-tag">💳 Menu 4 · Đối soát doanh thu &amp; Tin nhắn khách hàng</div>
+            <p style="margin: 0; font-size: 13.3px; color: var(--text-secondary);">
+              Xây dựng sổ đối soát tiền chuyển về tài khoản ngân hàng của khách sạn theo từng kỳ (chỉ trình bày phần <strong>Tiền phòng thực nhận của khách sạn</strong> kèm xuất file kế toán Excel/CSV), và mở rộng hộp thư trên đầu trang thành màn hình trò chuyện hai chiều với khách đã đặt phòng.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-note">
+      <div>
+        <strong>goodNstay · Optibide Partner Hub</strong> — Báo cáo đối chiếu chuyên sâu dưới góc nhìn Kinh doanh &amp; Vận hành Khách sạn.
+      </div>
+      <div>
+        Xem báo cáo song hành: <a href="./so-sanh-masterdata-cu-va-moi.html" style="color: var(--indigo-600); font-weight: 700; text-decoration: none;">1. So sánh Master Data (v2.7.0 → v3.0.0) →</a>
+      </div>
+    </footer>
+
+  </main>
+
+  <script>
+    (function () {
+      "use strict";
+
+      function normalizeVi(str) {
+        return String(str || "")
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[đĐ]/g, "d")
+          .toLowerCase()
+          .trim();
+      }
+
+      // 1. Business Language Filter + Search
+      var activeLangCat = "all";
+      var langPills = document.querySelectorAll("#langFilterPills [data-lang-cat]");
+      var langSearchInput = document.getElementById("langSearchInput");
+      var langSearchClear = document.getElementById("langSearchClear");
+      var langRows = document.querySelectorAll("#langTable tbody tr");
+      var langEmptyMsg = document.getElementById("langEmptyMsg");
+
+      function applyLangFilters() {
+        var q = normalizeVi(langSearchInput ? langSearchInput.value : "");
+        if (langSearchClear) {
+          langSearchClear.style.display = q.length > 0 ? "block" : "none";
+        }
+        var visibleCount = 0;
+        for (var i = 0; i < langRows.length; i++) {
+          var row = langRows[i];
+          var rowCat = row.getAttribute("data-cat") || "";
+          var catMatch = activeLangCat === "all" || rowCat === activeLangCat;
+          var textMatch = q === "" || normalizeVi(row.textContent).indexOf(q) !== -1;
+          if (catMatch && textMatch) {
+            row.classList.remove("hidden-row");
+            visibleCount++;
+          } else {
+            row.classList.add("hidden-row");
+          }
+        }
+        if (langEmptyMsg) {
+          langEmptyMsg.style.display = visibleCount === 0 ? "block" : "none";
+        }
+      }
+
+      for (var i = 0; i < langPills.length; i++) {
+        langPills[i].addEventListener("click", function () {
+          activeLangCat = this.getAttribute("data-lang-cat") || "all";
+          for (var j = 0; j < langPills.length; j++) {
+            langPills[j].classList.toggle("active", langPills[j] === this);
+          }
+          applyLangFilters();
+        });
+      }
+
+      if (langSearchInput) {
+        langSearchInput.addEventListener("input", applyLangFilters);
+      }
+
+      if (langSearchClear && langSearchInput) {
+        langSearchClear.addEventListener("click", function () {
+          langSearchInput.value = "";
+          applyLangFilters();
+          langSearchInput.focus();
+        });
+      }
+
+      // 2. Interactive Feature Matrix Filter (hides empty group headers cleanly)
+      var featBtns = document.querySelectorAll("#featFilterPills [data-feat-mode]");
+      var featRows = document.querySelectorAll("#featTable tbody tr[data-fmode]");
+      var groupHeaders = document.querySelectorAll("#featTable tbody tr.group-row");
+
+      function applyFeatFilter(mode) {
+        var visibleGroups = {};
+        for (var k = 0; k < featRows.length; k++) {
+          var r = featRows[k];
+          var rMode = r.getAttribute("data-fmode");
+          var grp = r.getAttribute("data-group") || "";
+          var show = mode === "all" || rMode === mode;
+          if (show) {
+            r.classList.remove("hidden-row");
+            visibleGroups[grp] = true;
+          } else {
+            r.classList.add("hidden-row");
+          }
+        }
+        for (var g = 0; g < groupHeaders.length; g++) {
+          var gh = groupHeaders[g];
+          var gKey = gh.getAttribute("data-group") || "";
+          if (visibleGroups[gKey]) {
+            gh.classList.remove("hidden-row");
+          } else {
+            gh.classList.add("hidden-row");
+          }
+        }
+      }
+
+      for (var m = 0; m < featBtns.length; m++) {
+        featBtns[m].addEventListener("click", function () {
+          var mode = this.getAttribute("data-feat-mode") || "all";
+          for (var n = 0; n < featBtns.length; n++) {
+            featBtns[n].classList.toggle("active", featBtns[n] === this);
+          }
+          applyFeatFilter(mode);
+        });
+      }
+
+      // 3. Persona Filter
+      var personaBtns = document.querySelectorAll("#personaPills [data-persona]");
+      var personaCards = document.querySelectorAll("#personaGrid [data-pcard]");
+
+      for (var p = 0; p < personaBtns.length; p++) {
+        personaBtns[p].addEventListener("click", function () {
+          var target = this.getAttribute("data-persona") || "all";
+          for (var qIdx = 0; qIdx < personaBtns.length; qIdx++) {
+            personaBtns[qIdx].classList.toggle("active", personaBtns[qIdx] === this);
+          }
+          for (var c = 0; c < personaCards.length; c++) {
+            var card = personaCards[c];
+            var pKey = card.getAttribute("data-pcard");
+            if (target === "all" || pKey === target) {
+              card.classList.remove("hidden-persona");
+            } else {
+              card.classList.add("hidden-persona");
+            }
+          }
+        });
+      }
+
+      // 4. Sticky Subnav Scroll-Spy Highlighting
+      var sectionIds = [
+        "dinh-vi",
+        "ngon-ngu-kinh-doanh",
+        "giong-va-khac",
+        "danh-gia-hay-do",
+        "chan-dung-va-lo-trinh"
+      ];
+      var jumpLinks = document.querySelectorAll("#jumpNav .jump-pill");
+
+      function onScrollSpy() {
+        var scrollPos = window.scrollY + 130;
+        var currentId = sectionIds[0];
+        for (var s = 0; s < sectionIds.length; s++) {
+          var el = document.getElementById(sectionIds[s]);
+          if (el && el.offsetTop <= scrollPos) {
+            currentId = sectionIds[s];
+          }
+        }
+        for (var l = 0; l < jumpLinks.length; l++) {
+          var href = jumpLinks[l].getAttribute("href");
+          jumpLinks[l].classList.toggle("current", href === "#" + currentId);
+        }
+      }
+
+      window.addEventListener("scroll", onScrollSpy, { passive: true });
+    })();
+  </script>
+</body>
+</html>

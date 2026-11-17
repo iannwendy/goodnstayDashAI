@@ -11,8 +11,10 @@ import {
   loadSeedMasterBundle,
 } from "../helpers/seed-loader";
 
-describe("TC-DATA: Lean Partner Hub Master Data v3.0 Contract & Referential Integrity", () => {
-  it("TC-DATA-01: all 3 lean master-data & seed JSON files + schema_manifest v3.0.0 exist and 0 legacy bloat files remain", () => {
+describe("TC-DATA: Partner Hub Master Data v4.0 Contract & Cross-Table Referential Integrity", () => {
+  it("TC-DATA-01: all 7 master-data & seed JSON files + schema_manifest v4.0.0 exist and 0 legacy bloat files remain", () => {
+    assert.equal(Object.keys(CORE_MASTER_TABLE_FILES).length, 7);
+
     for (const [tableKey, filename] of Object.entries(CORE_MASTER_TABLE_FILES)) {
       const seedPath = path.join(SEED_DATA_DIR, filename);
       const livePath = path.join(MASTER_DATA_DIR, filename);
@@ -57,14 +59,14 @@ describe("TC-DATA: Lean Partner Hub Master Data v3.0 Contract & Referential Inte
     const manifest = JSON.parse(
       fs.readFileSync(path.join(MASTER_DATA_DIR, "schema_manifest.json"), "utf-8"),
     );
-    assert.equal(manifest.schemaVersion, "3.0.0");
+    assert.equal(manifest.schemaVersion, "4.0.0");
     assert.deepEqual(
       Object.keys(manifest.tables).sort(),
       Object.keys(CORE_MASTER_TABLE_FILES).sort(),
     );
   });
 
-  it("TC-DATA-02: vite.config.ts TABLE_FILE_MAP matches masterDataService.ts STATIC_TABLE_PATHS", () => {
+  it("TC-DATA-02: vite.config.ts TABLE_FILE_MAP matches masterDataService.ts STATIC_TABLE_PATHS across all 7 tables", () => {
     const viteSource = fs.readFileSync(
       path.join(PROJECT_ROOT, "vite.config.ts"),
       "utf-8",
@@ -86,11 +88,11 @@ describe("TC-DATA: Lean Partner Hub Master Data v3.0 Contract & Referential Inte
     }
   });
 
-  it("TC-DATA-03: partner_hub_config invariants (Optibide brand, FX rates, user i18n, exact period revenue sums, 4 properties incl. stay_h11)", () => {
+  it("TC-DATA-03: partner_hub_config v4.0 invariants (Optibide brand, FX rates, staffProfiles RBAC, exact period revenue sums, 4 properties incl. stay_h11)", () => {
     const bundle = loadSeedMasterBundle();
     const cfg = bundle.hubConfig;
 
-    assert.equal(cfg.schemaVersion, "3.0.0");
+    assert.equal(cfg.schemaVersion, "4.0.0");
     assert.equal(cfg.brandName, "Optibide");
     assert.equal(cfg.currencyRates.VND, 1);
     assert.ok(cfg.currencyRates.KRW > 0);
@@ -101,6 +103,12 @@ describe("TC-DATA: Lean Partner Hub Master Data v3.0 Contract & Referential Inte
       assert.ok(cfg.partnerUser.initials[loc].length > 0);
       assert.ok(cfg.partnerUser.roleBadge[loc].length > 0);
     }
+
+    assert.ok(Array.isArray(cfg.staffProfiles) && cfg.staffProfiles.length === 2);
+    assert.deepEqual(
+      cfg.staffProfiles.map((s) => s.roleKey),
+      ["manager", "receptionist"],
+    );
 
     assert.equal(cfg.properties.length, 4);
     const propIds = cfg.properties.map((p) => p.id);
@@ -122,7 +130,6 @@ describe("TC-DATA: Lean Partner Hub Master Data v3.0 Contract & Referential Inte
       cfg.chainOverview.reviewCount,
     );
 
-    // Exact previousPeriodRevenueVnd equality across ALL 3 periods (fixing the old 550k today discrepancy)
     for (const period of ["today", "7d", "30d"] as const) {
       const meta = cfg.periodsMeta[period];
       assert.ok(meta.startDate <= meta.endDate);
@@ -140,7 +147,6 @@ describe("TC-DATA: Lean Partner Hub Master Data v3.0 Contract & Referential Inte
       );
     }
 
-    // Distinct ratings & ELO across branches + stay_h11 zero-booking baseline
     const distinctElo = new Set(cfg.properties.map((p) => p.eloScore));
     assert.equal(
       distinctElo.size,
@@ -154,9 +160,11 @@ describe("TC-DATA: Lean Partner Hub Master Data v3.0 Contract & Referential Inte
     assert.equal(h11.eloScore, 800);
   });
 
-  it("TC-DATA-04: bid_records has 100% valid FKs, all 4 status buckets > 0 on L'amour, exact 75 records for stay_h11, and complete accepted booking slips", () => {
+  it("TC-DATA-04: bid_records has 100% valid FKs, all 4 status buckets > 0 on L'amour, exact 75 records for stay_h11, and enriched accepted booking slips", () => {
     const bundle = loadSeedMasterBundle();
     const validPropIds = new Set(bundle.hubConfig.properties.map((p) => p.id));
+    const validRoomTypeIds = new Set(bundle.roomInventory.roomTypes.map((rt) => rt.id));
+    const validBatchIds = new Set(bundle.payoutLedgers.batches.map((b) => b.id));
     const seenIds = new Set<string>();
     const seenBookingCodes = new Set<string>();
 
@@ -199,10 +207,13 @@ describe("TC-DATA: Lean Partner Hub Master Data v3.0 Contract & Referential Inte
         assert.ok(rec.roomName && rec.roomName.vi && rec.roomName.en && rec.roomName.ko);
         assert.ok(rec.guestNote && rec.guestNote.vi && rec.guestNote.en && rec.guestNote.ko);
         assert.ok(Array.isArray(rec.amenities) && rec.amenities.length > 0);
+        assert.ok(rec.guestFullName && rec.guestFullName.length > 1);
+        assert.ok(rec.guestPhone && rec.guestPhone.length > 5);
+        assert.ok(rec.roomTypeId && validRoomTypeIds.has(rec.roomTypeId));
+        assert.ok(rec.payoutBatchId && validBatchIds.has(rec.payoutBatchId));
       }
     }
 
-    // L'amour chain records have non-zero counts in ALL 4 buckets (including cancelled > 0)
     const chainIds = new Set(
       bundle.hubConfig.properties.filter((p) => p.isChainMember).map((p) => p.id),
     );
@@ -216,12 +227,10 @@ describe("TC-DATA: Lean Partner Hub Master Data v3.0 Contract & Referential Inte
       "Expected >= 4 cancelled records so 4th Bids Status bucket is populated",
     );
 
-    // Family Connecting Suite CRQ-8938 explicitly records 4 guests
     const familyBooking = bundle.bidRecords.find((r) => r.id === "CRQ-8938");
     assert.ok(familyBooking);
     assert.equal(familyBooking.guestsCount, 4);
 
-    // Stay Hotel H11 records come directly from bid_records.json (0 accepted, 8 expired, 67 rejected, 0 cancelled = 75)
     const h11Recs = bundle.bidRecords.filter((r) => r.propertyId === "stay_h11");
     assert.equal(h11Recs.length, 75);
     assert.equal(h11Recs.filter((r) => r.status === "accepted").length, 0);
@@ -230,18 +239,150 @@ describe("TC-DATA: Lean Partner Hub Master Data v3.0 Contract & Referential Inte
     assert.equal(h11Recs.filter((r) => r.status === "cancelled").length, 0);
   });
 
-  it("TC-DATA-05: hub_inbox provides localized messages and operational notifications", () => {
+  it("TC-DATA-05: hub_inbox provides 2-way guest message threads, quickReplies & operational notifications (0 guest messages on stay_h11)", () => {
     const bundle = loadSeedMasterBundle();
     assert.ok(Array.isArray(bundle.hubInbox.messages));
-    assert.ok(bundle.hubInbox.messages.length >= 2);
+    assert.ok(bundle.hubInbox.messages.length >= 5);
     assert.ok(Array.isArray(bundle.hubInbox.notifications));
-    assert.ok(bundle.hubInbox.notifications.length >= 2);
+    assert.ok(bundle.hubInbox.notifications.length >= 3);
+    assert.ok(Array.isArray(bundle.hubInbox.quickReplies));
+    assert.ok(bundle.hubInbox.quickReplies!.length >= 3);
 
     for (const msg of bundle.hubInbox.messages) {
+      assert.notEqual(msg.propertyId, "stay_h11");
       assert.ok(msg.preview.vi && msg.preview.en && msg.preview.ko);
+      assert.ok(Array.isArray(msg.thread) && msg.thread.length >= 1);
+      for (const turn of msg.thread!) {
+        assert.ok(turn.body.vi && turn.body.en && turn.body.ko);
+      }
     }
     for (const note of bundle.hubInbox.notifications) {
       assert.ok(note.text.vi && note.text.en && note.text.ko);
+    }
+  });
+
+  it("TC-DATA-06: room_inventory has exact 48 physical units matching properties[].roomsCount (12+10+8+18) and valid FKs", () => {
+    const bundle = loadSeedMasterBundle();
+    const inv = bundle.roomInventory;
+    const propMap = new Map(bundle.hubConfig.properties.map((p) => [p.id, p]));
+    const rtMap = new Map(inv.roomTypes.map((rt) => [rt.id, rt]));
+    const bookingCodes = new Set(
+      bundle.bidRecords
+        .filter((r) => r.status === "accepted" && r.bookingCode)
+        .map((r) => r.bookingCode!),
+    );
+
+    assert.equal(inv.roomTypes.length, 15);
+    assert.equal(inv.units.length, 48);
+
+    for (const rt of inv.roomTypes) {
+      assert.ok(propMap.has(rt.propertyId));
+      assert.ok(rt.floorRateVnd > 0 && rt.floorRateVnd <= rt.standardRateVnd);
+      const matchingUnits = inv.units.filter((u) => u.roomTypeId === rt.id);
+      assert.equal(
+        matchingUnits.length,
+        rt.unitsCount,
+        `RoomType ${rt.id} unitsCount (${rt.unitsCount}) != physical units (${matchingUnits.length})`,
+      );
+    }
+
+    for (const prop of bundle.hubConfig.properties) {
+      const propUnits = inv.units.filter((u) => u.propertyId === prop.id);
+      assert.equal(
+        propUnits.length,
+        prop.roomsCount,
+        `Property ${prop.id} roomsCount (${prop.roomsCount}) != physical units (${propUnits.length})`,
+      );
+    }
+
+    const seenRoomNumbers = new Set<number>();
+    for (const u of inv.units) {
+      assert.ok(rtMap.has(u.roomTypeId));
+      assert.equal(seenRoomNumbers.has(u.roomNumber), false, `Duplicate roomNumber ${u.roomNumber}`);
+      seenRoomNumbers.add(u.roomNumber);
+      if (u.activeBookingCode) {
+        assert.ok(bookingCodes.has(u.activeBookingCode));
+      }
+    }
+
+    for (const blk of inv.calendarBlocks) {
+      assert.ok(propMap.has(blk.propertyId));
+      assert.ok(seenRoomNumbers.has(blk.roomNumber));
+      assert.ok(blk.startDate < blk.endDate);
+    }
+  });
+
+  it("TC-DATA-07: payout_ledgers reconciles 100% of accepted bookings (#43..#71) to exact 66,360,000 VND with 4 verified bank accounts", () => {
+    const bundle = loadSeedMasterBundle();
+    const ledgers = bundle.payoutLedgers;
+    assert.equal(ledgers.bankAccounts.length, 4);
+    for (const ba of ledgers.bankAccounts) {
+      assert.equal(ba.verified, true);
+      assert.ok(ba.accountNumber.length >= 8);
+    }
+
+    const acceptedRecs = bundle.bidRecords.filter((r) => r.status === "accepted");
+    const totalAcceptedVnd = acceptedRecs.reduce(
+      (s, r) => s + (r.netRevenueVnd ?? r.offeredRatePerNightVnd * r.nights),
+      0,
+    );
+    assert.equal(totalAcceptedVnd, 66_360_000);
+
+    const batchedCodes = new Set<string>();
+    let totalBatchesNetVnd = 0;
+    for (const batch of ledgers.batches) {
+      assert.equal(batch.bookingCodes.length, batch.bookingsCount);
+      assert.equal(batch.grossRoomVnd + batch.adjustmentVnd, batch.netPayoutVnd);
+      totalBatchesNetVnd += batch.netPayoutVnd;
+      for (const code of batch.bookingCodes) {
+        assert.equal(batchedCodes.has(code), false, `Booking ${code} in multiple payout batches`);
+        batchedCodes.add(code);
+      }
+    }
+
+    assert.equal(batchedCodes.size, 29);
+    assert.equal(totalBatchesNetVnd, 66_360_000);
+  });
+
+  it("TC-DATA-08: bidding_operations provides live traveler requests (incl. stay_h11) and synchronized per-property AutoBid guardrails", () => {
+    const bundle = loadSeedMasterBundle();
+    const ops = bundle.biddingOperations;
+    const validProps = new Map(bundle.hubConfig.properties.map((p) => [p.id, p]));
+
+    assert.ok(ops.liveRequests.length >= 6);
+    assert.ok(
+      ops.liveRequests.some(
+        (req) => req.propertyId === "stay_h11" && req.status === "waiting_offer",
+      ),
+      "stay_h11 should have live waiting traveler requests so hotelier can send first winning offer",
+    );
+
+    assert.equal(ops.autoBidRules.length, 4);
+    for (const rule of ops.autoBidRules) {
+      const prop = validProps.get(rule.propertyId);
+      assert.ok(prop);
+      assert.equal(rule.enabled, prop.autoBidEnabled);
+      assert.ok(rule.minFloorRateVnd >= 400_000);
+    }
+  });
+
+  it("TC-DATA-09: marketing_campaigns provides localized Last-Minute Deals & Room Upsell offers with valid pricing", () => {
+    const bundle = loadSeedMasterBundle();
+    const mkt = bundle.marketingCampaigns;
+    const validPropIds = new Set(bundle.hubConfig.properties.map((p) => p.id));
+
+    assert.ok(mkt.flashDeals.length >= 4);
+    for (const deal of mkt.flashDeals) {
+      assert.ok(validPropIds.has(deal.propertyId));
+      assert.ok(deal.dealRateVnd > 0 && deal.dealRateVnd < deal.originalRateVnd);
+      assert.ok(deal.title.vi && deal.title.en && deal.title.ko);
+    }
+
+    assert.ok(mkt.upsellOffers.length >= 5);
+    for (const up of mkt.upsellOffers) {
+      assert.ok(validPropIds.has(up.propertyId));
+      assert.ok(up.priceVnd > 0);
+      assert.ok(up.title.vi && up.title.en && up.title.ko);
     }
   });
 });

@@ -10,7 +10,7 @@ test.describe("TC-UI: Partner Hub Sidebar, Topbar Utilities, Inbox Popovers, AI 
     await resetSeedViaApi(request);
   });
 
-  test("TC-UI-01..06 & TC-UI-11: Collapsible Sidebar, Marketing Submenu, Polite Nav Notice, Help Guide, Guest Messages & Operational Notifications", async ({
+  test("TC-UI-01..06 & TC-UI-11: Collapsible Sidebar, Marketing Submenu, Left-Menu Navigation, Help Guide, Guest Messages & Operational Notifications", async ({
     page,
     request,
   }) => {
@@ -25,20 +25,18 @@ test.describe("TC-UI: Partner Hub Sidebar, Topbar Utilities, Inbox Popovers, AI 
     await page.getByTestId("nav-item-marketing").click();
     await expect(page.getByTestId("nav-marketing-submenu")).toBeVisible();
 
-    // 2. Collapse sidebar -> switches to compact icon-rail (like demo_new/1.png)
+    // 2. Collapse sidebar -> switches to compact icon-rail
     await page.getByTestId("sidebar-collapse-btn").click();
     await expect(sidebar).toHaveAttribute("data-collapsed", "true");
 
-    // Expand back -> full sidebar (like demo_new/2.png)
+    // Expand back -> full sidebar
     await page.getByTestId("sidebar-collapse-btn").click();
     await expect(sidebar).toHaveAttribute("data-collapsed", "false");
 
-    // 3. Clicking non-overview nav item shows polite commercial notice and stays on Overview
+    // 3. Clicking Calendar nav item routes to live Booking Calendar module and back to Overview cleanly
     await page.getByTestId("nav-item-calendar").click();
-    const noticeToast = page.getByTestId("hub-toast-banner");
-    await expect(noticeToast).toBeVisible();
-    await page.getByTestId("hub-toast-close").click();
-    await expect(noticeToast).toBeHidden();
+    await expect(page.getByTestId("module-calendar-view")).toBeVisible();
+    await page.getByTestId("nav-item-overview").click();
     await expect(page.getByTestId("section-revenue-timeline")).toBeVisible();
 
     // 4. Help Guide dialog opens & closes cleanly
@@ -49,7 +47,7 @@ test.describe("TC-UI: Partner Hub Sidebar, Topbar Utilities, Inbox Popovers, AI 
     await page.keyboard.press("Escape");
     await expect(dialog).toBeHidden();
 
-    // 5. TC-UI-11: Guest Messages popover displays localized messages from hub_inbox.json
+    // 5. TC-UI-11: Guest Messages popover displays localized messages from hub_inbox.json & clicks through to Messages module
     await page.getByTestId("topbar-messages-btn").click();
     const msgPopover = page.getByTestId("messages-popover");
     await expect(msgPopover).toBeVisible();

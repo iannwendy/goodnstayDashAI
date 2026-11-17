@@ -12,6 +12,10 @@ export const CORE_MASTER_TABLE_FILES: Record<keyof MasterDataBundle, string> = {
   hubConfig: "partner_hub_config.json",
   bidRecords: "bid_records.json",
   hubInbox: "hub_inbox.json",
+  roomInventory: "room_inventory.json",
+  payoutLedgers: "payout_ledgers.json",
+  biddingOperations: "bidding_operations.json",
+  marketingCampaigns: "marketing_campaigns.json",
 };
 
 export const OBSOLETE_LEGACY_FILES = [

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "3.0.0",
+  "schemaVersion": "4.0.0",
   "brandName": "Optibide",
   "referenceDate": "2026-11-06",
   "currencyRates": {
@@ -23,7 +23,8 @@
       "vi": "Quản lý khách sạn",
       "en": "Property Manager",
       "ko": "호텔 지배인"
-    }
+    },
+    "roleKey": "manager"
   },
   "periodsMeta": {
     "today": {
@@ -124,7 +125,15 @@
         "vi": "Hiển thị ưu tiên rất cao — Thuộc nhóm dẫn đầu khu vực biển Mỹ Khê",
         "en": "Top-tier visibility · My Khe Beachfront",
         "ko": "최상위 노출 등급 — 미케 해변 상위 그룹 우선 노출"
-      }
+      },
+      "address": {
+        "vi": "28 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng",
+        "en": "28 Vo Nguyen Giap, Son Tra, Da Nang",
+        "ko": "다낭 선짜구 보응우옌잡 28"
+      },
+      "hotline": "+84 236 3928 101",
+      "checkInTime": "14:00",
+      "checkOutTime": "12:00"
     },
     {
       "id": "br_songhan",
@@ -167,7 +176,15 @@
         "vi": "Hiển thị ưu tiên cao — Được nhóm khách công tác trung tâm Hải Châu tin chọn",
         "en": "High visibility · Hai Chau City Center",
         "ko": "우수 노출 등급 — 하이쩌우 도심 출장객 선호 숙소"
-      }
+      },
+      "address": {
+        "vi": "114 Bạch Đằng, Hải Châu, Đà Nẵng",
+        "en": "114 Bach Dang, Hai Chau, Da Nang",
+        "ko": "다낭 하이쩌우구 박당 114"
+      },
+      "hotline": "+84 236 3889 202",
+      "checkInTime": "14:00",
+      "checkOutTime": "12:00"
     },
     {
       "id": "br_anthuong",
@@ -210,7 +227,15 @@
         "vi": "Hiển thị ổn định — Thu hút khách lưu trú nhiều đêm tại khu phố du lịch An Thượng",
         "en": "Strong visibility · An Thuong Tourist Quarter",
         "ko": "안정적 노출 등급 — 안트엉 여행자 거리 연박 고객 선호"
-      }
+      },
+      "address": {
+        "vi": "19 An Thượng 2, Ngũ Hành Sơn, Đà Nẵng",
+        "en": "19 An Thuong 2, Ngu Hanh Son, Da Nang",
+        "ko": "다낭 응우하인선구 안트엉 19"
+      },
+      "hotline": "+84 236 3954 303",
+      "checkInTime": "14:00",
+      "checkOutTime": "12:00"
     },
     {
       "id": "stay_h11",
@@ -253,6 +278,54 @@
         "vi": "Mức hiển thị khởi điểm — Hoàn tất thêm đơn đặt phòng để được ưu tiên đẩy lên đầu danh sách",
         "en": "Poor visibility",
         "ko": "초기 노출 단계 — 첫 확정 예약과 리뷰가 쌓이면 상단 노출 우선순위가 올라갑니다"
+      },
+      "address": {
+        "vi": "11 Trần Phú, Quận Trung Tâm",
+        "en": "11 Central Boulevard, District 1",
+        "ko": "중구 센트럴대로 11"
+      },
+      "hotline": "+82 2-6014-8811",
+      "checkInTime": "14:00",
+      "checkOutTime": "12:00"
+    }
+  ],
+  "staffProfiles": [
+    {
+      "userId": "USR-PARTNER-01",
+      "roleKey": "manager",
+      "displayName": {
+        "vi": "Nguyễn Bảo Minh",
+        "en": "Kim Ha-yoon",
+        "ko": "김하윤"
+      },
+      "initials": {
+        "vi": "BM",
+        "en": "KH",
+        "ko": "KH"
+      },
+      "roleBadge": {
+        "vi": "Quản lý khách sạn",
+        "en": "Property Manager",
+        "ko": "호텔 지배인"
+      }
+    },
+    {
+      "userId": "USR-STAFF-02",
+      "roleKey": "receptionist",
+      "displayName": {
+        "vi": "Trần Thu Hà",
+        "en": "Park So-yeon",
+        "ko": "박소연"
+      },
+      "initials": {
+        "vi": "TH",
+        "en": "PS",
+        "ko": "PS"
+      },
+      "roleBadge": {
+        "vi": "Lễ tân ca trực",
+        "en": "Front-Desk Receptionist",
+        "ko": "프런트 매니저"
       }
     }
   ]

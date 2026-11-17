@@ -1,0 +1,1144 @@
+{
+  "roomTypes": [
+    {
+      "id": "RT-MK-SUP",
+      "propertyId": "br_mykhe",
+      "name": {
+        "vi": "Phòng Superior Giường Đôi",
+        "en": "Superior Double",
+        "ko": "슈페리어 더블"
+      },
+      "bedSummary": {
+        "vi": "1 giường đôi lớn (Queen)",
+        "en": "1 Queen Bed",
+        "ko": "퀸 베드 1개"
+      },
+      "sizeSqm": 26,
+      "maxGuests": 2,
+      "unitsCount": 4,
+      "standardRateVnd": 920000,
+      "floorRateVnd": 760000,
+      "amenities": [
+        "wifi",
+        "elevator",
+        "ott_tv"
+      ],
+      "biddingEnabled": true
+    },
+    {
+      "id": "RT-MK-DLX",
+      "propertyId": "br_mykhe",
+      "name": {
+        "vi": "Phòng Deluxe 2 Giường Đơn (Hướng Phố)",
+        "en": "Deluxe Twin City View",
+        "ko": "디럭스 트윈 시티뷰"
+      },
+      "bedSummary": {
+        "vi": "2 giường đơn tiêu chuẩn",
+        "en": "2 Single Beds",
+        "ko": "싱글 베드 2개"
+      },
+      "sizeSqm": 32,
+      "maxGuests": 2,
+      "unitsCount": 4,
+      "standardRateVnd": 1180000,
+      "floorRateVnd": 950000,
+      "amenities": [
+        "breakfast",
+        "wifi",
+        "pool",
+        "elevator"
+      ],
+      "biddingEnabled": true
+    },
+    {
+      "id": "RT-MK-FAM",
+      "propertyId": "br_mykhe",
+      "name": {
+        "vi": "Suite Gia Đình Thông Nhau",
+        "en": "Family Connecting Suite",
+        "ko": "패밀리 커넥팅 스위트"
+      },
+      "bedSummary": {
+        "vi": "2 giường lớn thông phòng",
+        "en": "2 King Connecting Beds",
+        "ko": "킹 커넥팅 베드 2개"
+      },
+      "sizeSqm": 48,
+      "maxGuests": 4,
+      "unitsCount": 2,
+      "standardRateVnd": 1920000,
+      "floorRateVnd": 1600000,
+      "amenities": [
+        "breakfast",
+        "wifi",
+        "pool",
+        "parking",
+        "bathtub"
+      ],
+      "biddingEnabled": true
+    },
+    {
+      "id": "RT-MK-EXE",
+      "propertyId": "br_mykhe",
+      "name": {
+        "vi": "Suite Hướng Biển Trực Diện",
+        "en": "Executive Ocean Suite",
+        "ko": "이그제큐티브 오션 스위트"
+      },
+      "bedSummary": {
+        "vi": "1 giường King hướng biển Mỹ Khê",
+        "en": "1 King Oceanfront Bed",
+        "ko": "오션프론트 킹 베드 1개"
+      },
+      "sizeSqm": 54,
+      "maxGuests": 3,
+      "unitsCount": 2,
+      "standardRateVnd": 2250000,
+      "floorRateVnd": 1850000,
+      "amenities": [
+        "breakfast",
+        "wifi",
+        "pool",
+        "bathtub",
+        "late_checkout"
+      ],
+      "biddingEnabled": true
+    },
+    {
+      "id": "RT-SH-SUP",
+      "propertyId": "br_songhan",
+      "name": {
+        "vi": "Phòng Superior Giường Đôi",
+        "en": "Superior Double",
+        "ko": "슈페리어 더블"
+      },
+      "bedSummary": {
+        "vi": "1 giường đôi lớn (Queen)",
+        "en": "1 Queen Bed",
+        "ko": "퀸 베드 1개"
+      },
+      "sizeSqm": 25,
+      "maxGuests": 2,
+      "unitsCount": 3,
+      "standardRateVnd": 900000,
+      "floorRateVnd": 750000,
+      "amenities": [
+        "wifi",
+        "elevator",
+        "ott_tv"
+      ],
+      "biddingEnabled": true
+    },
+    {
+      "id": "RT-SH-DLX",
+      "propertyId": "br_songhan",
+      "name": {
+        "vi": "Phòng Deluxe 2 Giường Đơn (Hướng Phố)",
+        "en": "Deluxe Twin City View",
+        "ko": "디럭스 트윈 시티뷰"
+      },
+      "bedSummary": {
+        "vi": "2 giường đơn nhìn cầu Sông Hàn",
+        "en": "2 Single Beds · River District",
+        "ko": "싱글 베드 2개 · 도심 전망"
+      },
+      "sizeSqm": 31,
+      "maxGuests": 2,
+      "unitsCount": 4,
+      "standardRateVnd": 1150000,
+      "floorRateVnd": 920000,
+      "amenities": [
+        "breakfast",
+        "wifi",
+        "elevator",
+        "parking"
+      ],
+      "biddingEnabled": true
+    },
+    {
+      "id": "RT-SH-FAM",
+      "propertyId": "br_songhan",
+      "name": {
+        "vi": "Suite Gia Đình Thông Nhau",
+        "en": "Family Connecting Suite",
+        "ko": "패밀리 커넥팅 스위트"
+      },
+      "bedSummary": {
+        "vi": "2 giường đôi rộng cho gia đình",
+        "en": "2 Queen Connecting Beds",
+        "ko": "퀸 커넥팅 베드 2개"
+      },
+      "sizeSqm": 46,
+      "maxGuests": 4,
+      "unitsCount": 2,
+      "standardRateVnd": 1880000,
+      "floorRateVnd": 1580000,
+      "amenities": [
+        "breakfast",
+        "wifi",
+        "parking",
+        "bathtub"
+      ],
+      "biddingEnabled": true
+    },
+    {
+      "id": "RT-SH-EXE",
+      "propertyId": "br_songhan",
+      "name": {
+        "vi": "Suite Hướng Biển Trực Diện",
+        "en": "Executive Ocean Suite",
+        "ko": "이그제큐티브 오션 스위트"
+      },
+      "bedSummary": {
+        "vi": "1 giường King tầng cao toàn cảnh",
+        "en": "1 King Panorama Suite",
+        "ko": "파노라마 킹 스위트 1개"
+      },
+      "sizeSqm": 52,
+      "maxGuests": 3,
+      "unitsCount": 1,
+      "standardRateVnd": 2200000,
+      "floorRateVnd": 1820000,
+      "amenities": [
+        "breakfast",
+        "wifi",
+        "bathtub",
+        "late_checkout",
+        "ott_tv"
+      ],
+      "biddingEnabled": true
+    },
+    {
+      "id": "RT-AT-SUP",
+      "propertyId": "br_anthuong",
+      "name": {
+        "vi": "Phòng Superior Giường Đôi",
+        "en": "Superior Double",
+        "ko": "슈페리어 더블"
+      },
+      "bedSummary": {
+        "vi": "1 giường đôi khu phố du lịch",
+        "en": "1 Queen Bed · Courtyard",
+        "ko": "퀸 베드 1개"
+      },
+      "sizeSqm": 24,
+      "maxGuests": 2,
+      "unitsCount": 3,
+      "standardRateVnd": 880000,
+      "floorRateVnd": 740000,
+      "amenities": [
+        "wifi",
+        "elevator",
+        "ott_tv"
+      ],
+      "biddingEnabled": true
+    },
+    {
+      "id": "RT-AT-DLX",
+      "propertyId": "br_anthuong",
+      "name": {
+        "vi": "Phòng Deluxe 2 Giường Đơn (Hướng Phố)",
+        "en": "Deluxe Twin City View",
+        "ko": "디럭스 트윈 시티뷰"
+      },
+      "bedSummary": {
+        "vi": "2 giường đơn ban công thoáng",
+        "en": "2 Single Beds with Balcony",
+        "ko": "발코니 싱글 베드 2개"
+      },
+      "sizeSqm": 30,
+      "maxGuests": 2,
+      "unitsCount": 2,
+      "standardRateVnd": 1120000,
+      "floorRateVnd": 900000,
+      "amenities": [
+        "breakfast",
+        "wifi",
+        "pool",
+        "elevator"
+      ],
+      "biddingEnabled": true
+    },
+    {
+      "id": "RT-AT-FAM",
+      "propertyId": "br_anthuong",
+      "name": {
+        "vi": "Suite Gia Đình Thông Nhau",
+        "en": "Family Connecting Suite",
+        "ko": "패밀리 커넥팅 스위트"
+      },
+      "bedSummary": {
+        "vi": "Phòng đôi thông nhau cho 4 khách",
+        "en": "Connecting Suite for 4 Guests",
+        "ko": "4인 가족 커넥팅 스위트"
+      },
+      "sizeSqm": 45,
+      "maxGuests": 4,
+      "unitsCount": 2,
+      "standardRateVnd": 1850000,
+      "floorRateVnd": 1550000,
+      "amenities": [
+        "breakfast",
+        "wifi",
+        "pool",
+        "parking"
+      ],
+      "biddingEnabled": true
+    },
+    {
+      "id": "RT-AT-EXE",
+      "propertyId": "br_anthuong",
+      "name": {
+        "vi": "Suite Hướng Biển Trực Diện",
+        "en": "Executive Ocean Suite",
+        "ko": "이그제큐티브 오션 스위트"
+      },
+      "bedSummary": {
+        "vi": "1 giường King & bồn tắm nằm",
+        "en": "1 King Bed & Soaking Tub",
+        "ko": "킹 베드 및 욕조 완비"
+      },
+      "sizeSqm": 50,
+      "maxGuests": 3,
+      "unitsCount": 1,
+      "standardRateVnd": 2150000,
+      "floorRateVnd": 1800000,
+      "amenities": [
+        "breakfast",
+        "wifi",
+        "pool",
+        "bathtub",
+        "late_checkout"
+      ],
+      "biddingEnabled": true
+    },
+    {
+      "id": "RT-H11-STD",
+      "propertyId": "stay_h11",
+      "name": {
+        "vi": "Phòng Tiêu Chuẩn Giường Đôi",
+        "en": "Standard Queen Room",
+        "ko": "스탠다드 퀸 룸"
+      },
+      "bedSummary": {
+        "vi": "1 giường đôi gọn gàng, yên tĩnh",
+        "en": "1 Cozy Queen Bed",
+        "ko": "아늑한 퀸 베드 1개"
+      },
+      "sizeSqm": 23,
+      "maxGuests": 2,
+      "unitsCount": 8,
+      "standardRateVnd": 960000,
+      "floorRateVnd": 780000,
+      "amenities": [
+        "wifi",
+        "elevator",
+        "ott_tv"
+      ],
+      "biddingEnabled": true
+    },
+    {
+      "id": "RT-H11-DLX",
+      "propertyId": "stay_h11",
+      "name": {
+        "vi": "Phòng Deluxe Hướng Phố Trung Tâm",
+        "en": "Deluxe City View",
+        "ko": "디럭스 시티뷰"
+      },
+      "bedSummary": {
+        "vi": "1 giường King hoặc 2 giường đơn",
+        "en": "1 King or 2 Twin Beds",
+        "ko": "킹 베드 1개 또는 트윈"
+      },
+      "sizeSqm": 29,
+      "maxGuests": 2,
+      "unitsCount": 6,
+      "standardRateVnd": 1220000,
+      "floorRateVnd": 960000,
+      "amenities": [
+        "breakfast",
+        "wifi",
+        "elevator",
+        "parking"
+      ],
+      "biddingEnabled": true
+    },
+    {
+      "id": "RT-H11-SUI",
+      "propertyId": "stay_h11",
+      "name": {
+        "vi": "Phòng Suite Cao Cấp H11",
+        "en": "Premier H11 Suite",
+        "ko": "프리미어 H11 스위트"
+      },
+      "bedSummary": {
+        "vi": "Phòng khách riêng & bồn tắm",
+        "en": "Living Lounge & Bathtub",
+        "ko": "거실 라운지 및 욕조"
+      },
+      "sizeSqm": 42,
+      "maxGuests": 4,
+      "unitsCount": 4,
+      "standardRateVnd": 1680000,
+      "floorRateVnd": 1320000,
+      "amenities": [
+        "breakfast",
+        "wifi",
+        "bathtub",
+        "late_checkout",
+        "parking"
+      ],
+      "biddingEnabled": true
+    }
+  ],
+  "units": [
+    {
+      "unitId": "UNIT-BR_MYKHE-101",
+      "propertyId": "br_mykhe",
+      "roomTypeId": "RT-MK-SUP",
+      "roomNumber": 101,
+      "floor": 1,
+      "status": "dirty",
+      "housekeepingAssignee": "Chị Hương",
+      "note": {
+        "vi": "Khách vừa trả phòng sáng nay — đang dọn buồng",
+        "en": "Recent check-out — housekeeping in progress",
+        "ko": "체크아웃 직후 객실 정비 진행 중"
+      }
+    },
+    {
+      "unitId": "UNIT-BR_MYKHE-102",
+      "propertyId": "br_mykhe",
+      "roomTypeId": "RT-MK-SUP",
+      "roomNumber": 102,
+      "floor": 1,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-BR_MYKHE-106",
+      "propertyId": "br_mykhe",
+      "roomTypeId": "RT-MK-SUP",
+      "roomNumber": 106,
+      "floor": 1,
+      "status": "occupied",
+      "housekeepingAssignee": "Cô Lan",
+      "note": {
+        "vi": "Khách đơn #70 đang lưu trú đến 08/11",
+        "en": "Occupied by reservation #70 until 2026-11-08",
+        "ko": "예약 #70 투숙 중 (2026-11-08 체크아웃)"
+      },
+      "activeBookingCode": "#70"
+    },
+    {
+      "unitId": "UNIT-BR_MYKHE-108",
+      "propertyId": "br_mykhe",
+      "roomTypeId": "RT-MK-SUP",
+      "roomNumber": 108,
+      "floor": 1,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-BR_MYKHE-111",
+      "propertyId": "br_mykhe",
+      "roomTypeId": "RT-MK-DLX",
+      "roomNumber": 111,
+      "floor": 2,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-BR_MYKHE-112",
+      "propertyId": "br_mykhe",
+      "roomTypeId": "RT-MK-DLX",
+      "roomNumber": 112,
+      "floor": 2,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Hương",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-BR_MYKHE-116",
+      "propertyId": "br_mykhe",
+      "roomTypeId": "RT-MK-DLX",
+      "roomNumber": 116,
+      "floor": 2,
+      "status": "occupied",
+      "housekeepingAssignee": "Anh Nam",
+      "note": {
+        "vi": "Khách đơn #71 đang lưu trú đến 08/11",
+        "en": "Occupied by reservation #71 until 2026-11-08",
+        "ko": "예약 #71 투숙 중 (2026-11-08 체크아웃)"
+      },
+      "activeBookingCode": "#71"
+    },
+    {
+      "unitId": "UNIT-BR_MYKHE-119",
+      "propertyId": "br_mykhe",
+      "roomTypeId": "RT-MK-DLX",
+      "roomNumber": 119,
+      "floor": 2,
+      "status": "ready",
+      "housekeepingAssignee": "Anh Nam",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-BR_MYKHE-121",
+      "propertyId": "br_mykhe",
+      "roomTypeId": "RT-MK-FAM",
+      "roomNumber": 121,
+      "floor": 3,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Hương",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-BR_MYKHE-122",
+      "propertyId": "br_mykhe",
+      "roomTypeId": "RT-MK-FAM",
+      "roomNumber": 122,
+      "floor": 3,
+      "status": "maintenance",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Đang bảo dưỡng định kỳ điều hòa & vòi sen",
+        "en": "Scheduled AC & bathroom fixture maintenance",
+        "ko": "정기 냉방 및 욕실 설비 점검 중"
+      }
+    },
+    {
+      "unitId": "UNIT-BR_MYKHE-129",
+      "propertyId": "br_mykhe",
+      "roomTypeId": "RT-MK-EXE",
+      "roomNumber": 129,
+      "floor": 3,
+      "status": "occupied",
+      "housekeepingAssignee": "Chị Hương",
+      "note": {
+        "vi": "Khách đơn #67 đang lưu trú đến 07/11",
+        "en": "Occupied by reservation #67 until 2026-11-07",
+        "ko": "예약 #67 투숙 중 (2026-11-07 체크아웃)"
+      },
+      "activeBookingCode": "#67"
+    },
+    {
+      "unitId": "UNIT-BR_MYKHE-130",
+      "propertyId": "br_mykhe",
+      "roomTypeId": "RT-MK-EXE",
+      "roomNumber": 130,
+      "floor": 4,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-BR_SONGHAN-103",
+      "propertyId": "br_songhan",
+      "roomTypeId": "RT-SH-SUP",
+      "roomNumber": 103,
+      "floor": 1,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-BR_SONGHAN-107",
+      "propertyId": "br_songhan",
+      "roomTypeId": "RT-SH-SUP",
+      "roomNumber": 107,
+      "floor": 1,
+      "status": "occupied",
+      "housekeepingAssignee": "Cô Lan",
+      "note": {
+        "vi": "Khách đơn #66 đang lưu trú đến 07/11",
+        "en": "Occupied by reservation #66 until 2026-11-07",
+        "ko": "예약 #66 투숙 중 (2026-11-07 체크아웃)"
+      },
+      "activeBookingCode": "#66"
+    },
+    {
+      "unitId": "UNIT-BR_SONGHAN-109",
+      "propertyId": "br_songhan",
+      "roomTypeId": "RT-SH-SUP",
+      "roomNumber": 109,
+      "floor": 1,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-BR_SONGHAN-113",
+      "propertyId": "br_songhan",
+      "roomTypeId": "RT-SH-DLX",
+      "roomNumber": 113,
+      "floor": 2,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Hương",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-BR_SONGHAN-114",
+      "propertyId": "br_songhan",
+      "roomTypeId": "RT-SH-DLX",
+      "roomNumber": 114,
+      "floor": 2,
+      "status": "dirty",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Khách vừa trả phòng sáng nay — đang dọn buồng",
+        "en": "Recent check-out — housekeeping in progress",
+        "ko": "체크아웃 직후 객실 정비 진행 중"
+      }
+    },
+    {
+      "unitId": "UNIT-BR_SONGHAN-117",
+      "propertyId": "br_songhan",
+      "roomTypeId": "RT-SH-DLX",
+      "roomNumber": 117,
+      "floor": 2,
+      "status": "occupied",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Khách đơn #68 đang lưu trú đến 09/11",
+        "en": "Occupied by reservation #68 until 2026-11-09",
+        "ko": "예약 #68 투숙 중 (2026-11-09 체크아웃)"
+      },
+      "activeBookingCode": "#68"
+    },
+    {
+      "unitId": "UNIT-BR_SONGHAN-120",
+      "propertyId": "br_songhan",
+      "roomTypeId": "RT-SH-DLX",
+      "roomNumber": 120,
+      "floor": 3,
+      "status": "maintenance",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Đang bảo dưỡng định kỳ điều hòa & vòi sen",
+        "en": "Scheduled AC & bathroom fixture maintenance",
+        "ko": "정기 냉방 및 욕실 설비 점검 중"
+      }
+    },
+    {
+      "unitId": "UNIT-BR_SONGHAN-123",
+      "propertyId": "br_songhan",
+      "roomTypeId": "RT-SH-FAM",
+      "roomNumber": 123,
+      "floor": 3,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-BR_SONGHAN-126",
+      "propertyId": "br_songhan",
+      "roomTypeId": "RT-SH-FAM",
+      "roomNumber": 126,
+      "floor": 3,
+      "status": "occupied",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Khách đơn #64 đang lưu trú đến 07/11",
+        "en": "Occupied by reservation #64 until 2026-11-07",
+        "ko": "예약 #64 투숙 중 (2026-11-07 체크아웃)"
+      },
+      "activeBookingCode": "#64"
+    },
+    {
+      "unitId": "UNIT-BR_SONGHAN-127",
+      "propertyId": "br_songhan",
+      "roomTypeId": "RT-SH-EXE",
+      "roomNumber": 127,
+      "floor": 3,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-BR_ANTHUONG-104",
+      "propertyId": "br_anthuong",
+      "roomTypeId": "RT-AT-SUP",
+      "roomNumber": 104,
+      "floor": 1,
+      "status": "ready",
+      "housekeepingAssignee": "Cô Lan",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-BR_ANTHUONG-105",
+      "propertyId": "br_anthuong",
+      "roomTypeId": "RT-AT-SUP",
+      "roomNumber": 105,
+      "floor": 1,
+      "status": "dirty",
+      "housekeepingAssignee": "Anh Nam",
+      "note": {
+        "vi": "Khách vừa trả phòng sáng nay — đang dọn buồng",
+        "en": "Recent check-out — housekeeping in progress",
+        "ko": "체크아웃 직후 객실 정비 진행 중"
+      }
+    },
+    {
+      "unitId": "UNIT-BR_ANTHUONG-110",
+      "propertyId": "br_anthuong",
+      "roomTypeId": "RT-AT-SUP",
+      "roomNumber": 110,
+      "floor": 2,
+      "status": "ready",
+      "housekeepingAssignee": "Cô Lan",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-BR_ANTHUONG-115",
+      "propertyId": "br_anthuong",
+      "roomTypeId": "RT-AT-DLX",
+      "roomNumber": 115,
+      "floor": 2,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-BR_ANTHUONG-118",
+      "propertyId": "br_anthuong",
+      "roomTypeId": "RT-AT-DLX",
+      "roomNumber": 118,
+      "floor": 2,
+      "status": "occupied",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Khách đơn #65 đang lưu trú đến 07/11",
+        "en": "Occupied by reservation #65 until 2026-11-07",
+        "ko": "예약 #65 투숙 중 (2026-11-07 체크아웃)"
+      },
+      "activeBookingCode": "#65"
+    },
+    {
+      "unitId": "UNIT-BR_ANTHUONG-124",
+      "propertyId": "br_anthuong",
+      "roomTypeId": "RT-AT-FAM",
+      "roomNumber": 124,
+      "floor": 3,
+      "status": "ready",
+      "housekeepingAssignee": "Cô Lan",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-BR_ANTHUONG-125",
+      "propertyId": "br_anthuong",
+      "roomTypeId": "RT-AT-FAM",
+      "roomNumber": 125,
+      "floor": 3,
+      "status": "occupied",
+      "housekeepingAssignee": "Anh Nam",
+      "note": {
+        "vi": "Khách đơn #69 đang lưu trú đến 08/11",
+        "en": "Occupied by reservation #69 until 2026-11-08",
+        "ko": "예약 #69 투숙 중 (2026-11-08 체크아웃)"
+      },
+      "activeBookingCode": "#69"
+    },
+    {
+      "unitId": "UNIT-BR_ANTHUONG-128",
+      "propertyId": "br_anthuong",
+      "roomTypeId": "RT-AT-EXE",
+      "roomNumber": 128,
+      "floor": 3,
+      "status": "ready",
+      "housekeepingAssignee": "Cô Lan",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-STAY_H11-201",
+      "propertyId": "stay_h11",
+      "roomTypeId": "RT-H11-STD",
+      "roomNumber": 201,
+      "floor": 2,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Hương",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-STAY_H11-202",
+      "propertyId": "stay_h11",
+      "roomTypeId": "RT-H11-STD",
+      "roomNumber": 202,
+      "floor": 2,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-STAY_H11-203",
+      "propertyId": "stay_h11",
+      "roomTypeId": "RT-H11-STD",
+      "roomNumber": 203,
+      "floor": 2,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Hương",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-STAY_H11-204",
+      "propertyId": "stay_h11",
+      "roomTypeId": "RT-H11-STD",
+      "roomNumber": 204,
+      "floor": 2,
+      "status": "dirty",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Khách vừa trả phòng sáng nay — đang dọn buồng",
+        "en": "Recent check-out — housekeeping in progress",
+        "ko": "체크아웃 직후 객실 정비 진행 중"
+      }
+    },
+    {
+      "unitId": "UNIT-STAY_H11-205",
+      "propertyId": "stay_h11",
+      "roomTypeId": "RT-H11-STD",
+      "roomNumber": 205,
+      "floor": 2,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Hương",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-STAY_H11-206",
+      "propertyId": "stay_h11",
+      "roomTypeId": "RT-H11-STD",
+      "roomNumber": 206,
+      "floor": 2,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-STAY_H11-207",
+      "propertyId": "stay_h11",
+      "roomTypeId": "RT-H11-STD",
+      "roomNumber": 207,
+      "floor": 2,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Hương",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-STAY_H11-208",
+      "propertyId": "stay_h11",
+      "roomTypeId": "RT-H11-STD",
+      "roomNumber": 208,
+      "floor": 2,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-STAY_H11-209",
+      "propertyId": "stay_h11",
+      "roomTypeId": "RT-H11-DLX",
+      "roomNumber": 209,
+      "floor": 2,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Hương",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-STAY_H11-210",
+      "propertyId": "stay_h11",
+      "roomTypeId": "RT-H11-DLX",
+      "roomNumber": 210,
+      "floor": 3,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-STAY_H11-211",
+      "propertyId": "stay_h11",
+      "roomTypeId": "RT-H11-DLX",
+      "roomNumber": 211,
+      "floor": 3,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Hương",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-STAY_H11-212",
+      "propertyId": "stay_h11",
+      "roomTypeId": "RT-H11-DLX",
+      "roomNumber": 212,
+      "floor": 3,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-STAY_H11-213",
+      "propertyId": "stay_h11",
+      "roomTypeId": "RT-H11-DLX",
+      "roomNumber": 213,
+      "floor": 3,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Hương",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-STAY_H11-214",
+      "propertyId": "stay_h11",
+      "roomTypeId": "RT-H11-DLX",
+      "roomNumber": 214,
+      "floor": 3,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-STAY_H11-215",
+      "propertyId": "stay_h11",
+      "roomTypeId": "RT-H11-SUI",
+      "roomNumber": 215,
+      "floor": 3,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-STAY_H11-216",
+      "propertyId": "stay_h11",
+      "roomTypeId": "RT-H11-SUI",
+      "roomNumber": 216,
+      "floor": 3,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Hương",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-STAY_H11-217",
+      "propertyId": "stay_h11",
+      "roomTypeId": "RT-H11-SUI",
+      "roomNumber": 217,
+      "floor": 3,
+      "status": "ready",
+      "housekeepingAssignee": "Chị Thảo",
+      "note": {
+        "vi": "Phòng sạch, kiểm tra đủ khăn & nước suối, sẵn sàng đón khách",
+        "en": "Clean & inspected — ready for immediate check-in",
+        "ko": "청소 및 비품 점검 완료 — 즉시 입실 가능"
+      }
+    },
+    {
+      "unitId": "UNIT-STAY_H11-218",
+      "propertyId": "stay_h11",
+      "roomTypeId": "RT-H11-SUI",
+      "roomNumber": 218,
+      "floor": 3,
+      "status": "maintenance",
+      "housekeepingAssignee": "Chị Hương",
+      "note": {
+        "vi": "Đang bảo dưỡng định kỳ điều hòa & vòi sen",
+        "en": "Scheduled AC & bathroom fixture maintenance",
+        "ko": "정기 냉방 및 욕실 설비 점검 중"
+      }
+    }
+  ],
+  "calendarBlocks": [
+    {
+      "id": "BLK-01",
+      "propertyId": "br_mykhe",
+      "roomNumber": 122,
+      "startDate": "2026-11-06",
+      "endDate": "2026-11-08",
+      "blockType": "maintenance",
+      "title": {
+        "vi": "Bảo dưỡng điều hòa định kỳ",
+        "en": "AC Preventive Maintenance",
+        "ko": "에어컨 정기 점검"
+      }
+    },
+    {
+      "id": "BLK-02",
+      "propertyId": "br_mykhe",
+      "roomNumber": 111,
+      "startDate": "2026-11-08",
+      "endDate": "2026-11-10",
+      "blockType": "walkin_hold",
+      "title": {
+        "vi": "Khách đoàn đặt trực tiếp tại quầy",
+        "en": "Direct Walk-in Group Hold",
+        "ko": "프런트 직접 단체 예약 홀드"
+      }
+    },
+    {
+      "id": "BLK-03",
+      "propertyId": "br_songhan",
+      "roomNumber": 120,
+      "startDate": "2026-11-06",
+      "endDate": "2026-11-08",
+      "blockType": "maintenance",
+      "title": {
+        "vi": "Thay mới rèm cản sáng & đèn ngủ",
+        "en": "Blackout Curtain & Lighting Upgrade",
+        "ko": "암막 커튼 및 조명 교체"
+      }
+    },
+    {
+      "id": "BLK-04",
+      "propertyId": "br_anthuong",
+      "roomNumber": 124,
+      "startDate": "2026-11-07",
+      "endDate": "2026-11-10",
+      "blockType": "walkin_hold",
+      "title": {
+        "vi": "Khách quen giữ phòng cuối tuần",
+        "en": "Returning Guest Weekend Hold",
+        "ko": "단골 고객 주말 사전 홀드"
+      }
+    },
+    {
+      "id": "BLK-05",
+      "propertyId": "stay_h11",
+      "roomNumber": 218,
+      "startDate": "2026-11-06",
+      "endDate": "2026-11-08",
+      "blockType": "maintenance",
+      "title": {
+        "vi": "Hoàn thiện chụp ảnh mẫu phòng Suite",
+        "en": "Suite Staging & Photography",
+        "ko": "스위트 객실 촬영 및 최종 점검"
+      }
+    }
+  ]
+}

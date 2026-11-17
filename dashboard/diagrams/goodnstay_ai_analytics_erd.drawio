@@ -1,0 +1,467 @@
+<mxfile host="app.diagrams.net" agent="Antigravity-DrawioBuilder" version="24.7.17">
+  <diagram id="page-1-ai-layers" name="1. Kiến Trúc 3 Nhóm Dữ Liệu AI">
+    <mxGraphModel dx="1740" dy="780" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1740" pageHeight="780" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p1-ban" value="KIẾN TRÚC 3 NHÓM DỮ LIỆU TỪ ORDER GOODNSTAY.COM CẤP NGUỒN CHO AI PHÂN TÍCH 16 BÀI TOÁN KINH DOANH" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="1640" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="l-ui" value="Nhóm 1: Dữ Liệu Giao Diện &amp; Đơn Hàng Gốc
+(UI Input, Auction &amp; Paid Orders — 8 Bảng)" style="swimlane;whiteSpace=wrap;html=1;startSize=46;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#1A1A1A;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="90" width="520" height="620" as="geometry" />
+        </mxCell>
+        <mxCell id="b-acc" value="traveler_accounts
+Đăng ký -&gt; Thanh toán lần 1 (khách thật vs bỏ đó)
+Khoảng cách lần 1 -&gt; lần 2 (Retention) &amp; Quốc gia khách" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="l-ui">
+          <mxGeometry x="25" y="68" width="470" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="b-req" value="bid_requests + request_selected_options
+Form 1/3 Địa lý, 2/3 Số đêm &amp; Quy mô nhóm (Solo/Couple/Family)
+Form 3/3: Hotel/Apartment/Villa/Resort/Pension + Tổ hợp tiện ích" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="l-ui">
+          <mxGeometry x="25" y="200" width="470" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="b-off" value="properties + property_rooms + bid_offers + offer_criteria_matches
+Kết quả đấu giá Thắng/Thua, Bóc tách % khớp từng tiêu chí" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="l-ui">
+          <mxGeometry x="25" y="332" width="470" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="b-ord" value="orders_and_payments
+Tách đề nghị được chọn vs Booking đã trả tiền
+Tách GMV (trừ hoàn tiền) / Doanh thu nền tảng / Doanh thu KS + iOS/Android" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="l-ui">
+          <mxGeometry x="25" y="464" width="470" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="l-beh" value="Nhóm 2: Dữ Liệu Hành Vi Tương Tác &amp; Phễu
+(Behavioral Events &amp; Drop-off Funnel — 4 Bảng)" style="swimlane;whiteSpace=wrap;html=1;startSize=46;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#1A1A1A;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="600" y="90" width="520" height="620" as="geometry" />
+        </mxCell>
+        <mxCell id="b-iev" value="offer_interaction_events
+Click nút Xem (Browse), Chọn (Select), Từ chối (Reject)
+Đọc mô tả (dwell_ms) &amp; Số lần cuộn lên / cuộn xuống" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="l-beh">
+          <mxGeometry x="25" y="68" width="470" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="b-mev" value="offer_media_interactions
+Click Ảnh &amp; phát Video theo đúng 5 nhóm:
+Khuôn viên · Tiện ích · Ẩm thực · Phòng · Điểm tham quan gần đó" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="l-beh">
+          <mxGeometry x="25" y="200" width="470" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="b-sum" value="offer_decision_summaries (1:1 với bid_offers)
+Phân biệt Lượt click vs Người xem / Đề nghị duy nhất
+Tính chính xác Thời gian quyết định (giây từ Xem -&gt; Chọn/Từ chối)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="l-beh">
+          <mxGeometry x="25" y="332" width="470" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="b-fun" value="booking_funnel_events (Phễu 7 bước)
+Chỉ rõ khách bỏ cuộc ở bước nào trước thanh toán &amp; lý do rớt" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="l-beh">
+          <mxGeometry x="25" y="464" width="470" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="l-ai" value="Nhóm 3: Dữ Liệu Tính Toán Cho AI Phân Tích
+(Computed Metrics &amp; AI Marts — 3 Bảng)" style="swimlane;whiteSpace=wrap;html=1;startSize=46;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#1A1A1A;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="90" width="520" height="620" as="geometry" />
+        </mxCell>
+        <mxCell id="b-cmb" value="analytics_preference_combos
+Xếp hạng Tổ hợp tiện ích phổ biến nhất theo từng loại lưu trú
+Tính Tỷ lệ tổ hợp phổ biến &amp; Tỷ lệ chốt thanh toán của tổ hợp" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="l-ai">
+          <mxGeometry x="25" y="68" width="470" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="b-geo" value="analytics_geo_seasonality_daily
+Thống kê Thành phố/Quận hot, Quốc gia đặt nhiều, Mùa vụ,
+Số đêm ở trung bình, Quy mô nhóm &amp; Tỷ lệ thanh toán Android vs iOS" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="l-ai">
+          <mxGeometry x="25" y="200" width="470" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="b-snp" value="analytics_property_ai_snapshots
+Chỉ số Đấu giá thắng/thua, Tỷ lệ Xem-&gt;Chọn, Chọn-&gt;Thanh toán,
+GMV &amp; Doanh thu thực tế cấp nguồn trực tiếp cho AI Advisor" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="l-ai">
+          <mxGeometry x="25" y="332" width="470" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="ae-1" value="Tính tỷ lệ tổ hợp" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;whiteSpace=wrap;strokeWidth=1.5;strokeColor=#475569;fontColor=#1A1A1A;fontSize=10;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="b-req" target="b-cmb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae-2" value="Ghi hành vi xem" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;whiteSpace=wrap;strokeWidth=1.5;strokeColor=#475569;fontColor=#1A1A1A;fontSize=10;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="b-off" target="b-iev">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae-3" value="Đúc kết 1:1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;whiteSpace=wrap;strokeWidth=1.5;strokeColor=#475569;fontColor=#1A1A1A;fontSize=10;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="b-iev" target="b-sum">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae-4" value="Tổng hợp GMV/OS/Geo" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;whiteSpace=wrap;strokeWidth=1.5;strokeColor=#475569;fontColor=#1A1A1A;fontSize=10;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="b-ord" target="b-geo">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae-5" value="Nạp chỉ số chuyển đổi" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;whiteSpace=wrap;strokeWidth=1.5;strokeColor=#475569;fontColor=#1A1A1A;fontSize=10;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="b-sum" target="b-snp">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="page-2-ai-erd" name="2. ERD 15 Bảng AI Analytics">
+    <mxGraphModel dx="1760" dy="1180" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1760" pageHeight="1180" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p2-ban" value="SƠ ĐỒ ERD CHI TIẾT 15 BẢNG LƯU TRỮ TOÀN DIỆN DỮ LIỆU ORDER &amp; HÀNH VI CHO AI PHÂN TÍCH" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="1680" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-trav" value="[UI/GỐC] traveler_accounts" style="shape=table;startSize=34;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#1A1A1A;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="90" width="360" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-trav-r1" value="PK id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="ai-trav">
+          <mxGeometry y="34" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-trav-r2" value="country_code : char(2)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-trav">
+          <mxGeometry y="62" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-trav-r3" value="signup_device_os : varchar(16)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-trav">
+          <mxGeometry y="90" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-trav-r4" value="registered_at : timestamptz" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-trav">
+          <mxGeometry y="118" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-trav-r5" value="first_paid_at : timestamptz" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-trav">
+          <mxGeometry y="146" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-trav-r6" value="second_paid_at : timestamptz" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-trav">
+          <mxGeometry y="174" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-trav-r7" value="customer_segment : varchar(24)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-trav">
+          <mxGeometry y="202" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-req" value="[UI/GỐC] bid_requests" style="shape=table;startSize=34;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#1A1A1A;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="360" width="360" height="286" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-req-r1" value="PK id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="ai-req">
+          <mxGeometry y="34" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-req-r2" value="UK request_code : CRQ-*" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-req">
+          <mxGeometry y="62" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-req-r3" value="FK traveler_id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-req">
+          <mxGeometry y="90" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-req-r4" value="booker_vs_staying_geo : varchar(64)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-req">
+          <mxGeometry y="118" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-req-r5" value="check_in_out_nights : daterange" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-req">
+          <mxGeometry y="146" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-req-r6" value="group_type : solo|couple|family|group" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-req">
+          <mxGeometry y="174" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-req-r7" value="accommodation_type : 5 loại lưu trú" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-req">
+          <mxGeometry y="202" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-req-r8" value="combo_signature : varchar(255)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-req">
+          <mxGeometry y="230" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-req-r9" value="device_os : ios|android|web" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-req">
+          <mxGeometry y="258" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-ropt" value="[BẢNG CON] request_selected_options" style="shape=table;startSize=34;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#1A1A1A;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="690" width="360" height="174" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-ropt-r1" value="PK id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="ai-ropt">
+          <mxGeometry y="34" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-ropt-r2" value="FK request_id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-ropt">
+          <mxGeometry y="62" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-ropt-r3" value="filter_group_key : room|bed|service..." style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-ropt">
+          <mxGeometry y="90" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-ropt-r4" value="option_key : standard|double|pool..." style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-ropt">
+          <mxGeometry y="118" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-ropt-r5" value="is_hard_rule : boolean" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-ropt">
+          <mxGeometry y="146" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-prop" value="[UI/GỐC] properties" style="shape=table;startSize=34;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#1A1A1A;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="910" width="360" height="146" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-prop-r1" value="PK id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="ai-prop">
+          <mxGeometry y="34" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-prop-r2" value="accommodation_type : varchar(16)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-prop">
+          <mxGeometry y="62" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-prop-r3" value="country_city_district : varchar(64)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-prop">
+          <mxGeometry y="90" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-prop-r4" value="base_currency : char(3)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-prop">
+          <mxGeometry y="118" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-room" value="[UI/GỐC] property_rooms" style="shape=table;startSize=34;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#1A1A1A;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="470" y="90" width="360" height="146" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-room-r1" value="PK id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="ai-room">
+          <mxGeometry y="34" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-room-r2" value="FK property_id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-room">
+          <mxGeometry y="62" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-room-r3" value="room_bed_keys : varchar(48)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-room">
+          <mxGeometry y="90" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-room-r4" value="service_keys_json : jsonb" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-room">
+          <mxGeometry y="118" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-off" value="[UI/GỐC] bid_offers" style="shape=table;startSize=34;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#1A1A1A;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="470" y="290" width="360" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-off-r1" value="PK id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="ai-off">
+          <mxGeometry y="34" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-off-r2" value="FK request_id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-off">
+          <mxGeometry y="62" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-off-r3" value="FK property_id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-off">
+          <mxGeometry y="90" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-off-r4" value="FK room_id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-off">
+          <mxGeometry y="118" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-off-r5" value="match_rate_pct : numeric(5,2)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-off">
+          <mxGeometry y="146" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-off-r6" value="hotel_base_vs_total : numeric(14,2)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-off">
+          <mxGeometry y="174" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-off-r7" value="bid_status : won|rejected|expired..." style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-off">
+          <mxGeometry y="202" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-mitem" value="[BẢNG CON] offer_criteria_matches" style="shape=table;startSize=34;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#1A1A1A;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="470" y="580" width="360" height="146" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-mitem-r1" value="PK id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="ai-mitem">
+          <mxGeometry y="34" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-mitem-r2" value="FK offer_id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-mitem">
+          <mxGeometry y="62" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-mitem-r3" value="requested_option : varchar(36)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-mitem">
+          <mxGeometry y="90" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-mitem-r4" value="is_matched : boolean" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-mitem">
+          <mxGeometry y="118" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-ord" value="[UI/GỐC] orders_and_payments" style="shape=table;startSize=34;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#1A1A1A;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="470" y="780" width="360" height="314" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-ord-r1" value="PK id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="ai-ord">
+          <mxGeometry y="34" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-ord-r2" value="UK booking_code : OB-A-*" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-ord">
+          <mxGeometry y="62" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-ord-r3" value="UK,FK offer_id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-ord">
+          <mxGeometry y="90" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-ord-r4" value="FK traveler_id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-ord">
+          <mxGeometry y="118" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-ord-r5" value="checkout_device_os : ios|android|web" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-ord">
+          <mxGeometry y="146" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-ord-r6" value="payment_status : paid|abandoned|..." style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-ord">
+          <mxGeometry y="174" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-ord-r7" value="gmv_gross_and_refund : numeric(14,2)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-ord">
+          <mxGeometry y="202" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-ord-r8" value="net_gmv : numeric(14,2)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-ord">
+          <mxGeometry y="230" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-ord-r9" value="platform_rev_net : numeric(14,2)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-ord">
+          <mxGeometry y="258" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-ord-r10" value="hotel_payout_net : numeric(14,2)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-ord">
+          <mxGeometry y="286" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-iev" value="[HÀNH VI] offer_interaction_events" style="shape=table;startSize=34;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#1A1A1A;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="900" y="90" width="360" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-iev-r1" value="PK id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="ai-iev">
+          <mxGeometry y="34" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-iev-r2" value="FK offer_id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-iev">
+          <mxGeometry y="62" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-iev-r3" value="FK traveler_id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-iev">
+          <mxGeometry y="90" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-iev-r4" value="event_type : BROWSE|SELECT|REJECT..." style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-iev">
+          <mxGeometry y="118" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-iev-r5" value="scroll_up_down_cnt : smallint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-iev">
+          <mxGeometry y="146" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-iev-r6" value="scroll_depth_pct : smallint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-iev">
+          <mxGeometry y="174" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-iev-r7" value="dwell_ms : int" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-iev">
+          <mxGeometry y="202" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-mev" value="[HÀNH VI] offer_media_interactions" style="shape=table;startSize=34;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#1A1A1A;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="900" y="360" width="360" height="174" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-mev-r1" value="PK id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="ai-mev">
+          <mxGeometry y="34" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-mev-r2" value="FK offer_id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-mev">
+          <mxGeometry y="62" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-mev-r3" value="media_type : image|video" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-mev">
+          <mxGeometry y="90" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-mev-r4" value="content_category : 5 mục chuẩn" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-mev">
+          <mxGeometry y="118" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-mev-r5" value="view_seconds : smallint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-mev">
+          <mxGeometry y="146" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-sum" value="[HÀNH VI] offer_decision_summaries" style="shape=table;startSize=34;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#1A1A1A;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="900" y="590" width="360" height="174" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-sum-r1" value="PK,FK offer_id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-sum">
+          <mxGeometry y="34" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-sum-r2" value="browse_clicks_vs_unique : int/bool" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-sum">
+          <mxGeometry y="62" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-sum-r3" value="select_clicks_vs_unique : int/bool" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-sum">
+          <mxGeometry y="90" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-sum-r4" value="reject_click_cnt : smallint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-sum">
+          <mxGeometry y="118" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-sum-r5" value="decision_duration_s : int" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-sum">
+          <mxGeometry y="146" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-fun" value="[HÀNH VI] booking_funnel_events" style="shape=table;startSize=34;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#1A1A1A;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="900" y="820" width="360" height="202" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-fun-r1" value="PK id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="ai-fun">
+          <mxGeometry y="34" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-fun-r2" value="FK request_id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-fun">
+          <mxGeometry y="62" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-fun-r3" value="step_order_1_to_7 : smallint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-fun">
+          <mxGeometry y="90" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-fun-r4" value="step_code : varchar(32)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-fun">
+          <mxGeometry y="118" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-fun-r5" value="drop_off_reason : varchar(36)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-fun">
+          <mxGeometry y="146" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-fun-r6" value="device_os : ios|android|web" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-fun">
+          <mxGeometry y="174" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-cmb" value="[TÍNH TOÁN] analytics_preference_combos" style="shape=table;startSize=34;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#1A1A1A;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1330" y="90" width="360" height="202" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-cmb-r1" value="PK combo_signature : varchar(255)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="ai-cmb">
+          <mxGeometry y="34" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-cmb-r2" value="accommodation_type : varchar(16)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-cmb">
+          <mxGeometry y="62" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-cmb-r3" value="requests_count : int" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-cmb">
+          <mxGeometry y="90" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-cmb-r4" value="combo_share_pct : numeric(5,2)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-cmb">
+          <mxGeometry y="118" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-cmb-r5" value="paid_orders_count : int" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-cmb">
+          <mxGeometry y="146" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-cmb-r6" value="combo_pay_rate_pct : numeric(5,2)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-cmb">
+          <mxGeometry y="174" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-geo" value="[TÍNH TOÁN] analytics_geo_seasonality_daily" style="shape=table;startSize=34;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#1A1A1A;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1330" y="350" width="360" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-geo-r1" value="PK id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="ai-geo">
+          <mxGeometry y="34" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-geo-r2" value="metric_date : date" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-geo">
+          <mxGeometry y="62" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-geo-r3" value="dest_city_district : varchar(64)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-geo">
+          <mxGeometry y="90" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-geo-r4" value="booker_country : char(2)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-geo">
+          <mxGeometry y="118" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-geo-r5" value="group_type_and_os : varchar(36)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-geo">
+          <mxGeometry y="146" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-geo-r6" value="avg_stay_nights : numeric(4,1)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-geo">
+          <mxGeometry y="174" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-geo-r7" value="net_gmv_amount : numeric(14,2)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-geo">
+          <mxGeometry y="202" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-snp" value="[TÍNH TOÁN] analytics_property_ai_snapshots" style="shape=table;startSize=34;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#1A1A1A;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1330" y="630" width="360" height="258" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-snp-r1" value="PK id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;fontStyle=1;" vertex="1" parent="ai-snp">
+          <mxGeometry y="34" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-snp-r2" value="FK property_id : bigint" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-snp">
+          <mxGeometry y="62" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-snp-r3" value="period_key : today|7d|30d" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-snp">
+          <mxGeometry y="90" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-snp-r4" value="bid_win_rate_pct : numeric(5,2)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-snp">
+          <mxGeometry y="118" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-snp-r5" value="view_to_select_pct : numeric(5,2)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-snp">
+          <mxGeometry y="146" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-snp-r6" value="select_to_pay_pct : numeric(5,2)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-snp">
+          <mxGeometry y="174" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-snp-r7" value="avg_decision_sec : int" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-snp">
+          <mxGeometry y="202" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-snp-r8" value="hotel_revenue_net : numeric(14,2)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=10;whiteSpace=wrap;html=1;fontColor=#1A1A1A;fontSize=11;" vertex="1" parent="ai-snp">
+          <mxGeometry y="230" width="360" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="ae2-1" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;whiteSpace=wrap;strokeWidth=1.5;strokeColor=#475569;fontColor=#1A1A1A;fontSize=10;labelBackgroundColor=#FFFFFF;startArrow=ERmandOne;endArrow=ERmany;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ai-trav" target="ai-req">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae2-2" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;whiteSpace=wrap;strokeWidth=1.5;strokeColor=#475569;fontColor=#1A1A1A;fontSize=10;labelBackgroundColor=#FFFFFF;startArrow=ERmandOne;endArrow=ERmany;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ai-req" target="ai-ropt">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae2-3" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;whiteSpace=wrap;strokeWidth=1.5;strokeColor=#475569;fontColor=#1A1A1A;fontSize=10;labelBackgroundColor=#FFFFFF;startArrow=ERmandOne;endArrow=ERmany;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ai-prop" target="ai-room">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae2-4" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;whiteSpace=wrap;strokeWidth=1.5;strokeColor=#475569;fontColor=#1A1A1A;fontSize=10;labelBackgroundColor=#FFFFFF;startArrow=ERmandOne;endArrow=ERmany;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ai-req" target="ai-off">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae2-5" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;whiteSpace=wrap;strokeWidth=1.5;strokeColor=#475569;fontColor=#1A1A1A;fontSize=10;labelBackgroundColor=#FFFFFF;startArrow=ERmandOne;endArrow=ERmany;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ai-room" target="ai-off">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae2-6" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;whiteSpace=wrap;strokeWidth=1.5;strokeColor=#475569;fontColor=#1A1A1A;fontSize=10;labelBackgroundColor=#FFFFFF;startArrow=ERmandOne;endArrow=ERmany;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ai-off" target="ai-mitem">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae2-7" value="1:0..1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;whiteSpace=wrap;strokeWidth=1.5;strokeColor=#475569;fontColor=#1A1A1A;fontSize=10;labelBackgroundColor=#FFFFFF;startArrow=ERmandOne;endArrow=ERone;exitX=0;exitY=0.8;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;" edge="1" parent="1" source="ai-off" target="ai-ord">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae2-8" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;whiteSpace=wrap;strokeWidth=1.5;strokeColor=#475569;fontColor=#1A1A1A;fontSize=10;labelBackgroundColor=#FFFFFF;startArrow=ERmandOne;endArrow=ERmany;exitX=1;exitY=0.2;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ai-off" target="ai-iev">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae2-9" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;whiteSpace=wrap;strokeWidth=1.5;strokeColor=#475569;fontColor=#1A1A1A;fontSize=10;labelBackgroundColor=#FFFFFF;startArrow=ERmandOne;endArrow=ERmany;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ai-off" target="ai-mev">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae2-10" value="1:1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;whiteSpace=wrap;strokeWidth=1.5;strokeColor=#475569;fontColor=#1A1A1A;fontSize=10;labelBackgroundColor=#FFFFFF;startArrow=ERmandOne;endArrow=ERone;exitX=1;exitY=0.8;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ai-off" target="ai-sum">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae2-11" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;whiteSpace=wrap;strokeWidth=1.5;strokeColor=#475569;fontColor=#1A1A1A;fontSize=10;labelBackgroundColor=#FFFFFF;startArrow=ERmandOne;endArrow=ERmany;dashed=1;exitX=1;exitY=0.85;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ai-req" target="ai-fun">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae2-12" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;whiteSpace=wrap;strokeWidth=1.5;strokeColor=#475569;fontColor=#1A1A1A;fontSize=10;labelBackgroundColor=#FFFFFF;startArrow=ERmandOne;endArrow=ERmany;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ai-prop" target="ai-snp">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

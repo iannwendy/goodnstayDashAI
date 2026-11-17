@@ -1,0 +1,346 @@
+{
+  "bankAccounts": [
+    {
+      "propertyId": "br_mykhe",
+      "bankName": "Vietcombank — CN Đà Nẵng",
+      "accountNumber": "0041 0008 92418",
+      "accountHolder": "CONG TY TNHH KHACH SAN LAMOUR MY KHE",
+      "payoutCycleLabel": {
+        "vi": "Đối soát tự động thứ Ba & thứ Sáu hàng tuần",
+        "en": "Automatic settlement every Tuesday & Friday",
+        "ko": "매주 화요일·금요일 자동 정산 입금"
+      },
+      "verified": true,
+      "autoSettlement": true,
+      "updatedAt": "2026-11-01"
+    },
+    {
+      "propertyId": "br_songhan",
+      "bankName": "Techcombank — CN Hải Châu",
+      "accountNumber": "1903 6482 11509",
+      "accountHolder": "CHI NHANH KHACH SAN LAMOUR SONG HAN",
+      "payoutCycleLabel": {
+        "vi": "Đối soát tự động thứ Ba & thứ Sáu hàng tuần",
+        "en": "Automatic settlement every Tuesday & Friday",
+        "ko": "매주 화요일·금요일 자동 정산 입금"
+      },
+      "verified": true,
+      "autoSettlement": true,
+      "updatedAt": "2026-11-01"
+    },
+    {
+      "propertyId": "br_anthuong",
+      "bankName": "ACB — PGD Ngũ Hành Sơn",
+      "accountNumber": "8829 1045 668",
+      "accountHolder": "CHI NHANH KHACH SAN LAMOUR AN THUONG",
+      "payoutCycleLabel": {
+        "vi": "Đối soát tự động thứ Ba & thứ Sáu hàng tuần",
+        "en": "Automatic settlement every Tuesday & Friday",
+        "ko": "매주 화요일·금요일 자동 정산 입금"
+      },
+      "verified": true,
+      "autoSettlement": true,
+      "updatedAt": "2026-11-01"
+    },
+    {
+      "propertyId": "stay_h11",
+      "bankName": "Shinhan Bank — Seoul / Da Nang Desk",
+      "accountNumber": "110-482-993015",
+      "accountHolder": "STAY HOTEL H11 HOSPITALITY CO., LTD",
+      "payoutCycleLabel": {
+        "vi": "Đã xác thực — Sẵn sàng nhận khoản thanh toán đơn đầu tiên",
+        "en": "Verified — Ready to settle first completed booking",
+        "ko": "계좌 인증 완료 — 첫 확정 예약 발생 시 자동 정산"
+      },
+      "verified": true,
+      "autoSettlement": true,
+      "updatedAt": "2026-11-05"
+    }
+  ],
+  "batches": [
+    {
+      "id": "STL-SH-11B",
+      "propertyId": "br_songhan",
+      "cycleCode": "2026-11B",
+      "periodStart": "2026-11-06",
+      "periodEnd": "2026-11-06",
+      "scheduledPayoutDate": "2026-11-10",
+      "status": "upcoming",
+      "bookingCodes": [
+        "#68"
+      ],
+      "bookingsCount": 1,
+      "grossRoomVnd": 2850000,
+      "adjustmentVnd": 0,
+      "netPayoutVnd": 2850000,
+      "note": {
+        "vi": "Đơn mới phát sinh hôm nay — sẽ gộp vào kỳ đối soát ngày 10/11/2026",
+        "en": "New bookings paid today — scheduled for Nov 10, 2026 cycle",
+        "ko": "오늘 결제된 신규 예약 — 2026.11.10 정산 주기 포함 예정"
+      }
+    },
+    {
+      "id": "STL-MK-11B",
+      "propertyId": "br_mykhe",
+      "cycleCode": "2026-11B",
+      "periodStart": "2026-11-06",
+      "periodEnd": "2026-11-06",
+      "scheduledPayoutDate": "2026-11-10",
+      "status": "upcoming",
+      "bookingCodes": [
+        "#71",
+        "#70",
+        "#67"
+      ],
+      "bookingsCount": 3,
+      "grossRoomVnd": 5600000,
+      "adjustmentVnd": 0,
+      "netPayoutVnd": 5600000,
+      "note": {
+        "vi": "Đơn mới phát sinh hôm nay — sẽ gộp vào kỳ đối soát ngày 10/11/2026",
+        "en": "New bookings paid today — scheduled for Nov 10, 2026 cycle",
+        "ko": "오늘 결제된 신규 예약 — 2026.11.10 정산 주기 포함 예정"
+      }
+    },
+    {
+      "id": "STL-AT-11B",
+      "propertyId": "br_anthuong",
+      "cycleCode": "2026-11B",
+      "periodStart": "2026-11-06",
+      "periodEnd": "2026-11-06",
+      "scheduledPayoutDate": "2026-11-10",
+      "status": "upcoming",
+      "bookingCodes": [
+        "#69"
+      ],
+      "bookingsCount": 1,
+      "grossRoomVnd": 3400000,
+      "adjustmentVnd": 0,
+      "netPayoutVnd": 3400000,
+      "note": {
+        "vi": "Đơn mới phát sinh hôm nay — sẽ gộp vào kỳ đối soát ngày 10/11/2026",
+        "en": "New bookings paid today — scheduled for Nov 10, 2026 cycle",
+        "ko": "오늘 결제된 신규 예약 — 2026.11.10 정산 주기 포함 예정"
+      }
+    },
+    {
+      "id": "STL-SH-11A",
+      "propertyId": "br_songhan",
+      "cycleCode": "2026-11A",
+      "periodStart": "2026-11-03",
+      "periodEnd": "2026-11-05",
+      "scheduledPayoutDate": "2026-11-07",
+      "status": "processing",
+      "bookingCodes": [
+        "#66",
+        "#64"
+      ],
+      "bookingsCount": 2,
+      "grossRoomVnd": 5060000,
+      "adjustmentVnd": 0,
+      "netPayoutVnd": 5060000,
+      "note": {
+        "vi": "Ngân hàng đang xử lý lệnh chuyển — dự kiến nhận trong ngày 07/11/2026",
+        "en": "Bank transfer queued — expected arrival on Nov 07, 2026",
+        "ko": "은행 이체 처리 중 — 2026.11.07 입금 예정"
+      },
+      "bankTransferRef": "PENDING-261107-SH"
+    },
+    {
+      "id": "STL-MK-11A",
+      "propertyId": "br_mykhe",
+      "cycleCode": "2026-11A",
+      "periodStart": "2026-11-03",
+      "periodEnd": "2026-11-05",
+      "scheduledPayoutDate": "2026-11-07",
+      "status": "processing",
+      "bookingCodes": [
+        "#63",
+        "#62"
+      ],
+      "bookingsCount": 2,
+      "grossRoomVnd": 2810000,
+      "adjustmentVnd": 0,
+      "netPayoutVnd": 2810000,
+      "note": {
+        "vi": "Ngân hàng đang xử lý lệnh chuyển — dự kiến nhận trong ngày 07/11/2026",
+        "en": "Bank transfer queued — expected arrival on Nov 07, 2026",
+        "ko": "은행 이체 처리 중 — 2026.11.07 입금 예정"
+      },
+      "bankTransferRef": "PENDING-261107-MK"
+    },
+    {
+      "id": "STL-AT-11A",
+      "propertyId": "br_anthuong",
+      "cycleCode": "2026-11A",
+      "periodStart": "2026-11-03",
+      "periodEnd": "2026-11-05",
+      "scheduledPayoutDate": "2026-11-07",
+      "status": "processing",
+      "bookingCodes": [
+        "#65"
+      ],
+      "bookingsCount": 1,
+      "grossRoomVnd": 2040000,
+      "adjustmentVnd": 0,
+      "netPayoutVnd": 2040000,
+      "note": {
+        "vi": "Ngân hàng đang xử lý lệnh chuyển — dự kiến nhận trong ngày 07/11/2026",
+        "en": "Bank transfer queued — expected arrival on Nov 07, 2026",
+        "ko": "은행 이체 처리 중 — 2026.11.07 입금 예정"
+      },
+      "bankTransferRef": "PENDING-261107-AT"
+    },
+    {
+      "id": "STL-SH-10B",
+      "propertyId": "br_songhan",
+      "cycleCode": "2026-10B",
+      "periodStart": "2026-10-25",
+      "periodEnd": "2026-11-02",
+      "scheduledPayoutDate": "2026-11-04",
+      "status": "paid",
+      "bookingCodes": [
+        "#61",
+        "#58",
+        "#56",
+        "#53"
+      ],
+      "bookingsCount": 4,
+      "grossRoomVnd": 9560000,
+      "adjustmentVnd": 0,
+      "netPayoutVnd": 9560000,
+      "note": {
+        "vi": "Đã đối soát & nổi tiền hoàn tất trong kỳ đầu tháng 11",
+        "en": "Reconciled and credited in early-November payout run",
+        "ko": "11월 초 정기 정산 주기에 정상 입금 완료"
+      },
+      "paidAtDate": "2026-11-04",
+      "bankTransferRef": "VCB-261104-SH"
+    },
+    {
+      "id": "STL-MK-10B",
+      "propertyId": "br_mykhe",
+      "cycleCode": "2026-10B",
+      "periodStart": "2026-10-25",
+      "periodEnd": "2026-11-02",
+      "scheduledPayoutDate": "2026-11-04",
+      "status": "paid",
+      "bookingCodes": [
+        "#60",
+        "#59",
+        "#57"
+      ],
+      "bookingsCount": 3,
+      "grossRoomVnd": 7080000,
+      "adjustmentVnd": 0,
+      "netPayoutVnd": 7080000,
+      "note": {
+        "vi": "Đã đối soát & nổi tiền hoàn tất trong kỳ đầu tháng 11",
+        "en": "Reconciled and credited in early-November payout run",
+        "ko": "11월 초 정기 정산 주기에 정상 입금 완료"
+      },
+      "paidAtDate": "2026-11-04",
+      "bankTransferRef": "VCB-261104-MK"
+    },
+    {
+      "id": "STL-AT-10B",
+      "propertyId": "br_anthuong",
+      "cycleCode": "2026-10B",
+      "periodStart": "2026-10-25",
+      "periodEnd": "2026-11-02",
+      "scheduledPayoutDate": "2026-11-04",
+      "status": "paid",
+      "bookingCodes": [
+        "#55",
+        "#54",
+        "#52"
+      ],
+      "bookingsCount": 3,
+      "grossRoomVnd": 6240000,
+      "adjustmentVnd": 0,
+      "netPayoutVnd": 6240000,
+      "note": {
+        "vi": "Đã đối soát & nổi tiền hoàn tất trong kỳ đầu tháng 11",
+        "en": "Reconciled and credited in early-November payout run",
+        "ko": "11월 초 정기 정산 주기에 정상 입금 완료"
+      },
+      "paidAtDate": "2026-11-04",
+      "bankTransferRef": "VCB-261104-AT"
+    },
+    {
+      "id": "STL-SH-10A",
+      "propertyId": "br_songhan",
+      "cycleCode": "2026-10A",
+      "periodStart": "2026-10-08",
+      "periodEnd": "2026-10-24",
+      "scheduledPayoutDate": "2026-10-26",
+      "status": "paid",
+      "bookingCodes": [
+        "#49",
+        "#44"
+      ],
+      "bookingsCount": 2,
+      "grossRoomVnd": 5280000,
+      "adjustmentVnd": 0,
+      "netPayoutVnd": 5280000,
+      "note": {
+        "vi": "Đã chuyển khoản đủ 100% về tài khoản ngân hàng của cơ sở",
+        "en": "100% net room payout settled to property bank account",
+        "ko": "호텔 지정 계좌로 100% 정산 입금 완료"
+      },
+      "paidAtDate": "2026-10-26",
+      "bankTransferRef": "VCB-261026-SH"
+    },
+    {
+      "id": "STL-MK-10A",
+      "propertyId": "br_mykhe",
+      "cycleCode": "2026-10A",
+      "periodStart": "2026-10-08",
+      "periodEnd": "2026-10-24",
+      "scheduledPayoutDate": "2026-10-26",
+      "status": "paid",
+      "bookingCodes": [
+        "#48",
+        "#50",
+        "#47",
+        "#45",
+        "#43"
+      ],
+      "bookingsCount": 5,
+      "grossRoomVnd": 12800000,
+      "adjustmentVnd": 0,
+      "netPayoutVnd": 12800000,
+      "note": {
+        "vi": "Đã chuyển khoản đủ 100% về tài khoản ngân hàng của cơ sở",
+        "en": "100% net room payout settled to property bank account",
+        "ko": "호텔 지정 계좌로 100% 정산 입금 완료"
+      },
+      "paidAtDate": "2026-10-26",
+      "bankTransferRef": "VCB-261026-MK"
+    },
+    {
+      "id": "STL-AT-10A",
+      "propertyId": "br_anthuong",
+      "cycleCode": "2026-10A",
+      "periodStart": "2026-10-08",
+      "periodEnd": "2026-10-24",
+      "scheduledPayoutDate": "2026-10-26",
+      "status": "paid",
+      "bookingCodes": [
+        "#51",
+        "#46"
+      ],
+      "bookingsCount": 2,
+      "grossRoomVnd": 3640000,
+      "adjustmentVnd": 0,
+      "netPayoutVnd": 3640000,
+      "note": {
+        "vi": "Đã chuyển khoản đủ 100% về tài khoản ngân hàng của cơ sở",
+        "en": "100% net room payout settled to property bank account",
+        "ko": "호텔 지정 계좌로 100% 정산 입금 완료"
+      },
+      "paidAtDate": "2026-10-26",
+      "bankTransferRef": "VCB-261026-AT"
+    }
+  ]
+}

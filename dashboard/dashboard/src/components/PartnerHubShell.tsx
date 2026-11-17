@@ -18,6 +18,7 @@ import {
   CheckCircle2,
   Sparkles,
   AlertCircle,
+  ShieldCheck,
 } from "lucide-react";
 import {
   Dialog,
@@ -26,13 +27,23 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import type { HubNavSection, StaffRoleKey } from "@/data";
 import type { AppLocale, CurrencyCode, OverviewCopy } from "@/lib/i18n";
+import type { HubModulesCopy } from "@/lib/hubModulesI18n";
 import type {
   InboxMessageViewItem,
   InboxNotificationViewItem,
   PropertyFilterKey,
   PropertyOptionItem,
 } from "@/services/overviewAnalytics";
+
+export interface StaffProfileOption {
+  userId: string;
+  roleKey: StaffRoleKey;
+  displayName: string;
+  initials: string;
+  roleBadge: string;
+}
 
 interface PartnerHubShellProps {
   brandName: string;
@@ -41,6 +52,16 @@ interface PartnerHubShellProps {
     initials: string;
     roleBadge: string;
   };
+  staffProfiles: StaffProfileOption[];
+  activeRoleKey: StaffRoleKey;
+  onChangeRoleKey: (next: StaffRoleKey) => void;
+  activeSection: HubNavSection;
+  onSelectSection: (next: HubNavSection) => void;
+  openBiddingCount: number;
+  unreadMessagesCount: number;
+  toastMessage: string | null;
+  onDismissToast: () => void;
+  onSignOutSession: () => void;
   inboxMessages: InboxMessageViewItem[];
   inboxNotifications: InboxNotificationViewItem[];
   locale: AppLocale;
@@ -52,6 +73,7 @@ interface PartnerHubShellProps {
   selectedProperty: PropertyOptionItem;
   onChangeProperty: (next: PropertyFilterKey) => void;
   copy: OverviewCopy;
+  mCopy: HubModulesCopy;
   completedCount: number;
   children: ReactNode;
 }
@@ -109,8 +131,24 @@ function HotelThumbnail({ color }: { color: string }) {
       aria-hidden="true"
     >
       <svg viewBox="0 0 28 20" className="w-full h-full">
-        <rect x="4" y="6" width="11" height="12" rx="1" fill="#ffffff" fillOpacity="0.92" />
-        <rect x="15" y="9" width="9" height="9" rx="1" fill="#e2e8f0" fillOpacity="0.9" />
+        <rect
+          x="4"
+          y="6"
+          width="11"
+          height="12"
+          rx="1"
+          fill="#ffffff"
+          fillOpacity="0.92"
+        />
+        <rect
+          x="15"
+          y="9"
+          width="9"
+          height="9"
+          rx="1"
+          fill="#e2e8f0"
+          fillOpacity="0.9"
+        />
         <rect x="6.5" y="8.5" width="2.2" height="2.2" fill={color} />
         <rect x="10.2" y="8.5" width="2.2" height="2.2" fill={color} />
         <rect x="6.5" y="12" width="2.2" height="2.2" fill={color} />
@@ -123,6 +161,16 @@ function HotelThumbnail({ color }: { color: string }) {
 export function PartnerHubShell({
   brandName,
   partnerUser,
+  staffProfiles,
+  activeRoleKey,
+  onChangeRoleKey,
+  activeSection,
+  onSelectSection,
+  openBiddingCount,
+  unreadMessagesCount,
+  toastMessage,
+  onDismissToast,
+  onSignOutSession,
   inboxMessages,
   inboxNotifications,
   locale,
@@ -134,67 +182,75 @@ export function PartnerHubShell({
   selectedProperty,
   onChangeProperty,
   copy,
+  mCopy,
   completedCount,
   children,
 }: PartnerHubShellProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [marketingExpanded, setMarketingExpanded] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [helpOpen, setHelpOpen] = useState(false);
+  const [sessionDialogOpen, setSessionDialogOpen] = useState(false);
   const [activePopover, setActivePopover] = useState<
     "messages" | "notifications" | null
   >(null);
 
-  const triggerComingSoon = () => {
-    setToastMessage(copy.navComingSoonNotice);
-    setMobileMenuOpen(false);
-  };
+  const isMarketingActive =
+    activeSection === "marketing_deals" ||
+    activeSection === "marketing_upsell";
 
-  const navItems = [
+  const navItems: Array<{
+    id: HubNavSection;
+    testId: string;
+    label: string;
+    icon: typeof LayoutGrid;
+    badgeCount?: number;
+  }> = [
     {
       id: "overview",
       testId: "nav-item-overview",
       label: copy.navOverview,
       icon: LayoutGrid,
-      active: true,
     },
     {
       id: "calendar",
       testId: "nav-item-calendar",
       label: copy.navCalendar,
       icon: CalendarDays,
-      active: false,
     },
     {
       id: "payout",
       testId: "nav-item-payout",
       label: copy.navPayout,
       icon: Wallet,
-      active: false,
     },
     {
       id: "rooms",
       testId: "nav-item-rooms",
       label: copy.navRooms,
       icon: BedDouble,
-      active: false,
     },
     {
       id: "bidding",
       testId: "nav-item-bidding",
       label: copy.navBidding,
       icon: Gavel,
-      active: false,
+      badgeCount: openBiddingCount,
     },
     {
       id: "messages",
       testId: "nav-item-messages",
       label: copy.navMessages,
       icon: MessageSquare,
-      active: false,
+      badgeCount: unreadMessagesCount,
     },
   ];
+
+  const handleNavigate = (section: HubNavSection) => {
+    onSelectSection(section);
+    setMobileMenuOpen(false);
+    setActivePopover(null);
+  };
 
   const renderSidebarLinks = (
     isCollapsedMode: boolean,
@@ -203,35 +259,45 @@ export function PartnerHubShell({
     <nav className="flex-1 px-2.5 py-3 space-y-1 overflow-y-auto">
       {navItems.map((item) => {
         const Icon = item.icon;
+        const isActive = activeSection === item.id;
         return (
           <button
             key={item.id}
             type="button"
             data-testid={`${testIdPrefix}${item.testId}`}
             title={isCollapsedMode ? item.label : undefined}
-            onClick={() => {
-              if (!item.active) triggerComingSoon();
-              else setMobileMenuOpen(false);
-            }}
+            onClick={() => handleNavigate(item.id)}
             className={`w-full flex items-center ${
-              isCollapsedMode ? "justify-center px-2 py-2.5" : "gap-3 px-3 py-2.5"
-            } rounded-lg text-[13.5px] font-medium transition-colors ${
-              item.active
+              isCollapsedMode
+                ? "justify-center px-2 py-2.5"
+                : "justify-between px-3 py-2.5"
+            } rounded-lg text-[13.5px] font-medium transition-colors relative ${
+              isActive
                 ? "bg-[#EEF2FF] text-[#4F46E5] font-semibold"
                 : "text-slate-700 hover:bg-slate-100/80 hover:text-slate-900"
             }`}
           >
-            <Icon
-              className={`w-[18px] h-[18px] shrink-0 ${
-                item.active ? "text-[#4F46E5]" : "text-slate-500"
-              }`}
-            />
-            {!isCollapsedMode && <span className="truncate">{item.label}</span>}
+            <span className="flex items-center gap-3 min-w-0">
+              <Icon
+                className={`w-[18px] h-[18px] shrink-0 ${
+                  isActive ? "text-[#4F46E5]" : "text-slate-500"
+                }`}
+              />
+              {!isCollapsedMode && (
+                <span className="truncate">{item.label}</span>
+              )}
+            </span>
+
+            {!isCollapsedMode && (item.badgeCount ?? 0) > 0 && (
+              <span className="ml-2 rounded-full bg-indigo-100 text-indigo-700 px-1.5 py-0.5 text-[10.5px] font-bold tabular shrink-0">
+                {item.badgeCount}
+              </span>
+            )}
           </button>
         );
       })}
 
-      {/* Marketing with expandable chevron matching demo_new/2.png */}
+      {/* Marketing with expandable submenu */}
       <div>
         <button
           type="button"
@@ -239,7 +305,7 @@ export function PartnerHubShell({
           title={isCollapsedMode ? copy.navMarketing : undefined}
           onClick={() => {
             if (isCollapsedMode) {
-              triggerComingSoon();
+              handleNavigate("marketing_deals");
             } else {
               setMarketingExpanded((prev) => !prev);
             }
@@ -248,10 +314,18 @@ export function PartnerHubShell({
             isCollapsedMode
               ? "justify-center px-2 py-2.5"
               : "justify-between px-3 py-2.5"
-          } rounded-lg text-[13.5px] font-medium text-slate-700 hover:bg-slate-100/80 hover:text-slate-900 transition-colors`}
+          } rounded-lg text-[13.5px] font-medium transition-colors ${
+            isMarketingActive
+              ? "bg-[#EEF2FF] text-[#4F46E5] font-semibold"
+              : "text-slate-700 hover:bg-slate-100/80 hover:text-slate-900"
+          }`}
         >
           <span className="flex items-center gap-3 min-w-0">
-            <Megaphone className="w-[18px] h-[18px] shrink-0 text-slate-500" />
+            <Megaphone
+              className={`w-[18px] h-[18px] shrink-0 ${
+                isMarketingActive ? "text-[#4F46E5]" : "text-slate-500"
+              }`}
+            />
             {!isCollapsedMode && (
               <span className="truncate">{copy.navMarketing}</span>
             )}
@@ -259,28 +333,38 @@ export function PartnerHubShell({
           {!isCollapsedMode && (
             <ChevronDown
               className={`w-4 h-4 text-slate-400 transition-transform ${
-                marketingExpanded ? "rotate-180" : ""
+                marketingExpanded || isMarketingActive ? "rotate-180" : ""
               }`}
             />
           )}
         </button>
 
-        {!isCollapsedMode && marketingExpanded && (
+        {!isCollapsedMode && (marketingExpanded || isMarketingActive) && (
           <div
             data-testid={`${testIdPrefix}nav-marketing-submenu`}
             className="mt-1 ml-7 pl-2.5 border-l border-slate-200 space-y-1"
           >
             <button
               type="button"
-              onClick={triggerComingSoon}
-              className="w-full text-left px-2.5 py-1.5 rounded-md text-[12.5px] text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+              data-testid={`${testIdPrefix}nav-sub-deals`}
+              onClick={() => handleNavigate("marketing_deals")}
+              className={`w-full text-left px-2.5 py-1.5 rounded-md text-[12.5px] transition-colors ${
+                activeSection === "marketing_deals"
+                  ? "bg-indigo-50 text-indigo-700 font-semibold"
+                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+              }`}
             >
               {copy.navMarketingSubDeals}
             </button>
             <button
               type="button"
-              onClick={triggerComingSoon}
-              className="w-full text-left px-2.5 py-1.5 rounded-md text-[12.5px] text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+              data-testid={`${testIdPrefix}nav-sub-upsell`}
+              onClick={() => handleNavigate("marketing_upsell")}
+              className={`w-full text-left px-2.5 py-1.5 rounded-md text-[12.5px] transition-colors ${
+                activeSection === "marketing_upsell"
+                  ? "bg-indigo-50 text-indigo-700 font-semibold"
+                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+              }`}
             >
               {copy.navMarketingSubUpsell}
             </button>
@@ -288,12 +372,15 @@ export function PartnerHubShell({
         )}
       </div>
 
-      {/* Logout */}
+      {/* Shift Handover & Logout */}
       <button
         type="button"
         data-testid={`${testIdPrefix}nav-item-logout`}
         title={isCollapsedMode ? copy.navLogout : undefined}
-        onClick={triggerComingSoon}
+        onClick={() => {
+          setMobileMenuOpen(false);
+          setSessionDialogOpen(true);
+        }}
         className={`w-full flex items-center ${
           isCollapsedMode ? "justify-center px-2 py-2.5" : "gap-3 px-3 py-2.5"
         } rounded-lg text-[13.5px] font-medium text-slate-700 hover:bg-slate-100/80 hover:text-slate-900 transition-colors`}
@@ -449,7 +536,7 @@ export function PartnerHubShell({
               <ChevronDown className="w-3.5 h-3.5 text-slate-400 pointer-events-none absolute right-2" />
             </div>
 
-            {/* Utility Icons (reachable across both mobile and desktop) */}
+            {/* Utility Icons */}
             <div className="flex items-center gap-0.5 sm:gap-1 relative">
               <button
                 type="button"
@@ -496,7 +583,7 @@ export function PartnerHubShell({
                 <HelpCircle className="w-[17px] h-[17px]" />
               </button>
 
-              {/* Messages / Notifications Popover */}
+              {/* Messages Popover */}
               {activePopover === "messages" && (
                 <div
                   data-testid="messages-popover"
@@ -520,14 +607,16 @@ export function PartnerHubShell({
                       {copy.messagesEmpty}
                     </p>
                   ) : (
-                    <div className="space-y-2 max-h-64 overflow-y-auto">
+                    <div className="space-y-2 max-h-60 overflow-y-auto">
                       {inboxMessages.map((msg) => (
-                        <div
+                        <button
                           key={msg.id}
-                          className={`rounded-lg border p-2.5 text-[12px] min-w-0 ${
+                          type="button"
+                          onClick={() => handleNavigate("messages")}
+                          className={`w-full text-left rounded-lg border p-2.5 text-[12px] min-w-0 transition-colors ${
                             msg.unread
-                              ? "bg-indigo-50/60 border-indigo-100"
-                              : "bg-slate-50/70 border-slate-200/80"
+                              ? "bg-indigo-50/60 border-indigo-100 hover:bg-indigo-50"
+                              : "bg-slate-50/70 border-slate-200/80 hover:bg-slate-100"
                           }`}
                         >
                           <div className="flex items-center justify-between gap-2 mb-1">
@@ -544,13 +633,14 @@ export function PartnerHubShell({
                           <p className="text-slate-600 leading-snug m-0 break-words">
                             {msg.preview}
                           </p>
-                        </div>
+                        </button>
                       ))}
                     </div>
                   )}
                 </div>
               )}
 
+              {/* Notifications Popover */}
               {activePopover === "notifications" && (
                 <div
                   data-testid="notifications-popover"
@@ -616,8 +706,12 @@ export function PartnerHubShell({
               )}
             </div>
 
-            {/* User Profile */}
-            <div className="flex items-center gap-2 pl-1 sm:pl-2 border-l border-slate-200/80">
+            {/* User Profile (clickable to open Shift Role / Session Modal) */}
+            <button
+              type="button"
+              onClick={() => setSessionDialogOpen(true)}
+              className="flex items-center gap-2 pl-1 sm:pl-2 border-l border-slate-200/80 hover:opacity-90"
+            >
               <span className="hidden md:inline text-[13px] font-medium text-slate-700">
                 {partnerUser.displayName}
               </span>
@@ -628,11 +722,11 @@ export function PartnerHubShell({
               >
                 {partnerUser.initials}
               </div>
-            </div>
+            </button>
           </div>
         </header>
 
-        {/* Polite Floating Notice Toast */}
+        {/* Polite Floating Action / Role Notice Toast */}
         {toastMessage && (
           <div
             data-testid="hub-toast-banner"
@@ -644,7 +738,7 @@ export function PartnerHubShell({
               type="button"
               data-testid="hub-toast-close"
               aria-label={copy.closeLabel}
-              onClick={() => setToastMessage(null)}
+              onClick={onDismissToast}
               className="px-2 py-0.5 rounded-md text-[12px] font-semibold text-indigo-700 hover:bg-indigo-100 shrink-0"
             >
               {copy.closeLabel}
@@ -692,6 +786,92 @@ export function PartnerHubShell({
             >
               {copy.closeLabel}
             </button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Shift Handover & Session Sign-Out Dialog */}
+      <Dialog open={sessionDialogOpen} onOpenChange={setSessionDialogOpen}>
+        <DialogContent
+          data-testid="session-handover-dialog"
+          className="max-w-lg w-[92vw] max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-2xl p-5 sm:p-6"
+        >
+          <DialogHeader className="text-left space-y-1">
+            <DialogTitle className="text-[17px] font-bold text-slate-900 flex items-center gap-2">
+              <ShieldCheck className="w-5 h-5 text-indigo-600 shrink-0" />
+              <span>{mCopy.session.modalTitle}</span>
+            </DialogTitle>
+            <DialogDescription className="text-[12.5px] text-slate-600">
+              {mCopy.session.modalSubtitle}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="mt-3 space-y-3">
+            <div className="text-[12.5px] font-bold text-slate-800">
+              {mCopy.session.shiftRoleHeading}
+            </div>
+
+            <div className="space-y-2">
+              {staffProfiles.map((prof) => {
+                const isCurrent = prof.roleKey === activeRoleKey;
+                return (
+                  <button
+                    key={prof.userId}
+                    type="button"
+                    data-testid={`switch-role-${prof.roleKey}`}
+                    onClick={() => {
+                      onChangeRoleKey(prof.roleKey);
+                      setSessionDialogOpen(false);
+                    }}
+                    className={`w-full text-left rounded-xl border p-3.5 transition-colors ${
+                      isCurrent
+                        ? "border-indigo-600 bg-indigo-50/75"
+                        : "border-slate-200 bg-white hover:bg-slate-50"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-bold text-slate-900 text-[13.5px]">
+                        {prof.displayName} ·{" "}
+                        <span className="text-indigo-700">
+                          {prof.roleBadge}
+                        </span>
+                      </span>
+                      {isCurrent && (
+                        <CheckCircle2 className="w-4 h-4 text-indigo-600 shrink-0" />
+                      )}
+                    </div>
+                    <p className="text-[12px] text-slate-600 mt-1 mb-0 leading-relaxed">
+                      {prof.roleKey === "manager"
+                        ? mCopy.session.managerPermNote
+                        : mCopy.session.receptionistPermNote}
+                    </p>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
+              <button
+                type="button"
+                data-testid="session-signout-btn"
+                onClick={() => {
+                  setSessionDialogOpen(false);
+                  onSignOutSession();
+                }}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-3.5 py-2 text-[12.5px] font-semibold text-red-700 hover:bg-red-100"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>{mCopy.session.signOutBtn}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setSessionDialogOpen(false)}
+                className="px-4 py-2 rounded-lg bg-slate-900 text-white text-[13px] font-medium hover:bg-slate-800"
+              >
+                {mCopy.session.stayWorkingBtn}
+              </button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>

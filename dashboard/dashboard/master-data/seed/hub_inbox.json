@@ -5,26 +5,205 @@
       "propertyId": "br_mykhe",
       "bookingCode": "#71",
       "guestName": "Minh Anh",
+      "guestPhone": "+84 905 412 819",
       "receivedAt": "19:10",
       "unread": true,
+      "status": "needs_reply",
+      "topicTag": {
+        "vi": "Bãi đậu ô tô",
+        "en": "Parking Inquiry",
+        "ko": "주차 문의"
+      },
+      "staySummary": {
+        "vi": "Phòng #116 • 06/11 – 08/11 (2 đêm)",
+        "en": "Room #116 · Nov 06 – Nov 08 (2 nights)",
+        "ko": "#116호 · 11.06 – 11.08 (2박)"
+      },
       "preview": {
         "vi": "Đơn #71: Cho mình hỏi khách sạn có chỗ đậu ô tô 7 chỗ qua đêm không ạ?",
         "en": "Booking #71: Could you confirm if overnight parking is available for a 7-seater SUV?",
         "ko": "예약 #71: 7인승 차량 야간 무료 주차가 가능한지 확인 부탁드립니다."
-      }
+      },
+      "thread": [
+        {
+          "id": "TH-01-1",
+          "sender": "guest",
+          "sentAt": "19:10",
+          "body": {
+            "vi": "Chào khách sạn, gia đình mình đặt đơn #71 tối nay đến nhận phòng khoảng 20:30. Cho mình hỏi khách sạn có chỗ đậu ô tô 7 chỗ qua đêm an toàn không ạ?",
+            "en": "Hello front desk, we hold booking #71 arriving around 8:30 PM tonight. Could you confirm if secure overnight parking is available for a 7-seater SUV?",
+            "ko": "안녕하세요, 오늘 밤 20:30경 입실 예정인 예약 #71 고객입니다. 7인승 SUV 차량 야간 안전 주차가 가능한지 확인 부탁드립니다."
+          }
+        }
+      ]
     },
     {
       "id": "MSG-02",
       "propertyId": "br_anthuong",
       "bookingCode": "#69",
       "guestName": "Hoàng Nam",
+      "guestPhone": "+84 903 884 210",
       "receivedAt": "15:25",
       "unread": true,
+      "status": "needs_reply",
+      "topicTag": {
+        "vi": "Vật dụng phòng",
+        "en": "Room Amenity",
+        "ko": "객실 비품 요청"
+      },
+      "staySummary": {
+        "vi": "Phòng #125 • 06/11 – 08/11 (4 khách)",
+        "en": "Room #125 · Nov 06 – Nov 08 (4 guests)",
+        "ko": "#125호 · 11.06 – 11.08 (4인 가족)"
+      },
       "preview": {
         "vi": "Đơn #69: Gia đình mình 4 người xin chuẩn bị sẵn thêm 2 khăn tắm lớn trong phòng nhé.",
         "en": "Booking #69: Our family of 4 would appreciate two extra bath towels upon check-in.",
         "ko": "예약 #69: 4인 가족 투숙 예정으로 큰 타월 2장을 추가 비치해 주시면 감사하겠습니다."
-      }
+      },
+      "thread": [
+        {
+          "id": "TH-02-1",
+          "sender": "guest",
+          "sentAt": "15:25",
+          "body": {
+            "vi": "Đơn #69: Gia đình mình 4 người có 2 bé nhỏ nên nhờ lễ tân chuẩn bị sẵn thêm 2 khăn tắm lớn trong phòng #125 giúp mình nhé.",
+            "en": "Booking #69: Our family of 4 is traveling with two kids — could housekeeping place two extra bath towels in Suite #125 before arrival?",
+            "ko": "예약 #69: 어린이 동반 4인 가족입니다. 입실 전 #125호 객실에 대형 바스 타월 2장을 추가 비치해 주시면 감사하겠습니다."
+          }
+        }
+      ]
+    },
+    {
+      "id": "MSG-03",
+      "propertyId": "br_songhan",
+      "bookingCode": "#68",
+      "guestName": "Park Ji-hoon",
+      "guestPhone": "+82 10-4821-9034",
+      "receivedAt": "14:40",
+      "unread": true,
+      "status": "needs_reply",
+      "topicTag": {
+        "vi": "Hóa đơn công tác",
+        "en": "Corporate Receipt",
+        "ko": "법인 영수증 요청"
+      },
+      "staySummary": {
+        "vi": "Phòng #117 • 06/11 – 09/11 (3 đêm)",
+        "en": "Room #117 · Nov 06 – Nov 09 (3 nights)",
+        "ko": "#117호 · 11.06 – 11.09 (3박)"
+      },
+      "preview": {
+        "vi": "Đơn #68: Nhờ khách sạn hỗ trợ xuất chứng từ thanh toán công tác khi trả phòng ngày 09/11.",
+        "en": "Booking #68: Please prepare an itemized business stay invoice for check-out on Nov 09.",
+        "ko": "예약 #68: 11월 9일 체크아웃 시 출장 정산용 상세 영수증 발급을 부탁드립니다."
+      },
+      "thread": [
+        {
+          "id": "TH-03-1",
+          "sender": "guest",
+          "sentAt": "14:40",
+          "body": {
+            "vi": "Xin chào, tôi đặt đơn #68 lưu trú 3 đêm công tác. Nhờ lễ tân ghi nhận xuất chứng từ thanh toán tên công ty khi trả phòng ngày 09/11.",
+            "en": "Hello, I booked #68 for a 3-night corporate trip. Please note our company details so we can collect the official stay receipt on Nov 09.",
+            "ko": "안녕하세요, 3박 출장 예약 #68 고객입니다. 11월 9일 체크아웃 시 회사명 기재 정산 영수증 발급을 준비해 주시기 바랍니다."
+          }
+        }
+      ]
+    },
+    {
+      "id": "MSG-04",
+      "propertyId": "br_mykhe",
+      "bookingCode": "#67",
+      "guestName": "Choi Soo-bin",
+      "guestPhone": "+82 10-7390-1128",
+      "receivedAt": "11:30",
+      "unread": false,
+      "status": "replied",
+      "topicTag": {
+        "vi": "Nhận phòng",
+        "en": "Check-in Time",
+        "ko": "체크인 안내"
+      },
+      "staySummary": {
+        "vi": "Phòng #129 • 06/11 – 07/11 (1 đêm)",
+        "en": "Room #129 · Nov 06 – Nov 07 (1 night)",
+        "ko": "#129호 · 11.06 – 11.07 (1박)"
+      },
+      "preview": {
+        "vi": "Đơn #67: Đã xác nhận chuẩn bị phòng Suite hướng biển #129 nhận phòng lúc 14:00.",
+        "en": "Booking #67: Confirmed Oceanfront Suite #129 ready for 2:00 PM check-in.",
+        "ko": "예약 #67: 오션프론트 스위트 #129호 14:00 정시 입실 준비가 확인되었습니다."
+      },
+      "thread": [
+        {
+          "id": "TH-04-1",
+          "sender": "guest",
+          "sentAt": "11:18",
+          "body": {
+            "vi": "Tụi mình đến Đà Nẵng lúc 13:45 trưa nay, phòng #129 có nhận đúng 14:00 được không ạ?",
+            "en": "We land in Da Nang at 1:45 PM today — will Ocean Suite #129 be ready for check-in at 2:00 PM?",
+            "ko": "오늘 13:45 다낭 도착 예정인데 14:00에 바로 #129호 체크인이 가능할까요?"
+          }
+        },
+        {
+          "id": "TH-04-2",
+          "sender": "hotel",
+          "sentAt": "11:30",
+          "body": {
+            "vi": "Dạ L'amour Mỹ Khê xin chào anh/chị! Phòng Suite hướng biển #129 đã được kiểm tra sạch sẽ và sẵn sàng đón mình đúng 14:00 ạ.",
+            "en": "Warm greetings from L'amour My Khe! Ocean Suite #129 is freshly inspected and ready to welcome you right at 2:00 PM.",
+            "ko": "라무르 미케입니다! #129호 오션 스위트 점검이 완료되어 14:00 정시에 바로 입실하실 수 있습니다."
+          }
+        }
+      ]
+    },
+    {
+      "id": "MSG-05",
+      "propertyId": "br_songhan",
+      "bookingCode": "#66",
+      "guestName": "Quốc Bảo",
+      "guestPhone": "+84 988 301 742",
+      "receivedAt": "09:45",
+      "unread": false,
+      "status": "replied",
+      "topicTag": {
+        "vi": "Xe sân bay",
+        "en": "Airport Transfer",
+        "ko": "공항 샌딩"
+      },
+      "staySummary": {
+        "vi": "Phòng #107 • 05/11 – 07/11 (2 đêm)",
+        "en": "Room #107 · Nov 05 – Nov 07 (2 nights)",
+        "ko": "#107호 · 11.05 – 11.07 (2박)"
+      },
+      "preview": {
+        "vi": "Đơn #66: Lễ tân đã đặt xe tiễn sân bay lúc 10:30 sáng mai 07/11 cho phòng #107.",
+        "en": "Booking #66: Front desk arranged 10:30 AM airport drop-off tomorrow for Room #107.",
+        "ko": "예약 #66: 내일 오전 10:30 공항 샌딩 차량 배정이 완료되었습니다."
+      },
+      "thread": [
+        {
+          "id": "TH-05-1",
+          "sender": "guest",
+          "sentAt": "09:32",
+          "body": {
+            "vi": "Sáng mai 07/11 mình bay chuyến 12:15, nhờ lễ tân gọi giúp xe 4 chỗ ra sân bay lúc 10:30 nhé.",
+            "en": "My flight tomorrow Nov 07 departs at 12:15 PM — could front desk arrange a sedan to the airport at 10:30 AM?",
+            "ko": "내일(11/7) 12:15 비행편이라 오전 10:30에 공항 가는 택시 예약을 부탁드립니다."
+          }
+        },
+        {
+          "id": "TH-05-2",
+          "sender": "hotel",
+          "sentAt": "09:45",
+          "body": {
+            "vi": "Dạ lễ tân CN Sông Hàn đã đặt xe riêng đón anh tại sảnh đúng 10:30 sáng mai 07/11 rồi ạ.",
+            "en": "Confirmed! Our Han River front desk has scheduled a private car at the lobby for 10:30 AM tomorrow.",
+            "ko": "네, 한강 지점 프런트에서 내일 오전 10:30 로비 출발 전용 차량 예약을 완료했습니다."
+          }
+        }
+      ]
     }
   ],
   "notifications": [
@@ -56,9 +235,61 @@
       "tone": "amber",
       "createdAt": "16:00",
       "text": {
-        "vi": "Stay Hotel H11 chưa có đơn mở hàng — hãy cân nhắc giảm nhẹ 5–10% giá chào buổi tối.",
-        "en": "Stay Hotel H11 has 0 completed bookings — consider lowering opening evening rates by 5–10%.",
-        "ko": "Stay Hotel H11 첫 예약 유치를 위해 저녁 시간대 시작 요금을 5~10% 조정해 보세요."
+        "vi": "Stay Hotel H11 đang có 2 yêu cầu hỏi phòng mới — hãy gửi giá kèm bữa sáng để chốt đơn mở hàng.",
+        "en": "Stay Hotel H11 has 2 live traveler inquiries — include breakfast to win your first booking.",
+        "ko": "Stay Hotel H11에 실시간 객실 요청 2건이 도착했습니다 — 조식 혜택으로 첫 예약을 유치해 보세요."
+      }
+    },
+    {
+      "id": "NTF-04",
+      "scope": "br_songhan",
+      "tone": "indigo",
+      "createdAt": "15:10",
+      "text": {
+        "vi": "Kỳ đối soát 2026-11A của CN Sông Hàn đang được ngân hàng xử lý chuyển khoản.",
+        "en": "Settlement batch 2026-11A for L'amour Han River is queued for bank transfer.",
+        "ko": "한강 지점 2026-11A 정산 건이 은행 이체 처리 중입니다."
+      }
+    }
+  ],
+  "quickReplies": [
+    {
+      "id": "QR-PARKING",
+      "label": {
+        "vi": "Xác nhận chỗ đậu ô tô miễn phí",
+        "en": "Confirm free overnight parking",
+        "ko": "무료 야간 주차 가능 안내"
+      },
+      "template": {
+        "vi": "Dạ khách sạn có bãi đậu ô tô 7 chỗ miễn phí qua đêm ngay khuôn viên có bảo vệ trực 24/7 ạ. Khi xe tới sảnh sẽ có nhân viên hướng dẫn ngay cho gia đình mình nhé!",
+        "en": "Yes! Complimentary 24/7 guarded parking for 7-seater SUVs is available right on property. Our staff will assist you upon arrival.",
+        "ko": "네, 호텔 구내에 24시간 경비가 상주하는 무료 SUV 야간 주차 공간이 마련되어 있습니다. 도착 시 직원이 바로 안내해 드리겠습니다."
+      }
+    },
+    {
+      "id": "QR-TOWELS",
+      "label": {
+        "vi": "Đã bổ sung khăn tắm & đồ dùng",
+        "en": "Extra towels placed in room",
+        "ko": "추가 타월 비치 완료 안내"
+      },
+      "template": {
+        "vi": "Dạ bộ phận buồng phòng đã chuẩn bị sẵn thêm 2 khăn tắm lớn và nước suối trong phòng cho gia đình mình rồi ạ. Hẹn đón gia đình mình nhé!",
+        "en": "Housekeeping has placed two fresh extra bath towels and bottled water in your suite ahead of arrival. We look forward to welcoming your family!",
+        "ko": "객실팀에서 요청하신 대형 타월 2장과 생수를 미리 추가 비치 완료했습니다. 편안한 투숙 되시길 바랍니다!"
+      }
+    },
+    {
+      "id": "QR-INVOICE",
+      "label": {
+        "vi": "Xác nhận xuất hóa đơn công ty",
+        "en": "Confirm corporate stay invoice",
+        "ko": "법인 정산 영수증 발급 확인"
+      },
+      "template": {
+        "vi": "Dạ lễ tân đã ghi nhận thông tin xuất hóa đơn công tác cho đơn của quý khách và sẽ gửi bản in kèm file điện tử ngay khi làm thủ tục trả phòng ạ.",
+        "en": "Our front desk has noted your corporate billing request and will have both printed and digital receipts ready upon check-out.",
+        "ko": "프런트에서 법인 정산 영수증 발급 요청을 확인했으며, 체크아웃 시 출력본과 전자 영수증을 함께 전달드리겠습니다."
       }
     }
   ]

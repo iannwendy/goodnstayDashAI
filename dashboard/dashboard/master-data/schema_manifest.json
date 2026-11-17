@@ -1,25 +1,49 @@
 {
-  "schemaVersion": "3.0.0",
-  "architecture": "Optibide Partner Hub • Pure-Business Overview • Multi-Property • VI/EN/KO & VND/KRW/USD",
-  "generatedAt": "2026-11-13T10:55:00+07:00",
+  "schemaVersion": "4.0.0",
+  "architecture": "Optibide Partner Hub • Full 7-Module Hotelier Suite • Pure-Business • Multi-Property • VI/EN/KO & VND/KRW/USD",
+  "generatedAt": "2026-11-15T22:45:00+07:00",
   "primaryReferenceDate": "2026-11-06",
   "tables": {
     "hubConfig": {
       "file": "partner_hub_config.json",
       "pk": "schemaVersion",
-      "description": "Cấu hình cổng đối tác Optibide, tỷ giá VND/KRW/USD, tài khoản quản lý, kỳ lọc Today/7D/30D và 4 cơ sở (3 CN L'amour + Stay Hotel H11)"
+      "description": "Cấu hình cổng đối tác Optibide, tỷ giá VND/KRW/USD, hồ sơ ca trực (Quản lý & Lễ tân), kỳ lọc Today/7D/30D và 4 cơ sở"
     },
     "bidRecords": {
       "file": "bid_records.json",
       "pk": "id",
-      "fk": "propertyId -> hubConfig.properties.id",
-      "description": "Dữ liệu các lượt báo giá & đơn đặt phòng hoàn tất (đủ 4 trạng thái accepted, expired, rejected, cancelled; kèm phiếu đặt phòng đa ngôn ngữ)"
+      "fk": "propertyId -> hubConfig.properties.id, roomTypeId -> roomInventory.roomTypes.id, payoutBatchId -> payoutLedgers.batches.id",
+      "description": "Lịch sử 143 lượt báo giá & 29 phiếu đặt phòng hoàn tất (#43..#71) liên kết trực tiếp lịch phòng và kỳ đối soát"
     },
     "hubInbox": {
       "file": "hub_inbox.json",
-      "pk": "messages.id / notifications.id",
+      "pk": "messages.id / notifications.id / quickReplies.id",
+      "fk": "propertyId -> hubConfig.properties.id, bookingCode -> bidRecords.bookingCode",
+      "description": "Hội thoại tin nhắn khách đặt phòng hai chiều, mẫu phản hồi nhanh lễ tân & thông báo vận hành"
+    },
+    "roomInventory": {
+      "file": "room_inventory.json",
+      "pk": "roomTypes.id / units.unitId / calendarBlocks.id",
+      "fk": "propertyId -> hubConfig.properties.id, activeBookingCode -> bidRecords.bookingCode",
+      "description": "Danh mục 15 hạng phòng, 48 phòng vật lý thực tế (#101..#130, #201..#218), trạng thái buồng phòng & lịch khóa ngày"
+    },
+    "payoutLedgers": {
+      "file": "payout_ledgers.json",
+      "pk": "bankAccounts.propertyId / batches.id",
+      "fk": "propertyId -> hubConfig.properties.id, bookingCodes -> bidRecords.bookingCode",
+      "description": "Tài khoản ngân hàng nhận tiền từng cơ sở & các kỳ sao kê đối soát khớp 100% với doanh thu thực nhận"
+    },
+    "biddingOperations": {
+      "file": "bidding_operations.json",
+      "pk": "liveRequests.id / autoBidRules.propertyId",
       "fk": "propertyId -> hubConfig.properties.id",
-      "description": "Hộp thư tin nhắn khách đặt phòng & thông báo vận hành hiển thị trên Topbar theo từng cơ sở"
+      "description": "Hàng đợi yêu cầu hỏi phòng trực tiếp của khách & cấu hình khung giá sàn Báo giá tự động theo từng cơ sở"
+    },
+    "marketingCampaigns": {
+      "file": "marketing_campaigns.json",
+      "pk": "flashDeals.id / upsellOffers.id",
+      "fk": "propertyId -> hubConfig.properties.id",
+      "description": "Chiến dịch Ưu đãi giờ chót & Gói nâng hạng phòng / dịch vụ cộng thêm gia tăng doanh thu"
     }
   }
 }

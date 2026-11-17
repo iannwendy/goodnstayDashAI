@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 import {
   assertNoHorizontalOverflow,
   attachErrorMonitor,
@@ -15,7 +15,38 @@ const VIEWPORT_MATRIX = [
   { name: "Mobile Compact Android", width: 360, height: 800, hasDesktopSidebar: false },
 ] as const;
 
-test.describe("TC-RESP: Multi-Viewport Responsive Matrix (7 Viewports × Partner Hub Overview & Modals)", () => {
+async function navigateSectionAtViewport(
+  page: Page,
+  hasDesktopSidebar: boolean,
+  navTestId: string,
+  subTestId?: string,
+): Promise<void> {
+  if (hasDesktopSidebar) {
+    if (subTestId) {
+      const subLoc = page.getByTestId(subTestId);
+      if (!(await subLoc.isVisible())) {
+        await page.getByTestId(navTestId).click();
+      }
+      await subLoc.click();
+    } else {
+      await page.getByTestId(navTestId).click();
+    }
+  } else {
+    await page.getByTestId("mobile-menu-btn").click();
+    await expect(page.getByTestId("mobile-sidebar-drawer")).toBeVisible();
+    if (subTestId) {
+      const subLoc = page.getByTestId(`mobile-${subTestId}`);
+      if (!(await subLoc.isVisible())) {
+        await page.getByTestId(`mobile-${navTestId}`).click();
+      }
+      await subLoc.click();
+    } else {
+      await page.getByTestId(`mobile-${navTestId}`).click();
+    }
+  }
+}
+
+test.describe("TC-RESP: Multi-Viewport Responsive Matrix (7 Viewports × All Left-Menu Modules & Modals)", () => {
   test.beforeAll(async ({ request }) => {
     await resetSeedViaApi(request);
   });
@@ -25,7 +56,7 @@ test.describe("TC-RESP: Multi-Viewport Responsive Matrix (7 Viewports × Partner
   });
 
   for (const vp of VIEWPORT_MATRIX) {
-    test(`TC-RESP [${vp.name} ${vp.width}×${vp.height}]: zero horizontal overflow, responsive sidebar/drawer & clean modal containment`, async ({
+    test(`TC-RESP [${vp.name} ${vp.width}×${vp.height}]: zero horizontal overflow across Overview, all 6 Left-Menu Modules, Drawer & Modals`, async ({
       page,
     }) => {
       const monitor = attachErrorMonitor(page);
@@ -42,7 +73,6 @@ test.describe("TC-RESP: Multi-Viewport Responsive Matrix (7 Viewports × Partner
         await expect(page.getByTestId("topbar-help-btn")).toBeVisible();
         await expect(page.getByTestId("topbar-notifications-btn")).toBeVisible();
 
-        // Notifications popover fits inside mobile viewport without horizontal overflow
         await page.getByTestId("topbar-notifications-btn").click();
         await expect(page.getByTestId("notifications-popover")).toBeVisible();
         await assertNoHorizontalOverflow(page, `${vp.name} - Notifications Popover`);
@@ -59,7 +89,7 @@ test.describe("TC-RESP: Multi-Viewport Responsive Matrix (7 Viewports × Partner
         await expect(drawer).toBeHidden();
       }
 
-      // 2. Full page Overview fits strictly inside viewport width with readable Property Selector & KPI bounding box
+      // 2. Full page Overview fits strictly inside viewport width
       await assertNoHorizontalOverflow(page, `${vp.name} - Active Overview`);
       const propBox = await page.getByTestId("topbar-property-select").boundingBox();
       expect(propBox).not.toBeNull();
@@ -83,7 +113,45 @@ test.describe("TC-RESP: Multi-Viewport Responsive Matrix (7 Viewports × Partner
       await page.keyboard.press("Escape");
       await expect(dialog).toBeHidden();
 
-      // 4. Zero-booking Stay Hotel H11 empty state also fits cleanly without overflow
+      // 4. Every Left-Menu Module renders with zero horizontal overflow
+      const moduleChecks: Array<{
+        label: string;
+        navId: string;
+        subId?: string;
+        viewTestId: string;
+      }> = [
+        { label: "Calendar", navId: "nav-item-calendar", viewTestId: "module-calendar-view" },
+        { label: "Payout", navId: "nav-item-payout", viewTestId: "module-payout-view" },
+        { label: "Rooms", navId: "nav-item-rooms", viewTestId: "module-rooms-view" },
+        { label: "Bidding", navId: "nav-item-bidding", viewTestId: "module-bidding-view" },
+        { label: "Messages", navId: "nav-item-messages", viewTestId: "module-messages-view" },
+        {
+          label: "Marketing Deals",
+          navId: "nav-item-marketing",
+          subId: "nav-sub-deals",
+          viewTestId: "module-marketing-view",
+        },
+        {
+          label: "Marketing Upsell",
+          navId: "nav-item-marketing",
+          subId: "nav-sub-upsell",
+          viewTestId: "module-marketing-view",
+        },
+      ];
+
+      for (const mod of moduleChecks) {
+        await navigateSectionAtViewport(
+          page,
+          vp.hasDesktopSidebar,
+          mod.navId,
+          mod.subId,
+        );
+        await expect(page.getByTestId(mod.viewTestId)).toBeVisible();
+        await assertNoHorizontalOverflow(page, `${vp.name} - Module ${mod.label}`);
+      }
+
+      // 5. Return to Overview & verify Stay Hotel H11 zero-booking state
+      await navigateSectionAtViewport(page, vp.hasDesktopSidebar, "nav-item-overview");
       await page.getByTestId("topbar-property-select").selectOption("stay_h11");
       await expect(page.getByTestId("bookings-empty-state")).toBeVisible();
       await assertNoHorizontalOverflow(page, `${vp.name} - Empty Bookings State`);

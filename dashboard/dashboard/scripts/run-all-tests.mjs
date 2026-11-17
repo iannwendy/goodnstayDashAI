@@ -13,6 +13,10 @@ const TABLE_FILES = [
   "partner_hub_config.json",
   "bid_records.json",
   "hub_inbox.json",
+  "room_inventory.json",
+  "payout_ledgers.json",
+  "bidding_operations.json",
+  "marketing_campaigns.json",
   "schema_manifest.json",
 ];
 
@@ -51,7 +55,7 @@ try {
     .map((f) => path.join("tests", "unit", f));
 
   const unitStatus = runStep(
-    "PHASE 1/2 — Unit, Master-Data v3.0 Contract, Overview Logic & TypeScript Build Gate",
+    "PHASE 1/2 — Unit, Master-Data v4.0 Contract, Business Modules Logic & TypeScript Build Gate",
     process.execPath,
     ["--import", "./tests/helpers/register-ts-alias.mjs", "--test", ...unitFiles],
   );

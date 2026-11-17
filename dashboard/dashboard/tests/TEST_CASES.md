@@ -1,6 +1,6 @@
 # Danh Mục Test Case Tự Động — Optibide Partner Hub (`dashboard/dashboard/tests/`)
 
-Tài liệu này liệt kê toàn bộ các nhóm Test Case tự động bảo vệ chất lượng cho **Optibide Partner Hub — Dashboard Overview** và bộ **Lean Master Data v3.0** (`partner_hub_config.json`, `bid_records.json`, `hub_inbox.json`, `schema_manifest.json`).  
+Tài liệu này liệt kê toàn bộ các nhóm Test Case tự động bảo vệ chất lượng cho **Optibide Partner Hub** (toàn bộ **8 hạng mục menu bên trái**: *Tổng quan hoạt động*, *Lịch đặt phòng*, *Đối soát doanh thu*, *Quản lý phòng*, *Quản lý báo giá*, *Tin nhắn khách hàng*, *Khuyến mãi & Tiếp thị* [`Ưu đãi giờ chót` & `Gói nâng hạng phòng`], *Đăng xuất / Đổi vai trò ca trực*) và bộ **Master Data v4.0** (7 bảng JSON đồng bộ 2 chiều: `partner_hub_config.json`, `bid_records.json`, `hub_inbox.json`, `room_inventory.json`, `payout_ledgers.json`, `bidding_operations.json`, `marketing_campaigns.json` + `schema_manifest.json`).  
 **Quy tắc bắt buộc**: Mỗi khi thêm tính năng mới hoặc chỉnh sửa dữ liệu/logic/giao diện hiện có, phải chạy lại toàn bộ `npm test` + `npm run build` và cập nhật danh mục mã Test Case vào tài liệu này.
 
 ---
@@ -17,15 +17,19 @@ Tài liệu này liệt kê toàn bộ các nhóm Test Case tự động bảo v
 
 ---
 
-## 2. Lean Master-Data v3.0 Contract & Referential Integrity (`tests/unit/master-data-contract.test.ts`)
+## 2. Master-Data v4.0 Contract & Cross-Table Referential Integrity (`tests/unit/master-data-contract.test.ts`)
 
 | Mã TC | Mô tả kiểm thử | Kỳ vọng chuẩn |
 | :--- | :--- | :--- |
-| `TC-DATA-01` | Kiểm tra đúng 3 bảng JSON tinh gọn (`partner_hub_config.json`, `bid_records.json`, `hub_inbox.json`) + `schema_manifest.json` (`3.0.0`) tại `master-data/` & `master-data/seed/`; cấm 12 file thừa v2.7 | Đồng bộ 100% giữa `master-data/` và `master-data/seed/`, `0` file rác cũ tồn tại |
-| `TC-DATA-02` | Đồng bộ ánh xạ bảng giữa `vite.config.ts` (`TABLE_FILE_MAP`) và `src/services/masterDataService.ts` (`STATIC_TABLE_PATHS`) | Khớp 100% cả 3 khóa `hubConfig`, `bidRecords`, `hubInbox` |
-| `TC-DATA-03` | Bất biến `partner_hub_config.json`: thương hiệu `Optibide`, tỷ giá `currencyRates`, hồ sơ `partnerUser` đa ngôn ngữ, 4 cơ sở (`br_mykhe`, `br_songhan`, `br_anthuong`, `stay_h11`), tổng phòng chuỗi `30 = 12+10+8`, tổng `previousPeriodRevenueVnd` khớp chính xác tổng 3 chi nhánh | Toàn vẹn cấu hình & toán học 100% (`9.8M`, `25.2M`, `54.6M`) |
-| `TC-DATA-04` | Bất biến `bid_records.json`: `143` bản ghi (`68` chuỗi L'amour + `75` Stay Hotel H11), khóa ngoại `propertyId`, đủ 4 nhóm trạng thái > 0 trên chuỗi L'amour (`29` chốt, `7` quá hạn, `28` chọn nơi khác, `4` tự hủy), và phiếu đặt phòng hoàn tất có đủ ngày nhận/trả, hạng phòng đa ngôn ngữ, `guestsCount`, `netRevenueVnd` | Không mồ côi khóa ngoại, không cần regex suy đoán ngày lưu trú hay số khách |
-| `TC-DATA-05` | Bất biến `hub_inbox.json`: tin nhắn khách hàng & thông báo vận hành đa ngôn ngữ (`vi`/`en`/`ko`) có `propertyId` / `scope` hợp lệ | Khớp khóa ngoại và đầy đủ bản dịch 3 ngôn ngữ |
+| `TC-DATA-01` | Kiểm tra đủ **7 bảng JSON Master Data v4.0** + `schema_manifest.json` (`4.0.0`) tại `master-data/` & `master-data/seed/`; cấm 12 file thừa v2.7 | Đồng bộ 100% giữa `master-data/` và `master-data/seed/`, `0` file rác cũ tồn tại |
+| `TC-DATA-02` | Đồng bộ ánh xạ 7 bảng giữa `vite.config.ts` (`TABLE_FILE_MAP`) và `src/services/masterDataService.ts` (`STATIC_TABLE_PATHS`) | Khớp 100% cả 7 khóa (`hubConfig`, `bidRecords`, `hubInbox`, `roomInventory`, `payoutLedgers`, `biddingOperations`, `marketingCampaigns`) |
+| `TC-DATA-03` | Bất biến `partner_hub_config.json`: thương hiệu `Optibide`, tỷ giá `currencyRates`, hồ sơ `partnerUser` + 2 vai trò `staffProfiles` (`manager`, `receptionist`), 4 cơ sở (`br_mykhe`, `br_songhan`, `br_anthuong`, `stay_h11`), tổng phòng chuỗi `30 = 12+10+8`, tổng `previousPeriodRevenueVnd` khớp chính xác 3 chi nhánh | Toàn vẹn cấu hình, phân quyền ca trực & toán học 100% (`9.8M`, `25.2M`, `54.6M`) |
+| `TC-DATA-04` | Bất biến `bid_records.json`: `143` bản ghi (`68` chuỗi L'amour + `75` Stay Hotel H11), đủ 4 nhóm trạng thái > 0 trên chuỗi L'amour, và 29 đơn hoàn tất (`#43..#71`) gắn khóa ngoại `roomTypeId`, `payoutBatchId`, `guestFullName`, `guestPhone`, `stayStatus` | Không mồ côi khóa ngoại chéo sang `room_inventory` & `payout_ledgers` |
+| `TC-DATA-05` | Bất biến `hub_inbox.json`: luồng hội thoại 2 chiều `thread`, mẫu phản hồi nhanh lễ tân `quickReplies` & thông báo vận hành đa ngôn ngữ (`0` tin nhắn khách trên `stay_h11`) | Đầy đủ bản dịch `vi`/`en`/`ko` cho từng lượt tin nhắn |
+| `TC-DATA-06` | Bất biến `room_inventory.json`: `15` hạng phòng & `48` phòng vật lý (`#101..#130`, `#201..#218`) khớp chính xác `roomsCount` từng cơ sở (`12+10+8+18`), khóa ngoại `activeBookingCode` & `calendarBlocks` hợp lệ | Không trùng số phòng vật lý, giá sàn bảo vệ `<=` giá niêm yết |
+| `TC-DATA-07` | Bất biến `payout_ledgers.json`: `4` tài khoản ngân hàng đã xác thực & `12` kỳ sao kê đối soát gom đúng 1-1 toàn bộ `29` đơn `#43..#71` | Tổng tiền thực nhận các kỳ sao kê bằng chính xác `66.360.000 ₫` |
+| `TC-DATA-08` | Bất biến `bidding_operations.json`: hàng đợi yêu cầu đặt phòng trực tiếp (bao gồm yêu cầu mở hàng cho `stay_h11`) & quy tắc Báo giá tự động 24/7 khớp `autoBidEnabled` từng cơ sở | Đầy đủ thông tin ngân sách khách đề xuất & giá sàn bảo vệ |
+| `TC-DATA-09` | Bất biến `marketing_campaigns.json`: chiến dịch *Ưu đãi giờ chót* (`flashDeals`) & *Gói nâng hạng / Dịch vụ cộng thêm* (`upsellOffers`) trên cả 4 cơ sở | `dealRateVnd < originalRateVnd`, đầy đủ bản dịch `vi`/`en`/`ko` |
 
 ---
 
@@ -42,7 +46,20 @@ Tài liệu này liệt kê toàn bộ các nhóm Test Case tự động bảo v
 
 ---
 
-## 4. Build & TypeScript Gate (`tests/unit/build-and-typecheck.test.ts`)
+## 4. Left-Menu Business Modules Analytics & Localization (`tests/unit/hub-modules-analytics.test.ts`)
+
+| Mã TC | Mô tả kiểm thử | Kỳ vọng chuẩn |
+| :--- | :--- | :--- |
+| `TC-MOD-01` | `buildCalendarModuleViewModel` cho sơ đồ phòng theo ngày (`7` ngày / `14` ngày / tuần trước) & bảng lễ tân đón khách qua `all`, `br_mykhe`, `stay_h11` | `30` phòng chuỗi (`12` tại Mỹ Khê, `18` tại `stay_h11` công suất `0%`), ánh xạ chính xác đơn `#71` vào phòng `#116` |
+| `TC-MOD-02` | `buildPayoutModuleViewModel` đối soát doanh thu thực nhận, tài khoản ngân hàng & sao kê từng kỳ | Tổng đối soát chuỗi khớp `66.360.000 ₫` (`paid + processing + upcoming === total`); `stay_h11` có tài khoản ngân hàng xác thực sẵn sàng nhận đơn đầu tiên |
+| `TC-MOD-03` | `buildRoomsModuleViewModel` phân loại trạng thái buồng phòng (`ready`, `occupied`, `dirty`, `maintenance`) & hạng phòng | Tổng 4 nhóm trạng thái = `30` phòng chuỗi (`12` hạng phòng) và `18` phòng `stay_h11` (`3` hạng phòng, `0` phòng đang ở) |
+| `TC-MOD-04` | `buildBiddingModuleViewModel` hàng đợi yêu cầu trực tiếp, quy tắc AutoBid 24/7 & tỷ lệ chốt lịch sử | Tách chuẩn lượt `waiting_offer` / `offer_sent`; `stay_h11` có `2` yêu cầu đang chờ báo giá để chốt đơn mở hàng |
+| `TC-MOD-05` | `buildMessagesModuleViewModel` & `buildMarketingModuleViewModel` đa ngôn ngữ (`vi`/`en`/`ko`) & đa tiền tệ (`VND`/`KRW`/`USD`) | Không rò rỉ chuỗi tiếng Việt (`"Đà Nẵng"`, `"khách"`) sang chế độ tiếng Anh / tiếng Hàn |
+| `TC-MOD-06` | Kiểm duyệt từ điển các phân hệ menu bên trái `getModulesDictionary("vi")` | `100%` ngôn ngữ thuần kinh doanh khách sạn, `0` thuật ngữ kỹ thuật nội bộ |
+
+---
+
+## 5. Build & TypeScript Gate (`tests/unit/build-and-typecheck.test.ts`)
 
 | Mã TC | Mô tả kiểm thử | Kỳ vọng chuẩn |
 | :--- | :--- | :--- |
@@ -50,39 +67,54 @@ Tài liệu này liệt kê toàn bộ các nhóm Test Case tự động bảo v
 
 ---
 
-## 5. REST API v3.0, Lưu Trữ & Fallback Offline (`tests/e2e/api-master-data.spec.ts`)
+## 6. REST API v4.0 (7 Bảng), Lưu Trữ & Fallback Offline (`tests/e2e/api-master-data.spec.ts`)
 
 | Mã TC | Mô tả kiểm thử | Kỳ vọng chuẩn |
 | :--- | :--- | :--- |
-| `TC-API-01..05` | `GET /api/master-data` (3 bảng tinh gọn), `PUT /api/master-data/hubInbox`, chặn HTTP `400` bảng lạ / bảng cũ đã xóa (`botRules`, `hotelProfile`) / JSON lỗi & `POST /api/master-data/reset` | Đọc/ghi chính xác trên 3 bảng v3.0 và khôi phục sạch về `master-data/seed/*.json` |
-| `TC-API-06..07` | Static `/master-data/partner_hub_config.json`, `/master-data/schema_manifest.json` & fallback `localStorage` (`gns_partner_hub_prefs_v1`) khi ngắt `/api/master-data` | Trang Tổng quan vẫn hiển thị đầy đủ biểu đồ/KPI và lưu tùy chọn tiền tệ/ngôn ngữ ổn định |
+| `TC-API-01..05` | `GET /api/master-data` (7 bảng v4.0), `PUT /api/master-data/hubInbox` & `/roomInventory`, chặn HTTP `400` bảng lạ / bảng cũ đã xóa (`botRules`, `hotelProfile`) / JSON lỗi & `POST /api/master-data/reset` | Đọc/ghi bền vững trên 7 bảng Master Data v4.0 và khôi phục sạch về `master-data/seed/*.json` |
+| `TC-API-06..07` | Static `/master-data/*.json` v4.0, `/master-data/schema_manifest.json` & fallback `localStorage` khi ngắt `/api/master-data` | Cả trang Tổng quan và các phân hệ menu trái vẫn nạp đầy đủ từ static JSON và lưu tùy chọn ổn định |
 | `TC-API-08` | Hỗ trợ truy cập qua tên miền Tunnel (`.ts.net`, `.trycloudflare.com`) | Trả HTTP `200` cho cả giao diện và API, không bị chặn `403` |
 
 ---
 
-## 6. Thanh Menu Trái, Tiện Ích Đầu Trang, Hộp Thư/Thông Báo, Trợ Lý AI & Phiếu Đặt Phòng (`tests/e2e/buttons-and-modals.spec.ts`)
+## 7. Thanh Menu Trái, Tiện Ích Đầu Trang, Hộp Thư/Thông Báo, Trợ Lý AI & Phiếu Đặt Phòng (`tests/e2e/buttons-and-modals.spec.ts`)
 
 | Mã TC | Mô tả kiểm thử | Kỳ vọng chuẩn |
 | :--- | :--- | :--- |
-| `TC-UI-01..03` | Thu gọn / mở rộng thanh menu trái, mở menu con *Khuyến mãi & Tiếp thị*, thông báo lịch sự cho các mục menu mở rộng | Chuyển đổi mượt `data-collapsed`, hiển thị thông báo thương mại lịch sự và giữ nguyên trang Tổng quan |
+| `TC-UI-01..03` | Thu gọn / mở rộng thanh menu trái, mở menu con *Khuyến mãi & Tiếp thị*, điều hướng thực sang *Lịch đặt phòng* và quay về *Tổng quan* | Chuyển đổi mượt `data-collapsed` và điều hướng trực tiếp giữa các phân hệ |
 | `TC-UI-04..06` & `TC-UI-11` | Nút Trợ giúp nhanh (`?`), Popover Tin nhắn khách hàng (`hub_inbox.messages`) & Popover Chuông thông báo vận hành (`hub_inbox.notifications`) | Hiển thị tin nhắn thực từ đơn `#71`, `#69` và thông báo vận hành theo đúng cơ sở/ngôn ngữ; đóng sạch bằng click / `Escape` |
 | `TC-UI-07..09` | Chú thích `(i)` trên thẻ KPI & thu gọn / mở rộng / làm mới cả 2 hộp `Trợ lý AI goodNstay` | Bật/tắt giải thích dễ hiểu trên KPI và đóng/mở gọn các thẻ lời khuyên AI |
 | `TC-UI-10` | Nút `Xem chi tiết` (`View detail`) trên bảng *Đơn đặt phòng gần đây* | Mở phiếu đặt phòng `#71` đầy đủ cơ sở, hạng phòng, số khách (`2 khách`), ngày nhận/trả, tiền thực nhận và đóng mượt bằng `Escape` |
 
 ---
 
-## 7. Luồng Nghiệp Vụ Kinh Doanh, Đa Chi Nhánh Động, Đa Ngôn Ngữ/Tiền Tệ & Phân Trang (`tests/e2e/workflows-and-rbac.spec.ts`)
+## 8. E2E Toàn Bộ Các Phân Hệ Menu Bên Trái & Đồng Bộ Metadata Thực (`tests/e2e/left-menu-modules.spec.ts`)
+
+| Mã TC | Mô tả kiểm thử | Kỳ vọng chuẩn |
+| :--- | :--- | :--- |
+| `TC-LEFT-01` | **Lịch đặt phòng (`calendar`)**: Đổi khung lịch `7d`/`14d`, bấm ô phòng `#116` ngày `06/11` mở phiếu đơn `#71`, bấm ô trống `#101` ngày `09/11` khóa phòng khách lẻ & mở khóa lại | Ghi trực tiếp vào `room_inventory.json` (`calendarBlocks`) qua REST API |
+| `TC-LEFT-02` | **Đối soát doanh thu (`payout`)**: Kiểm tra tổng `+66,4tr ₫`, xem bảng kê chi tiết kỳ `STL-MK-11B`, yêu cầu rút tiền sớm (`upcoming -> processing`), cập nhật số tài khoản ngân hàng & kiểm tra trạng thái `stay_h11` | Lưu bền vững vào `payout_ledgers.json` |
+| `TC-LEFT-03` | **Quản lý phòng (`rooms`)**: Lọc phòng chờ dọn, xác nhận phòng `#101` đã dọn sạch (`dirty -> ready`), chỉnh sửa giá sàn bảo vệ hạng phòng `RT-MK-DLX` | Đồng bộ trực tiếp vào `room_inventory.json` |
+| `TC-LEFT-04` | **Quản lý báo giá (`bidding`)**: Gửi báo giá cạnh tranh cho yêu cầu `REQ-9018` (`waiting_offer -> offer_sent`), bỏ qua `REQ-9017`, chỉnh giá sàn & bật/tắt quy tắc AutoBid 24/7, kiểm tra yêu cầu mở hàng tại `stay_h11` | Đồng bộ vào `bidding_operations.json` & `partner_hub_config.json`, giảm badge đếm trên menu |
+| `TC-LEFT-05` | **Tin nhắn khách hàng (`messages`)**: Mở hội thoại `MSG-01` (`#71`), xem phiếu đặt phòng liên kết, chèn mẫu phản hồi nhanh `QR-PARKING` & gửi tin nhắn cho khách | Ghi lượt trả lời mới vào `hub_inbox.json`, chuyển trạng thái `replied` & giảm số tin chưa đọc |
+| `TC-LEFT-06` | **Khuyến mãi & Tiếp thị (`marketing_deals` & `marketing_upsell`)**: Tạo mới *Ưu đãi giờ chót* và tạo mới *Gói nâng hạng / Dịch vụ cộng thêm* qua submenu bên trái | Lưu trực tiếp vào `marketing_campaigns.json` và hiển thị ngay trên lưới chiến dịch |
+| `TC-LEFT-07` | **Đăng xuất & Bàn giao ca trực RBAC (`logout`)**: Đổi vai trò sang `Lễ tân ca trực` (`receptionist`) -> chặn sửa tài khoản ngân hàng & giá sàn với thông báo lịch sự; đổi lại `Quản lý` -> Đăng xuất ra màn hình khóa ca & Đăng nhập lại | Phân quyền nghiệp vụ chuẩn xác giữa Quản lý và Lễ tân |
+| `TC-LEFT-08` | **Đa ngôn ngữ (`en` + `KRW`, `ko` + `USD`) trên các phân hệ menu trái** | Đổi sang tiếng Anh (`₩`) và tiếng Hàn (`$`) đồng bộ 100%, không rò rỉ nhãn tiếng Việt |
+
+---
+
+## 9. Luồng Nghiệp Vụ Trang Tổng Quan, Đa Chi Nhánh Động & Phân Trang (`tests/e2e/workflows-and-rbac.spec.ts`)
 
 | Mã TC | Mô tả kiểm thử | Kỳ vọng chuẩn |
 | :--- | :--- | :--- |
 | `TC-FLOW-01..02` | Cổng kiểm duyệt ngôn ngữ thuần kinh doanh, hiển thị mặc định 29 đơn hoàn tất & nhóm *Khách sạn tự hủy* (`4` lượt) | `0` thuật ngữ kỹ thuật; đủ cả 4 nhóm trạng thái báo giá có số liệu thực |
 | `TC-FLOW-03..05` & `TC-FLOW-11` | Đổi kỳ thời gian (`30d` -> `7d` -> `today`) & đổi chi nhánh (`br_mykhe` -> `br_anthuong` -> `stay_h11`) | Số đơn cập nhật `29 -> 13 -> 5`; điểm đánh giá & ELO nhảy động theo từng chi nhánh (`1680 -> 1720 -> 1610 -> 800`) |
-| `TC-FLOW-06..08` & `TC-FLOW-12` | Chuyển đổi Ngôn ngữ (`vi`/`en`/`ko`) + Tiền tệ (`VND`/`KRW`/`USD`), hồ sơ người dùng động (`Nguyễn Bảo Minh` / `Kim Ha-yoon` / `김하윤`) & Phiếu đặt phòng gia đình `#69` (`4 guests`) | Đồng bộ 100% nhãn, tiền tệ, tên cơ sở tiếng Anh (`L'amour An Thuong · Ngu Hanh Son`, không sót tiếng Việt) và đúng `4 guests` |
+| `TC-FLOW-06..08` & `TC-FLOW-12` | Chuyển đổi Ngôn ngữ (`vi`/`en`/`ko`) + Tiền tệ (`VND`/`KRW`/`USD`), hồ sơ người dùng động & Phiếu đặt phòng gia đình `#69` (`4 guests`) | Đồng bộ 100% nhãn, tiền tệ, tên cơ sở tiếng Anh và đúng `4 guests` |
 | `TC-FLOW-09..10` | Phân trang bảng *Đơn đặt phòng gần đây* (`5` / `10` dòng/trang, `<`, `>`) & tự động kẹp về trang 1 khi thu hẹp kỳ lọc | Đang ở trang 3 (`11–15`) của kỳ 30 ngày, chuyển sang `Hôm nay` (`5` đơn) tự động đưa về `1–5` |
 
 ---
 
-## 8. Ma Trận Responsive 7 Kích Thước Màn Hình (`tests/e2e/responsive-matrix.spec.ts`)
+## 10. Ma Trận Responsive 7 Kích Thước Màn Hình × Toàn Bộ Menu Bên Trái (`tests/e2e/responsive-matrix.spec.ts`)
 
 Kiểm thử tự động trên đủ **7 kích thước màn hình chuẩn**:
 - `1440×900` (Desktop Wide)
@@ -94,6 +126,6 @@ Kiểm thử tự động trên đủ **7 kích thước màn hình chuẩn**:
 - `360×800` (Compact Android)
 
 **Tiêu chuẩn bắt buộc trên mọi viewport**:
-1. `document.documentElement.scrollWidth <= window.innerWidth` trên cả trạng thái có đơn hoàn tất, trạng thái cơ sở mới trống đơn (`stay_h11`), popover thông báo, ngăn kéo menu di động và hộp thoại `Phiếu chi tiết đặt phòng`.
+1. `document.documentElement.scrollWidth <= window.innerWidth` trên **trang Tổng quan** (cả có đơn & `stay_h11` trống đơn), **toàn bộ 7 màn hình phân hệ menu trái** (`Calendar`, `Payout`, `Rooms`, `Bidding`, `Messages`, `Marketing Deals`, `Marketing Upsell`), popover thông báo, ngăn kéo menu di động và `BookingDetailModal`.
 2. `>= 1024px` hiển thị thanh menu trái cố định (`sidebar-nav`); `< 1024px` chuyển sang nút mở ngăn kéo trượt (`mobile-menu-btn` -> `mobile-sidebar-drawer`).
 3. `0` lỗi `console.error` và `0` lỗi `pageerror`.

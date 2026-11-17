@@ -18,6 +18,10 @@ const TABLE_FILE_MAP: Record<string, string> = {
   hubConfig: "partner_hub_config.json",
   bidRecords: "bid_records.json",
   hubInbox: "hub_inbox.json",
+  roomInventory: "room_inventory.json",
+  payoutLedgers: "payout_ledgers.json",
+  biddingOperations: "bidding_operations.json",
+  marketingCampaigns: "marketing_campaigns.json",
 };
 
 function readAllMasterTables() {

@@ -28,7 +28,12 @@
       "breakfast",
       "pool",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Minh Anh",
+    "guestPhone": "+84 905 412 819",
+    "roomTypeId": "RT-MK-DLX",
+    "stayStatus": "arriving_today",
+    "payoutBatchId": "STL-MK-11B"
   },
   {
     "id": "CRQ-8939",
@@ -58,7 +63,12 @@
     "amenities": [
       "wifi",
       "elevator"
-    ]
+    ],
+    "guestFullName": "Hoang Phuc",
+    "guestPhone": "+84 913 628 405",
+    "roomTypeId": "RT-MK-SUP",
+    "stayStatus": "arriving_today",
+    "payoutBatchId": "STL-MK-11B"
   },
   {
     "id": "CRQ-8938",
@@ -89,7 +99,12 @@
       "breakfast",
       "pool",
       "parking"
-    ]
+    ],
+    "guestFullName": "Hoang Nam",
+    "guestPhone": "+84 903 884 210",
+    "roomTypeId": "RT-AT-FAM",
+    "stayStatus": "arriving_today",
+    "payoutBatchId": "STL-AT-11B"
   },
   {
     "id": "CRQ-8936",
@@ -120,7 +135,12 @@
       "breakfast",
       "wifi",
       "parking"
-    ]
+    ],
+    "guestFullName": "Park Ji-hoon",
+    "guestPhone": "+82 10-4821-9034",
+    "roomTypeId": "RT-SH-DLX",
+    "stayStatus": "arriving_today",
+    "payoutBatchId": "STL-SH-11B"
   },
   {
     "id": "CRQ-8934",
@@ -151,7 +171,12 @@
       "breakfast",
       "pool",
       "late_checkout"
-    ]
+    ],
+    "guestFullName": "Choi Soo-bin",
+    "guestPhone": "+82 10-7390-1128",
+    "roomTypeId": "RT-MK-EXE",
+    "stayStatus": "arriving_today",
+    "payoutBatchId": "STL-MK-11B"
   },
   {
     "id": "CRQ-8937",
@@ -251,7 +276,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Quoc Bao",
+    "guestPhone": "+84 988 301 742",
+    "roomTypeId": "RT-SH-SUP",
+    "stayStatus": "in_house",
+    "payoutBatchId": "STL-SH-11A"
   },
   {
     "id": "CRQ-8915",
@@ -281,7 +311,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Emma Laurent",
+    "guestPhone": "+33 6 42 81 90 15",
+    "roomTypeId": "RT-AT-DLX",
+    "stayStatus": "in_house",
+    "payoutBatchId": "STL-AT-11A"
   },
   {
     "id": "CRQ-8904",
@@ -311,7 +346,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Thanh Tung",
+    "guestPhone": "+84 909 517 336",
+    "roomTypeId": "RT-SH-FAM",
+    "stayStatus": "in_house",
+    "payoutBatchId": "STL-SH-11A"
   },
   {
     "id": "CRQ-8899",
@@ -341,7 +381,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Kim Min-seo",
+    "guestPhone": "+82 10-6104-5582",
+    "roomTypeId": "RT-MK-SUP",
+    "stayStatus": "checked_out",
+    "payoutBatchId": "STL-MK-11A"
   },
   {
     "id": "CRQ-8892",
@@ -371,7 +416,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Gia Huy",
+    "guestPhone": "+84 935 208 614",
+    "roomTypeId": "RT-MK-DLX",
+    "stayStatus": "checked_out",
+    "payoutBatchId": "STL-MK-11A"
   },
   {
     "id": "CRQ-8886",
@@ -401,7 +451,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Daniel Carter",
+    "guestPhone": "+1 415-890-2314",
+    "roomTypeId": "RT-SH-EXE",
+    "stayStatus": "checked_out",
+    "payoutBatchId": "STL-SH-10B"
   },
   {
     "id": "CRQ-8880",
@@ -431,7 +486,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Thu Trang",
+    "guestPhone": "+84 977 492 108",
+    "roomTypeId": "RT-MK-SUP",
+    "stayStatus": "checked_out",
+    "payoutBatchId": "STL-MK-10B"
   },
   {
     "id": "CRQ-8874",
@@ -461,7 +521,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Lee Hyun-woo",
+    "guestPhone": "+82 10-3928-7741",
+    "roomTypeId": "RT-MK-DLX",
+    "stayStatus": "checked_out",
+    "payoutBatchId": "STL-MK-10B"
   },
   {
     "id": "CRQ-8868",
@@ -491,7 +556,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Duc Anh",
+    "guestPhone": "+84 912 745 920",
+    "roomTypeId": "RT-SH-SUP",
+    "stayStatus": "checked_out",
+    "payoutBatchId": "STL-SH-10B"
   },
   {
     "id": "CRQ-8862",
@@ -521,7 +591,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Ngoc Anh",
+    "guestPhone": "+84 906 118 540",
+    "roomTypeId": "RT-MK-FAM",
+    "stayStatus": "checked_out",
+    "payoutBatchId": "STL-MK-10B"
   },
   {
     "id": "CRQ-8857",
@@ -551,7 +626,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Yoon Seo-yeon",
+    "guestPhone": "+82 10-8451-3209",
+    "roomTypeId": "RT-SH-DLX",
+    "stayStatus": "checked_out",
+    "payoutBatchId": "STL-SH-10B"
   },
   {
     "id": "CRQ-8851",
@@ -581,7 +661,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Quoc Khanh",
+    "guestPhone": "+84 938 660 219",
+    "roomTypeId": "RT-AT-SUP",
+    "stayStatus": "checked_out",
+    "payoutBatchId": "STL-AT-10B"
   },
   {
     "id": "CRQ-8846",
@@ -611,7 +696,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Olivia Chen",
+    "guestPhone": "+65 9182 4407",
+    "roomTypeId": "RT-AT-EXE",
+    "stayStatus": "checked_out",
+    "payoutBatchId": "STL-AT-10B"
   },
   {
     "id": "CRQ-8841",
@@ -641,7 +731,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Minh Khoi",
+    "guestPhone": "+84 904 771 392",
+    "roomTypeId": "RT-SH-DLX",
+    "stayStatus": "checked_out",
+    "payoutBatchId": "STL-SH-10B"
   },
   {
     "id": "CRQ-8838",
@@ -671,7 +766,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Thanh Thao",
+    "guestPhone": "+84 983 215 804",
+    "roomTypeId": "RT-AT-SUP",
+    "stayStatus": "checked_out",
+    "payoutBatchId": "STL-AT-10B"
   },
   {
     "id": "CRQ-8836",
@@ -701,7 +801,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Jung Woo-sung",
+    "guestPhone": "+82 10-5520-8193",
+    "roomTypeId": "RT-AT-DLX",
+    "stayStatus": "checked_out",
+    "payoutBatchId": "STL-AT-10A"
   },
   {
     "id": "CRQ-8835",
@@ -731,7 +836,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Kang Ha-neul",
+    "guestPhone": "+82 10-9012-6438",
+    "roomTypeId": "RT-MK-SUP",
+    "stayStatus": "checked_out",
+    "payoutBatchId": "STL-MK-10A"
   },
   {
     "id": "CRQ-8829",
@@ -761,7 +871,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Quang Vinh",
+    "guestPhone": "+84 918 339 470",
+    "roomTypeId": "RT-MK-FAM",
+    "stayStatus": "checked_out",
+    "payoutBatchId": "STL-MK-10A"
   },
   {
     "id": "CRQ-8822",
@@ -791,7 +906,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Hai Dang",
+    "guestPhone": "+84 902 984 115",
+    "roomTypeId": "RT-SH-SUP",
+    "stayStatus": "checked_out",
+    "payoutBatchId": "STL-SH-10A"
   },
   {
     "id": "CRQ-8816",
@@ -821,7 +941,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "My Linh",
+    "guestPhone": "+84 932 510 786",
+    "roomTypeId": "RT-MK-DLX",
+    "stayStatus": "checked_out",
+    "payoutBatchId": "STL-MK-10A"
   },
   {
     "id": "CRQ-8810",
@@ -851,7 +976,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Lucas Meyer",
+    "guestPhone": "+49 171 4829103",
+    "roomTypeId": "RT-AT-SUP",
+    "stayStatus": "checked_out",
+    "payoutBatchId": "STL-AT-10A"
   },
   {
     "id": "CRQ-8804",
@@ -881,7 +1011,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Bao Chau",
+    "guestPhone": "+84 907 624 891",
+    "roomTypeId": "RT-MK-EXE",
+    "stayStatus": "checked_out",
+    "payoutBatchId": "STL-MK-10A"
   },
   {
     "id": "CRQ-8798",
@@ -911,7 +1046,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Han Ji-min",
+    "guestPhone": "+82 10-2749-6012",
+    "roomTypeId": "RT-SH-DLX",
+    "stayStatus": "checked_out",
+    "payoutBatchId": "STL-SH-10A"
   },
   {
     "id": "CRQ-8792",
@@ -941,7 +1081,12 @@
     "amenities": [
       "breakfast",
       "wifi"
-    ]
+    ],
+    "guestFullName": "Tuan Kiet",
+    "guestPhone": "+84 914 803 257",
+    "roomTypeId": "RT-MK-SUP",
+    "stayStatus": "checked_out",
+    "payoutBatchId": "STL-MK-10A"
   },
   {
     "id": "CRQ-8750",

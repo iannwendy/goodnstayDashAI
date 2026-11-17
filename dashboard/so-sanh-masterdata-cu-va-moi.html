@@ -1,0 +1,2512 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>So sánh Master Data (v2.7.0 → v3.0.0) — goodNstay / Optibide Partner Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-page: #F8F9FB;
+      --bg-card: #FFFFFF;
+      --bg-subtle: #F1F5F9;
+      --bg-indigo-soft: #EEF2FF;
+      --bg-emerald-soft: #ECFDF5;
+      --bg-amber-soft: #FFFBEB;
+      --bg-rose-soft: #FEF2F2;
+      --bg-sky-soft: #F0F9FF;
+      --bg-purple-soft: #F5F3FF;
+
+      --text-main: #0F172A;
+      --text-secondary: #334155;
+      --text-muted: #64748B;
+
+      --indigo-600: #4F46E5;
+      --indigo-700: #4338CA;
+      --indigo-200: #C7D2FE;
+
+      --emerald-600: #16A34A;
+      --emerald-700: #15803D;
+      --emerald-200: #BBF7D0;
+
+      --amber-600: #D97706;
+      --amber-700: #B45309;
+      --amber-200: #FDE68A;
+
+      --rose-600: #DC2626;
+      --rose-700: #B91C1C;
+      --rose-200: #FECACA;
+
+      --sky-600: #0284C7;
+      --sky-700: #0369A1;
+      --sky-200: #BAE6FD;
+
+      --purple-600: #7C3AED;
+      --purple-700: #6D28D9;
+      --purple-200: #DDD6FE;
+
+      --border-light: #E2E8F0;
+      --border-strong: #CBD5E1;
+
+      --radius-xl: 18px;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
+      --shadow-md: 0 8px 24px -6px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: clip;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: "Be Vietnam Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 14.5px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: clip;
+    }
+
+    code, pre, .mono {
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    code {
+      font-size: 0.86em;
+      background: #F1F5F9;
+      color: #1E293B;
+      padding: 2px 6px;
+      border-radius: 5px;
+      border: 1px solid #E2E8F0;
+      word-break: break-word;
+    }
+
+    /* Top Cross-Report Navigation Bar */
+    .cross-nav {
+      background: #0F172A;
+      color: #F8FAFC;
+      border-bottom: 1px solid #1E293B;
+      padding: 10px 16px;
+    }
+
+    .cross-nav-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .cross-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 13.5px;
+      letter-spacing: -0.01em;
+      color: #FFFFFF;
+    }
+
+    .cross-brand-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #4F46E5 0%, #2563EB 100%);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 13px;
+      color: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(79, 70, 229, 0.4);
+      flex-shrink: 0;
+    }
+
+    .cross-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cross-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 9px;
+      font-size: 12.5px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.18s ease;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #CBD5E1;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .cross-link:hover {
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.28);
+    }
+
+    .cross-link.active {
+      background: #4F46E5;
+      color: #FFFFFF;
+      border-color: #6366F1;
+      box-shadow: 0 2px 10px rgba(79, 70, 229, 0.45);
+    }
+
+    /* Sticky Section Jump Bar */
+    .sticky-subnav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-light);
+      padding: 8px 16px;
+    }
+
+    .sticky-subnav-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .jump-list {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding-bottom: 2px;
+    }
+
+    .jump-list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .jump-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-decoration: none;
+      white-space: nowrap;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .jump-pill:hover {
+      background: var(--bg-subtle);
+      color: var(--text-main);
+    }
+
+    .jump-pill.current {
+      background: var(--bg-indigo-soft);
+      color: var(--indigo-600);
+      border-color: var(--indigo-200);
+    }
+
+    .print-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-light);
+      background: #FFFFFF;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .print-btn:hover {
+      border-color: var(--indigo-600);
+      color: var(--indigo-600);
+      background: var(--bg-indigo-soft);
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px 16px 76px;
+    }
+
+    @media (min-width: 640px) {
+      .container {
+        padding: 36px 24px 88px;
+      }
+    }
+
+    /* Hero Header */
+    .hero-card {
+      background: linear-gradient(135deg, #FFFFFF 0%, #F5F7FF 100%);
+      border: 1px solid var(--indigo-200);
+      border-radius: var(--radius-xl);
+      padding: 28px 22px;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 34px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (min-width: 768px) {
+      .hero-card {
+        padding: 36px 40px;
+      }
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: var(--bg-indigo-soft);
+      border: 1px solid var(--indigo-200);
+      color: var(--indigo-700);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .hero-title {
+      margin: 0 0 12px;
+      font-size: clamp(22px, 3.2vw, 33px);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.25;
+      color: var(--text-main);
+    }
+
+    .hero-title .accent {
+      color: var(--indigo-600);
+    }
+
+    .hero-lead {
+      margin: 0 0 20px;
+      font-size: 15px;
+      color: var(--text-secondary);
+      max-width: 980px;
+      line-height: 1.7;
+    }
+
+    .meta-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-top: 16px;
+      border-top: 1px dashed var(--indigo-200);
+    }
+
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 11px;
+      border-radius: 8px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-light);
+      font-size: 12.2px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .meta-chip strong {
+      color: var(--text-main);
+      font-weight: 700;
+    }
+
+    /* Section Structure */
+    .report-section {
+      margin-bottom: 44px;
+      scroll-margin-top: 68px;
+    }
+
+    .section-header {
+      margin-bottom: 20px;
+    }
+
+    .section-num {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--indigo-600);
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      margin: 0 0 8px;
+      font-size: clamp(19px, 2.4vw, 24px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+    }
+
+    .section-desc {
+      margin: 0;
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 920px;
+    }
+
+    /* Semantic Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3.5px 9.5px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      line-height: 1.3;
+    }
+
+    .badge-added {
+      background: var(--bg-emerald-soft);
+      color: var(--emerald-700);
+      border: 1px solid var(--emerald-200);
+    }
+
+    .badge-modified {
+      background: var(--bg-sky-soft);
+      color: var(--sky-700);
+      border: 1px solid var(--sky-200);
+    }
+
+    .badge-amber {
+      background: var(--bg-amber-soft);
+      color: var(--amber-700);
+      border: 1px solid var(--amber-200);
+    }
+
+    .badge-deleted {
+      background: var(--bg-rose-soft);
+      color: var(--rose-700);
+      border: 1px solid var(--rose-200);
+    }
+
+    .badge-system {
+      background: var(--bg-purple-soft);
+      color: var(--purple-700);
+      border: 1px solid var(--purple-200);
+    }
+
+    .badge-slate {
+      background: #F1F5F9;
+      color: #334155;
+      border: 1px solid #CBD5E1;
+    }
+
+    /* Grids */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    @media (min-width: 860px) {
+      .grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    @media (min-width: 600px) {
+      .grid-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1100px) {
+      .grid-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    /* Architecture Paradigm Cards */
+    .arch-compare-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      padding: 22px;
+      border: 1.5px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .arch-compare-card.old-arch {
+      border-top: 5px solid #64748B;
+    }
+
+    .arch-compare-card.new-arch {
+      border-color: var(--indigo-200);
+      border-top: 5px solid var(--indigo-600);
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFBFF 100%);
+      box-shadow: var(--shadow-md);
+    }
+
+    .arch-string-box {
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: #0F172A;
+      color: #E2E8F0;
+      font-size: 12px;
+      line-height: 1.55;
+      overflow-x: auto;
+    }
+
+    .arch-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--text-secondary);
+      font-size: 13.5px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    /* KPI Cards */
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      transition: transform 0.16s ease, border-color 0.16s ease;
+    }
+
+    .kpi-card:hover {
+      border-color: var(--indigo-200);
+      transform: translateY(-1px);
+    }
+
+    .kpi-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .kpi-transition {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 2px 0;
+    }
+
+    .kpi-old {
+      font-size: 15px;
+      font-weight: 600;
+      color: #64748B;
+      text-decoration: line-through;
+      text-decoration-color: #94A3B8;
+    }
+
+    .kpi-arrow {
+      color: var(--indigo-600);
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    .kpi-new {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+
+    .kpi-sub {
+      margin: 0;
+      font-size: 12.4px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    /* Section 2: Visual Architecture Mapping */
+    .mapping-board {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 22px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .mapping-lanes {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .mapping-lane {
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      background: #FCFDFF;
+    }
+
+    .mapping-lane.lane-consolidate {
+      border-left: 4px solid var(--sky-600);
+      background: linear-gradient(90deg, #F0F9FF 0%, #FFFFFF 36%);
+    }
+
+    .mapping-lane.lane-new {
+      border-left: 4px solid var(--emerald-600);
+      background: linear-gradient(90deg, #ECFDF5 0%, #FFFFFF 36%);
+    }
+
+    .mapping-lane.lane-deleted {
+      border-left: 4px solid var(--rose-600);
+      background: linear-gradient(90deg, #FEF2F2 0%, #FFFFFF 36%);
+    }
+
+    .lane-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    @media (min-width: 900px) {
+      .lane-grid {
+        grid-template-columns: minmax(0, 1.15fr) 120px minmax(0, 1.15fr);
+      }
+    }
+
+    .file-pill-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .file-node {
+      background: #FFFFFF;
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .file-node.target-new {
+      border: 1.5px solid var(--indigo-200);
+      background: #FFFFFF;
+    }
+
+    .file-node.target-added {
+      border: 1.5px solid var(--emerald-200);
+      background: #FFFFFF;
+    }
+
+    .file-node.deleted-node {
+      border-color: #FECACA;
+      background: #FFFBFB;
+    }
+
+    .file-name {
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--text-main);
+    }
+
+    .file-meta {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    .flow-connector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 4px;
+      padding: 6px;
+      color: var(--indigo-600);
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
+    .flow-arrow-bar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--bg-indigo-soft);
+      border: 1px solid var(--indigo-200);
+      color: var(--indigo-700);
+      font-size: 11.5px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .deleted-mini-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    @media (min-width: 640px) {
+      .deleted-mini-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1040px) {
+      .deleted-mini-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    /* Section 3: Interactive Filter Toolbar & Audit Blocks */
+    .filter-toolbar {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    @media (min-width: 920px) {
+      .filter-toolbar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .filter-btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--border-light);
+      background: #FFFFFF;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .filter-btn:hover {
+      background: var(--bg-subtle);
+      color: var(--text-main);
+    }
+
+    .filter-btn.active {
+      background: var(--indigo-600);
+      color: #FFFFFF;
+      border-color: var(--indigo-600);
+      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.28);
+    }
+
+    .search-box-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .search-input {
+      min-width: 240px;
+      flex: 1;
+      padding: 8px 13px;
+      border-radius: 9px;
+      border: 1px solid var(--border-strong);
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--text-main);
+      background: #FFFFFF;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--indigo-600);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.14);
+    }
+
+    .match-counter {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--indigo-700);
+      background: var(--bg-indigo-soft);
+      border: 1px solid var(--indigo-200);
+      padding: 5px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .audit-group {
+      margin-bottom: 26px;
+    }
+
+    .audit-group-title {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 14px;
+      font-size: 16.5px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .audit-card-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 860px) {
+      .audit-card-grid.two-col {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .audit-item-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .audit-item-card.added-border {
+      border-top: 4px solid var(--emerald-600);
+    }
+
+    .audit-item-card.modified-border {
+      border-top: 4px solid var(--sky-600);
+    }
+
+    .audit-item-card.system-border {
+      border-top: 4px solid var(--purple-600);
+    }
+
+    .audit-item-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .audit-item-heading {
+      margin: 0;
+      font-size: 15.5px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .audit-item-body {
+      margin: 0 0 12px;
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    .audit-points {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 13.2px;
+      color: var(--text-secondary);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    /* Responsive Tables */
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      background: var(--bg-card);
+      box-shadow: var(--shadow-sm);
+    }
+
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+      font-size: 13px;
+    }
+
+    table.data-table th {
+      background: #F8FAFC;
+      color: var(--text-main);
+      font-weight: 700;
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 1.5px solid var(--border-light);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    table.data-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-light);
+      vertical-align: top;
+      color: var(--text-secondary);
+      line-height: 1.58;
+    }
+
+    table.data-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    table.data-table tbody tr:hover td {
+      background: #FAFBFD;
+    }
+
+    /* Section 4: Side-by-Side JSON Schema Diff Tabs */
+    .diff-shell {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+
+    .diff-tabs-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 12px 16px;
+      background: #F8FAFC;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .diff-tab-btn {
+      padding: 8px 14px;
+      border-radius: 9px;
+      border: 1px solid var(--border-light);
+      background: #FFFFFF;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .diff-tab-btn:hover {
+      border-color: var(--indigo-200);
+      color: var(--indigo-700);
+    }
+
+    .diff-tab-btn.active {
+      background: var(--indigo-600);
+      color: #FFFFFF;
+      border-color: var(--indigo-600);
+    }
+
+    .diff-panel {
+      display: none;
+      padding: 20px;
+    }
+
+    .diff-panel.active {
+      display: block;
+    }
+
+    .diff-note-banner {
+      padding: 12px 15px;
+      border-radius: 10px;
+      background: var(--bg-indigo-soft);
+      border: 1px solid var(--indigo-200);
+      color: var(--text-secondary);
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+
+    .code-split {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 920px) {
+      .code-split {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .code-pane {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #1E293B;
+      background: #0F172A;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .code-pane-head {
+      padding: 10px 14px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      border-bottom: 1px solid #1E293B;
+    }
+
+    .code-pane-head.old-head {
+      background: #1E293B;
+      color: #FCA5A5;
+    }
+
+    .code-pane-head.new-head {
+      background: #172554;
+      color: #86EFAC;
+    }
+
+    .code-pre {
+      margin: 0;
+      padding: 14px 16px;
+      color: #E2E8F0;
+      font-size: 12px;
+      line-height: 1.6;
+      overflow-x: auto;
+      max-height: 540px;
+    }
+
+    /* Section 5: Impact & Roadmap */
+    .impact-box {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .impact-box.benefit {
+      border-top: 4px solid var(--emerald-600);
+    }
+
+    .impact-box.caution {
+      border-top: 4px solid var(--indigo-600);
+    }
+
+    .module-roadmap-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    @media (min-width: 680px) {
+      .module-roadmap-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1080px) {
+      .module-roadmap-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .module-card {
+      background: #FFFFFF;
+      border: 1px solid var(--indigo-200);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .module-card h4 {
+      margin: 8px 0 6px;
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .module-card p {
+      margin: 0;
+      font-size: 12.8px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .hidden-by-filter {
+      display: none !important;
+    }
+
+    .empty-filter-state {
+      display: none;
+      padding: 28px;
+      text-align: center;
+      background: #FFFFFF;
+      border: 1px dashed var(--border-strong);
+      border-radius: var(--radius-lg);
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* Footer */
+    .report-footer {
+      margin-top: 48px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background: #FFFFFF;
+        font-size: 12px;
+      }
+      .sticky-subnav,
+      .filter-toolbar,
+      .print-btn {
+        display: none !important;
+      }
+      .container {
+        max-width: 100%;
+        padding: 12px 0;
+      }
+      .hero-card,
+      .kpi-card,
+      .mapping-board,
+      .audit-item-card,
+      .table-wrap,
+      .diff-shell,
+      .impact-box {
+        box-shadow: none !important;
+        break-inside: avoid;
+      }
+      .hidden-by-filter {
+        display: revert !important;
+      }
+      .diff-panel {
+        display: block !important;
+        border-top: 1px solid var(--border-light);
+      }
+      .code-pre {
+        max-height: none !important;
+        white-space: pre-wrap;
+      }
+      table.data-table {
+        min-width: 0 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Cross-Navigation Bar -->
+  <nav class="cross-nav" aria-label="Điều hướng bộ báo cáo đối chiếu">
+    <div class="cross-nav-inner">
+      <div class="cross-brand">
+        <span class="cross-brand-badge">gN</span>
+        <span>goodNstay · Bộ Báo Cáo Chuyển Đổi Sản Phẩm Đối Tác Khách Sạn</span>
+      </div>
+      <div class="cross-links">
+        <a class="cross-link active" href="./so-sanh-masterdata-cu-va-moi.html" aria-current="page">
+          <span>1. So sánh Master Data (v2.7.0 → v3.0.0)</span>
+        </a>
+        <a class="cross-link" href="./so-sanh-dashboard-cu-va-moi.html">
+          <span>2. So sánh Dashboard Cũ &amp; Mới (Góc nhìn Business)</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Sticky Quick-Jump Bar -->
+  <div class="sticky-subnav">
+    <div class="sticky-subnav-inner">
+      <div class="jump-list" id="jumpNav">
+        <a class="jump-pill current" href="#tong-quan">1. Tổng quan &amp; KPI</a>
+        <a class="jump-pill" href="#so-do-anh-xa">2. Ánh xạ 13 File → 4 File</a>
+        <a class="jump-pill" href="#chi-tiet-audit">3. Thêm – Sửa – Xoá – Chỉnh</a>
+        <a class="jump-pill" href="#doi-chieu-json">4. Đối chiếu JSON Thực tế</a>
+        <a class="jump-pill" href="#tac-dong-mo-rong">5. Tác động &amp; Lộ trình Module</a>
+      </div>
+      <button type="button" class="print-btn" onclick="window.print()">
+        <span>🖨️ In / Lưu PDF</span>
+      </button>
+    </div>
+  </div>
+
+  <main class="container">
+
+    <!-- HERO HEADER -->
+    <header class="hero-card">
+      <div class="hero-eyebrow">
+        <span>🗄️ KIỂM TOÁN KIẾN TRÚC DỮ LIỆU GỐC (MASTER DATA FORENSIC AUDIT) · v2.7.0 → v3.0.0</span>
+      </div>
+      <h1 class="hero-title">
+        Tái cấu trúc Master Data: Từ <span class="accent">13 Bảng Giả Lập Kỹ Thuật</span> sang <span class="accent">4 Bảng Thuần Nghiệp Vụ Thương Mại</span>
+      </h1>
+      <p class="hero-lead">
+        Báo cáo kiểm toán chi tiết toàn bộ quá trình tinh gọn tầng dữ liệu gốc trong <code>dashboard/dashboard/master-data/</code> (commit <code>513d4ec</code>): giải thích lý do sản phẩm chuyển dịch khỏi mô hình mô phỏng máy trạng thái nội bộ <em>Pay-to-Lock 10 phút</em> để tiến lên kiến trúc <strong>Optibide Partner Hub v3.0.0</strong> hỗ trợ đa cơ sở (bao gồm khách sạn mới kích hoạt <code>Stay Hotel H11</code>), đa ngôn ngữ <strong>VI / EN / KO</strong> và đa tiền tệ <strong>VND / KRW / USD</strong> ngay từ dữ liệu nguồn.
+      </p>
+      <div class="meta-strip">
+        <span class="meta-chip"><strong>Mốc cũ:</strong> <code>v2.7.0</code> (commit <code>513d4ec~1</code> / <code>ab0da00</code>)</span>
+        <span class="meta-chip"><strong>Mốc mới:</strong> <code>v3.0.0</code> (commit <code>513d4ec</code> → <code>HEAD</code>)</span>
+        <span class="meta-chip"><strong>Ngày tham chiếu dữ liệu:</strong> <code>2026-11-06</code></span>
+        <span class="meta-chip"><strong>Biến động toàn repo (commit <code>513d4ec</code>):</strong> 54 files · <code>+6,512 / -16,593</code> dòng</span>
+      </div>
+    </header>
+
+    <!-- ===================================================================== -->
+    <!-- SECTION 1: EXECUTIVE SUMMARY & KPI CARDS                              -->
+    <!-- ===================================================================== -->
+    <section class="report-section" id="tong-quan">
+      <div class="section-header">
+        <div class="section-num">Phần 01 · Executive Summary</div>
+        <h2 class="section-title">Tổng quan Điều hành &amp; Các Chỉ số Thu gọn Định lượng</h2>
+        <p class="section-desc">
+          Mọi con số dưới đây được trích xuất trực tiếp từ lịch sử Git (<code>git show 513d4ec~1</code> đối chiếu với trạng thái hiện hành <code>HEAD</code> tại <code>dashboard/dashboard/</code>).
+        </p>
+      </div>
+
+      <!-- Why Master Data Changed: Old vs New Paradigm -->
+      <div class="grid-2" style="margin-bottom: 20px;">
+        <div class="arch-compare-card old-arch">
+          <div>
+            <span class="badge badge-slate">TRƯỚC ĐÂY · SCHEMA v2.7.0 (goodNstay Partner Studio)</span>
+            <h3 style="margin: 10px 0 6px; font-size: 17.5px; font-weight: 800;">Mô hình Giả lập Kỹ thuật Đấu giá Nội bộ</h3>
+          </div>
+          <div class="arch-string-box mono">
+            "goodNstay Pay-to-Lock • 10-Min Payment Hold • Multi-Entity Lifecycle • 0% Hotel Commission"
+          </div>
+          <ul class="arch-list">
+            <li><strong>Phơi bày cơ chế vận hành sàn ra tầng dữ liệu UI:</strong> Lưu trực tiếp đồng hồ giữ phòng 600 giây (<code>paymentHoldTtlSeconds</code>), giá khách trả nhân hệ số <code>1.265</code> (15% phí sàn + 10% VAT), 11 mã lỗi <code>REJ_*</code>, điểm <code>matchScore</code> và hồ sơ mổ xẻ phiên thua (<code>loss_autopsies.json</code>).</li>
+            <li><strong>Đơn ngữ &amp; đơn tiền tệ cứng:</strong> Chuỗi tiếng Việt cài cứng trong mọi bảng (<em>"Bữa sáng"</em>, <em>"Đã TT 100% • Khóa #116"</em>), chỉ dùng VND, gây nghẽn khi mở rộng thị trường Hàn Quốc / Quốc tế.</li>
+            <li><strong>Phân mảnh 13 file JSON:</strong> Nhiều file phục vụ các widget kỹ thuật đã loại bỏ khỏi màn hình Tổng quan hoặc bị lệch số liệu chéo giữa các bảng (ví dụ chênh lệch <code>550.000đ</code> doanh thu kỳ trước giữa <code>system_benchmarks.json</code> và <code>hotel_profile.json</code>).</li>
+          </ul>
+        </div>
+
+        <div class="arch-compare-card new-arch">
+          <div>
+            <span class="badge badge-modified" style="background: var(--bg-indigo-soft); color: var(--indigo-700); border-color: var(--indigo-200);">HIỆN TẠI · SCHEMA v3.0.0 (Optibide Partner Hub)</span>
+            <h3 style="margin: 10px 0 6px; font-size: 17.5px; font-weight: 800;">Mô hình Cổng Đối tác Khách sạn Thuần Kinh doanh</h3>
+          </div>
+          <div class="arch-string-box mono" style="background: #1E1B4B; color: #E0E7FF;">
+            "Optibide Partner Hub • Pure-Business Overview • Multi-Property • VI/EN/KO &amp; VND/KRW/USD"
+          </div>
+          <ul class="arch-list">
+            <li><strong>100% ngôn ngữ kinh doanh khách sạn:</strong> Chỉ lưu <strong>Doanh thu thực nhận</strong> (<code>netRevenueVnd</code>), 4 trạng thái báo giá chuẩn mực (<code>accepted | expired | rejected | cancelled</code>) và phiếu đặt phòng hoàn chỉnh để lễ tân đón khách.</li>
+            <li><strong>Bản địa hóa &amp; Đa tiền tệ từ gốc (Native i18n &amp; FX):</strong> Nhúng đối tượng <code>LocalizedText { vi, en, ko }</code>, mã tiện ích chuẩn <code>AmenityCode</code> và bảng tỷ giá <code>currencyRates</code> (<code>VND / KRW / USD</code>) ngay trong JSON gốc.</li>
+            <li><strong>Đa cơ sở thực thụ (Single Source of Truth):</strong> Quản lý đồng nhất 3 chi nhánh chuỗi <em>L'amour</em> cùng khách sạn độc lập mới lên sàn <code>Stay Hotel H11</code> (<code>stay_h11</code> — kịch bản 0 đơn mở hàng) mà không cần sinh dữ liệu giả trong mã TypeScript.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 8 Quantitative KPI Cards -->
+      <div class="grid-4">
+        <article class="kpi-card">
+          <span class="kpi-label">1. Phiên bản Schema</span>
+          <div class="kpi-transition mono">
+            <span class="kpi-old">v2.7.0</span>
+            <span class="kpi-arrow">→</span>
+            <span class="kpi-new">v3.0.0</span>
+          </div>
+          <p class="kpi-sub">Nâng cấp kiến trúc lớn tại commit <code>513d4ec</code>; rút gọn từ <strong>12 bảng dữ liệu</strong> khai báo trong manifest xuống còn <strong>3 bảng cốt lõi</strong>.</p>
+        </article>
+
+        <article class="kpi-card">
+          <span class="kpi-label">2. Số lượng File JSON</span>
+          <div class="kpi-transition mono">
+            <span class="kpi-old">13 files</span>
+            <span class="kpi-arrow">→</span>
+            <span class="kpi-new">4 files</span>
+          </div>
+          <p class="kpi-sub">Giảm <strong>69,2%</strong> số file mỗi thư mục (nếu tính cả bản sao chuẩn trong <code>master-data/seed/</code>: giảm từ <strong>26 files → 8 files</strong>).</p>
+        </article>
+
+        <article class="kpi-card">
+          <span class="kpi-label">3. Dung lượng JSON (1 thư mục)</span>
+          <div class="kpi-transition mono">
+            <span class="kpi-old">145.49 KB</span>
+            <span class="kpi-arrow">→</span>
+            <span class="kpi-new">58.68 KB</span>
+          </div>
+          <p class="kpi-sub">Từ <code>148,980 B</code> xuống <code>60,084 B</code> (<strong>-59,7%</strong> payload mạng). Tính cả <code>seed/</code>: từ <code>290.98 KB</code> xuống <code>117.35 KB</code>.</p>
+        </article>
+
+        <article class="kpi-card">
+          <span class="kpi-label">4. Tổng số Dòng JSON</span>
+          <div class="kpi-transition mono">
+            <span class="kpi-old">4,679</span>
+            <span class="kpi-arrow">→</span>
+            <span class="kpi-new">2,365 dòng</span>
+          </div>
+          <p class="kpi-sub">Giảm <strong>49,5%</strong> (<code>-2,314</code> dòng mỗi thư mục; <code>9,358 → 4,730</code> dòng khi tính cả <code>seed/</code>) dù số bản ghi báo giá tăng gấp đôi.</p>
+        </article>
+
+        <article class="kpi-card">
+          <span class="kpi-label">5. Phạm vi Cơ sở (Scopes)</span>
+          <div class="kpi-transition mono">
+            <span class="kpi-old">4 phạm vi</span>
+            <span class="kpi-arrow">→</span>
+            <span class="kpi-new">5 phạm vi</span>
+          </div>
+          <p class="kpi-sub">Từ 1 chuỗi + 3 CN (30 phòng) mở rộng thành <code>all</code> + 3 CN chuỗi <em>L'amour</em> + 1 cơ sở độc lập mới <code>Stay Hotel H11</code> (18 phòng = 48 phòng).</p>
+        </article>
+
+        <article class="kpi-card">
+          <span class="kpi-label">6. Ngôn ngữ &amp; Tiền tệ</span>
+          <div class="kpi-transition mono">
+            <span class="kpi-old">1 NL · 1 TT</span>
+            <span class="kpi-arrow">→</span>
+            <span class="kpi-new">3 NL · 3 TT</span>
+          </div>
+          <p class="kpi-sub">Từ chỉ <code>VI</code> &amp; <code>VND</code> sang đa ngôn ngữ gốc <code>vi / en / ko</code> và bộ tỷ giá trực tiếp <code>VND (1) · KRW (18.5) · USD (25,400)</code>.</p>
+        </article>
+
+        <article class="kpi-card">
+          <span class="kpi-label">7. Bản ghi Báo giá / Giao dịch</span>
+          <div class="kpi-transition mono">
+            <span class="kpi-old">72 phiên</span>
+            <span class="kpi-arrow">→</span>
+            <span class="kpi-new">143 lượt</span>
+          </div>
+          <p class="kpi-sub">68 lượt lịch sử chuỗi <em>L'amour</em> (29 nhận, 7 hết hạn, 28 từ chối, 4 huỷ) + 75 lượt tự động của <code>stay_h11</code> trong 30 ngày.</p>
+        </article>
+
+        <article class="kpi-card">
+          <span class="kpi-label">8. Generator Script &amp; Types</span>
+          <div class="kpi-transition mono">
+            <span class="kpi-old">2,207 dòng</span>
+            <span class="kpi-arrow">→</span>
+            <span class="kpi-new">655 dòng</span>
+          </div>
+          <p class="kpi-sub">Script Python giảm <strong>70,3%</strong> dòng mã; <code>src/data.ts</code> giảm từ <code>681 → 147</code> dòng (<strong>-78,4%</strong>); xoá hẳn <code>analyticsEngine.ts</code> (<code>2,859</code> dòng).</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- SECTION 2: VISUAL ARCHITECTURE MAPPING (13 OLD -> 4 NEW)              -->
+    <!-- ===================================================================== -->
+    <section class="report-section" id="so-do-anh-xa">
+      <div class="section-header">
+        <div class="section-num">Phần 02 · Data Lineage &amp; Consolidation Flow</div>
+        <h2 class="section-title">Sơ đồ Ánh xạ Kiến trúc Dữ liệu: Từ 13 File Cũ (v2.7.0) sang 4 File Mới (v3.0.0)</h2>
+        <p class="section-desc">
+          Toàn cảnh đường đi của từng file JSON: <strong>3 luồng gộp &amp; chuẩn hoá cấu trúc</strong>, <strong>1 luồng khởi tạo mới hoàn toàn</strong> và <strong>10 file chuyên biệt nội bộ được gỡ bỏ</strong> (trong đó 2 file được trích xuất phần tinh tuý sang cấu hình mới trước khi xoá vỏ).
+        </p>
+      </div>
+
+      <div class="mapping-board">
+        <div class="mapping-lanes">
+
+          <!-- Lane 1: Manifest -->
+          <div class="mapping-lane lane-consolidate">
+            <div class="lane-grid">
+              <div class="file-pill-list">
+                <div class="file-node">
+                  <div>
+                    <div class="file-name mono">schema_manifest.json <span class="badge badge-slate">v2.7.0</span></div>
+                    <div class="file-meta">70 dòng · 2.59 KB · Quản lý 12 khoá bảng &amp; quan hệ PK/FK cũ</div>
+                  </div>
+                </div>
+              </div>
+              <div class="flow-connector">
+                <span class="flow-arrow-bar">Rút gọn 12 → 3 →</span>
+                <span>Cập nhật kiến trúc</span>
+              </div>
+              <div class="file-pill-list">
+                <div class="file-node target-new">
+                  <div>
+                    <div class="file-name mono">1. schema_manifest.json <span class="badge badge-modified">GỘP &amp; SỬA</span></div>
+                    <div class="file-meta">25 dòng · 1.13 KB · Khai báo 3 bảng <code>hubConfig</code>, <code>bidRecords</code>, <code>hubInbox</code></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lane 2: Partner Hub Config -->
+          <div class="mapping-lane lane-consolidate">
+            <div class="lane-grid">
+              <div class="file-pill-list">
+                <div class="file-node">
+                  <div>
+                    <div class="file-name mono">hotel_profile.json</div>
+                    <div class="file-meta">87 dòng · 2.34 KB · PK <code>hotelId</code> · Hồ sơ chuỗi L'amour &amp; 3 chi nhánh</div>
+                  </div>
+                </div>
+                <div class="file-node">
+                  <div>
+                    <div class="file-name mono">users_roles.json <span class="badge badge-amber">Trích Quản lý → Xoá file</span></div>
+                    <div class="file-meta">22 dòng · 0.61 KB · Trích hồ sơ Quản lý sang <code>partnerUser</code> đa ngôn ngữ</div>
+                  </div>
+                </div>
+                <div class="file-node">
+                  <div>
+                    <div class="file-name mono">system_benchmarks.json <span class="badge badge-amber">Trích periodsMeta → Xoá file</span></div>
+                    <div class="file-meta">141 dòng · 3.33 KB · Giữ mốc ngày &amp; doanh thu kỳ trước <code>today/7d/30d</code></div>
+                  </div>
+                </div>
+              </div>
+              <div class="flow-connector">
+                <span class="flow-arrow-bar">Hợp nhất &amp; Đa ngữ →</span>
+                <span>+ FX Rates + Stay H11</span>
+              </div>
+              <div class="file-pill-list">
+                <div class="file-node target-new">
+                  <div>
+                    <div class="file-name mono">2. partner_hub_config.json <span class="badge badge-modified">GỘP &amp; SỬA</span></div>
+                    <div class="file-meta">259 dòng · 7.17 KB · Thương hiệu Optibide, tỷ giá <code>VND/KRW/USD</code>, <code>partnerUser</code>, <code>periodsMeta</code>, <code>chainOverview</code> &amp; <code>properties[4]</code> (thêm <code>stay_h11</code>)</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lane 3: Bid Records -->
+          <div class="mapping-lane lane-consolidate">
+            <div class="lane-grid">
+              <div class="file-pill-list">
+                <div class="file-node">
+                  <div>
+                    <div class="file-name mono">auction_sessions.json</div>
+                    <div class="file-meta">2,831 dòng · 82.47 KB · 72 bản ghi (4 phiên Live đang đếm ngược + 68 phiên lịch sử với 50 trường kỹ thuật hỗn hợp)</div>
+                  </div>
+                </div>
+              </div>
+              <div class="flow-connector">
+                <span class="flow-arrow-bar">Chuẩn hoá 4 trạng thái →</span>
+                <span>68 L'amour + 75 H11</span>
+              </div>
+              <div class="file-pill-list">
+                <div class="file-node target-new">
+                  <div>
+                    <div class="file-name mono">3. bid_records.json <span class="badge badge-modified">GỘP &amp; SỬA</span></div>
+                    <div class="file-meta">2,016 dòng · 47.93 KB · 143 bản ghi (17 trường sạch): bỏ 4 phiên Live đếm ngược, chuẩn hoá <code>accepted | expired | rejected | cancelled</code> &amp; nhúng phiếu nhận phòng 3 ngôn ngữ</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lane 4: Brand New Hub Inbox -->
+          <div class="mapping-lane lane-new">
+            <div class="lane-grid">
+              <div class="file-pill-list">
+                <div class="file-node" style="border-style: dashed; background: #F8FAFC;">
+                  <div>
+                    <div class="file-name" style="color: var(--text-muted);">Chưa tồn tại trong Master Data v2.7.0</div>
+                    <div class="file-meta">Bản cũ không có hộp thư tin nhắn khách đặt phòng &amp; luồng thông báo Topbar theo cơ sở</div>
+                  </div>
+                </div>
+              </div>
+              <div class="flow-connector" style="color: var(--emerald-700);">
+                <span class="flow-arrow-bar" style="background: var(--bg-emerald-soft); border-color: var(--emerald-200); color: var(--emerald-700);">Khởi tạo mới 100% →</span>
+                <span>VI / EN / KO</span>
+              </div>
+              <div class="file-pill-list">
+                <div class="file-node target-added">
+                  <div>
+                    <div class="file-name mono">4. hub_inbox.json <span class="badge badge-added">THÊM MỚI</span></div>
+                    <div class="file-meta">65 dòng · 2.44 KB · 2 tin nhắn khách hỏi về đơn (<code>#71</code>, <code>#69</code>) + 3 thông báo vận hành lọc theo <code>chain</code>, <code>br_mykhe</code>, <code>stay_h11</code></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lane 5: 10 Deleted Files Summary -->
+          <div class="mapping-lane lane-deleted">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px;">
+              <div>
+                <span class="badge badge-deleted">ĐÃ XOÁ BỎ KHỎI MASTER DATA v3.0.0 · 10 FILE JSON</span>
+                <div style="font-weight: 800; font-size: 14.5px; margin-top: 6px;">Gỡ bỏ hoàn toàn các bảng phục vụ mô phỏng kỹ thuật đấu giá, kho phòng PMS tĩnh và biểu đồ chẩn đoán cũ (tổng cộng <code>1,691</code> dòng · <code>57.82 KB</code> mỗi thư mục)</div>
+              </div>
+            </div>
+            <div class="deleted-mini-grid">
+              <div class="file-node deleted-node"><span class="file-name mono">users_roles.json</span><span class="file-meta">22 dòng · 0.61 KB</span></div>
+              <div class="file-node deleted-node"><span class="file-name mono">perks_catalog.json</span><span class="file-meta">42 dòng · 1.29 KB</span></div>
+              <div class="file-node deleted-node"><span class="file-name mono">room_classes.json</span><span class="file-meta">72 dòng · 1.66 KB</span></div>
+              <div class="file-node deleted-node"><span class="file-name mono">rooms_pms.json</span><span class="file-meta">394 dòng · 9.94 KB</span></div>
+              <div class="file-node deleted-node"><span class="file-name mono">calendar_14d_pms.json</span><span class="file-meta">198 dòng · 4.94 KB</span></div>
+              <div class="file-node deleted-node"><span class="file-name mono">system_benchmarks.json</span><span class="file-meta">141 dòng · 3.33 KB</span></div>
+              <div class="file-node deleted-node"><span class="file-name mono">match_breakdowns.json</span><span class="file-meta">155 dòng · 6.45 KB</span></div>
+              <div class="file-node deleted-node"><span class="file-name mono">loss_autopsies.json</span><span class="file-meta">133 dòng · 4.36 KB</span></div>
+              <div class="file-node deleted-node"><span class="file-name mono">bot_rules.json</span><span class="file-meta">16 dòng · 0.45 KB</span></div>
+              <div class="file-node deleted-node"><span class="file-name mono">lifecycle_catalog.json</span><span class="file-meta">518 dòng · 25.05 KB</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- SECTION 3: INTERACTIVE FILTERABLE AUDIT EXPLORER                      -->
+    <!-- ===================================================================== -->
+    <section class="report-section" id="chi-tiet-audit">
+      <div class="section-header">
+        <div class="section-num">Phần 03 · Granular Change Audit</div>
+        <h2 class="section-title">Chi tiết Thêm – Sửa – Xoá – Chỉnh sửa Hệ thống</h2>
+        <p class="section-desc">
+          Sử dụng thanh bộ lọc nhóm thay đổi hoặc ô tìm kiếm nhanh bên dưới để tra cứu bất kỳ tên file, trường JSON, khoá chính/ngoại (PK/FK) hoặc thành phần mã nguồn liên quan.
+        </p>
+      </div>
+
+      <!-- Interactive Filter & Live Search Toolbar -->
+      <div class="filter-toolbar" role="region" aria-label="Bộ lọc kiểm toán Master Data">
+        <div class="filter-btn-group" id="auditFilterBtns">
+          <button type="button" class="filter-btn active" data-filter="all">Tất cả hạng mục</button>
+          <button type="button" class="filter-btn" data-filter="added">🟢 Đã thêm mới</button>
+          <button type="button" class="filter-btn" data-filter="modified">🔵 Đã gộp &amp; sửa cấu trúc</button>
+          <button type="button" class="filter-btn" data-filter="deleted">🔴 Đã xoá bỏ (10 files)</button>
+          <button type="button" class="filter-btn" data-filter="system">🟣 Chỉnh sửa API &amp; Script</button>
+        </div>
+        <div class="search-box-wrap">
+          <input
+            type="search"
+            id="auditSearchInput"
+            class="search-input"
+            placeholder="Tìm file, trường JSON, PK/FK (vd: stay_h11, hub_inbox, rooms_pms...)"
+            aria-label="Tìm kiếm trong bảng kiểm toán"
+          />
+          <span class="match-counter" id="auditMatchCount">Hiển thị 23 / 23 mục</span>
+        </div>
+      </div>
+
+      <div id="auditEmptyState" class="empty-filter-state">
+        Không tìm thấy hạng mục nào khớp với từ khoá hiện tại. Hãy xoá từ khoá hoặc chuyển bộ lọc về "Tất cả hạng mục".
+      </div>
+
+      <!-- 3A. ADDED -->
+      <div class="audit-group" data-group-section="added">
+        <h3 class="audit-group-title">
+          <span class="badge badge-added">THÊM MỚI</span>
+          <span>3.1. Các Thành phần &amp; Cấu trúc Dữ liệu Hoàn toàn Mới ở v3.0.0</span>
+        </h3>
+
+        <div class="audit-card-grid two-col">
+          <article class="audit-item-card added-border filterable-item" data-category="added">
+            <div class="audit-item-header">
+              <h4 class="audit-item-heading mono">hub_inbox.json</h4>
+              <span class="badge badge-added">THÊM MỚI · 65 dòng · 2.44 KB</span>
+            </div>
+            <p class="audit-item-body">
+              Bảng dữ liệu mới hoàn toàn (khoá manifest <code>hubInbox</code>, PK <code>messages.id / notifications.id</code>, FK <code>propertyId -&gt; hubConfig.properties.id</code>) cấp nguồn cho chuông Thông báo và Hộp thư tin nhắn khách trên thanh Topbar.
+            </p>
+            <ul class="audit-points">
+              <li><code>messages[2]</code>: Tin nhắn chưa đọc từ khách đã đặt phòng — <code>MSG-01</code> (đơn <code>#71</code> tại <code>br_mykhe</code>, hỏi bãi đỗ SUV 7 chỗ qua đêm) và <code>MSG-02</code> (đơn <code>#69</code> tại <code>br_anthuong</code>, xin thêm 2 khăn tắm lớn), mỗi tin có bản dịch <code>preview { vi, en, ko }</code>.</li>
+              <li><code>notifications[3]</code>: Thông báo vận hành phân tầng theo <code>scope</code> — <code>NTF-01</code> (<code>chain</code>, <code>indigo</code>), <code>NTF-02</code> (<code>br_mykhe</code>, <code>emerald</code>), <code>NTF-03</code> (<code>stay_h11</code>, <code>amber</code> nhắc gợi ý giảm 5–10% giá chào buổi tối).</li>
+            </ul>
+          </article>
+
+          <article class="audit-item-card added-border filterable-item" data-category="added">
+            <div class="audit-item-header">
+              <h4 class="audit-item-heading">Cơ sở mới kích hoạt: <code>Stay Hotel H11</code> (<code>stay_h11</code>)</h4>
+              <span class="badge badge-added">THÊM MỚI TRONG JSON GỐC</span>
+            </div>
+            <p class="audit-item-body">
+              Đưa khách sạn mới lên sàn (trước đây từng phải sinh giả lập bằng mảng cứng trong <code>overviewAnalytics.ts</code>) vào thẳng <code>partner_hub_config.json</code> và <code>bid_records.json</code> để kiểm thử trọn vẹn trạng thái <em>Zero-Revenue Onboarding</em>.
+            </p>
+            <ul class="audit-points">
+              <li>Cấu hình tại <code>properties[3]</code>: <code>id: "stay_h11"</code>, <code>isChainMember: false</code> (tách khỏi tổng chuỗi <em>L'amour</em>), <code>roomsCount: 18</code>, <code>reviewRating5: 0.0</code> (<code>reviewCount: 0</code>), <code>eloScore: 800</code>, <code>visibilityTone: "low"</code>.</li>
+              <li>Lịch sử báo giá 30 ngày trong <code>bid_records.json</code>: đúng <strong>75 bản ghi</strong> (<code>H11-001</code> → <code>H11-075</code>), 100% <code>bidMode: "auto"</code>, gồm <code>0 accepted</code>, <code>8 expired</code>, <code>67 rejected</code>, <code>0 cancelled</code>.</li>
+            </ul>
+          </article>
+
+          <article class="audit-item-card added-border filterable-item" data-category="added">
+            <div class="audit-item-header">
+              <h4 class="audit-item-heading">Đa ngôn ngữ gốc <code>LocalizedText</code> &amp; Tỷ giá <code>currencyRates</code></h4>
+              <span class="badge badge-added">THÊM MỚI · NATIVE i18n &amp; FX</span>
+            </div>
+            <p class="audit-item-body">
+              Xoá bỏ hoàn toàn chuỗi tiếng Việt cài cứng trong dữ liệu nguồn, thay bằng cấu trúc đa ngôn ngữ 3 thứ tiếng và bảng tỷ giá chuẩn phục vụ chuyển đổi tức thời trên giao diện.
+            </p>
+            <ul class="audit-points">
+              <li>Mọi trường hiển thị (<code>label</code>, <code>shortName</code>, <code>district</code>, <code>visibilitySubtitle</code>, <code>roomName</code>, <code>guestNote</code>, <code>partnerUser.displayName/roleBadge</code>) đều tuân thủ kiểu <code>{ vi: string, en: string, ko: string }</code>.</li>
+              <li>Tiện ích phòng chuyển sang 8 mã enum chuẩn <code>AmenityCode</code>: <code>breakfast</code>, <code>wifi</code>, <code>pool</code>, <code>elevator</code>, <code>parking</code>, <code>late_checkout</code>, <code>bathtub</code>, <code>ott_tv</code>.</li>
+              <li>Tỷ giá quy đổi tại <code>partner_hub_config.json -&gt; currencyRates</code>: <code>{ "VND": 1, "KRW": 18.5, "USD": 25400 }</code>.</li>
+            </ul>
+          </article>
+
+          <article class="audit-item-card added-border filterable-item" data-category="added">
+            <div class="audit-item-header">
+              <h4 class="audit-item-heading">Điểm Đánh giá 5 Tiêu chí &amp; Điểm Hiển thị Riêng Từng Cơ sở</h4>
+              <span class="badge badge-added">THÊM MỚI CẤP CHI NHÁNH</span>
+            </div>
+            <p class="audit-item-body">
+              Ở <code>v2.7.0</code>, <code>reviewCriteria5</code> và <code>eloScore</code> chỉ tồn tại duy nhất ở cấp toàn chuỗi trong <code>hotel_profile.json</code>. Sang <code>v3.0.0</code>, từng cơ sở có bộ chỉ số độc lập.
+            </p>
+            <ul class="audit-points">
+              <li>Chuẩn hoá 5 khoá ngắn gọn trong <code>reviewCriteria5</code>: <code>amenities</code>, <code>checkin</code>, <code>cleanliness</code>, <code>service</code>, <code>value</code>.</li>
+              <li>Phân hoá thực tế theo từng điểm đến: <code>br_mykhe</code> (<code>4.9★ · 64 đánh giá · ELO 1720</code>), <code>br_songhan</code> (<code>4.8★ · 46 đánh giá · ELO 1665</code>), <code>br_anthuong</code> (<code>4.7★ · 32 đánh giá · ELO 1610</code> — tổng đúng 142 đánh giá toàn chuỗi) và <code>stay_h11</code> (<code>0.0★ · 0 đánh giá · ELO 800</code>).</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+
+      <!-- 3B. CONSOLIDATED & MODIFIED -->
+      <div class="audit-group" data-group-section="modified">
+        <h3 class="audit-group-title">
+          <span class="badge badge-modified">GỘP &amp; SỬA CẤU TRÚC</span>
+          <span>3.2. Ba Bảng Trọng Tâm Được Tái Cấu Trúc &amp; Hợp Nhất</span>
+        </h3>
+
+        <div class="audit-card-grid">
+          <!-- Item M1: schema_manifest.json -->
+          <article class="audit-item-card modified-border filterable-item" data-category="modified">
+            <div class="audit-item-header">
+              <h4 class="audit-item-heading">1. <code>schema_manifest.json</code> (v2.7.0: 70 dòng → v3.0.0: 25 dòng)</h4>
+              <span class="badge badge-modified">GỘP &amp; SỬA · -64.3% DÒNG</span>
+            </div>
+            <p class="audit-item-body">
+              Đóng vai trò sổ đăng ký hợp đồng dữ liệu gốc. Phiên bản <code>3.0.0</code> giữ nguyên mốc <code>primaryReferenceDate: "2026-11-06"</code> để bảo toàn tính nhất quán của chuỗi số liệu kiểm thử, nhưng thu gọn danh mục <code>tables</code> từ <strong>12 mục</strong> xuống <strong>3 mục</strong> (<code>hubConfig</code>, <code>bidRecords</code>, <code>hubInbox</code>) với ràng buộc khoá ngoại đều trỏ về <code>hubConfig.properties.id</code>.
+            </p>
+          </article>
+
+          <!-- Item M2: partner_hub_config.json -->
+          <article class="audit-item-card modified-border filterable-item" data-category="modified">
+            <div class="audit-item-header">
+              <h4 class="audit-item-heading">2. <code>hotel_profile.json</code> + <code>users_roles.json</code> + <code>system_benchmarks.json</code> → <code>partner_hub_config.json</code></h4>
+              <span class="badge badge-modified">HỢP NHẤT 3 TRONG 1 · 259 dòng · 7.17 KB</span>
+            </div>
+            <p class="audit-item-body">
+              Hợp nhất cấu hình thương hiệu, tài khoản đối tác đăng nhập, kỳ lọc đối chiếu và danh sách cơ sở vào một tệp cấu hình duy nhất; đồng thời <strong>sửa triệt để lỗi lệch 550.000đ doanh thu kỳ trước của kỳ <code>today</code></strong> tồn tại ở bản cũ.
+            </p>
+            <div class="table-wrap" style="margin-top: 10px;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Nhóm trường dữ liệu</th>
+                    <th>Trước đây (v2.7.0 — <code>hotel_profile.json</code> &amp; file phụ)</th>
+                    <th>Hiện tại (v3.0.0 — <code>partner_hub_config.json</code>)</th>
+                    <th>Ý nghĩa thay đổi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Định danh &amp; Thương hiệu</strong></td>
+                    <td><code>brandName: "goodNstay"</code>, <code>brandSuffix: "Partner Studio"</code>, <code>version: "v2.7"</code></td>
+                    <td><code>schemaVersion: "3.0.0"</code>, <code>brandName: "Optibide"</code>, <code>referenceDate: "2026-11-06"</code></td>
+                    <td>Đồng bộ nhận diện thương mại <strong>Optibide Partner Hub</strong>.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Tham số Kỹ thuật Đấu giá &amp; Phí sàn</strong></td>
+                    <td><code>bidTtlSeconds: 3600</code>, <code>paymentHoldTtlSeconds: 600</code>, <code>urgentThresholdSeconds: 600</code>, <code>hotelCommissionRate: 0.0</code>, <code>platformFeeRate: 0.15</code>, <code>vatRate: 0.1</code>, <code>guestPriceMultiplier: 1.265</code>, <code>defaultFloorPrice: 750000</code>, <code>nightFlashDiscountPct: 15</code>, <code>eveningForecast</code></td>
+                    <td><span class="badge badge-deleted">ĐÃ LOẠI BỎ KHỎI CONFIG</span></td>
+                    <td>Ngăn rò rỉ công thức thu phí khách lẻ (<code>×1.265</code>) và bộ đếm kỹ thuật nội bộ ra tầng giao diện Tổng quan đối tác.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Tài khoản Đối tác</strong></td>
+                    <td>Tách riêng file <code>users_roles.json</code> gồm 2 vai trò giả lập (<code>USR-MGR-01</code> Nguyễn Minh Quân &amp; <code>USR-REC-02</code> Trần Thảo Vy) kèm cờ <code>canOverrideFloor</code></td>
+                    <td>Nhúng trực tiếp <code>partnerUser</code> (<code>USR-PARTNER-01</code>): <code>displayName</code> (<em>Nguyễn Bảo Minh / Kim Ha-yoon / 김하윤</em>), <code>initials</code>, <code>roleBadge</code></td>
+                    <td>Chuyển từ nút gạt thử nghiệm phân quyền nội bộ sang hồ sơ Quản lý khách sạn chuẩn thương mại theo ngôn ngữ đang chọn.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Kỳ đối chiếu (<code>periodsMeta</code>)</strong></td>
+                    <td>Nằm ở <code>system_benchmarks.json</code>; kỳ <code>today</code> ghi <code>previousNetRevenue: 10,350,000</code> trong khi tổng 3 CN ở <code>hotel_profile.json</code> là <code>9,800,000</code> (lệch <code>550k</code>!)</td>
+                    <td>Đưa vào <code>periodsMeta { today, 7d, 30d }</code> với <code>previousNetRevenueVnd</code> khớp tuyệt đối tổng 3 CN chuỗi (<code>9.8M / 25.2M / 54.6M</code>) + <code>targetAcceptRatePct</code></td>
+                    <td>Đảm bảo bất biến toán học giữa chế độ xem Toàn chuỗi và từng Chi nhánh (được bảo vệ bởi test <code>TC-DATA-03</code>).</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Danh sách Cơ sở</strong></td>
+                    <td><code>branches[3]</code> chỉ có 3 CN <em>L'amour</em> tiếng Việt, không có rating/ELO cấp chi nhánh</td>
+                    <td><code>chainOverview</code> + <code>properties[4]</code> (3 CN <code>isChainMember: true</code> + <code>stay_h11</code> <code>isChainMember: false</code>), có <code>badgeColor</code>, <code>autoBidEnabled</code>, <code>reviewCriteria5</code>, <code>eloScore</code></td>
+                    <td>Hỗ trợ tài khoản đối tác sở hữu đồng thời chuỗi khách sạn đang vận hành ổn định lẫn cơ sở mới vừa mở bán.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <!-- Item M3: bid_records.json -->
+          <article class="audit-item-card modified-border filterable-item" data-category="modified">
+            <div class="audit-item-header">
+              <h4 class="audit-item-heading">3. <code>auction_sessions.json</code> (72 phiên · 2,831 dòng) → <code>bid_records.json</code> (143 lượt · 2,016 dòng)</h4>
+              <span class="badge badge-modified">CHUẨN HOÁ SCHEMA · -41.9% DUNG LƯỢNG</span>
+            </div>
+            <p class="audit-item-body">
+              Mặc dù tổng số bản ghi tăng gần <strong>gấp đôi</strong> (từ <code>72</code> lên <code>143</code> do nạp thêm 75 lượt báo giá của <code>stay_h11</code> và loại bỏ 4 phiên Live đếm ngược <code>CRQ-8941..8944</code>), dung lượng file vẫn giảm mạnh từ <strong>82.47 KB xuống 47.93 KB</strong> nhờ cắt bỏ 33 trường máy trạng thái rườm rà.
+            </p>
+            <ul class="audit-points">
+              <li><strong>Đơn giản hoá trạng thái 4 chiều thành 1 trường duy nhất:</strong> Bỏ tổ hợp <code>requestStatus</code> (6 giá trị) × <code>bidStatus</code> (6 giá trị) × <code>paymentStatus</code> (7 giá trị) × <code>rejectCode</code> (11 mã <code>REJ_*</code>). Quy về duy nhất trường <code>status</code> gồm 4 kết quả kinh doanh dễ hiểu: <code>accepted</code> (29 đơn), <code>expired</code> (15 lượt: 7 L'amour + 8 H11), <code>rejected</code> (95 lượt: 28 L'amour + 67 H11) và <code>cancelled</code> (4 đơn chuyển từ nhóm lỗi thanh toán sau giữ chỗ).</li>
+              <li><strong>Tách bạch cấu trúc bản ghi theo kết quả:</strong> Các lượt không thành đơn (<code>expired | rejected | cancelled</code>) chỉ lưu <strong>8 trường cốt lõi</strong> (<code>id</code>, <code>propertyId</code>, <code>status</code>, <code>bidMode</code>, <code>sessionDate</code>, <code>timeLabel</code>, <code>nights</code>, <code>offeredRatePerNightVnd</code>). Riêng đơn thành công (<code>accepted</code>) đính kèm đầy đủ <strong>9 trường phiếu đặt phòng</strong> (<code>bookingCode</code> <code>#43..#71</code>, <code>checkInDate</code>, <code>checkOutDate</code>, <code>guestsCount</code>, <code>roomName</code> 3 ngôn ngữ, <code>roomNumber</code>, <code>netRevenueVnd</code>, <code>guestNote</code> 3 ngôn ngữ, <code>amenities</code>) để lễ tân mở xem và đối chiếu ngay khi khách nhận phòng.</li>
+              <li><strong>Loại bỏ nhiễu cạnh tranh &amp; phí sàn:</strong> Xoá <code>guestPaidTotal</code> (<code>×1.265</code>), <code>competitorsCount</code>, <code>aiSuggestedBasePrice</code>, <code>matchScore</code>, <code>autopsyId</code>, <code>lossReasonId</code>, <code>holdRemainingSeconds</code>.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+
+      <!-- 3C. DELETED (10 JSON FILES) -->
+      <div class="audit-group" data-group-section="deleted">
+        <h3 class="audit-group-title">
+          <span class="badge badge-deleted">ĐÃ XOÁ BỎ · 10 FILE JSON</span>
+          <span>3.3. Danh mục Đầy đủ 10 File JSON Bị Loại bỏ ở v3.0.0 &amp; Lý do Kiến trúc</span>
+        </h3>
+
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Tên file cũ (v2.7.0) &amp; Khoá bảng</th>
+                <th>PK / FK cũ</th>
+                <th>Quy mô cũ</th>
+                <th>Mục đích sử dụng ở v2.7.0</th>
+                <th>Lý do xoá bỏ trong v3.0.0</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="filterable-item" data-category="deleted">
+                <td class="mono">01</td>
+                <td><code>users_roles.json</code><br /><span class="file-meta mono">table: usersRoles</span></td>
+                <td>PK: <code>userId</code></td>
+                <td class="mono">2 bản ghi<br />22 dòng · 0.61 KB</td>
+                <td>Chứa 2 hồ sơ giả lập để bật/tắt quyền duyệt giá dưới sàn (<code>USR-MGR-01</code> Quản lý vs <code>USR-REC-02</code> Lễ tân).</td>
+                <td>Cổng thương mại đăng nhập theo tài khoản thực tế; thông tin Quản lý đa ngôn ngữ đã hợp nhất gọn vào <code>partner_hub_config.json -&gt; partnerUser</code>.</td>
+              </tr>
+              <tr class="filterable-item" data-category="deleted">
+                <td class="mono">02</td>
+                <td><code>perks_catalog.json</code><br /><span class="file-meta mono">table: perksCatalog</span></td>
+                <td>PK: <code>id</code></td>
+                <td class="mono">4 bản ghi<br />42 dòng · 1.29 KB</td>
+                <td>Danh mục 4 đặc quyền mềm (Buffet sáng 90k, nâng hạng phòng...) kèm <code>winBoostPct</code> và <code>matchScoreRecovery</code>.</td>
+                <td>Thuộc form chào giá thủ công trực tiếp (Live Auction Drawer) đã gỡ khỏi màn hình Tổng quan; tránh tải thừa danh mục khuyến mãi khi chưa mở module Bidding.</td>
+              </tr>
+              <tr class="filterable-item" data-category="deleted">
+                <td class="mono">03</td>
+                <td><code>room_classes.json</code><br /><span class="file-meta mono">table: roomClasses</span></td>
+                <td>PK: <code>id</code></td>
+                <td class="mono">4 bản ghi<br />72 dòng · 1.66 KB</td>
+                <td>Định nghĩa 4 hạng phòng tĩnh của riêng chuỗi L'amour (<code>sup</code>, <code>dlx</code>, <code>fsuite</code>, <code>osuite</code> — tổng 30 phòng) kèm <code>baseFloorPrice</code>.</td>
+                <td>Bị bó cứng vào 1 khách sạn 30 phòng, không đại diện được cấu trúc đa cơ sở (như <code>stay_h11</code> 18 phòng). Tên phòng đa ngôn ngữ nay lưu trực tiếp trên đơn <code>accepted</code>; danh mục phòng sẽ tách thành API riêng của tab <strong>Rooms</strong>.</td>
+              </tr>
+              <tr class="filterable-item" data-category="deleted">
+                <td class="mono">04</td>
+                <td><code>rooms_pms.json</code><br /><span class="file-meta mono">table: roomsPms</span></td>
+                <td>PK: <code>roomNumber</code><br />FK: <code>roomClassId -&gt; roomClasses.id</code></td>
+                <td class="mono">30 bản ghi<br />394 dòng · 9.94 KB</td>
+                <td>Sơ đồ 30 phòng vật lý <code>#101–#130</code> trong đêm <code>06/11/2026</code> với 4 trạng thái kỹ thuật (<code>vacant_unlocked</code>, <code>payment_hold</code>...).</td>
+                <td>Màn hình Tổng quan cấp quản lý không hiển thị sơ đồ buồng phòng PMS theo từng số phòng hay trạng thái khoá tạm 10 phút; dữ liệu này thuộc phạm vi tab <strong>Rooms</strong> trong tương lai.</td>
+              </tr>
+              <tr class="filterable-item" data-category="deleted">
+                <td class="mono">05</td>
+                <td><code>calendar_14d_pms.json</code><br /><span class="file-meta mono">table: calendar14dPms</span></td>
+                <td>PK: <code>dayOffset</code></td>
+                <td class="mono">14 bản ghi<br />198 dòng · 4.94 KB</td>
+                <td>Lịch tồn kho "14 ngày vàng" (<code>06/11–19/11/2026</code>) đồng bộ biến đếm <code>paymentHoldRooms</code> và gợi ý xả phòng đêm sau 20h00.</td>
+                <td>Gắn chặt với cơ chế <em>Night Flash Sale</em> và <em>10-Min Hold</em> của bản mô phỏng cũ; lịch công suất phòng thực tế đã được quy hoạch riêng sang tab <strong>Booking Calendar</strong>.</td>
+              </tr>
+              <tr class="filterable-item" data-category="deleted">
+                <td class="mono">06</td>
+                <td><code>system_benchmarks.json</code><br /><span class="file-meta mono">table: systemBenchmarks</span></td>
+                <td>PK: <code>regionName</code></td>
+                <td class="mono">1 Object lớn<br />141 dòng · 3.33 KB</td>
+                <td>Điểm chuẩn tỷ lệ thắng trung bình toàn khu vực Đà Nẵng theo hạng phòng (<code>roomClassBenchmarks[4]</code>) và 4 lý do thua phổ biến.</td>
+                <td>Phần mốc kỳ <code>periodsMeta</code> hữu ích đã được chuyển sạch vào <code>partner_hub_config.json</code> (kèm sửa lỗi lệch 550k); phần so sánh đối thủ theo hạng phòng không còn dùng trên Overview mới.</td>
+              </tr>
+              <tr class="filterable-item" data-category="deleted">
+                <td class="mono">07</td>
+                <td><code>match_breakdowns.json</code><br /><span class="file-meta mono">table: matchBreakdowns</span></td>
+                <td>PK: <code>reqId</code></td>
+                <td class="mono">5 khoá CRQ<br />155 dòng · 6.45 KB</td>
+                <td>Bảng chấm điểm chi tiết Hard Rules &amp; Soft Rules giải thích con số <code>AI Match %</code> cho 5 mã yêu cầu (<code>CRQ-8941..8944</code>, <code>CRQ-8924</code>).</td>
+                <td>Thuật toán chấm điểm khớp nội bộ của sàn không còn phơi bày cho khách sạn để giữ giao diện thương mại súc tích, dễ hiểu.</td>
+              </tr>
+              <tr class="filterable-item" data-category="deleted">
+                <td class="mono">08</td>
+                <td><code>loss_autopsies.json</code><br /><span class="file-meta mono">table: lossAutopsies</span></td>
+                <td>PK: <code>id</code></td>
+                <td class="mono">3 khoá CRQ<br />133 dòng · 4.36 KB</td>
+                <td>Hồ sơ "mổ xẻ phiên trượt" đối chiếu trực diện giá/tốc độ của khách sạn với đối thủ vừa thắng cuộc (<code>CRQ-8924</code>, <code>8918</code>, <code>8909</code>).</td>
+                <td>Tiết lộ thông tin nhạy cảm của đối thủ cạnh tranh và dùng thuật ngữ kỹ thuật nặng nề; nay được thay bằng bảng <strong>Trợ lý Doanh thu (Advisor Panel)</strong> suy diễn trực tiếp từ tỷ lệ báo giá thực tế.</td>
+              </tr>
+              <tr class="filterable-item" data-category="deleted">
+                <td class="mono">09</td>
+                <td><code>bot_rules.json</code><br /><span class="file-meta mono">table: botRules</span></td>
+                <td>PK: <code>ruleId</code></td>
+                <td class="mono">2 bản ghi<br />16 dòng · 0.45 KB</td>
+                <td>Lưu 2 quy tắc kịch bản Auto-Bid tự động tạo ra từ màn hình mổ xẻ phiên trượt (<code>RULE-01</code>, <code>RULE-02</code>).</td>
+                <td>Trên Overview v3.0.0, đối tác chỉ cần nắm trạng thái bật/tắt <code>autoBidEnabled</code> của từng cơ sở (đã nằm trong <code>partner_hub_config.json</code>); cấu hình luật chi tiết thuộc tab <strong>Bidding</strong> sau này.</td>
+              </tr>
+              <tr class="filterable-item" data-category="deleted">
+                <td class="mono">10</td>
+                <td><code>lifecycle_catalog.json</code><br /><span class="file-meta mono">table: lifecycleCatalog</span></td>
+                <td>PK: <code>version</code></td>
+                <td class="mono">1 Object đặc tả<br />518 dòng · 25.05 KB</td>
+                <td>Tài liệu kỹ thuật khổng lồ (chiếm 17% dung lượng cũ) mô tả 9 bước vòng đời, 4 trạng thái phòng, 11 mã <code>REJ_*</code> và 18 kịch bản kiểm thử.</td>
+                <td>Là tài liệu đặc tả kỹ thuật nội bộ dành cho kỹ sư QA/Backend được nhúng thẳng vào UI cũ, hoàn toàn không phù hợp với chủ khách sạn trên cổng thương mại.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3D. SYSTEM / GENERATOR / API / CONTRACT TESTS -->
+      <div class="audit-group" data-group-section="system">
+        <h3 class="audit-group-title">
+          <span class="badge badge-system">CHỈNH SỬA HỆ THỐNG</span>
+          <span>3.4. Đồng bộ Tầng Phụ trợ: Generator Script, REST API Middleware, Service &amp; Kiểm thử Hợp đồng</span>
+        </h3>
+
+        <div class="audit-card-grid two-col">
+          <article class="audit-item-card system-border filterable-item" data-category="system">
+            <div class="audit-item-header">
+              <h4 class="audit-item-heading">1. Trình sinh Master Data Python</h4>
+              <span class="badge badge-system">2,207 → 655 DÒNG (-70.3%)</span>
+            </div>
+            <p class="audit-item-body">
+              Thay thế hoàn toàn <code>scripts/generate_master_data_v25.py</code> (<code>98,791 B</code>) bằng <code>scripts/generate_partner_hub_master_data.py</code> (<code>25,333 B</code>).
+            </p>
+            <ul class="audit-points">
+              <li>Tự động quét và dọn sạch 12 tên file cũ trong danh sách <code>OBSOLETE_FILES</code> ở cả <code>master-data/</code> lẫn <code>master-data/seed/</code> để chống rác tồn đọng.</li>
+              <li>Tích hợp từ điển <code>ROOM_NAME_I18N</code>, <code>AMENITY_CODE_MAP</code> và mẫu phân phối 30 ngày tất định <code>STAY_H11_30D_PATTERN</code> (tổng đúng 75 lượt báo giá cho <code>stay_h11</code>).</li>
+            </ul>
+          </article>
+
+          <article class="audit-item-card system-border filterable-item" data-category="system">
+            <div class="audit-item-header">
+              <h4 class="audit-item-heading">2. REST API Middleware trong <code>vite.config.ts</code></h4>
+              <span class="badge badge-system">214 → 220 DÒNG · BẢO VỆ CHẶT HƠN</span>
+            </div>
+            <p class="audit-item-body">
+              Đổi tên Vite plugin từ <code>revbid-master-data-api</code> sang <code>optibide-partner-hub-master-data-api</code> và siết chặt hợp đồng đọc/ghi trực tiếp vào đĩa.
+            </p>
+            <ul class="audit-points">
+              <li>Thu gọn whitelist <code>TABLE_FILE_MAP</code> từ 12 khoá bảng xuống đúng 3 khoá: <code>hubConfig</code>, <code>bidRecords</code>, <code>hubInbox</code> (gọi <code>PUT /api/master-data/&lt;bảng_cũ&gt;</code> trả ngay <code>400 Unknown table</code>).</li>
+              <li>Bổ sung kiểm tra nghiêm ngặt payload của <code>PUT /api/master-data/:tableKey</code>: bắt buộc body là JSON Object không rỗng và chứa khoá <code>"data"</code> hợp lệ trước khi ghi xuống file kèm ký tự xuống dòng chuẩn <code>\n</code>.</li>
+              <li><code>POST /api/master-data/reset</code> nay khôi phục đồng thời cả 3 bảng dữ liệu lẫn <code>schema_manifest.json</code> từ thư mục <code>master-data/seed/</code>.</li>
+            </ul>
+          </article>
+
+          <article class="audit-item-card system-border filterable-item" data-category="system">
+            <div class="audit-item-header">
+              <h4 class="audit-item-heading">3. Tầng Nạp &amp; Lưu trữ <code>src/services/masterDataService.ts</code></h4>
+              <span class="badge badge-system">156 → 147 DÒNG</span>
+            </div>
+            <p class="audit-item-body">
+              Cập nhật cơ chế tải dữ liệu kép (ưu tiên Live API <code>/api/master-data</code>, tự động chuyển sang file tĩnh <code>/master-data/*.json</code> + <code>localStorage</code> khi build tĩnh).
+            </p>
+            <ul class="audit-points">
+              <li>Ánh xạ <code>STATIC_TABLE_PATHS</code> rút xuống 3 đường dẫn tĩnh mới (<code>partner_hub_config.json</code>, <code>bid_records.json</code>, <code>hub_inbox.json</code>).</li>
+              <li>Nâng tiền tố bộ nhớ cục bộ <code>LOCAL_FALLBACK_PREFIX</code> từ <code>"gns_master_v28_"</code> lên <code>"gns_master_v30_"</code> để trình duyệt không đọc nhầm cache schema cũ.</li>
+            </ul>
+          </article>
+
+          <article class="audit-item-card system-border filterable-item" data-category="system">
+            <div class="audit-item-header">
+              <h4 class="audit-item-heading">4. Định nghĩa Kiểu <code>src/data.ts</code> &amp; Dọn dẹp Analytics</h4>
+              <span class="badge badge-system">XOÁ HƠN 3,500 DÒNG MÃ CŨ</span>
+            </div>
+            <p class="audit-item-body">
+              Tái định nghĩa toàn bộ TypeScript interfaces theo đúng thực thể kinh doanh và gỡ bỏ triệt để bộ máy tính toán mô phỏng cũ không còn sử dụng.
+            </p>
+            <ul class="audit-points">
+              <li><code>src/data.ts</code> giảm từ <strong>681 dòng xuống 147 dòng</strong> (<code>-78,4%</code>), định nghĩa sắc nét <code>PartnerHubConfigMaster</code>, <code>BidRecordMaster</code>, <code>HubInboxMaster</code> và <code>MasterDataBundle</code>.</li>
+              <li><code>src/services/overviewAnalytics.ts</code> giảm từ <strong>990 xuống 793 dòng</strong> (xoá toàn bộ đoạn mã tự sinh giả lập <code>stay_h11</code> trong bộ nhớ để đọc thẳng từ JSON).</li>
+              <li>Xoá vĩnh viễn <code>src/services/analyticsEngine.ts</code> (<strong>2,859 dòng</strong>) và <code>tests/unit/analytics-engine.test.ts</code> (<strong>428 dòng</strong>).</li>
+            </ul>
+          </article>
+
+          <article class="audit-item-card system-border filterable-item" data-category="system">
+            <div class="audit-item-header">
+              <h4 class="audit-item-heading">5. Kiểm thử Hợp đồng <code>tests/unit/master-data-contract.test.ts</code></h4>
+              <span class="badge badge-system">266 → 247 DÒNG · TC-DATA-01..05</span>
+            </div>
+            <p class="audit-item-body">
+              Viết lại trọn bộ 5 bài kiểm thử hợp đồng dữ liệu gốc để khóa chặt toàn vẹn tham chiếu (Referential Integrity) của phiên bản <code>3.0.0</code>:
+            </p>
+            <ul class="audit-points">
+              <li><code>TC-DATA-01..02</code>: Khẳng định <code>master-data/</code> khớp 100% với <code>seed/</code>, <code>0</code> file cũ còn sót, <code>vite.config.ts</code> khớp tuyệt đối với <code>masterDataService.ts</code>.</li>
+              <li><code>TC-DATA-03..05</code>: Kiểm tra tổng phòng (<code>12+10+8 = 30</code>), tổng đánh giá (<code>64+46+32 = 142</code>), tổng doanh thu kỳ trước 3 CN bằng khít <code>periodsMeta</code>, FK <code>propertyId</code> hợp lệ 100%, công thức <code>netRevenueVnd === offeredRatePerNightVnd * nights</code>, đủ 4 nhóm trạng thái trên L'amour, đúng 75 bản ghi cho <code>stay_h11</code> và đủ 3 ngôn ngữ <code>vi/en/ko</code> trong <code>hub_inbox.json</code>.</li>
+            </ul>
+          </article>
+
+          <article class="audit-item-card system-border filterable-item" data-category="system">
+            <div class="audit-item-header">
+              <h4 class="audit-item-heading">6. Kịch bản E2E API &amp; Trình chạy Test Tổng hợp</h4>
+              <span class="badge badge-system">ĐỒNG BỘ SEED &amp; PLAYWRIGHT</span>
+            </div>
+            <p class="audit-item-body">
+              Cập nhật <code>scripts/run-all-tests.mjs</code> (<code>85 → 77 dòng</code>), <code>tests/helpers/seed-loader.ts</code> và <code>tests/e2e/api-master-data.spec.ts</code> (<code>175 → 190 dòng</code>).
+            </p>
+            <ul class="audit-points">
+              <li>Kiểm thử E2E xác minh vòng đời <code>GET /api/master-data</code> → <code>PUT /api/master-data/hubConfig</code> → tải lại trang (F5) giữ nguyên trạng thái → <code>POST /api/master-data/reset</code> hoàn nguyên về đúng bản gốc <code>seed/</code>.</li>
+              <li>Bổ sung test chặn ghi bảng không tồn tại (trả HTTP <code>400</code>) và payload thiếu trường <code>data</code>.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- SECTION 4: SIDE-BY-SIDE REAL JSON SCHEMA DIFF TABS                    -->
+    <!-- ===================================================================== -->
+    <section class="report-section" id="doi-chieu-json">
+      <div class="section-header">
+        <div class="section-num">Phần 04 · Side-by-Side Real Payload Diff</div>
+        <h2 class="section-title">Đối chiếu Mẫu JSON Thực tế Trước (v2.7.0) và Sau (v3.0.0)</h2>
+        <p class="section-desc">
+          Nhấp chọn từng thẻ bên dưới để so sánh trực diện các bản ghi thực tế lấy từ lịch sử Git (cùng một mã giao dịch <code>CRQ-8940</code> &amp; <code>CRQ-8937</code> trước và sau khi tái cấu trúc).
+        </p>
+      </div>
+
+      <div class="diff-shell">
+        <div class="diff-tabs-bar" role="tablist" aria-label="Các thẻ đối chiếu JSON">
+          <button type="button" class="diff-tab-btn active" role="tab" aria-selected="true" data-tab="tab-bids">
+            Tab 1: auction_sessions.json ↔ bid_records.json
+          </button>
+          <button type="button" class="diff-tab-btn" role="tab" aria-selected="false" data-tab="tab-config">
+            Tab 2: hotel_profile.json ↔ partner_hub_config.json
+          </button>
+          <button type="button" class="diff-tab-btn" role="tab" aria-selected="false" data-tab="tab-inbox">
+            Tab 3: hub_inbox.json (Mới 100% ở v3.0.0)
+          </button>
+          <button type="button" class="diff-tab-btn" role="tab" aria-selected="false" data-tab="tab-manifest">
+            Tab 4: schema_manifest.json (v2.7.0 ↔ v3.0.0)
+          </button>
+        </div>
+
+        <!-- TAB 1: AUCTION SESSIONS VS BID RECORDS -->
+        <div class="diff-panel active" id="tab-bids" role="tabpanel">
+          <div class="diff-note-banner">
+            <strong>Điểm nhấn đối chiếu trên cùng mã <code>CRQ-8940</code> (đơn thành công) &amp; <code>CRQ-8937</code> (lượt bị từ chối):</strong> Bản <code>v2.7.0</code> gánh tới 35 trường cho một đơn thành công (lộ <code>guestPaidTotal: 2656500</code> nhân hệ số <code>1.265</code>, 3 cột trạng thái chồng chéo, <code>autopsyId</code> và chuỗi tiếng Việt cứng). Bản <code>v3.0.0</code> rút xuống <strong>17 trường thương mại đa ngôn ngữ</strong> cho đơn <code>accepted</code>, và chỉ còn <strong>8 trường siêu gọn</strong> cho lượt <code>rejected / expired / cancelled</code>.
+          </div>
+          <div class="code-split">
+            <div class="code-pane">
+              <div class="code-pane-head old-head">
+                <span class="mono">TRƯỚC (v2.7.0) · auction_sessions.json</span>
+                <span>72 bản ghi · 2,831 dòng · 82.47 KB</span>
+              </div>
+              <pre class="code-pre">{
+  "id": "CRQ-8940",
+  "status": "won",
+  "requestStatus": "confirmed_paid",
+  "paymentStatus": "paid_escrow_100",
+  "bidStatus": "won_paid_100",
+  "rejectCode": null,
+  "rejectLabel": null,
+  "sessionDate": "2026-11-06",
+  "timeLabel": "18:42",
+  "dateTimeLabel": "06/11 • 18:42",
+  "timeSlot": "evening_peak",
+  "stayDatesLabel": "06/11–08/11 (2 đêm)",
+  "guestRequestTitle": "2 người lớn • Nghỉ dưỡng cuối tuần",
+  "amenitiesTags": ["Bữa sáng", "Hồ bơi", "Wifi"],
+  "nights": 2,
+  "roomsQty": 1,
+  "roomCategory": "Deluxe",
+  "matchedRoomClassId": "dlx",
+  "offeredRoom": "Deluxe Twin City View",
+  "offeredBasePrice": 1050000,
+  "hotelEarnedBase": 2100000,
+  "guestPaidTotal": 2656500,        // &lt;-- Lộ phí sàn ×1.265
+  "matchScore": 96,                 // &lt;-- Điểm kỹ thuật nội bộ
+  "bidMode": "auto",
+  "responseMinutes": 0.8,
+  "closeMinutes": 2.4,
+  "closeSpeedText": "02p 24s",
+  "lockedRoomNumber": 116,
+  "resultNote": "Đã TT 100% • Khóa #116",
+  "autopsyId": "CRQ-8924",
+  "branchId": "br_mykhe",
+  "branchName": "CN Mỹ Khê"
+}
+// --- Bản ghi bị từ chối CRQ-8937 (vẫn tốn 30 trường) ---
+{
+  "id": "CRQ-8937",
+  "status": "rejected",
+  "rejectCode": "REJ_COMPETITOR_WON_PRICE",
+  "lossReasonId": "price_high",
+  "resultNote": "Giá gốc cao hơn đối thủ 200k • Phòng vẫn mở",
+  "requestStatus": "confirmed_paid",
+  "bidStatus": "rejected_by_guest",
+  "paymentStatus": "not_started",
+  "offeredBasePrice": 2250000,
+  "nights": 2,
+  "branchId": "br_mykhe"
+}</pre>
+            </div>
+
+            <div class="code-pane">
+              <div class="code-pane-head new-head">
+                <span class="mono">SAU (v3.0.0) · bid_records.json</span>
+                <span>143 bản ghi · 2,016 dòng · 47.93 KB</span>
+              </div>
+              <pre class="code-pre">{
+  "id": "CRQ-8940",
+  "bookingCode": "#71",             // &lt;-- Mã phiếu nhận phòng rõ ràng
+  "propertyId": "br_mykhe",
+  "status": "accepted",             // &lt;-- 1 trường trạng thái duy nhất
+  "bidMode": "auto",
+  "sessionDate": "2026-11-06",
+  "timeLabel": "18:42",
+  "checkInDate": "2026-11-06",
+  "checkOutDate": "2026-11-08",
+  "nights": 2,
+  "guestsCount": 2,
+  "roomName": {
+    "vi": "Phòng Deluxe 2 Giường Đơn (Hướng Phố)",
+    "en": "Deluxe Twin City View",
+    "ko": "디럭스 트윈 시티뷰"
+  },
+  "roomNumber": 116,
+  "offeredRatePerNightVnd": 1050000,
+  "netRevenueVnd": 2100000,         // &lt;-- Chỉ giữ Doanh thu thực nhận
+  "guestNote": {
+    "vi": "2 người lớn • Nghỉ dưỡng cuối tuần",
+    "en": "2 adults · Weekend leisure stay (2 nights)",
+    "ko": "성인 2명 · 주말 휴양 2박 확정 예약"
+  },
+  "amenities": ["breakfast", "pool", "wifi"]
+}
+// --- Cùng CRQ-8937 ở v3.0.0: Tinh gọn đúng 8 trường cốt lõi ---
+{
+  "id": "CRQ-8937",
+  "propertyId": "br_mykhe",
+  "status": "rejected",
+  "bidMode": "manual",
+  "sessionDate": "2026-11-06",
+  "timeLabel": "15:10",
+  "nights": 2,
+  "offeredRatePerNightVnd": 2250000
+}</pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: HOTEL PROFILE VS PARTNER HUB CONFIG -->
+        <div class="diff-panel" id="tab-config" role="tabpanel">
+          <div class="diff-note-banner">
+            <strong>Điểm nhấn đối chiếu cấu hình trung tâm:</strong> <code>partner_hub_config.json</code> loại bỏ sạch các hằng số kỹ thuật sàn (<code>bidTtlSeconds</code>, <code>paymentHoldTtlSeconds</code>, <code>guestPriceMultiplier: 1.265</code>), đồng thời bổ sung tỷ giá <code>currencyRates</code>, <code>partnerUser</code> 3 ngôn ngữ, <code>periodsMeta</code> chuẩn xác và cơ sở thứ tư <code>stay_h11</code>.
+          </div>
+          <div class="code-split">
+            <div class="code-pane">
+              <div class="code-pane-head old-head">
+                <span class="mono">TRƯỚC (v2.7.0) · hotel_profile.json (+ users_roles.json)</span>
+                <span>87 + 22 dòng · 2.95 KB</span>
+              </div>
+              <pre class="code-pre">{
+  "hotelId": "HTL-DN-024",
+  "brandName": "goodNstay",
+  "brandSuffix": "Partner Studio",
+  "version": "v2.7",
+  "hotelName": "L'amour Boutique Hotel",
+  "totalRooms": 30,
+  "referenceDate": "2026-11-06",
+  "bidTtlSeconds": 3600,
+  "paymentHoldTtlSeconds": 600,
+  "platformFeeRate": 0.15,
+  "vatRate": 0.1,
+  "guestPriceMultiplier": 1.265,
+  "defaultFloorPrice": 750000,
+  "nightFlashDiscountPct": 15,
+  "eloScore": 1680,
+  "reviewRating5": 4.8,
+  "reviewCount": 142,
+  "reviewCriteria5": {
+    "roomComfortCleanliness": 4.9,
+    "staffHospitality": 4.8,
+    "checkinExperience": 4.8,
+    "amenitiesExpectation": 4.7,
+    "valueForMoney": 4.8
+  },
+  "branches": [
+    {
+      "id": "br_mykhe",
+      "shortName": "CN Mỹ Khê",
+      "name": "L'amour Mỹ Khê · Sơn Trà",
+      "totalRooms": 12,
+      "previousPeriodRevenue": {
+        "today": 4600000, "7d": 7200000, "30d": 20200000
+      }
+    }
+    // ... chỉ có 3 chi nhánh chuỗi, chưa có Stay Hotel H11
+  ]
+}</pre>
+            </div>
+
+            <div class="code-pane">
+              <div class="code-pane-head new-head">
+                <span class="mono">SAU (v3.0.0) · partner_hub_config.json</span>
+                <span>259 dòng · 7.17 KB</span>
+              </div>
+              <pre class="code-pre">{
+  "schemaVersion": "3.0.0",
+  "brandName": "Optibide",
+  "referenceDate": "2026-11-06",
+  "currencyRates": { "VND": 1, "KRW": 18.5, "USD": 25400 },
+  "partnerUser": {
+    "userId": "USR-PARTNER-01",
+    "displayName": { "vi": "Nguyễn Bảo Minh", "en": "Kim Ha-yoon", "ko": "김하윤" },
+    "initials": { "vi": "BM", "en": "KH", "ko": "KH" },
+    "roleBadge": {
+      "vi": "Quản lý khách sạn", "en": "Property Manager", "ko": "호텔 지배인"
+    }
+  },
+  "periodsMeta": {
+    "today": {
+      "startDate": "2026-11-06", "endDate": "2026-11-06",
+      "previousNetRevenueVnd": 9800000, "targetAcceptRatePct": 36.5
+    }
+    // ... "7d" (25,200,000), "30d" (54,600,000)
+  },
+  "chainOverview": { "hotelId": "HTL-DN-024", "roomsCount": 30, "eloScore": 1680 /* ... */ },
+  "properties": [
+    // ... br_mykhe (ELO 1720), br_songhan (ELO 1665), br_anthuong (ELO 1610),
+    {
+      "id": "stay_h11",
+      "isChainMember": false,
+      "label": {
+        "vi": "Stay Hotel H11 (Cơ sở mới)",
+        "en": "Stay Hotel H11",
+        "ko": "Stay Hotel H11 (신규 지점)"
+      },
+      "roomsCount": 18,
+      "autoBidEnabled": true,
+      "previousPeriodRevenueVnd": { "today": 0, "7d": 0, "30d": 0 },
+      "reviewRating5": 0.0,
+      "reviewCount": 0,
+      "reviewCriteria5": {
+        "amenities": 0.0, "checkin": 0.0, "cleanliness": 0.0, "service": 0.0, "value": 0.0
+      },
+      "eloScore": 800,
+      "visibilityTone": "low"
+    }
+  ]
+}</pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: HUB INBOX (NEW IN V3.0.0) -->
+        <div class="diff-panel" id="tab-inbox" role="tabpanel">
+          <div class="diff-note-banner">
+            <strong>Bảng dữ liệu mới hoàn toàn ở <code>v3.0.0</code>:</strong> Cung cấp ngữ cảnh vận hành thực tế cho thanh điều hướng trên cùng (Topbar), tự động lọc tin nhắn khách và thông báo theo cơ sở đang chọn và ngôn ngữ <code>vi / en / ko</code>.
+          </div>
+          <div class="code-split">
+            <div class="code-pane">
+              <div class="code-pane-head old-head">
+                <span class="mono">TRƯỚC (v2.7.0) · Không tồn tại bảng tương ứng</span>
+                <span>0 bản ghi · 0 KB</span>
+              </div>
+              <pre class="code-pre">// Master Data v2.7.0 không có bảng hộp thư tin nhắn khách
+// hoặc bảng thông báo vận hành đa cơ sở.
+//
+// Giao diện cũ chỉ hiển thị các thẻ cảnh báo tĩnh gắn cứng
+// trong component React dựa trên đồng hồ đếm ngược phiên Live
+// (remainingSeconds / holdRemainingSeconds).</pre>
+            </div>
+
+            <div class="code-pane">
+              <div class="code-pane-head new-head">
+                <span class="mono">SAU (v3.0.0) · hub_inbox.json</span>
+                <span>2 messages + 3 notifications · 65 dòng · 2.44 KB</span>
+              </div>
+              <pre class="code-pre">{
+  "messages": [
+    {
+      "id": "MSG-01",
+      "propertyId": "br_mykhe",
+      "bookingCode": "#71",
+      "guestName": "Minh Anh",
+      "receivedAt": "19:10",
+      "unread": true,
+      "preview": {
+        "vi": "Đơn #71: Cho mình hỏi khách sạn có chỗ đậu ô tô 7 chỗ qua đêm không ạ?",
+        "en": "Booking #71: Could you confirm if overnight parking is available for a 7-seater SUV?",
+        "ko": "예약 #71: 7인승 차량 야간 무료 주차가 가능한지 확인 부탁드립니다."
+      }
+    }
+    // + MSG-02 (br_anthuong, đơn #69, Hoàng Nam)
+  ],
+  "notifications": [
+    {
+      "id": "NTF-01",
+      "scope": "chain",
+      "tone": "indigo",
+      "createdAt": "19:00",
+      "text": {
+        "vi": "Chế độ Báo giá tự động ban đêm đang bật ổn định trên toàn hệ thống L'amour.",
+        "en": "Overnight AutoBid standby protection is active across all L'amour properties.",
+        "ko": "심야 자동 입찰 응답 규칙이 전 지점에서 정상 작동 중입니다."
+      }
+    },
+    // + NTF-02 (scope: "br_mykhe", tone: "emerald" — nhận đủ 100% TT đơn #71)
+    // + NTF-03 (scope: "stay_h11", tone: "amber" — gợi ý giảm 5–10% mở hàng)
+  ]
+}</pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: SCHEMA MANIFEST -->
+        <div class="diff-panel" id="tab-manifest" role="tabpanel">
+          <div class="diff-note-banner">
+            <strong>Đối chiếu toàn văn <code>schema_manifest.json</code>:</strong> Sự chuyển dịch rõ nét nhất từ 12 bảng mô phỏng chằng chịt sang 3 bảng cốt lõi lấy danh mục cơ sở (<code>hubConfig.properties.id</code>) làm tâm điểm liên kết khoá ngoại.
+          </div>
+          <div class="code-split">
+            <div class="code-pane">
+              <div class="code-pane-head old-head">
+                <span class="mono">TRƯỚC (v2.7.0) · schema_manifest.json</span>
+                <span>12 bảng khai báo · 70 dòng · 2.59 KB</span>
+              </div>
+              <pre class="code-pre">{
+  "schemaVersion": "2.7.0",
+  "architecture": "goodNstay Pay-to-Lock • 10-Min Payment Hold • Multi-Entity Lifecycle • 0% Hotel Commission",
+  "generatedAt": "2026-11-06T19:45:00+07:00",
+  "primaryReferenceDate": "2026-11-06",
+  "tables": {
+    "hotelProfile":     { "file": "hotel_profile.json",     "pk": "hotelId" },
+    "usersRoles":       { "file": "users_roles.json",       "pk": "userId" },
+    "perksCatalog":     { "file": "perks_catalog.json",     "pk": "id" },
+    "roomClasses":      { "file": "room_classes.json",      "pk": "id" },
+    "roomsPms":         { "file": "rooms_pms.json",         "pk": "roomNumber", "fk": "roomClassId -&gt; roomClasses.id" },
+    "calendar14dPms":   { "file": "calendar_14d_pms.json",  "pk": "dayOffset" },
+    "systemBenchmarks": { "file": "system_benchmarks.json", "pk": "regionName" },
+    "auctionSessions":  { "file": "auction_sessions.json",  "pk": "id",         "fk": "matchedRoomClassId -&gt; roomClasses.id" },
+    "matchBreakdowns":  { "file": "match_breakdowns.json",  "pk": "reqId" },
+    "lossAutopsies":    { "file": "loss_autopsies.json",    "pk": "id" },
+    "botRules":         { "file": "bot_rules.json",         "pk": "ruleId" },
+    "lifecycleCatalog": { "file": "lifecycle_catalog.json", "pk": "version" }
+  }
+}</pre>
+            </div>
+
+            <div class="code-pane">
+              <div class="code-pane-head new-head">
+                <span class="mono">SAU (v3.0.0) · schema_manifest.json</span>
+                <span>3 bảng khai báo · 25 dòng · 1.13 KB</span>
+              </div>
+              <pre class="code-pre">{
+  "schemaVersion": "3.0.0",
+  "architecture": "Optibide Partner Hub • Pure-Business Overview • Multi-Property • VI/EN/KO &amp; VND/KRW/USD",
+  "generatedAt": "2026-11-13T10:55:00+07:00",
+  "primaryReferenceDate": "2026-11-06",
+  "tables": {
+    "hubConfig": {
+      "file": "partner_hub_config.json",
+      "pk": "schemaVersion",
+      "description": "Cấu hình cổng đối tác Optibide, tỷ giá VND/KRW/USD, tài khoản quản lý, kỳ lọc Today/7D/30D và 4 cơ sở (3 CN L'amour + Stay Hotel H11)"
+    },
+    "bidRecords": {
+      "file": "bid_records.json",
+      "pk": "id",
+      "fk": "propertyId -&gt; hubConfig.properties.id",
+      "description": "Dữ liệu các lượt báo giá &amp; đơn đặt phòng hoàn tất (đủ 4 trạng thái accepted, expired, rejected, cancelled; kèm phiếu đặt phòng đa ngôn ngữ)"
+    },
+    "hubInbox": {
+      "file": "hub_inbox.json",
+      "pk": "messages.id / notifications.id",
+      "fk": "propertyId -&gt; hubConfig.properties.id",
+      "description": "Hộp thư tin nhắn khách đặt phòng &amp; thông báo vận hành hiển thị trên Topbar theo từng cơ sở"
+    }
+  }
+}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- SECTION 5: IMPACT ASSESSMENT & MODULAR EXPANSION ROADMAP              -->
+    <!-- ===================================================================== -->
+    <section class="report-section" id="tac-dong-mo-rong">
+      <div class="section-header">
+        <div class="section-num">Phần 05 · Architectural Impact &amp; Future API Modules</div>
+        <h2 class="section-title">Đánh giá Tác động Hiện tại &amp; Lưu ý Mở rộng cho Các Tab Chức năng Tiếp theo</h2>
+        <p class="section-desc">
+          Tổng kết giá trị đạt được ngay lập tức từ đợt tinh gọn <code>v3.0.0</code>, đồng thời hoạch định ranh giới API độc lập khi triển khai 6 phân hệ tiếp theo trên thanh Sidebar của <code>PartnerHubShell.tsx</code>.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <div class="impact-box benefit">
+          <span class="badge badge-added">GIÁ TRỊ ĐẠT ĐƯỢC NGAY Ở v3.0.0</span>
+          <h3 style="margin: 10px 0 10px; font-size: 17px; font-weight: 800;">Lợi ích Kỹ thuật, Bảo mật Nghiệp vụ &amp; Tốc độ Bảo trì</h3>
+          <ul class="audit-points">
+            <li><strong>Nhẹ tải khởi động gần 60%:</strong> Lần tải đầu của màn hình Overview giảm từ <code>145.49 KB</code> (13 request tĩnh hoặc 1 bundle cồng kềnh) xuống chỉ còn <code>58.68 KB</code> xoay quanh đúng nhu cầu của trang Tổng quan.</li>
+            <li><strong>Zero Technical Leak (Không rò rỉ logic nội bộ sàn):</strong> Chủ khách sạn mở DevTools (F12 Network) kiểm tra <code>/api/master-data</code> cũng không còn thấy tỷ lệ thu phí phía du khách (<code>guestPriceMultiplier: 1.265</code>), dữ liệu giá đối thủ hay tài liệu quy trình nội bộ.</li>
+            <li><strong>Đa thị trường sẵn sàng triển khai (Korea &amp; Global Ready):</strong> Bất kỳ cơ sở hay đơn đặt phòng mới nào sinh ra từ <code>generate_partner_hub_master_data.py</code> đều mặc định được kiểm tra đủ 3 ngôn ngữ <code>vi / en / ko</code> và quy đổi mượt sang <code>VND / KRW / USD</code>.</li>
+            <li><strong>Nguồn sự thật duy nhất (Single Source of Truth):</strong> Xoá bỏ hoàn toàn tình trạng vừa đọc JSON vừa vá dữ liệu giả trong TypeScript (như trường hợp <code>stay_h11</code> trước commit <code>513d4ec</code>) và triệt tiêu lỗi lệch tổng doanh thu giữa các file rời rạc.</li>
+          </ul>
+        </div>
+
+        <div class="impact-box caution">
+          <span class="badge badge-modified">NGUYÊN TẮC KIẾN TRÚC KHI MỞ RỘNG</span>
+          <h3 style="margin: 10px 0 10px; font-size: 17px; font-weight: 800;">Không Nhồi Ngược Vào Bundle Overview — Tách Theo Domain API</h3>
+          <ul class="audit-points">
+            <li><strong>Giữ <code>partner_hub_config + bid_records + hub_inbox</code> làm hạt nhân nhẹ:</strong> Khi xây dựng các tab tiếp theo trên thanh điều hướng bên trái, <strong>không</strong> gộp ngược kho phòng PMS hay lịch 30 ngày vào <code>MasterDataBundle</code> của trang Tổng quan.</li>
+            <li><strong>Nạp lười theo phân hệ (Lazy-loaded Domain Endpoints):</strong> Mỗi mục trên Sidebar nên có endpoint / bảng dữ liệu chuyên biệt chỉ tải khi người dùng chuyển sang tab đó, luôn dùng khoá ngoại chuẩn <code>propertyId -&gt; hubConfig.properties.id</code>.</li>
+            <li><strong>Giữ vững triết lý Thuần Kinh doanh:</strong> Các khái niệm từng bị xoá ở <code>v2.7.0</code> khi quay trở lại ở tab chuyên sâu cần được thiết kế mới theo góc nhìn thương mại đa cơ sở &amp; đa ngôn ngữ, thay vì bê nguyên cấu trúc mô phỏng kỹ thuật cũ.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 6 Upcoming Sidebar Tabs Roadmap -->
+      <div class="module-roadmap-grid">
+        <div class="module-card">
+          <span class="badge badge-slate mono">Sidebar #2 · nav-item-calendar</span>
+          <h4>📅 Booking Calendar (Lịch Đặt Phòng)</h4>
+          <p>Sẽ cần một module API lịch tồn kho &amp; lịch nhận/trả phòng theo <code>propertyId</code> (kế thừa bài học từ <code>calendar_14d_pms.json</code> cũ nhưng thiết kế đa cơ sở, không phơi bày biến kỹ thuật <code>paymentHoldRooms</code>).</p>
+        </div>
+
+        <div class="module-card">
+          <span class="badge badge-slate mono">Sidebar #3 · nav-item-payout</span>
+          <h4>💳 Payout (Đối soát &amp; Thanh toán)</h4>
+          <p>Cần bảng sao kê kỳ thanh toán, trạng thái chuyển khoản ngân hàng và hoá đơn doanh thu ròng (<code>netRevenueVnd</code>) quy đổi theo <code>currencyRates</code>, liên kết trực tiếp với các đơn <code>status === "accepted"</code>.</p>
+        </div>
+
+        <div class="module-card">
+          <span class="badge badge-slate mono">Sidebar #4 · nav-item-rooms</span>
+          <h4>🛏️ Rooms (Quản lý Hạng phòng &amp; Tồn kho)</h4>
+          <p>Thay thế <code>room_classes.json</code> &amp; <code>rooms_pms.json</code> cũ bằng cấu trúc hạng phòng đa ngôn ngữ gắn theo từng <code>propertyId</code> (hỗ trợ cả 30 phòng của <em>L'amour</em> lẫn 18 phòng của <code>stay_h11</code>).</p>
+        </div>
+
+        <div class="module-card">
+          <span class="badge badge-slate mono">Sidebar #5 · nav-item-bidding</span>
+          <h4>🔨 Bidding (Phiên Báo Giá &amp; Quy tắc Tự động)</h4>
+          <p>Nơi quy tụ hàng đợi yêu cầu báo giá đang mở và cấu hình ngưỡng giá sàn AutoBid theo hạng phòng (phiên bản thương mại hoá sạch sẽ của <code>bot_rules.json</code> và các phiên đang chờ phản hồi).</p>
+        </div>
+
+        <div class="module-card">
+          <span class="badge badge-slate mono">Sidebar #6 · nav-item-messages</span>
+          <h4>💬 Messages (Trung tâm Tin nhắn Khách)</h4>
+          <p>Mở rộng từ bản tóm tắt <code>hub_inbox.json -&gt; messages[]</code> trên Topbar thành luồng hội thoại hai chiều đầy đủ gắn với từng mã <code>bookingCode</code> (<code>#71</code>, <code>#69</code>...).</p>
+        </div>
+
+        <div class="module-card">
+          <span class="badge badge-slate mono">Sidebar #7 · Marketing Submenu</span>
+          <h4>📣 Marketing &amp; Ưu đãi Gia tăng</h4>
+          <p>Khi triển khai chương trình khuyến mãi hoặc gói đặc quyền đi kèm (bữa sáng, trả phòng trễ), có thể tái thiết kế ý tưởng từ <code>perks_catalog.json</code> dưới dạng gói ưu đãi đa ngôn ngữ tự chọn cho chủ khách sạn.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="report-footer">
+      <div>
+        <strong>Optibide Partner Hub · Master Data Audit Report</strong> — Xác thực 100% từ lịch sử Git (<code>513d4ec~1</code> ↔ <code>513d4ec</code> / <code>HEAD</code>).
+      </div>
+      <div>
+        Xem tiếp báo cáo song hành: <a href="./so-sanh-dashboard-cu-va-moi.html" style="color: var(--indigo-600); font-weight: 700; text-decoration: none;">2. So sánh Dashboard Cũ &amp; Mới (Góc nhìn Business) →</a>
+      </div>
+    </footer>
+
+  </main>
+
+  <script>
+    (function () {
+      // 1. Interactive Filter & Live Search in Section 3
+      var filterBtns = Array.prototype.slice.call(
+        document.querySelectorAll("#auditFilterBtns .filter-btn")
+      );
+      var searchInput = document.getElementById("auditSearchInput");
+      var matchCounter = document.getElementById("auditMatchCount");
+      var emptyState = document.getElementById("auditEmptyState");
+      var filterableItems = Array.prototype.slice.call(
+        document.querySelectorAll(".filterable-item")
+      );
+      var groupSections = Array.prototype.slice.call(
+        document.querySelectorAll("[data-group-section]")
+      );
+      var activeCategory = "all";
+
+      function normalizeVi(str) {
+        return (str || "")
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/đ/g, "d");
+      }
+
+      function applyAuditFilter() {
+        var rawQuery = searchInput ? searchInput.value.trim() : "";
+        var normQuery = normalizeVi(rawQuery);
+        var visibleCount = 0;
+
+        filterableItems.forEach(function (el) {
+          var cat = el.getAttribute("data-category");
+          var catMatches = activeCategory === "all" || cat === activeCategory;
+          var textMatches = true;
+          if (normQuery.length > 0) {
+            var contentNorm = normalizeVi(el.textContent || "");
+            var rawLower = (el.textContent || "").toLowerCase();
+            textMatches =
+              contentNorm.indexOf(normQuery) !== -1 ||
+              rawLower.indexOf(rawQuery.toLowerCase()) !== -1;
+          }
+
+          if (catMatches && textMatches) {
+            el.classList.remove("hidden-by-filter");
+            visibleCount += 1;
+          } else {
+            el.classList.add("hidden-by-filter");
+          }
+        });
+
+        groupSections.forEach(function (groupEl) {
+          var hasVisible =
+            groupEl.querySelectorAll(".filterable-item:not(.hidden-by-filter)")
+              .length > 0;
+          if (hasVisible) {
+            groupEl.classList.remove("hidden-by-filter");
+          } else {
+            groupEl.classList.add("hidden-by-filter");
+          }
+        });
+
+        if (matchCounter) {
+          matchCounter.textContent =
+            "Hiển thị " + visibleCount + " / " + filterableItems.length + " mục";
+        }
+        if (emptyState) {
+          emptyState.style.display = visibleCount === 0 ? "block" : "none";
+        }
+      }
+
+      filterBtns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          filterBtns.forEach(function (b) {
+            b.classList.remove("active");
+          });
+          btn.classList.add("active");
+          activeCategory = btn.getAttribute("data-filter") || "all";
+          applyAuditFilter();
+        });
+      });
+
+      if (searchInput) {
+        searchInput.addEventListener("input", applyAuditFilter);
+      }
+
+      applyAuditFilter();
+
+      // 2. Interactive Side-by-Side JSON Schema Diff Tabs in Section 4
+      var tabBtns = Array.prototype.slice.call(
+        document.querySelectorAll(".diff-tab-btn")
+      );
+      var tabPanels = Array.prototype.slice.call(
+        document.querySelectorAll(".diff-panel")
+      );
+
+      tabBtns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var targetId = btn.getAttribute("data-tab");
+          tabBtns.forEach(function (b) {
+            var isCurrent = b === btn;
+            b.classList.toggle("active", isCurrent);
+            b.setAttribute("aria-selected", isCurrent ? "true" : "false");
+          });
+          tabPanels.forEach(function (panel) {
+            panel.classList.toggle("active", panel.id === targetId);
+          });
+        });
+      });
+
+      // 3. Sticky Quick-Jump Active Highlight on Scroll
+      var jumpLinks = Array.prototype.slice.call(
+        document.querySelectorAll("#jumpNav .jump-pill")
+      );
+      var trackedSections = jumpLinks
+        .map(function (link) {
+          var id = (link.getAttribute("href") || "").replace("#", "");
+          return document.getElementById(id);
+        })
+        .filter(Boolean);
+
+      function updateCurrentJumpLink() {
+        var scrollPos = window.scrollY + 130;
+        var currentId = trackedSections.length ? trackedSections[0].id : "";
+        trackedSections.forEach(function (sec) {
+          if (sec.offsetTop <= scrollPos) {
+            currentId = sec.id;
+          }
+        });
+        jumpLinks.forEach(function (link) {
+          var isMatch = link.getAttribute("href") === "#" + currentId;
+          link.classList.toggle("current", isMatch);
+        });
+      }
+
+      window.addEventListener("scroll", updateCurrentJumpLink, { passive: true });
+      updateCurrentJumpLink();
+    })();
+  </script>
+</body>
+</html>

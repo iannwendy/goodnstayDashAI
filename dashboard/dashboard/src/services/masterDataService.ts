@@ -12,9 +12,13 @@ const STATIC_TABLE_PATHS: Record<MasterTableKey, string> = {
   hubConfig: "/master-data/partner_hub_config.json",
   bidRecords: "/master-data/bid_records.json",
   hubInbox: "/master-data/hub_inbox.json",
+  roomInventory: "/master-data/room_inventory.json",
+  payoutLedgers: "/master-data/payout_ledgers.json",
+  biddingOperations: "/master-data/bidding_operations.json",
+  marketingCampaigns: "/master-data/marketing_campaigns.json",
 };
 
-const LOCAL_FALLBACK_PREFIX = "gns_master_v30_";
+const LOCAL_FALLBACK_PREFIX = "gns_master_v40_";
 
 export async function loadMasterDataBundle(): Promise<LoadedMasterDataResult> {
   // 1. Direct live Master Data REST API (/api/master-data)

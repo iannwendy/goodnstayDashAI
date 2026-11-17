@@ -1,0 +1,250 @@
+{
+  "flashDeals": [
+    {
+      "id": "DEAL-MK-01",
+      "propertyId": "br_mykhe",
+      "title": {
+        "vi": "Ưu đãi Tối Cuối Tuần Biển Mỹ Khê (-15%)",
+        "en": "My Khe Beachfront Tonight Saver (-15%)",
+        "ko": "미케 비치프론트 오늘 밤 타임세일 (-15%)"
+      },
+      "subtitle": {
+        "vi": "Áp dụng cho khách đặt từ 18:00 – 23:30 để lấp đầy phòng trống trong ngày",
+        "en": "Applies to 18:00–23:30 bookings to fill remaining same-day rooms",
+        "ko": "당일 잔여 객실 판매를 위한 18:00~23:30 마감 특가"
+      },
+      "roomTypeName": {
+        "vi": "Phòng Deluxe 2 Giường Đơn (Hướng Phố)",
+        "en": "Deluxe Twin City View",
+        "ko": "디럭스 트윈 시티뷰"
+      },
+      "bookingWindowLabel": {
+        "vi": "18:00 – 23:30 hàng ngày",
+        "en": "Daily 18:00 – 23:30",
+        "ko": "매일 18:00 – 23:30"
+      },
+      "discountPct": 15,
+      "originalRateVnd": 1180000,
+      "dealRateVnd": 1003000,
+      "dailyRoomQuota": 3,
+      "roomsSold30d": 11,
+      "netRevenue30dVnd": 11033000,
+      "perks": [
+        "breakfast",
+        "wifi",
+        "pool"
+      ],
+      "active": true
+    },
+    {
+      "id": "DEAL-SH-01",
+      "propertyId": "br_songhan",
+      "title": {
+        "vi": "Giá Tốt Giờ Chót Khách Công Tác Hải Châu (-12%)",
+        "en": "Hai Chau Business Express Deal (-12%)",
+        "ko": "하이쩌우 비즈니스 마감 특가 (-12%)"
+      },
+      "subtitle": {
+        "vi": "Tặng kèm ủi đồ nhanh & nhận phòng linh hoạt cho khách đáp chuyến bay muộn",
+        "en": "Includes express pressing & flexible late-flight check-in",
+        "ko": "야간 항공편 출장객을 위한 유연 체크인 포함 특가"
+      },
+      "roomTypeName": {
+        "vi": "Phòng Superior Giường Đôi",
+        "en": "Superior Double",
+        "ko": "슈페리어 더블"
+      },
+      "bookingWindowLabel": {
+        "vi": "19:00 – 23:59 Thứ Hai – Thứ Năm",
+        "en": "Mon–Thu 19:00 – 23:59",
+        "ko": "월~목 19:00 – 23:59"
+      },
+      "discountPct": 12,
+      "originalRateVnd": 900000,
+      "dealRateVnd": 792000,
+      "dailyRoomQuota": 3,
+      "roomsSold30d": 8,
+      "netRevenue30dVnd": 6336000,
+      "perks": [
+        "wifi",
+        "elevator",
+        "parking"
+      ],
+      "active": true
+    },
+    {
+      "id": "DEAL-AT-01",
+      "propertyId": "br_anthuong",
+      "title": {
+        "vi": "Combo Nghỉ Dài Ngày Phố Tây An Thượng (-18%)",
+        "en": "An Thuong 3-Night Stay Saver (-18%)",
+        "ko": "안트엉 3박 이상 연박 프로모션 (-18%)"
+      },
+      "subtitle": {
+        "vi": "Ưu đãi cho khách đặt từ 2–3 đêm liên tiếp, kèm trả phòng trễ 14:00",
+        "en": "Rewards 2–3 night stays with complimentary 2:00 PM late check-out",
+        "ko": "2~3박 연박 고객 대상 14시 레이트 체크아웃 무료 제공"
+      },
+      "roomTypeName": {
+        "vi": "Suite Gia Đình Thông Nhau",
+        "en": "Family Connecting Suite",
+        "ko": "패밀리 커넥팅 스위트"
+      },
+      "bookingWindowLabel": {
+        "vi": "Cả tuần · Lưu trú từ 2 đêm",
+        "en": "All week · Min 2 nights",
+        "ko": "주중·주말 상시 · 2박 이상"
+      },
+      "discountPct": 18,
+      "originalRateVnd": 1850000,
+      "dealRateVnd": 1517000,
+      "dailyRoomQuota": 2,
+      "roomsSold30d": 5,
+      "netRevenue30dVnd": 7585000,
+      "perks": [
+        "breakfast",
+        "pool",
+        "late_checkout"
+      ],
+      "active": true
+    },
+    {
+      "id": "DEAL-H11-01",
+      "propertyId": "stay_h11",
+      "title": {
+        "vi": "Ưu Đãi Mở Hàng Cơ Sở Mới Stay Hotel H11 (-15%)",
+        "en": "Stay Hotel H11 New Property Launch Offer (-15%)",
+        "ko": "Stay Hotel H11 신규 오픈 첫 예약 특가 (-15%)"
+      },
+      "subtitle": {
+        "vi": "Kích hoạt ngay để thu hút 10 lượt khách mở hàng và tích lũy đánh giá 5 sao đầu tiên",
+        "en": "Turn on to capture your first 10 bookings and build verified 5-star guest reviews",
+        "ko": "첫 10건의 확정 예약과 초기 5점 리뷰 확보를 위한 오픈 프로모션"
+      },
+      "roomTypeName": {
+        "vi": "Phòng Deluxe Hướng Phố Trung Tâm",
+        "en": "Deluxe City View",
+        "ko": "디럭스 시티뷰"
+      },
+      "bookingWindowLabel": {
+        "vi": "17:00 – 23:59 toàn tuần",
+        "en": "Daily 17:00 – 23:59",
+        "ko": "매일 17:00 – 23:59"
+      },
+      "discountPct": 15,
+      "originalRateVnd": 1220000,
+      "dealRateVnd": 1037000,
+      "dailyRoomQuota": 5,
+      "roomsSold30d": 0,
+      "netRevenue30dVnd": 0,
+      "perks": [
+        "breakfast",
+        "wifi",
+        "late_checkout"
+      ],
+      "active": false
+    }
+  ],
+  "upsellOffers": [
+    {
+      "id": "UPS-MK-01",
+      "propertyId": "br_mykhe",
+      "category": "room_upgrade",
+      "title": {
+        "vi": "Nâng hạng lên Suite Hướng Biển Trực Diện",
+        "en": "Upgrade to Executive Oceanfront Suite",
+        "ko": "이그제큐티브 오션프론트 스위트 업그레이드"
+      },
+      "description": {
+        "vi": "Chuyển từ phòng Deluxe lên tầng cao hướng biển Mỹ Khê kèm bồn tắm nằm & trà chiều",
+        "en": "Step up from Deluxe to direct My Khe oceanfront view with soaking tub & afternoon tea",
+        "ko": "디럭스에서 미케 정면 오션뷰 고층 스위트 및 욕조 혜택으로 업그레이드"
+      },
+      "priceVnd": 450000,
+      "pricingUnit": "per_night",
+      "orders30d": 9,
+      "extraRevenue30dVnd": 4050000,
+      "active": true
+    },
+    {
+      "id": "UPS-MK-02",
+      "propertyId": "br_mykhe",
+      "category": "airport_transfer",
+      "title": {
+        "vi": "Xe riêng 7 chỗ đón/tiễn Sân bay Đà Nẵng",
+        "en": "Private SUV Da Nang Airport Pickup",
+        "ko": "다낭 공항 전용 7인승 픽업/샌딩"
+      },
+      "description": {
+        "vi": "Tài xế cầm bảng tên đón tận sảnh ga đến nội địa & quốc tế 24/7",
+        "en": "24/7 meet-and-greet private SUV transfer from Da Nang International Airport",
+        "ko": "다낭 국제공항 입국장 피켓 미팅 24시간 전용 차량 서비스"
+      },
+      "priceVnd": 250000,
+      "pricingUnit": "per_stay",
+      "orders30d": 14,
+      "extraRevenue30dVnd": 3500000,
+      "active": true
+    },
+    {
+      "id": "UPS-SH-01",
+      "propertyId": "br_songhan",
+      "category": "early_late",
+      "title": {
+        "vi": "Gói Trả phòng trễ thư thả đến 15:00",
+        "en": "Guaranteed Late Check-out until 3:00 PM",
+        "ko": "15:00 레이트 체크아웃 보장 패키지"
+      },
+      "description": {
+        "vi": "Phù hợp khách có chuyến bay chiều tối — nghỉ ngơi trọn vẹn không lo vội vã",
+        "en": "Ideal for evening flights — relax comfortably in your room until 3:00 PM",
+        "ko": "저녁 항공편 이용 고객을 위한 여유로운 15시 퇴실 혜택"
+      },
+      "priceVnd": 220000,
+      "pricingUnit": "per_stay",
+      "orders30d": 11,
+      "extraRevenue30dVnd": 2420000,
+      "active": true
+    },
+    {
+      "id": "UPS-AT-01",
+      "propertyId": "br_anthuong",
+      "category": "breakfast_dining",
+      "title": {
+        "vi": "Bữa sáng Đặc sản Đà Nẵng & Cà phê rang xay (2 khách)",
+        "en": "Artisan Breakfast & Specialty Coffee for 2",
+        "ko": "다낭 로컬 조식 & 스페셜티 커피 2인 세트"
+      },
+      "description": {
+        "vi": "Phục vụ từ 06:30 – 10:00 tại nhà hàng tầng thượng cho các đơn đặt chưa kèm ăn sáng",
+        "en": "Served 06:30–10:00 at our rooftop bistro for room-only reservations",
+        "ko": "조식 불포함 예약 고객을 위한 루프탑 조식 2인 추가 옵션"
+      },
+      "priceVnd": 180000,
+      "pricingUnit": "per_night",
+      "orders30d": 8,
+      "extraRevenue30dVnd": 1440000,
+      "active": true
+    },
+    {
+      "id": "UPS-H11-01",
+      "propertyId": "stay_h11",
+      "category": "room_upgrade",
+      "title": {
+        "vi": "Nâng hạng lên Phòng Suite Cao Cấp H11",
+        "en": "Upgrade to Premier H11 Suite",
+        "ko": "프리미어 H11 스위트 객실 업그레이드"
+      },
+      "description": {
+        "vi": "Thêm không gian phòng khách riêng và bồn tắm thư giãn với chi phí ưu đãi dịp khai trương",
+        "en": "Add a private living lounge and soaking tub at a special opening upgrade rate",
+        "ko": "오픈 기념 특별 요금으로 거실 라운지 및 욕조 스위트로 업그레이드"
+      },
+      "priceVnd": 300000,
+      "pricingUnit": "per_night",
+      "orders30d": 0,
+      "extraRevenue30dVnd": 0,
+      "active": true
+    }
+  ]
+}

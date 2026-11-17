@@ -11,6 +11,7 @@ import {
   ChevronLeft,
   ChevronRight,
   CalendarX2,
+  ShieldCheck,
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -23,8 +24,22 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
-import type { DateRangeKey, MasterDataBundle } from "@/data";
-import { loadMasterDataBundle } from "@/services/masterDataService";
+import type {
+  BiddingOperationsMaster,
+  DateRangeKey,
+  HubInboxMaster,
+  HubNavSection,
+  MarketingCampaignsMaster,
+  MasterDataBundle,
+  PayoutLedgersMaster,
+  PropertyId,
+  RoomInventoryMaster,
+  StaffRoleKey,
+} from "@/data";
+import {
+  loadMasterDataBundle,
+  persistMasterTable,
+} from "@/services/masterDataService";
 import {
   formatAxisTickMoney,
   formatBusinessMoney,
@@ -33,16 +48,47 @@ import {
   type AppLocale,
   type CurrencyCode,
 } from "@/lib/i18n";
+import { getModulesDictionary } from "@/lib/hubModulesI18n";
 import {
   buildOverviewViewModel,
   type OverviewDailyPoint,
   type PropertyFilterKey,
 } from "@/services/overviewAnalytics";
-import { PartnerHubShell } from "@/components/PartnerHubShell";
+import {
+  buildAllAcceptedBookingMap,
+  buildBiddingModuleViewModel,
+  buildCalendarModuleViewModel,
+  buildMarketingModuleViewModel,
+  buildMessagesModuleViewModel,
+  buildPayoutModuleViewModel,
+  buildRoomsModuleViewModel,
+  type CalendarWindowKey,
+} from "@/services/hubModulesAnalytics";
+import {
+  PartnerHubShell,
+  type StaffProfileOption,
+} from "@/components/PartnerHubShell";
 import { AiAdvisorSection } from "@/components/AiAdvisorSection";
 import { BookingDetailModal } from "@/components/BookingDetailModal";
+import { BookingCalendarView } from "@/components/modules/BookingCalendarView";
+import { PayoutReconciliationView } from "@/components/modules/PayoutReconciliationView";
+import { RoomsManagementView } from "@/components/modules/RoomsManagementView";
+import { BiddingManagementView } from "@/components/modules/BiddingManagementView";
+import { GuestMessagesView } from "@/components/modules/GuestMessagesView";
+import { MarketingCampaignsView } from "@/components/modules/MarketingCampaignsView";
 
 const HUB_PREFS_STORAGE_KEY = "gns_partner_hub_prefs_v1";
+
+const VALID_NAV_SECTIONS: HubNavSection[] = [
+  "overview",
+  "calendar",
+  "payout",
+  "rooms",
+  "bidding",
+  "messages",
+  "marketing_deals",
+  "marketing_upsell",
+];
 
 interface PersistedHubPrefs {
   locale: AppLocale;
@@ -50,6 +96,8 @@ interface PersistedHubPrefs {
   propertyKey: PropertyFilterKey;
   periodKey: DateRangeKey;
   rowsPerPage: number;
+  activeSection: HubNavSection;
+  activeRoleKey: StaffRoleKey;
 }
 
 function readInitialHubPrefs(): PersistedHubPrefs {
@@ -59,6 +107,8 @@ function readInitialHubPrefs(): PersistedHubPrefs {
     propertyKey: "all",
     periodKey: "30d",
     rowsPerPage: 5,
+    activeSection: "overview",
+    activeRoleKey: "manager",
   };
   try {
     const raw = localStorage.getItem(HUB_PREFS_STORAGE_KEY);
@@ -95,6 +145,16 @@ function readInitialHubPrefs(): PersistedHubPrefs {
         parsed.rowsPerPage === 20
           ? parsed.rowsPerPage
           : 5,
+      activeSection: VALID_NAV_SECTIONS.includes(
+        parsed.activeSection as HubNavSection,
+      )
+        ? (parsed.activeSection as HubNavSection)
+        : "overview",
+      activeRoleKey:
+        parsed.activeRoleKey === "manager" ||
+        parsed.activeRoleKey === "receptionist"
+          ? parsed.activeRoleKey
+          : "manager",
     };
   } catch {
     return fallback;
@@ -153,6 +213,17 @@ export function App() {
   const [rowsPerPage, setRowsPerPage] = useState<number>(
     initialPrefs.rowsPerPage,
   );
+  const [activeSection, setActiveSection] = useState<HubNavSection>(
+    initialPrefs.activeSection,
+  );
+  const [activeRoleKey, setActiveRoleKey] = useState<StaffRoleKey>(
+    initialPrefs.activeRoleKey,
+  );
+  const [calendarWindow, setCalendarWindow] =
+    useState<CalendarWindowKey>("current7d");
+  const [signedOut, setSignedOut] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [activeInfoKey, setActiveInfoKey] = useState<string | null>(null);
   const [selectedBookingRefId, setSelectedBookingRefId] = useState<
@@ -187,12 +258,22 @@ export function App() {
         propertyKey,
         periodKey,
         rowsPerPage,
+        activeSection,
+        activeRoleKey,
       };
       localStorage.setItem(HUB_PREFS_STORAGE_KEY, JSON.stringify(prefs));
     } catch {
       // Ignore storage quota errors
     }
-  }, [locale, currency, propertyKey, periodKey, rowsPerPage]);
+  }, [
+    locale,
+    currency,
+    propertyKey,
+    periodKey,
+    rowsPerPage,
+    activeSection,
+    activeRoleKey,
+  ]);
 
   // Reset pagination to page 1 whenever property, period, or page size changes
   useEffect(() => {
@@ -200,6 +281,7 @@ export function App() {
   }, [propertyKey, periodKey, rowsPerPage]);
 
   const copy = useMemo(() => getDictionary(locale), [locale]);
+  const mCopy = useMemo(() => getModulesDictionary(locale), [locale]);
 
   const vm = useMemo(() => {
     if (!bundle) return null;
@@ -212,7 +294,66 @@ export function App() {
     });
   }, [bundle, propertyKey, periodKey, locale, currency, analyzedTimeOverride]);
 
-  if (loading || !vm) {
+  const allBookingsMap = useMemo(() => {
+    if (!bundle) return {};
+    return buildAllAcceptedBookingMap(bundle, locale);
+  }, [bundle, locale]);
+
+  const calendarVm = useMemo(() => {
+    if (!bundle) return null;
+    return buildCalendarModuleViewModel(bundle, {
+      propertyKey,
+      windowKey: calendarWindow,
+      locale,
+      currency,
+    });
+  }, [bundle, propertyKey, calendarWindow, locale, currency]);
+
+  const payoutVm = useMemo(() => {
+    if (!bundle) return null;
+    return buildPayoutModuleViewModel(bundle, {
+      propertyKey,
+      locale,
+      currency,
+    });
+  }, [bundle, propertyKey, locale, currency]);
+
+  const roomsVm = useMemo(() => {
+    if (!bundle) return null;
+    return buildRoomsModuleViewModel(bundle, {
+      propertyKey,
+      locale,
+      currency,
+    });
+  }, [bundle, propertyKey, locale, currency]);
+
+  const biddingVm = useMemo(() => {
+    if (!bundle) return null;
+    return buildBiddingModuleViewModel(bundle, {
+      propertyKey,
+      locale,
+      currency,
+    });
+  }, [bundle, propertyKey, locale, currency]);
+
+  const messagesVm = useMemo(() => {
+    if (!bundle) return null;
+    return buildMessagesModuleViewModel(bundle, {
+      propertyKey,
+      locale,
+    });
+  }, [bundle, propertyKey, locale]);
+
+  const marketingVm = useMemo(() => {
+    if (!bundle) return null;
+    return buildMarketingModuleViewModel(bundle, {
+      propertyKey,
+      locale,
+      currency,
+    });
+  }, [bundle, propertyKey, locale, currency]);
+
+  if (loading || !bundle || !vm) {
     return (
       <div className="min-h-screen bg-[#F6F7FB] flex items-center justify-center p-6">
         <div className="rounded-2xl border border-slate-200 bg-white px-6 py-5 shadow-sm flex items-center gap-3 text-[13.5px] font-medium text-slate-600">
@@ -223,13 +364,125 @@ export function App() {
     );
   }
 
+  if (signedOut) {
+    return (
+      <div
+        data-testid="signed-out-screen"
+        className="min-h-screen bg-[#F6F7FB] flex items-center justify-center p-6"
+      >
+        <div className="max-w-md w-full rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm text-center space-y-4">
+          <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto">
+            <ShieldCheck className="w-6 h-6" />
+          </div>
+          <h1 className="text-[19px] font-bold text-slate-900 m-0">
+            {mCopy.session.signedOutTitle}
+          </h1>
+          <p className="text-[13px] text-slate-600 leading-relaxed m-0">
+            {mCopy.session.signedOutSubtitle}
+          </p>
+          <button
+            type="button"
+            data-testid="sign-back-in-btn"
+            onClick={() => setSignedOut(false)}
+            className="w-full rounded-xl bg-indigo-600 text-white px-4 py-2.5 text-[13.5px] font-semibold hover:bg-indigo-700 transition-colors"
+          >
+            {mCopy.session.signBackInBtn}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const staffProfiles: StaffProfileOption[] = (
+    bundle.hubConfig.staffProfiles ?? [
+      { ...bundle.hubConfig.partnerUser, roleKey: "manager" as const },
+    ]
+  ).map((sp) => ({
+    userId: sp.userId,
+    roleKey: sp.roleKey,
+    displayName: sp.displayName[locale],
+    initials: sp.initials[locale],
+    roleBadge: sp.roleBadge[locale],
+  }));
+
+  const activeStaffProfile =
+    staffProfiles.find((s) => s.roleKey === activeRoleKey) ?? staffProfiles[0];
+
+  const handleSaveRoomInventory = (
+    next: RoomInventoryMaster,
+    notice?: string,
+  ) => {
+    setBundle((prev) => (prev ? { ...prev, roomInventory: next } : prev));
+    void persistMasterTable("roomInventory", next);
+    if (notice) setToastMessage(notice);
+  };
+
+  const handleSavePayoutLedgers = (
+    next: PayoutLedgersMaster,
+    notice?: string,
+  ) => {
+    setBundle((prev) => (prev ? { ...prev, payoutLedgers: next } : prev));
+    void persistMasterTable("payoutLedgers", next);
+    if (notice) setToastMessage(notice);
+  };
+
+  const handleSaveBiddingOperations = (
+    next: BiddingOperationsMaster,
+    syncPropertyAutoBid?: { propertyId: PropertyId; enabled: boolean },
+    notice?: string,
+  ) => {
+    if (syncPropertyAutoBid) {
+      const nextHubConfig = {
+        ...bundle.hubConfig,
+        properties: bundle.hubConfig.properties.map((p) =>
+          p.id === syncPropertyAutoBid.propertyId
+            ? { ...p, autoBidEnabled: syncPropertyAutoBid.enabled }
+            : p,
+        ),
+      };
+      setBundle((prev) =>
+        prev
+          ? {
+              ...prev,
+              biddingOperations: next,
+              hubConfig: nextHubConfig,
+            }
+          : prev,
+      );
+      void persistMasterTable("biddingOperations", next);
+      void persistMasterTable("hubConfig", nextHubConfig);
+    } else {
+      setBundle((prev) => (prev ? { ...prev, biddingOperations: next } : prev));
+      void persistMasterTable("biddingOperations", next);
+    }
+    if (notice) setToastMessage(notice);
+  };
+
+  const handleSaveHubInbox = (next: HubInboxMaster, notice?: string) => {
+    setBundle((prev) => (prev ? { ...prev, hubInbox: next } : prev));
+    void persistMasterTable("hubInbox", next);
+    if (notice) setToastMessage(notice);
+  };
+
+  const handleSaveMarketingCampaigns = (
+    next: MarketingCampaignsMaster,
+    notice?: string,
+  ) => {
+    setBundle((prev) => (prev ? { ...prev, marketingCampaigns: next } : prev));
+    void persistMasterTable("marketingCampaigns", next);
+    if (notice) setToastMessage(notice);
+  };
+
   const totalBookings = vm.completedBookings.length;
   const selectedBooking =
     selectedBookingRefId != null
-      ? (vm.completedBookings.find(
+      ? (allBookingsMap[selectedBookingRefId] ??
+        vm.completedBookings.find(
           (b) => b.refSessionId === selectedBookingRefId,
-        ) ?? null)
+        ) ??
+        null)
       : null;
+
   const totalPages = Math.max(1, Math.ceil(totalBookings / rowsPerPage));
   const safePage = Math.min(Math.max(1, currentPage), totalPages);
   const startIdx = (safePage - 1) * rowsPerPage;
@@ -325,26 +578,107 @@ export function App() {
     { rates: vm.currencyRates },
   );
 
-  return (
-    <PartnerHubShell
-      brandName={vm.brandName}
-      partnerUser={vm.partnerUser}
-      inboxMessages={vm.inboxMessages}
-      inboxNotifications={vm.inboxNotifications}
-      locale={locale}
-      onChangeLocale={(next) => {
-        setLocale(next);
-        setAnalyzedTimeOverride(undefined);
-      }}
-      currency={currency}
-      onChangeCurrency={setCurrency}
-      propertyKey={propertyKey}
-      properties={vm.properties}
-      selectedProperty={vm.selectedProperty}
-      onChangeProperty={setPropertyKey}
-      copy={copy}
-      completedCount={totalBookings}
-    >
+  const renderActiveSection = () => {
+    if (activeSection === "calendar" && calendarVm) {
+      return (
+        <BookingCalendarView
+          vm={calendarVm}
+          roomInventory={bundle.roomInventory}
+          mCopy={mCopy}
+          locale={locale}
+          onChangeWindow={setCalendarWindow}
+          onOpenBookingByRef={setSelectedBookingRefId}
+          onSaveRoomInventory={handleSaveRoomInventory}
+        />
+      );
+    }
+
+    if (activeSection === "payout" && payoutVm) {
+      return (
+        <PayoutReconciliationView
+          vm={payoutVm}
+          payoutLedgers={bundle.payoutLedgers}
+          mCopy={mCopy}
+          activeRole={activeRoleKey}
+          onRequireManagerRole={() =>
+            setToastMessage(mCopy.common.roleRestrictedNotice)
+          }
+          onOpenBookingByRef={setSelectedBookingRefId}
+          onSavePayoutLedgers={handleSavePayoutLedgers}
+        />
+      );
+    }
+
+    if (activeSection === "rooms" && roomsVm) {
+      return (
+        <RoomsManagementView
+          vm={roomsVm}
+          roomInventory={bundle.roomInventory}
+          mCopy={mCopy}
+          activeRole={activeRoleKey}
+          onRequireManagerRole={() =>
+            setToastMessage(mCopy.common.roleRestrictedNotice)
+          }
+          onOpenBookingByRef={setSelectedBookingRefId}
+          onSaveRoomInventory={handleSaveRoomInventory}
+        />
+      );
+    }
+
+    if (activeSection === "bidding" && biddingVm) {
+      return (
+        <BiddingManagementView
+          vm={biddingVm}
+          biddingOperations={bundle.biddingOperations}
+          mCopy={mCopy}
+          copy={copy}
+          locale={locale}
+          currency={currency}
+          currencyRates={vm.currencyRates}
+          activeRole={activeRoleKey}
+          onRequireManagerRole={() =>
+            setToastMessage(mCopy.common.roleRestrictedNotice)
+          }
+          onSaveBiddingOperations={handleSaveBiddingOperations}
+        />
+      );
+    }
+
+    if (activeSection === "messages" && messagesVm) {
+      return (
+        <GuestMessagesView
+          vm={messagesVm}
+          hubInbox={bundle.hubInbox}
+          mCopy={mCopy}
+          onOpenBookingByRef={setSelectedBookingRefId}
+          onSaveHubInbox={handleSaveHubInbox}
+        />
+      );
+    }
+
+    if (
+      (activeSection === "marketing_deals" ||
+        activeSection === "marketing_upsell") &&
+      marketingVm
+    ) {
+      return (
+        <MarketingCampaignsView
+          activeSubTab={activeSection}
+          onChangeSubTab={setActiveSection}
+          vm={marketingVm}
+          marketingCampaigns={bundle.marketingCampaigns}
+          propertyKey={propertyKey}
+          mCopy={mCopy}
+          activeRole={activeRoleKey}
+          onRequireManagerRole={() =>
+            setToastMessage(mCopy.common.roleRestrictedNotice)
+          }
+          onSaveMarketingCampaigns={handleSaveMarketingCampaigns}
+        />
+      );
+    }
+
+    return (
       <div className="space-y-6 min-w-0">
         {/* Page Header + Period Filter */}
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -565,7 +899,7 @@ export function App() {
             </ResponsiveContainer>
           </div>
 
-          {/* Legend matching demo_new/1.png & 2.png */}
+          {/* Legend */}
           <div className="mt-2 flex flex-wrap items-center justify-center gap-6 text-[12px] text-slate-600">
             <span className="inline-flex items-center gap-2">
               <span className="w-3 h-2 rounded-[2px] bg-[#FCA5A5] border border-[#EF4444]" />
@@ -683,7 +1017,7 @@ export function App() {
             </ResponsiveContainer>
           </div>
 
-          {/* Interactive Status Pills matching demo_new/1.png & 2.png */}
+          {/* Interactive Status Pills */}
           <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
             {statusBuckets.map((b) => (
               <span
@@ -949,7 +1283,7 @@ export function App() {
                 </table>
               </div>
 
-              {/* Pagination Controls matching demo_new/2.png */}
+              {/* Pagination Controls */}
               <div className="mt-3 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-end gap-4 text-[12.5px] text-slate-600">
                 <div className="flex items-center gap-2">
                   <span>{copy.rowsPerPageLabel}</span>
@@ -1000,7 +1334,7 @@ export function App() {
                 </div>
               </div>
 
-              {/* Period Net Impact Bar matching demo_new/2.png */}
+              {/* Period Net Impact Bar */}
               <div className="mt-3 rounded-xl bg-slate-50/90 border border-slate-100 px-4 py-3 flex flex-wrap items-center justify-between gap-2 text-[12.5px]">
                 <div
                   data-testid="bookings-period-summary"
@@ -1028,6 +1362,44 @@ export function App() {
           )}
         </section>
       </div>
+    );
+  };
+
+  return (
+    <PartnerHubShell
+      brandName={vm.brandName}
+      partnerUser={activeStaffProfile}
+      staffProfiles={staffProfiles}
+      activeRoleKey={activeRoleKey}
+      onChangeRoleKey={(nextRole) => {
+        setActiveRoleKey(nextRole);
+        setToastMessage(mCopy.common.savedToast);
+      }}
+      activeSection={activeSection}
+      onSelectSection={setActiveSection}
+      openBiddingCount={biddingVm?.kpis.waitingRequestsCount ?? 0}
+      unreadMessagesCount={messagesVm?.kpis.unreadCount ?? 0}
+      toastMessage={toastMessage}
+      onDismissToast={() => setToastMessage(null)}
+      onSignOutSession={() => setSignedOut(true)}
+      inboxMessages={vm.inboxMessages}
+      inboxNotifications={vm.inboxNotifications}
+      locale={locale}
+      onChangeLocale={(next) => {
+        setLocale(next);
+        setAnalyzedTimeOverride(undefined);
+      }}
+      currency={currency}
+      onChangeCurrency={setCurrency}
+      propertyKey={propertyKey}
+      properties={vm.properties}
+      selectedProperty={vm.selectedProperty}
+      onChangeProperty={setPropertyKey}
+      copy={copy}
+      mCopy={mCopy}
+      completedCount={totalBookings}
+    >
+      {renderActiveSection()}
 
       <BookingDetailModal
         booking={selectedBooking}

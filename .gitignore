@@ -31,3 +31,12 @@ ota-rate-shopping-demo/node_modules
 /dashboard/demo_new/
 /gns_Bug_Report_Tracking*.xlsx
 /~$gns_Bug_Report_Tracking*.xlsx
+/\[GNS\] Database Schema.xlsx
+/external-ota-comparison-spike/
+
+# Bộ nhớ đệm & sidecar kiểm tra tạm của Archify
+.archify/
+*.browser-check.json
+*.delivery.json
+*.finalize.json
+*.finalize-summary.json

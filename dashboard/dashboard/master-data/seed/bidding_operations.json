@@ -1,0 +1,270 @@
+{
+  "liveRequests": [
+    {
+      "id": "REQ-9018",
+      "propertyId": "br_mykhe",
+      "receivedAt": "19:24",
+      "expiresInMinutes": 18,
+      "checkInDate": "2026-11-07",
+      "checkOutDate": "2026-11-09",
+      "nights": 2,
+      "guestsCount": 2,
+      "roomTypePreference": {
+        "vi": "Phòng Deluxe hoặc Suite gần biển Mỹ Khê",
+        "en": "Deluxe or Ocean Suite near My Khe Beach",
+        "ko": "미케 해변 인근 디럭스 또는 오션 스위트"
+      },
+      "travelerSegment": {
+        "vi": "Cặp đôi du lịch cuối tuần",
+        "en": "Weekend Leisure Couple",
+        "ko": "주말 커플 여행객"
+      },
+      "guestTargetRatePerNightVnd": 1080000,
+      "suggestedWinRatePerNightVnd": 1050000,
+      "requestedPerks": [
+        "breakfast",
+        "wifi",
+        "pool"
+      ],
+      "guestMessage": {
+        "vi": "Ưu tiên phòng tầng cao thoáng mát, có ăn sáng cho 2 người.",
+        "en": "Prefer high floor with morning breakfast for 2 adults.",
+        "ko": "고층 객실 및 성인 2인 조식 포함 조건을 희망합니다."
+      },
+      "status": "waiting_offer"
+    },
+    {
+      "id": "REQ-9017",
+      "propertyId": "br_songhan",
+      "receivedAt": "19:18",
+      "expiresInMinutes": 24,
+      "checkInDate": "2026-11-08",
+      "checkOutDate": "2026-11-11",
+      "nights": 3,
+      "guestsCount": 2,
+      "roomTypePreference": {
+        "vi": "Phòng 2 giường đơn khu trung tâm Hải Châu",
+        "en": "Deluxe Twin in Hai Chau Center",
+        "ko": "하이쩌우 도심 디럭스 트윈"
+      },
+      "travelerSegment": {
+        "vi": "Khách công tác 3 đêm",
+        "en": "3-Night Business Stay",
+        "ko": "3박 비즈니스 출장객"
+      },
+      "guestTargetRatePerNightVnd": 980000,
+      "suggestedWinRatePerNightVnd": 960000,
+      "requestedPerks": [
+        "breakfast",
+        "wifi",
+        "parking"
+      ],
+      "guestMessage": {
+        "vi": "Cần bàn làm việc yên tĩnh và xuất hóa đơn công ty khi trả phòng.",
+        "en": "Need quiet workspace desk and corporate tax receipt at check-out.",
+        "ko": "조용한 업무용 책상과 체크아웃 시 법인 영수증 발급이 필요합니다."
+      },
+      "status": "waiting_offer"
+    },
+    {
+      "id": "REQ-9016",
+      "propertyId": "br_anthuong",
+      "receivedAt": "19:05",
+      "expiresInMinutes": 32,
+      "checkInDate": "2026-11-07",
+      "checkOutDate": "2026-11-10",
+      "nights": 3,
+      "guestsCount": 4,
+      "roomTypePreference": {
+        "vi": "Suite Gia Đình 4 khách khu An Thượng",
+        "en": "Family Suite for 4 in An Thuong",
+        "ko": "안트엉 4인 패밀리 스위트"
+      },
+      "travelerSegment": {
+        "vi": "Gia đình có trẻ nhỏ",
+        "en": "Family of 4 Leisure Stay",
+        "ko": "4인 가족 여행객"
+      },
+      "guestTargetRatePerNightVnd": 1680000,
+      "suggestedWinRatePerNightVnd": 1650000,
+      "requestedPerks": [
+        "breakfast",
+        "pool",
+        "late_checkout"
+      ],
+      "guestMessage": {
+        "vi": "Gia đình có 2 bé nhỏ, mong muốn phòng thông nhau gần hồ bơi.",
+        "en": "Traveling with 2 kids, looking for connecting suite with pool access.",
+        "ko": "어린이 2명 동반 가족으로 수영장 이용이 편한 커넥팅 룸을 원합니다."
+      },
+      "status": "waiting_offer"
+    },
+    {
+      "id": "REQ-9015",
+      "propertyId": "br_mykhe",
+      "receivedAt": "18:50",
+      "expiresInMinutes": 40,
+      "checkInDate": "2026-11-09",
+      "checkOutDate": "2026-11-11",
+      "nights": 2,
+      "guestsCount": 2,
+      "roomTypePreference": {
+        "vi": "Suite Hướng Biển Trực Diện",
+        "en": "Executive Ocean Suite",
+        "ko": "이그제큐티브 오션 스위트"
+      },
+      "travelerSegment": {
+        "vi": "Kỷ niệm ngày cưới",
+        "en": "Anniversary Getaway",
+        "ko": "기념일 휴양 커플"
+      },
+      "guestTargetRatePerNightVnd": 1950000,
+      "suggestedWinRatePerNightVnd": 1920000,
+      "requestedPerks": [
+        "breakfast",
+        "bathtub",
+        "late_checkout"
+      ],
+      "guestMessage": {
+        "vi": "Mong muốn phòng view biển trực diện và bồn tắm nằm.",
+        "en": "Looking for direct oceanfront view and soaking bathtub.",
+        "ko": "정면 오션뷰와 욕조가 있는 스위트 객실을 찾고 있습니다."
+      },
+      "status": "offer_sent",
+      "submittedRatePerNightVnd": 1920000,
+      "submittedPerks": [
+        "breakfast",
+        "bathtub",
+        "late_checkout"
+      ],
+      "respondedAt": "18:52"
+    },
+    {
+      "id": "REQ-9014",
+      "propertyId": "stay_h11",
+      "receivedAt": "19:22",
+      "expiresInMinutes": 15,
+      "checkInDate": "2026-11-07",
+      "checkOutDate": "2026-11-09",
+      "nights": 2,
+      "guestsCount": 2,
+      "roomTypePreference": {
+        "vi": "Phòng Deluxe Hướng Phố Trung Tâm",
+        "en": "Deluxe City View",
+        "ko": "디럭스 시티뷰"
+      },
+      "travelerSegment": {
+        "vi": "Cơ hội chốt đơn mở hàng đầu tiên",
+        "en": "First-Booking Conversion Opportunity",
+        "ko": "첫 확정 예약 유치 유망 요청"
+      },
+      "guestTargetRatePerNightVnd": 990000,
+      "suggestedWinRatePerNightVnd": 960000,
+      "requestedPerks": [
+        "breakfast",
+        "wifi",
+        "late_checkout"
+      ],
+      "guestMessage": {
+        "vi": "Khách tìm phòng mới sạch sẽ 2 đêm cuối tuần — rất dễ chốt nếu tặng kèm bữa sáng!",
+        "en": "Traveler seeking clean newly opened hotel for 2 weekend nights — high win chance with breakfast!",
+        "ko": "신축급 깔끔한 주말 2박 숙소를 찾는 고객입니다 — 조식 포함 제안 시 수락 가능성이 높습니다!"
+      },
+      "status": "waiting_offer"
+    },
+    {
+      "id": "REQ-9013",
+      "propertyId": "stay_h11",
+      "receivedAt": "19:08",
+      "expiresInMinutes": 28,
+      "checkInDate": "2026-11-08",
+      "checkOutDate": "2026-11-10",
+      "nights": 2,
+      "guestsCount": 3,
+      "roomTypePreference": {
+        "vi": "Phòng Suite Cao Cấp H11",
+        "en": "Premier H11 Suite",
+        "ko": "프리미어 H11 스위트"
+      },
+      "travelerSegment": {
+        "vi": "Nhóm bạn 3 người du lịch tự túc",
+        "en": "3-Guest Friends Trip",
+        "ko": "3인 자유여행 그룹"
+      },
+      "guestTargetRatePerNightVnd": 1400000,
+      "suggestedWinRatePerNightVnd": 1360000,
+      "requestedPerks": [
+        "breakfast",
+        "wifi",
+        "parking"
+      ],
+      "guestMessage": {
+        "vi": "Cần phòng rộng cho 3 người lớn, nhận phòng lúc 15:00.",
+        "en": "Need spacious suite for 3 adults, arriving around 3:00 PM.",
+        "ko": "성인 3명 투숙 가능한 넓은 스위트 희망, 15시경 체크인 예정."
+      },
+      "status": "waiting_offer"
+    }
+  ],
+  "autoBidRules": [
+    {
+      "propertyId": "br_mykhe",
+      "enabled": true,
+      "minFloorRateVnd": 780000,
+      "maxDiscountPct": 15,
+      "nightShiftAutoBoost": true,
+      "multiNightExtraDiscountPct": 5,
+      "defaultPerks": [
+        "breakfast",
+        "wifi",
+        "pool"
+      ],
+      "targetResponseSeconds": 25,
+      "updatedAt": "2026-11-06 18:00"
+    },
+    {
+      "propertyId": "br_songhan",
+      "enabled": true,
+      "minFloorRateVnd": 760000,
+      "maxDiscountPct": 14,
+      "nightShiftAutoBoost": true,
+      "multiNightExtraDiscountPct": 5,
+      "defaultPerks": [
+        "breakfast",
+        "wifi",
+        "parking"
+      ],
+      "targetResponseSeconds": 30,
+      "updatedAt": "2026-11-06 17:30"
+    },
+    {
+      "propertyId": "br_anthuong",
+      "enabled": true,
+      "minFloorRateVnd": 740000,
+      "maxDiscountPct": 16,
+      "nightShiftAutoBoost": true,
+      "multiNightExtraDiscountPct": 6,
+      "defaultPerks": [
+        "breakfast",
+        "wifi",
+        "late_checkout"
+      ],
+      "targetResponseSeconds": 30,
+      "updatedAt": "2026-11-06 16:45"
+    },
+    {
+      "propertyId": "stay_h11",
+      "enabled": true,
+      "minFloorRateVnd": 780000,
+      "maxDiscountPct": 12,
+      "nightShiftAutoBoost": true,
+      "multiNightExtraDiscountPct": 8,
+      "defaultPerks": [
+        "wifi",
+        "elevator"
+      ],
+      "targetResponseSeconds": 20,
+      "updatedAt": "2026-11-06 16:00"
+    }
+  ]
+}
