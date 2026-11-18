@@ -39,3 +39,6 @@ ota-rate-shopping-demo/node_modules
 *.delivery.json
 *.finalize.json
 *.finalize-summary.json
+
+# Git worktrees cô lập
+.worktrees/
