@@ -1,0 +1,42 @@
+{
+  "title": "[Accommodation Request API - POST /api/traveler/request-bids] Inverted Stay Dates (checkOutDate Earlier Than checkInDate) Are Accepted and Persisted With HTTP 200 OK",
+  "environment": "Staging (STAG) · Strapi Backend API & Desktop 1440×900 · Chrome · en-US · FE=turbopack-2h-u0he6dowwt, BE=<CHECK_DEPLOYED_SHA> (https://web.stag.goodnstay.com/en-US/accommodation)",
+  "test_account": "Signed-In QA Traveler Session on Staging (Authorization: Bearer <REDACTED_QA_TOKEN>)",
+  "steps_to_reproduce": [
+    "Load the complete valid room-request fixture (fixtures/valid-request-bids.json) where data.checkInDate='2026-12-20' and data.checkOutDate='2026-12-22'.",
+    "Single-Variable Mutation: Clone valid-request-bids.json and change ONLY data.checkOutDate from '2026-12-22' to '2026-12-18' (2 days before checkInDate; fixtures/request-bids-inverted-checkout-date.json).",
+    "Send POST https://services.stag.goodnstay.com/api/traveler/request-bids with Authorization: Bearer <REDACTED_QA_TOKEN>.",
+    "Execute GET https://services.stag.goodnstay.com/api/customer-requests readback to check whether an open Customer Request was persisted (then cancel test record #1537)."
+  ],
+  "actual_result": "- POST /api/traveler/request-bids with checkInDate='2026-12-20' and checkOutDate='2026-12-18' returns HTTP 200 OK ({\"success\": true, \"message\": \"Rating created successfully.\"}).\n- GET /api/customer-requests readback confirms open Customer Request #1537 was persisted in PostgreSQL with checkInDate='2026-12-20' and checkOutDate='2026-12-18'.",
+  "expected_result": "- Per Accommodation Route Contract (Confluence 166952975) and GNS-FORM-001 (Confluence 174227515), the backend must enforce checkOutDate strictly after checkInDate (>= 1 night) and reject inverted date ranges with a 4xx validation error (<CHECK_OPENAPI> / <CHECK_ERROR_REGISTRY>).\n- Zero Customer Request records may be created in the database.",
+  "evidence": {
+    "url": "https://web.stag.goodnstay.com/en-US/accommodation",
+    "datetime": "19/11/2026 14:04 ICT",
+    "console": "Test Case STAG-API-206 | Single-Variable Delta: data.checkOutDate ('2026-12-22' -> '2026-12-18') | Test record #1537 cancelled after readback.",
+    "network": "POST https://services.stag.goodnstay.com/api/traveler/request-bids (checkInDate='2026-12-20', checkOutDate='2026-12-18') -> HTTP 200 OK; GET /api/customer-requests -> confirmed id=1537 saved.",
+    "notes": "Frontend chunk 452btq2-mvhin.js enforces date picker constraints in UI, but POST /api/traveler/request-bids lacks server-side checkOutDate > checkInDate domain validation. | Security Classification: OWASP A06:2025 Insecure Design (CWE-840) & A10:2025 Not Failing Securely (CWE-636) · OWASP API6:2023 | OWASP Remediation: Validate ISO stay dates server-side (checkInDate >= today and checkOutDate > checkInDate) before DB insert (https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html).",
+    "reference_url": "https://optibide-org.atlassian.net/wiki/spaces/O/pages/166952975"
+  },
+  "classification": "Confirmed Bug — Inverted Stay Window (checkOutDate < checkInDate) Persists Open Customer Request With HTTP 200 OK",
+  "severity": "S2 – Major",
+  "priority_label": "P1",
+  "reproducibility": "Always (100% — single-variable mutation verified with GET readback on STAG)",
+  "jira_fields": {
+    "customfield_10038": [
+      {
+        "id": "10025"
+      }
+    ],
+    "customfield_10039": [
+      {
+        "id": "10033"
+      }
+    ]
+  },
+  "attachments": [
+    "../screenshots/bug_api10_request_bids_inverted_dates_1440x900.png",
+    "../postman_per_case/STAG-API-206.postman_collection.json",
+    "../fixtures/request-bids-inverted-checkout-date.json"
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "title": "[Notification API - POST /api/v1/notifications/mark-all-read] Logged-Out Bearer Token Continues Mutating Notification Read State (HTTP 200 OK) After POST /api/traveler/logout",
+  "environment": "Staging (STAG) · API Gateway / Notification Service & Desktop 1440×900 · Chrome · en-US · FE=turbopack-2h-u0he6dowwt, BE=<CHECK_DEPLOYED_SHA> (https://web.stag.goodnstay.com/en-US/home)",
+  "test_account": "Isolated QA Traveler Session Invalidated via POST /api/traveler/logout (<REDACTED_LOGGED_OUT_QA_TOKEN>)",
+  "steps_to_reproduce": [
+    "Authenticate an isolated QA Traveler session via POST https://services.stag.goodnstay.com/api/traveler/login.",
+    "Log out that session via POST https://services.stag.goodnstay.com/api/traveler/logout (HTTP 200 OK) and confirm GET /api/traveler/me rejects the token with HTTP 401 ('You are not logged in.').",
+    "Single-Variable Session Check: Send POST https://services.stag.goodnstay.com/api/v1/notifications/mark-all-read using Authorization: Bearer <REDACTED_LOGGED_OUT_QA_TOKEN>.",
+    "Record HTTP status, data.updated count, and meta.requestId."
+  ],
+  "actual_result": "- POST /api/v1/notifications/mark-all-read accepts the logged-out Bearer token and returns HTTP 200 OK: {\"data\": {\"updated\": 8}, \"meta\": {\"requestId\": \"32306f87-02cb-437b-9039-c1ae4db87a1a\", \"timestamp\": \"2026-11-19T06:57:59.900Z\"}}, mutating 8 notification records after session logout (GET /api/v1/notifications?limit=5 also continues returning HTTP 200 OK).",
+  "expected_result": "- Per Cross-Service Session Lifecycle & API Standard (Confluence 524593), once a Traveler logs out via POST /api/traveler/logout, Gateway / Notification v1 endpoints must reject the revoked token with HTTP 401 AUTH_UNAUTHORIZED.\n- Zero notification records may be modified by a logged-out session token.",
+  "evidence": {
+    "url": "https://web.stag.goodnstay.com/en-US/home",
+    "datetime": "19/11/2026 13:58 ICT",
+    "console": "Test Case STAG-API-205 | requestId=32306f87-02cb-437b-9039-c1ae4db87a1a | Single-Variable Delta: Replay logged-out Bearer token.",
+    "network": "POST /api/traveler/logout -> 200 OK; GET /api/traveler/me -> 401; POST https://services.stag.goodnstay.com/api/v1/notifications/mark-all-read -> HTTP 200 OK (data.updated=8, requestId=32306f87-02cb-437b-9039-c1ae4db87a1a).",
+    "notes": "Frontend chunk 0lu641k7h1gc_.js calls /api/v1/notifications/* via NEXT_PUBLIC_API_GATEWAY_URL. Gateway JWT verification validates signature/exp claims without checking Strapi session revocation / jti denylist. | Security Classification: OWASP A07:2025 Authentication Failures (CWE-613 Insufficient Session Expiration) & A01:2025 · OWASP API2:2023 Broken Authentication | OWASP Remediation: Propagate session revocation (Redis jti denylist or session introspection) to API Gateway /api/v1/* auth guard (https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html).",
+    "reference_url": "https://optibide-org.atlassian.net/wiki/spaces/O/pages/524593"
+  },
+  "classification": "Confirmed Bug — Revoked Traveler Session Token Continues Mutating State on /api/v1/notifications/*",
+  "severity": "S1 – Critical",
+  "priority_label": "P0",
+  "reproducibility": "Always (100% — requestId=32306f87-02cb-437b-9039-c1ae4db87a1a verified on STAG)",
+  "jira_fields": {
+    "customfield_10038": [
+      {
+        "id": "10025"
+      }
+    ],
+    "customfield_10039": [
+      {
+        "id": "10033"
+      }
+    ]
+  },
+  "attachments": [
+    "../screenshots/bug_api09_notifications_mark_read_after_logout_1440x900.png",
+    "../postman_per_case/STAG-API-205.postman_collection.json"
+  ]
+}

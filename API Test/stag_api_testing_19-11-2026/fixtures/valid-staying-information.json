@@ -1,0 +1,16 @@
+{
+  "stayingGuests": [
+    {
+      "sameAsBooker": false,
+      "fullName": "QA Sample Guest",
+      "phone": "+84900000000",
+      "email": "qa-sample@example.test"
+    }
+  ],
+  "emergencyContact": {
+    "sameAsBooker": false,
+    "fullName": "QA Sample Contact",
+    "phone": "+84900000001",
+    "email": "qa-contact@example.test"
+  }
+}

@@ -1,0 +1,243 @@
+#!/usr/bin/env python3
+"""Generate QA-Guide-compliant Vietnamese 20-column rows for API_BUGS."""
+
+from __future__ import annotations
+
+import json
+import pathlib
+
+BASE_DIR = pathlib.Path(__file__).resolve().parent
+UPLOADED = json.loads((BASE_DIR / "uploaded_jira_tickets.json").read_text(encoding="utf-8"))
+by_id = {t["bug_id"]: t for t in UPLOADED["tickets"]}
+
+
+def _ev_label(bug_id: str, fname: str) -> str:
+    return f"{fname} ({by_id[bug_id]['issue_key']})"
+
+
+def _ev_url(bug_id: str) -> str:
+    urls = by_id[bug_id].get("attachment_urls") or []
+    return urls[0] if urls else by_id[bug_id]["issue_url"]
+
+
+rows = [
+    {
+        "bug_id": "BUG-API-01",
+        "summary": (
+            "[Accommodation Request API - POST /api/traveler/request-bids] Truyền số phòng âm (data.roomCount = -1) "
+            "vượt qua chốt chặn INVALID_ROOM_OR_GUEST_COUNT và lưu thẳng đơn đang mở vào DB (HTTP 200 OK)"
+        ),
+        "area": "Accommodation Request – Bid Submission API (/api/traveler/request-bids)",
+        "type": "DATA INVALID",
+        "severity": "CRITICAL",
+        "steps": (
+            "1. Chuẩn bị fixture hợp lệ hoàn chỉnh fixtures/valid-request-bids.json bằng dữ liệu QA giả lập (QA Tester, qa-sample@example.test, +84900000000, KR / KR-11, guestCount = 2, roomCount = 1).\n"
+            "2. Kiểm chứng quy tắc biên chuẩn trên chính endpoint này bằng cách đổi duy nhất data.roomCount = 0 -> hệ thống trả HTTP 400 INVALID_ROOM_OR_GUEST_COUNT ('Room count and guest count must be greater than 0.').\n"
+            "3. Biến đổi đơn biến: Nhân bản valid-request-bids.json và chỉ đổi duy nhất data.roomCount từ 1 thành -1 (fixtures/request-bids-negative-room-count.json).\n"
+            "4. Gửi POST https://services.stag.goodnstay.com/api/traveler/request-bids kèm Authorization: Bearer <REDACTED_QA_TOKEN>.\n"
+            "5. Gọi GET https://services.stag.goodnstay.com/api/customer-requests để kiểm chứng dữ liệu đã lưu trong DB (sau đó hủy bản ghi test #1534)."
+        ),
+        "expected": (
+            "- Đúng theo quy tắc biên của chính endpoint ('Room count and guest count must be greater than 0.'), POST /api/traveler/request-bids phải từ chối mọi giá trị data.roomCount < 1 (bao gồm số nguyên âm) bằng HTTP 400 Bad Request kèm mã lỗi INVALID_ROOM_OR_GUEST_COUNT.\n"
+            "- Tuyệt đối không tạo bản ghi Customer Request mới trong cơ sở dữ liệu."
+        ),
+        "actual": (
+            "- POST /api/traveler/request-bids với data.roomCount = -1 trả về HTTP 200 OK ({\"success\": true, \"message\": \"Rating created successfully.\"}).\n"
+            "- Đọc lại qua GET /api/customer-requests xác nhận bản ghi Customer Request #1534 (trạng thái 'open', roomCount = -1) đã được lưu vào PostgreSQL."
+        ),
+        "environment": "STAG",
+        "device_locale": "Staging API & Chrome · 1440×900 · en-US",
+        "evidence_label": _ev_label("BUG-API-01", "bug_api01_request_bids_negative_roomcount_1440x900.png"),
+        "evidence_url": _ev_url("BUG-API-01"),
+        "qa_stage": "NEW",
+        "jira_url": by_id["BUG-API-01"]["issue_url"],
+        "reported_by": "Nguyen Bao Minh",
+        "reported_on": "2026-11-19",
+        "retest_result": "NOT RUN",
+        "notes": (
+            f"Test Case: STAG-API-005 | Biến đổi đơn biến: data.roomCount (1 -> -1). Đã hủy dọn sạch đơn test #1534 sau khi readback. "
+            f"(Lưu ý thêm cho BE: response của controller này đang trả kèm cột nhạy cảm up_users.[REDACTED]). | "
+            f"OWASP 2025: A06:2025 Insecure Design (CWE-840) & A04:2025 / A01:2025 (CWE-201) · API3:2023 BOPLA | "
+            f"Khắc phục: Chặn roomCount < 1 ở tầng domain & lọc DTO response allow-list | Jira: {by_id['BUG-API-01']['issue_key']}."
+        ),
+    },
+    {
+        "bug_id": "BUG-API-02",
+        "summary": (
+            "[Support Ticket API - GET /api/ticket-supports] Gọi GET /api/ticket-supports không kèm xác thực vẫn trả HTTP 200 OK làm lộ công khai danh sách phiếu hỗ trợ & yêu cầu xóa tài khoản"
+        ),
+        "area": "User Profile & Help Center – Support / Delete Account API (/api/ticket-supports)",
+        "type": "FUNCTIONAL",
+        "severity": "CRITICAL",
+        "steps": (
+            "1. Kiểm tra chuẩn phân quyền trên các collection Strapi cùng hệ thống (GET https://services.stag.goodnstay.com/api/customer-requests và GET /api/hotel-bids không kèm Authorization -> đều trả HTTP 403 ForbiddenError).\n"
+            "2. Chuẩn bị request GET https://services.stag.goodnstay.com/api/ticket-supports hoàn toàn không kèm Authorization header.\n"
+            "3. Gửi request và kiểm tra mã phản hồi HTTP cùng mảng dữ liệu data[] trả về."
+        ),
+        "expected": (
+            "- Theo chuẩn Fail-Closed Access Control (API Standard Confluence 524593 & QA Guide §7/§8) và đồng nhất với các collection Strapi cùng dịch vụ (/api/customer-requests, /api/hotel-bids -> 403 ForbiddenError), lời gọi công khai GET /api/ticket-supports không xác thực phải bị từ chối (<CHECK_OPENAPI — 401 hoặc 403 ForbiddenError>), không để lộ danh sách phiếu của người dùng."
+        ),
+        "actual": (
+            "- GET https://services.stag.goodnstay.com/api/ticket-supports không kèm Authorization header trả về HTTP 200 OK kèm toàn bộ danh sách phân trang data[] (id, documentId, email, phone, type='delete_account', title, description)."
+        ),
+        "environment": "STAG",
+        "device_locale": "Staging API & Chrome · 1440×900 · en-US",
+        "evidence_label": _ev_label("BUG-API-02", "bug_api02_ticket_supports_unauth_get_1440x900.png"),
+        "evidence_url": _ev_url("BUG-API-02"),
+        "qa_stage": "NEW",
+        "jira_url": by_id["BUG-API-02"]["issue_url"],
+        "reported_by": "Nguyen Bao Minh",
+        "reported_on": "2026-11-19",
+        "retest_result": "NOT RUN",
+        "notes": (
+            f"Test Case: STAG-API-006 (Permission) | Kiểm thử hoàn toàn bằng dữ liệu QA giả lập (0% PII thật). Quyền Public 'find' của Strapi đang bật trên ticket-support. | "
+            f"OWASP 2025: A01:2025 Broken Access Control (CWE-200, CWE-284, CWE-359) · API5:2023 BFLA & API1:2023 BOLA | "
+            f"Khắc phục: Tắt quyền Public find/findOne theo nguyên tắc Deny-by-Default | Chunk FE: 1yil-2d8cpf3l.js | Jira: {by_id['BUG-API-02']['issue_key']}."
+        ),
+    },
+    {
+        "bug_id": "BUG-API-03",
+        "summary": (
+            "[Traveler Profile API - PUT /api/traveler/update-profile] Truyền chuỗi ngày sinh sai định dạng (dob = 'not-a-valid-date') gây văng lỗi máy chủ HTTP 500 thay vì trả lỗi kiểm tra dữ liệu 4xx"
+        ),
+        "area": "User Profile – Update Profile API (/api/traveler/update-profile)",
+        "type": "DATA INVALID",
+        "severity": "HIGH",
+        "steps": (
+            "1. Chuẩn bị fixture hợp lệ hoàn chỉnh fixtures/valid-update-profile.json (fullName='QA Tester', phone='+84900000000', country='VN', dob='2000-01-15', gender='male') và xác nhận PUT chuẩn trả HTTP 200 OK.\n"
+            "2. Biến đổi đơn biến: Nhân bản valid-update-profile.json và chỉ đổi duy nhất trường dob từ '2000-01-15' sang 'not-a-valid-date' (fixtures/update-profile-malformed-dob.json).\n"
+            "3. Gửi PUT https://services.stag.goodnstay.com/api/traveler/update-profile kèm Authorization: Bearer <REDACTED_QA_TOKEN>.\n"
+            "4. Ghi nhận mã HTTP trả về và gọi GET https://services.stag.goodnstay.com/api/traveler/me để kiểm chứng dữ liệu hồ sơ không bị hỏng."
+        ),
+        "expected": (
+            "- Theo chuẩn phân tách lỗi 4xx và 5xx (OpenAPI Governance Confluence 144015744) và đối chứng ngay trên cùng endpoint (trường gender sai trả HTTP 422 Invalid input), dữ liệu dob sai định dạng từ phía client phải trả mã lỗi kiểm tra 4xx (<CHECK_OPENAPI> / <CHECK_ERROR_REGISTRY>), tuyệt đối không văng HTTP 500 Internal Server Error.\n"
+            "- Dữ liệu hồ sơ hiện có không bị thay đổi khi đọc lại qua GET /api/traveler/me."
+        ),
+        "actual": (
+            "- PUT /api/traveler/update-profile với dob='not-a-valid-date' văng lỗi HTTP 500 Internal Server Error: {\"success\": false, \"error\": {\"code\": 500, \"message\": \"Server error.\", \"details\": []}}."
+        ),
+        "environment": "STAG",
+        "device_locale": "Staging API & Chrome · 1440×900 · en-US",
+        "evidence_label": _ev_label("BUG-API-03", "bug_api03_update_profile_malformed_dob_500_1440x900.png"),
+        "evidence_url": _ev_url("BUG-API-03"),
+        "qa_stage": "NEW",
+        "jira_url": by_id["BUG-API-03"]["issue_url"],
+        "reported_by": "Nguyen Bao Minh",
+        "reported_on": "2026-11-19",
+        "retest_result": "NOT RUN",
+        "notes": (
+            f"Test Case: STAG-API-007 | Biến đổi đơn biến: dob ('2000-01-15' -> 'not-a-valid-date'). Đối chứng với STAG-API-004 (gender sai -> HTTP 422). | "
+            f"OWASP 2025: A10:2025 Mishandling of Exceptional Conditions (CWE-248, CWE-755) · API8:2023 | "
+            f"Khắc phục: Kiểm tra định dạng ISO-8601 trước khi cast DB & bắt ngoại lệ trả 4xx chuẩn | Chunk FE: 2k50va9an1vxz.js | Jira: {by_id['BUG-API-03']['issue_key']}."
+        ),
+    },
+    {
+        "bug_id": "BUG-API-04",
+        "summary": (
+            "[Staying Information API - PUT /api/traveler/request-bids/:id/staying-information] Chấp nhận và lưu chuỗi email khách lưu trú sai định dạng ('invalid-email-format') với HTTP 200 OK"
+        ),
+        "area": "Accommodation Checkout – Guest Staying Information API (/staying-information)",
+        "type": "DATA INVALID",
+        "severity": "HIGH",
+        "steps": (
+            "1. Chuẩn bị fixture hợp lệ hoàn chỉnh fixtures/valid-staying-information.json cho đơn #1514 (stayingGuests[0]: fullName='QA Sample Guest', phone='+84900000000' chuẩn E.164, email='qa-sample@example.test' và emergencyContact hợp lệ).\n"
+            "2. Biến đổi đơn biến: Nhân bản valid-staying-information.json và chỉ đổi duy nhất stayingGuests[0].email thành 'invalid-email-format' (fixtures/staying-information-invalid-email.json).\n"
+            "3. Gửi PUT https://services.stag.goodnstay.com/api/traveler/request-bids/1514/staying-information kèm Authorization: Bearer <REDACTED_QA_TOKEN>.\n"
+            "4. Gọi GET https://services.stag.goodnstay.com/api/traveler/request-bids?requestStatus=open&locale=en-US để kiểm chứng trường stayingGuests[0].email đã lưu (sau đó khôi phục lại fixture hợp lệ)."
+        ),
+        "expected": (
+            "- Theo chuẩn kiểm tra biểu mẫu GNS-FORM-001 (Confluence 174227515), Backend phải kiểm tra định dạng stayingGuests[].email và từ chối chuỗi sai định dạng bằng mã lỗi 4xx (<CHECK_OPENAPI> / <CHECK_ERROR_REGISTRY>).\n"
+            "- Không lưu chuỗi email sai định dạng vào bản ghi Customer Request."
+        ),
+        "actual": (
+            "- API trả về HTTP 200 OK ({\"success\": true, \"message\": \"Update successful.\", \"data\": {\"acknowledged\": true, \"customerRequestId\": 1514, ...}}).\n"
+            "- Đọc lại qua GET /api/traveler/request-bids?requestStatus=open&locale=en-US xác nhận chuỗi 'invalid-email-format' đã bị lưu vào stayingGuests[0].email."
+        ),
+        "environment": "STAG",
+        "device_locale": "Staging API & Chrome · 1440×900 · en-US",
+        "evidence_label": _ev_label("BUG-API-04", "bug_api04_staying_info_invalid_email_1440x900.png"),
+        "evidence_url": _ev_url("BUG-API-04"),
+        "qa_stage": "NEW",
+        "jira_url": by_id["BUG-API-04"]["issue_url"],
+        "reported_by": "Nguyen Bao Minh",
+        "reported_on": "2026-11-19",
+        "retest_result": "NOT RUN",
+        "notes": (
+            f"Test Case: STAG-API-008 | Biến đổi đơn biến: stayingGuests[0].email. Đã khôi phục dữ liệu hợp lệ trên Request #1514 sau khi readback. | "
+            f"OWASP 2025: A06:2025 Insecure Design (CWE-602) & A10:2025 (CWE-754) | "
+            f"Khắc phục: Bổ sung kiểm tra schema email/phone phía Server cho mảng stayingGuests[] | Chunk FE: 0v23-8ja2iskk.js | Jira: {by_id['BUG-API-04']['issue_key']}."
+        ),
+    },
+    {
+        "bug_id": "BUG-API-05",
+        "summary": (
+            "[Translation API - POST /api/translations/room-description] Lời gọi thiếu Authorization header vẫn thực thi dịch thuật qua OpenAI và trả HTTP 200 OK (Cần xác nhận OpenAPI Auth Contract)"
+        ),
+        "area": "Accommodation Offers – Room Description Translation API (/api/translations/room-description)",
+        "type": "FUNCTIONAL",
+        "severity": "MEDIUM",
+        "steps": (
+            "1. Chuẩn bị fixture hợp lệ fixtures/valid-room-translation.json ({\"text\": \"Deluxe Suite with panoramic city view\", \"targetLocale\": \"vi-VN\", \"sourceLocale\": \"en-US\"}).\n"
+            "2. Biến đổi đơn biến ở Header: Bỏ duy nhất header Authorization Bearer (trong khi mã nguồn web chunk 0v23-8ja2iskk.js luôn đính kèm Bearer token khi gọi).\n"
+            "3. Gửi POST https://services.stag.goodnstay.com/api/translations/room-description và ghi nhận mã HTTP cùng trường provider."
+        ),
+        "expected": (
+            "- <CHECK_OPENAPI> / <CHECK_ERROR_REGISTRY>: Do tài liệu STAGING OpenAPI hiện chưa được xuất bản (/openapi.json trả 404), cần xác nhận với Backend / Architecture Owner xem endpoint dịch thuật OpenAI này bắt buộc xác thực Traveler Bearer token (trả HTTP 401) hay chủ đích mở công khai kèm giới hạn tần suất."
+        ),
+        "actual": (
+            "- POST /api/translations/room-description không có Authorization header vẫn gọi trực tiếp nhà cung cấp 'openai' và trả HTTP 200 OK."
+        ),
+        "environment": "STAG",
+        "device_locale": "Staging API & Chrome · 1440×900 · en-US",
+        "evidence_label": _ev_label("BUG-API-05", "bug_api05_translations_unauth_check_1440x900.png"),
+        "evidence_url": _ev_url("BUG-API-05"),
+        "qa_stage": "NEEDS REVIEW",
+        "jira_url": by_id["BUG-API-05"]["issue_url"],
+        "reported_by": "Nguyen Bao Minh",
+        "reported_on": "2026-11-19",
+        "retest_result": "BLOCKED",
+        "notes": (
+            f"Test Case: STAG-API-009 (BLOCKED — API contract missing theo QA Guide §2) | Phân loại trên Jira: Needs Verification để chốt contract với Backend Owner. | "
+            f"OWASP 2025: A01:2025 Broken Access Control (CWE-284) & X01:2025 Lack of Resilience (CWE-400, CWE-799) · API4:2023 Unrestricted Resource Consumption | "
+            f"Khuyến nghị: Yêu cầu Bearer token + giới hạn rate/quota cho endpoint OpenAI tính phí | Jira: {by_id['BUG-API-05']['issue_key']}."
+        ),
+    },
+    {
+        "bug_id": "BUG-API-06",
+        "summary": (
+            "[Login Records API - GET /api/traveler/login-records] Truyền tham số phân trang âm (page = -1) tự ép về page = 1 và trả HTTP 200 OK (Cần xác nhận OpenAPI Pagination Contract)"
+        ),
+        "area": "User Profile – Login Records Pagination API (/api/traveler/login-records)",
+        "type": "DATA INVALID",
+        "severity": "MEDIUM",
+        "steps": (
+            "1. Kiểm tra lời gọi chuẩn GET https://services.stag.goodnstay.com/api/traveler/login-records?page=1&pageSize=6 trả HTTP 200 OK.\n"
+            "2. Biến đổi đơn biến trên Query: Chỉ đổi duy nhất tham số page từ 1 sang -1 (giữ nguyên pageSize = 6).\n"
+            "3. Gửi GET https://services.stag.goodnstay.com/api/traveler/login-records?page=-1&pageSize=6 và ghi nhận HTTP status cùng data.page."
+        ),
+        "expected": (
+            "- <CHECK_OPENAPI> / <CHECK_ERROR_REGISTRY>: Do chưa có STAGING OpenAPI cho Strapi /api/traveler/login-records, cần xác nhận với Backend Owner xem tham số page < 1 phải trả HTTP 400 Bad Request (như /api/v1/notifications?limit=-5 -> 400 VALIDATION_FAILED) hay chủ đích tự ép (clamp) về page = 1."
+        ),
+        "actual": (
+            "- GET /api/traveler/login-records?page=-1&pageSize=6 trả HTTP 200 OK ('Login records loaded.') và tự gán data.page = 1."
+        ),
+        "environment": "STAG",
+        "device_locale": "Staging API & Chrome · 1440×900 · en-US",
+        "evidence_label": _ev_label("BUG-API-06", "bug_api06_login_records_negative_page_check_1440x900.png"),
+        "evidence_url": _ev_url("BUG-API-06"),
+        "qa_stage": "NEEDS REVIEW",
+        "jira_url": by_id["BUG-API-06"]["issue_url"],
+        "reported_by": "Nguyen Bao Minh",
+        "reported_on": "2026-11-19",
+        "retest_result": "BLOCKED",
+        "notes": (
+            f"Test Case: STAG-API-010 (BLOCKED — API contract missing theo QA Guide §2) | Phân loại trên Jira: Needs Verification để tránh tự suy diễn quy tắc khi thiếu OpenAPI. | "
+            f"OWASP 2025: A10:2025 Mishandling of Exceptional Conditions (CWE-754) · API8:2023 | "
+            f"Khuyến nghị: Chuẩn hóa kiểm tra tham số phân trang nguyên dương (page >= 1, giới hạn pageSize) | Jira: {by_id['BUG-API-06']['issue_key']}."
+        ),
+    },
+]
+
+out_file = BASE_DIR / "api_bugs_sheet_rows.json"
+out_file.write_text(json.dumps(rows, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+print(f"Wrote {len(rows)} QA-Guide-compliant rows to {out_file}")

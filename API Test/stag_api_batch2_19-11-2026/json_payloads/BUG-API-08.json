@@ -1,0 +1,41 @@
+{
+  "title": "[Customer Requests API - GET /api/customer-requests] Logged-Out Bearer Token Continues Returning Customer Requests (HTTP 200 OK) After POST /api/traveler/logout",
+  "environment": "Staging (STAG) · Strapi Backend API & Desktop 1440×900 · Chrome · en-US · FE=turbopack-2h-u0he6dowwt, BE=<CHECK_DEPLOYED_SHA> (https://web.stag.goodnstay.com/en-US/accommodation)",
+  "test_account": "Isolated QA Traveler Session Invalidated via POST /api/traveler/logout (<REDACTED_LOGGED_OUT_QA_TOKEN>)",
+  "steps_to_reproduce": [
+    "Authenticate an isolated QA Traveler session via POST https://services.stag.goodnstay.com/api/traveler/login.",
+    "Invalidate that session via POST https://services.stag.goodnstay.com/api/traveler/logout -> returns HTTP 200 OK ({\"success\": true, \"message\": \"Logged out successfully.\"}).",
+    "Verify session revocation baseline on custom Traveler routes: GET /api/traveler/me -> HTTP 401 ('You are not logged in.') and PUT /api/customer-requests/:id -> HTTP 401.",
+    "Single-Variable Session Check: Send GET https://services.stag.goodnstay.com/api/customer-requests with Authorization: Bearer <REDACTED_LOGGED_OUT_QA_TOKEN>."
+  ],
+  "actual_result": "- GET /api/customer-requests accepts the logged-out Bearer token and returns HTTP 200 OK containing all 31 Customer Request records (id, checkInDate, checkOutDate, stayingCity, notes, hotelBids).",
+  "expected_result": "- Per API Standard Fail-Closed Session Lifecycle (Confluence 524593) and same-session parity with GET /api/traveler/me & PUT /api/customer-requests/:id (both returning HTTP 401 'You are not logged in.'), GET /api/customer-requests must reject logged-out Bearer tokens with HTTP 401 Unauthorized.\n- Zero Customer Request records may be returned after logout.",
+  "evidence": {
+    "url": "https://web.stag.goodnstay.com/en-US/accommodation",
+    "datetime": "19/11/2026 13:56 ICT",
+    "console": "Test Case STAG-API-204 | Single-Variable Delta: Replay Bearer token invalidated via POST /api/traveler/logout.",
+    "network": "POST /api/traveler/logout -> 200 OK; GET /api/traveler/me -> 401; GET https://services.stag.goodnstay.com/api/customer-requests (with logged-out Bearer token) -> HTTP 200 OK (31 items returned).",
+    "notes": "Custom /api/traveler/* endpoints validate active session state against login-devices, whereas default Strapi collection find on GET /api/customer-requests verifies only JWT signature without checking session revocation. | Security Classification: OWASP A07:2025 Authentication Failures (CWE-613 Insufficient Session Expiration) & A01:2025 · OWASP API2:2023 Broken Authentication | OWASP Remediation: Enforce centralized active-session / token-revocation middleware on GET /api/customer-requests (https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html).",
+    "reference_url": "https://optibide-org.atlassian.net/wiki/spaces/O/pages/524593"
+  },
+  "classification": "Confirmed Bug — Logged-Out Bearer Token Remains Accepted on GET /api/customer-requests",
+  "severity": "S1 – Critical",
+  "priority_label": "P0",
+  "reproducibility": "Always (100% — verified with isolated logged-out token on STAG)",
+  "jira_fields": {
+    "customfield_10038": [
+      {
+        "id": "10025"
+      }
+    ],
+    "customfield_10039": [
+      {
+        "id": "10033"
+      }
+    ]
+  },
+  "attachments": [
+    "../screenshots/bug_api08_customer_requests_after_logout_1440x900.png",
+    "../postman_per_case/STAG-API-204.postman_collection.json"
+  ]
+}

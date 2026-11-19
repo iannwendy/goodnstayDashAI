@@ -1,0 +1,146 @@
+{
+  "board_name": "Internship Program 2026",
+  "board_id": 135,
+  "board_url": "https://optibide-org.atlassian.net/jira/software/c/projects/OP/boards/135/backlog",
+  "total_uploaded": 6,
+  "tickets": [
+    {
+      "bug_id": "BUG-API-07",
+      "issue_key": "OP-1959",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1959",
+      "title": "[Accommodation Request API - POST /api/traveler/request-bids] 200 OK Room-Request Response Serializes Sensitive User Columns in data.customerRequest.user",
+      "classification": "Confirmed Bug — POST /api/traveler/request-bids 200 OK Response Serializes Internal up_users Credential Columns",
+      "severity": "S1 – Critical",
+      "priority_label": "P0",
+      "inline_embedded_count": 1,
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 3,
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": [],
+      "attachment_urls": [
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12529",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12545",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12546"
+      ],
+      "attachment_filenames": [
+        "bug_api07_request_bids_response_user_columns_1440x900.png",
+        "STAG-API-203.postman_collection.json",
+        "valid-request-bids.json"
+      ]
+    },
+    {
+      "bug_id": "BUG-API-08",
+      "issue_key": "OP-1960",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1960",
+      "title": "[Customer Requests API - GET /api/customer-requests] Logged-Out Bearer Token Continues Returning Customer Requests (HTTP 200 OK) After POST /api/traveler/logout",
+      "classification": "Confirmed Bug — Logged-Out Bearer Token Remains Accepted on GET /api/customer-requests",
+      "severity": "S1 – Critical",
+      "priority_label": "P0",
+      "inline_embedded_count": 1,
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 2,
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": [],
+      "attachment_urls": [
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12530",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12547"
+      ],
+      "attachment_filenames": [
+        "bug_api08_customer_requests_after_logout_1440x900.png",
+        "STAG-API-204.postman_collection.json"
+      ]
+    },
+    {
+      "bug_id": "BUG-API-09",
+      "issue_key": "OP-1961",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1961",
+      "title": "[Notification API - POST /api/v1/notifications/mark-all-read] Logged-Out Bearer Token Continues Mutating Notification Read State (HTTP 200 OK) After POST /api/traveler/logout",
+      "classification": "Confirmed Bug — Revoked Traveler Session Token Continues Mutating State on /api/v1/notifications/*",
+      "severity": "S1 – Critical",
+      "priority_label": "P0",
+      "inline_embedded_count": 1,
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 2,
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": [],
+      "attachment_urls": [
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12531",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12548"
+      ],
+      "attachment_filenames": [
+        "bug_api09_notifications_mark_read_after_logout_1440x900.png",
+        "STAG-API-205.postman_collection.json"
+      ]
+    },
+    {
+      "bug_id": "BUG-API-10",
+      "issue_key": "OP-1962",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1962",
+      "title": "[Accommodation Request API - POST /api/traveler/request-bids] Inverted Stay Dates (checkOutDate Earlier Than checkInDate) Are Accepted and Persisted With HTTP 200 OK",
+      "classification": "Confirmed Bug — Inverted Stay Window (checkOutDate < checkInDate) Persists Open Customer Request With HTTP 200 OK",
+      "severity": "S2 – Major",
+      "priority_label": "P1",
+      "inline_embedded_count": 1,
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 3,
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": [],
+      "attachment_urls": [
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12532",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12550",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12549"
+      ],
+      "attachment_filenames": [
+        "bug_api10_request_bids_inverted_dates_1440x900.png",
+        "request-bids-inverted-checkout-date.json",
+        "STAG-API-206.postman_collection.json"
+      ]
+    },
+    {
+      "bug_id": "BUG-API-11",
+      "issue_key": "OP-1963",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1963",
+      "title": "[Notification API - GET /api/v1/notifications] Disallowed Origin Header Triggers Unhandled HTTP 500 INTERNAL_ERROR Instead of Clean CORS Rejection",
+      "classification": "Confirmed Bug — CORS Origin Callback Throws Unhandled HTTP 500 INTERNAL_ERROR on /api/v1/notifications",
+      "severity": "S2 – Major",
+      "priority_label": "P1",
+      "inline_embedded_count": 1,
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 2,
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": [],
+      "attachment_urls": [
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12533",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12551"
+      ],
+      "attachment_filenames": [
+        "bug_api11_notifications_cors_500_error_1440x900.png",
+        "STAG-API-207.postman_collection.json"
+      ]
+    },
+    {
+      "bug_id": "BUG-API-12",
+      "issue_key": "OP-1964",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1964",
+      "title": "[Location Pin API - POST /api/translations/stay-location-pin] Unauthenticated Request Without Authorization Header Executes OpenAI Geocoding Pipeline (Contract Verification)",
+      "classification": "Needs Verification — (need to brainstorming with team or observe)",
+      "severity": "S3 – Minor",
+      "priority_label": "P2",
+      "inline_embedded_count": 1,
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 3,
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": [],
+      "attachment_urls": [
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12534",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12552",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12553"
+      ],
+      "attachment_filenames": [
+        "bug_api12_stay_location_pin_unauth_check_1440x900.png",
+        "STAG-API-208.postman_collection.json",
+        "valid-stay-location-pin.json"
+      ]
+    }
+  ]
+}

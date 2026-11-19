@@ -1,0 +1,41 @@
+{
+  "title": "[Notification API - GET /api/v1/notifications] Disallowed Origin Header Triggers Unhandled HTTP 500 INTERNAL_ERROR Instead of Clean CORS Rejection",
+  "environment": "Staging (STAG) · API Gateway / Notification Service & Desktop 1440×900 · Chrome · en-US · FE=turbopack-2h-u0he6dowwt, BE=<CHECK_DEPLOYED_SHA> (https://web.stag.goodnstay.com/en-US/home)",
+  "test_account": "Signed-In QA Traveler Session on Staging (Authorization: Bearer <REDACTED_QA_TOKEN>)",
+  "steps_to_reproduce": [
+    "Confirm baseline GET https://services.stag.goodnstay.com/api/v1/notifications?limit=5 with Origin: https://web.stag.goodnstay.com returns HTTP 200 OK.",
+    "Confirm same-host CORS parity on GET https://services.stag.goodnstay.com/api/traveler/me with Origin: https://untrusted-origin.example.test -> cleanly omits Access-Control-Allow-Origin without throwing HTTP 500.",
+    "Single-Variable Header Mutation: Change ONLY the Origin header to https://untrusted-origin.example.test on GET https://services.stag.goodnstay.com/api/v1/notifications?limit=5.",
+    "Send the request and record HTTP status, CORS response headers, and error payload."
+  ],
+  "actual_result": "- GET /api/v1/notifications?limit=5 with Origin: https://untrusted-origin.example.test throws an unhandled HTTP 500 Internal Server Error:\n  {\"error\": {\"code\": \"INTERNAL_ERROR\", \"messageKey\": \"errors.internal\", \"details\": {\"name\": \"Error\", \"message\": \"Origin https://untrusted-origin.example.test is not allowed by CORS\"}}}.",
+  "expected_result": "- Per OpenAPI Governance 4xx vs 5xx Separation (Confluence 144015744) and same-host parity with /api/traveler/me, an untrusted client Origin header must never trigger an unhandled HTTP 500 server error; the CORS middleware should return callback(null, false) (omitting Access-Control-Allow-Origin) or a controlled 403 error (<CHECK_OPENAPI> / <CHECK_ERROR_REGISTRY>).",
+  "evidence": {
+    "url": "https://web.stag.goodnstay.com/en-US/home",
+    "datetime": "19/11/2026 13:56 ICT",
+    "console": "Test Case STAG-API-207 | Single-Variable Header Delta: Origin -> https://untrusted-origin.example.test.",
+    "network": "GET https://services.stag.goodnstay.com/api/v1/notifications?limit=5 (Origin: https://untrusted-origin.example.test) -> HTTP 500 INTERNAL_ERROR.",
+    "notes": "Express/NestJS CORS origin callback invokes callback(new Error('Origin ... is not allowed by CORS')) instead of callback(null, false), escalating client header rejection into a 500 INTERNAL_ERROR and polluting 5xx SLO metrics. | Security Classification: OWASP A10:2025 Mishandling of Exceptional Conditions (CWE-755, CWE-209) & A02:2025 Security Misconfiguration · OWASP API8:2023 | OWASP Remediation: Return callback(null, false) in CORS origin allow-list check or map disallowed origin to 403 without internal Error serialization (https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html).",
+    "reference_url": "https://optibide-org.atlassian.net/wiki/spaces/O/pages/144015744"
+  },
+  "classification": "Confirmed Bug — CORS Origin Callback Throws Unhandled HTTP 500 INTERNAL_ERROR on /api/v1/notifications",
+  "severity": "S2 – Major",
+  "priority_label": "P1",
+  "reproducibility": "Always (100% — deterministic single-header reproduction on STAG)",
+  "jira_fields": {
+    "customfield_10038": [
+      {
+        "id": "10025"
+      }
+    ],
+    "customfield_10039": [
+      {
+        "id": "10033"
+      }
+    ]
+  },
+  "attachments": [
+    "../screenshots/bug_api11_notifications_cors_500_error_1440x900.png",
+    "../postman_per_case/STAG-API-207.postman_collection.json"
+  ]
+}

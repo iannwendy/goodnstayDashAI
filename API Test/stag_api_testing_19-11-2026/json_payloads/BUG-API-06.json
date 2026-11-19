@@ -1,0 +1,40 @@
+{
+  "title": "[Login Records API - GET /api/traveler/login-records] Negative page=-1 Query Parameter Clamps to page=1 With HTTP 200 OK (Pagination Contract Verification)",
+  "environment": "Staging (STAG) · Strapi Backend API & Desktop 1440×900 · Chrome · en-US · FE=turbopack-2h-u0he6dowwt, BE=<CHECK_DEPLOYED_SHA> (https://web.stag.goodnstay.com/en-US/user-profile/profile-details)",
+  "test_account": "Signed-In QA Traveler Session on Staging (Authorization: Bearer <REDACTED_QA_TOKEN>)",
+  "steps_to_reproduce": [
+    "Confirm baseline GET https://services.stag.goodnstay.com/api/traveler/login-records?page=1&pageSize=6 returns HTTP 200 OK.",
+    "Single-Variable Query Mutation: Change ONLY query parameter page from 1 to -1 (keeping pageSize=6).",
+    "Send GET https://services.stag.goodnstay.com/api/traveler/login-records?page=-1&pageSize=6 and inspect HTTP status and data.page."
+  ],
+  "actual_result": "- GET /api/traveler/login-records?page=-1&pageSize=6 returns HTTP 200 OK (\"Login records loaded.\") and silently clamps data.page to 1, whereas sibling Staging endpoint GET /api/v1/notifications?limit=-5 returns HTTP 400 VALIDATION_FAILED ('limit must not be less than 1').",
+  "expected_result": "- <CHECK_OPENAPI> / <CHECK_ERROR_REGISTRY>: Because STAGING OpenAPI for Strapi /api/traveler/login-records is unpublished (404), confirm with Strapi Backend Owner whether negative pagination parameters (page < 1) must fail closed with HTTP 400 Bad Request (matching /api/v1/notifications) or intentionally clamp to page=1.",
+  "evidence": {
+    "url": "https://web.stag.goodnstay.com/en-US/user-profile/profile-details",
+    "datetime": "19/11/2026 12:41 ICT",
+    "console": "Test Case STAG-API-010 (Status: BLOCKED — API contract missing) | Single-Variable Query Delta: page (1 -> -1).",
+    "network": "GET https://services.stag.goodnstay.com/api/traveler/login-records?page=-1&pageSize=6 -> HTTP 200 OK (data.page=1, pageSize=6).",
+    "notes": "Frontend chunk 2k50va9an1vxz.js calls GET /api/traveler/login-records?page=1&pageSize=6. Marked Needs Verification per QA Guide §2 (do not assume 400 vs clamping without OpenAPI contract). | Security Classification: OWASP A10:2025 Mishandling of Exceptional Conditions (CWE-754 Improper Check for Unusual Conditions) · OWASP API8:2023 | OWASP Remediation: Standardize positive-integer pagination schema validation (page >= 1 and bounded pageSize) in OpenAPI & Gateway/Strapi (https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html).",
+    "reference_url": "https://optibide-org.atlassian.net/wiki/spaces/O/pages/144015744"
+  },
+  "classification": "Needs Verification — (need to brainstorming with team or observe)",
+  "severity": "S3 – Minor",
+  "priority_label": "P2",
+  "reproducibility": "Always (100% — observed on STAG; awaiting OpenAPI pagination contract confirmation)",
+  "jira_fields": {
+    "customfield_10038": [
+      {
+        "id": "10025"
+      }
+    ],
+    "customfield_10039": [
+      {
+        "id": "10033"
+      }
+    ]
+  },
+  "attachments": [
+    "../screenshots/bug_api06_login_records_negative_page_check_1440x900.png",
+    "../postman_per_case/STAG-API-010.postman_collection.json"
+  ]
+}

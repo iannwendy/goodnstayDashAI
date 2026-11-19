@@ -1,0 +1,148 @@
+{
+  "board_name": "Internship Program 2026",
+  "board_id": 135,
+  "board_url": "https://optibide-org.atlassian.net/jira/software/c/projects/OP/boards/135/backlog",
+  "total_uploaded": 6,
+  "tickets": [
+    {
+      "bug_id": "BUG-API-01",
+      "issue_key": "OP-1947",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1947",
+      "title": "[Accommodation Request API - POST /api/traveler/request-bids] Negative roomCount (-1) Bypasses INVALID_ROOM_OR_GUEST_COUNT Validation and Persists Open Request (HTTP 200 OK)",
+      "classification": "Confirmed Bug — Negative roomCount (-1) Bypasses INVALID_ROOM_OR_GUEST_COUNT Boundary Guard on POST /api/traveler/request-bids",
+      "severity": "S1 – Critical",
+      "priority_label": "P0",
+      "inline_embedded_count": 1,
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 3,
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": [],
+      "attachment_urls": [
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12523",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12536",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12535"
+      ],
+      "attachment_filenames": [
+        "bug_api01_request_bids_negative_roomcount_1440x900.png",
+        "request-bids-negative-room-count.json",
+        "STAG-API-005.postman_collection.json"
+      ]
+    },
+    {
+      "bug_id": "BUG-API-02",
+      "issue_key": "OP-1948",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1948",
+      "title": "[Support Ticket API - GET /api/ticket-supports] Unauthenticated GET /api/ticket-supports Returns HTTP 200 OK Exposing Submitted Support & Delete-Account Tickets",
+      "classification": "Confirmed Bug — Unauthenticated Public Read Access Enabled on GET /api/ticket-supports",
+      "severity": "S1 – Critical",
+      "priority_label": "P1",
+      "inline_embedded_count": 1,
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 2,
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": [],
+      "attachment_urls": [
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12524",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12537"
+      ],
+      "attachment_filenames": [
+        "bug_api02_ticket_supports_unauth_get_1440x900.png",
+        "STAG-API-006.postman_collection.json"
+      ]
+    },
+    {
+      "bug_id": "BUG-API-03",
+      "issue_key": "OP-1949",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1949",
+      "title": "[Traveler Profile API - PUT /api/traveler/update-profile] Malformed dob String Triggers Unhandled HTTP 500 Internal Server Error Instead of 4xx Validation Error",
+      "classification": "Confirmed Bug — Unhandled HTTP 500 Server Error on Malformed dob Input in PUT /api/traveler/update-profile",
+      "severity": "S2 – Major",
+      "priority_label": "P1",
+      "inline_embedded_count": 1,
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 3,
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": [],
+      "attachment_urls": [
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12525",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12538",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12539"
+      ],
+      "attachment_filenames": [
+        "bug_api03_update_profile_malformed_dob_500_1440x900.png",
+        "STAG-API-007.postman_collection.json",
+        "update-profile-malformed-dob.json"
+      ]
+    },
+    {
+      "bug_id": "BUG-API-04",
+      "issue_key": "OP-1950",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1950",
+      "title": "[Staying Information API - PUT /api/traveler/request-bids/:id/staying-information] Malformed Guest Email (\"invalid-email-format\") Is Accepted and Persisted With HTTP 200 OK",
+      "classification": "Confirmed Bug — Missing Server-Side Email Validation on PUT /api/traveler/request-bids/:id/staying-information",
+      "severity": "S2 – Major",
+      "priority_label": "P1",
+      "inline_embedded_count": 1,
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 3,
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": [],
+      "attachment_urls": [
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12526",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12540",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12541"
+      ],
+      "attachment_filenames": [
+        "bug_api04_staying_info_invalid_email_1440x900.png",
+        "STAG-API-008.postman_collection.json",
+        "staying-information-invalid-email.json"
+      ]
+    },
+    {
+      "bug_id": "BUG-API-05",
+      "issue_key": "OP-1951",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1951",
+      "title": "[Translation API - POST /api/translations/room-description] Unauthenticated Request Without Authorization Header Executes OpenAI Translation Pipeline (Contract Verification)",
+      "classification": "Needs Verification — (need to brainstorming with team or observe)",
+      "severity": "S3 – Minor",
+      "priority_label": "P2",
+      "inline_embedded_count": 1,
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 3,
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": [],
+      "attachment_urls": [
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12527",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12542",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12543"
+      ],
+      "attachment_filenames": [
+        "bug_api05_translations_unauth_check_1440x900.png",
+        "STAG-API-009.postman_collection.json",
+        "valid-room-translation.json"
+      ]
+    },
+    {
+      "bug_id": "BUG-API-06",
+      "issue_key": "OP-1952",
+      "issue_url": "https://optibide-org.atlassian.net/browse/OP-1952",
+      "title": "[Login Records API - GET /api/traveler/login-records] Negative page=-1 Query Parameter Clamps to page=1 With HTTP 200 OK (Pagination Contract Verification)",
+      "classification": "Needs Verification — (need to brainstorming with team or observe)",
+      "severity": "S3 – Minor",
+      "priority_label": "P2",
+      "inline_embedded_count": 1,
+      "verified_on_board_135": true,
+      "verified_jira_attachments": 2,
+      "verified_assignee": "Nguyen Bao Minh",
+      "missing_custom_fields": [],
+      "attachment_urls": [
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12528",
+        "https://optibide-org.atlassian.net/rest/api/3/attachment/content/12544"
+      ],
+      "attachment_filenames": [
+        "bug_api06_login_records_negative_page_check_1440x900.png",
+        "STAG-API-010.postman_collection.json"
+      ]
+    }
+  ]
+}

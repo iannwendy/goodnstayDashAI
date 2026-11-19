@@ -1,0 +1,42 @@
+{
+  "title": "[Traveler Profile API - PUT /api/traveler/update-profile] Malformed dob String Triggers Unhandled HTTP 500 Internal Server Error Instead of 4xx Validation Error",
+  "environment": "Staging (STAG) · Strapi Backend API & Desktop 1440×900 · Chrome · en-US · FE=turbopack-2h-u0he6dowwt, BE=<CHECK_DEPLOYED_SHA> (https://web.stag.goodnstay.com/en-US/user-profile/profile-details)",
+  "test_account": "Signed-In QA Traveler Session on Staging (Authorization: Bearer <REDACTED_QA_TOKEN>)",
+  "steps_to_reproduce": [
+    "Load the complete valid profile fixture (fixtures/valid-update-profile.json: fullName='QA Tester', phone='+84900000000', country='VN', dob='2000-01-15', gender='male') and confirm baseline PUT returns HTTP 200 OK.",
+    "Single-Variable Mutation: Clone fixtures/valid-update-profile.json and change ONLY dob from '2000-01-15' to 'not-a-valid-date' (fixtures/update-profile-malformed-dob.json).",
+    "Send PUT https://services.stag.goodnstay.com/api/traveler/update-profile with Authorization: Bearer <REDACTED_QA_TOKEN>.",
+    "Record the HTTP status code and error body, then execute GET https://services.stag.goodnstay.com/api/traveler/me readback to verify stored profile integrity."
+  ],
+  "actual_result": "- PUT /api/traveler/update-profile with dob='not-a-valid-date' fails with unhandled HTTP 500 Internal Server Error: {\"success\": false, \"error\": {\"code\": 500, \"message\": \"Server error.\", \"details\": []}}.",
+  "expected_result": "- Per OpenAPI Governance 4xx vs 5xx Separation (Confluence 144015744) and same-endpoint validation parity (where invalid gender returns HTTP 422 {\"code\": 422, \"message\": \"Invalid input.\", \"details\": [\"gender:gender_invalid\"]}), malformed dob input must be rejected with a deterministic 4xx client validation error (<CHECK_OPENAPI> / <CHECK_ERROR_REGISTRY>) and must never trigger HTTP 500.\n- Existing profile record must remain unchanged on GET /api/traveler/me readback.",
+  "evidence": {
+    "url": "https://web.stag.goodnstay.com/en-US/user-profile/profile-details",
+    "datetime": "19/11/2026 12:41 ICT",
+    "console": "Test Case STAG-API-007 | Single-Variable Delta: dob ('2000-01-15' -> 'not-a-valid-date') | Profile readback verified unchanged.",
+    "network": "PUT https://services.stag.goodnstay.com/api/traveler/update-profile {\"fullName\":\"QA Tester\",\"phone\":\"+84900000000\",\"country\":\"VN\",\"dob\":\"not-a-valid-date\",\"gender\":\"male\"} -> HTTP 500 Internal Server Error.",
+    "notes": "Frontend chunk 2k50va9an1vxz.js module 251583 calls PUT /api/traveler/update-profile. Backend passes unvalidated dob string into database date cast without pre-validation. | Security Classification: OWASP A10:2025 Mishandling of Exceptional Conditions (CWE-248, CWE-755) · OWASP API8:2023 Security Misconfiguration | OWASP Remediation: Validate ISO-8601 date schema prior to DB cast and handle parse failures via centralized 4xx error handler (https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html).",
+    "reference_url": "https://optibide-org.atlassian.net/wiki/spaces/O/pages/144015744"
+  },
+  "classification": "Confirmed Bug — Unhandled HTTP 500 Server Error on Malformed dob Input in PUT /api/traveler/update-profile",
+  "severity": "S2 – Major",
+  "priority_label": "P1",
+  "reproducibility": "Always (100% — single-variable mutation verified on STAG)",
+  "jira_fields": {
+    "customfield_10038": [
+      {
+        "id": "10025"
+      }
+    ],
+    "customfield_10039": [
+      {
+        "id": "10033"
+      }
+    ]
+  },
+  "attachments": [
+    "../screenshots/bug_api03_update_profile_malformed_dob_500_1440x900.png",
+    "../postman_per_case/STAG-API-007.postman_collection.json",
+    "../fixtures/update-profile-malformed-dob.json"
+  ]
+}

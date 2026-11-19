@@ -1,0 +1,40 @@
+{
+  "title": "[Support Ticket API - GET /api/ticket-supports] Unauthenticated GET /api/ticket-supports Returns HTTP 200 OK Exposing Submitted Support & Delete-Account Tickets",
+  "environment": "Staging (STAG) · Strapi Backend API & Desktop 1440×900 · Chrome · en-US · FE=turbopack-2h-u0he6dowwt, BE=<CHECK_DEPLOYED_SHA> (https://web.stag.goodnstay.com/en-US/user-profile/profile-details)",
+  "test_account": "Unauthenticated Client Session (No Authorization header)",
+  "steps_to_reproduce": [
+    "Verify same-service Strapi access-control baseline on GET https://services.stag.goodnstay.com/api/customer-requests and GET /api/hotel-bids without Authorization -> both return HTTP 403 ForbiddenError.",
+    "Prepare an unauthenticated GET request to https://services.stag.goodnstay.com/api/ticket-supports with NO Authorization header.",
+    "Send GET https://services.stag.goodnstay.com/api/ticket-supports and inspect the HTTP status code and returned data[] array."
+  ],
+  "actual_result": "- Unauthenticated GET https://services.stag.goodnstay.com/api/ticket-supports returns HTTP 200 OK with the full paginated Strapi ticket-supports collection (data[] containing id, documentId, email, phone, type='delete_account', title, description, createdAt).",
+  "expected_result": "- Per goodNstay API Standard Fail-Closed Access Control (Confluence 524593 & QA Guide §7/§8) and sibling Strapi collection parity (/api/customer-requests, /api/hotel-bids -> 403 ForbiddenError), unauthenticated public GET /api/ticket-supports must be rejected (<CHECK_OPENAPI — HTTP 401 or 403 ForbiddenError>) so submitted user support and account-deletion tickets are never publicly readable.",
+  "evidence": {
+    "url": "https://web.stag.goodnstay.com/en-US/user-profile/profile-details",
+    "datetime": "19/11/2026 12:43 ICT",
+    "console": "Test Case STAG-API-006 (Permission Category) | Single-Variable Delta: Omit Authorization header on GET /api/ticket-supports.",
+    "network": "GET https://services.stag.goodnstay.com/api/ticket-supports (no Authorization header) -> HTTP 200 OK (x-powered-by: Strapi) returning data[] and meta.pagination.",
+    "notes": "Delete Account form in chunk 1yil-2d8cpf3l.js submits to /api/ticket-supports. Strapi Public role currently has 'find' permission enabled on api::ticket-support.ticket-support instead of restricting read access to Admin. | Security Classification: OWASP A01:2025 Broken Access Control (CWE-200, CWE-284, CWE-359) · OWASP API5:2023 BFLA & API1:2023 BOLA | OWASP Remediation: Deny by default — disable Public 'find'/'findOne' permissions on ticket-support and enforce Admin/owner RBAC (https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html).",
+    "reference_url": "https://optibide-org.atlassian.net/wiki/spaces/O/pages/524593"
+  },
+  "classification": "Confirmed Bug — Unauthenticated Public Read Access Enabled on GET /api/ticket-supports",
+  "severity": "S1 – Critical",
+  "priority_label": "P1",
+  "reproducibility": "Always (100% — reproduced on STAG)",
+  "jira_fields": {
+    "customfield_10038": [
+      {
+        "id": "10025"
+      }
+    ],
+    "customfield_10039": [
+      {
+        "id": "10033"
+      }
+    ]
+  },
+  "attachments": [
+    "../screenshots/bug_api02_ticket_supports_unauth_get_1440x900.png",
+    "../postman_per_case/STAG-API-006.postman_collection.json"
+  ]
+}

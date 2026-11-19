@@ -1,0 +1,41 @@
+{
+  "title": "[Translation API - POST /api/translations/room-description] Unauthenticated Request Without Authorization Header Executes OpenAI Translation Pipeline (Contract Verification)",
+  "environment": "Staging (STAG) · Strapi Backend API & Desktop 1440×900 · Chrome · en-US · FE=turbopack-2h-u0he6dowwt, BE=<CHECK_DEPLOYED_SHA> (https://web.stag.goodnstay.com/en-US/accommodation)",
+  "test_account": "Unauthenticated Client Session (Authorization header omitted)",
+  "steps_to_reproduce": [
+    "Prepare the complete valid translation fixture (fixtures/valid-room-translation.json: {\"text\": \"Deluxe Suite with panoramic city view\", \"targetLocale\": \"vi-VN\", \"sourceLocale\": \"en-US\"}).",
+    "Single-Variable Header Mutation: Omit ONLY the Authorization Bearer header (which web client chunk 0v23-8ja2iskk.js attaches from localStorage).",
+    "Send POST https://services.stag.goodnstay.com/api/translations/room-description and record HTTP status and provider metadata."
+  ],
+  "actual_result": "- POST /api/translations/room-description without an Authorization header executes the live OpenAI translation provider and returns HTTP 200 OK ({\"success\": true, \"data\": {\"translatedText\": \"...\", \"targetLocale\": \"vi-VN\", \"sourceLocale\": \"en-US\", \"provider\": \"openai\"}}).",
+  "expected_result": "- <CHECK_OPENAPI> / <CHECK_ERROR_REGISTRY>: Because STAGING OpenAPI (/openapi.json, /documentation) is currently unpublished (404), confirm with Backend / Architecture Owner whether POST /api/translations/room-description must require an authenticated Traveler Bearer token (HTTP 401) to protect OpenAI quota, or is intentionally public with rate-limiting.",
+  "evidence": {
+    "url": "https://web.stag.goodnstay.com/en-US/accommodation",
+    "datetime": "19/11/2026 12:43 ICT",
+    "console": "Test Case STAG-API-009 (Status: BLOCKED — API contract missing) | Single-Variable Header Delta: Omit Authorization header.",
+    "network": "POST https://services.stag.goodnstay.com/api/translations/room-description (no Authorization header) -> HTTP 200 OK (provider='openai').",
+    "notes": "Frontend chunk 0v23-8ja2iskk.js function ak() reads localStorage.getItem('token') and sends Authorization: Bearer <REDACTED_QA_TOKEN>. Marked Needs Verification per QA Guide §2 (No Guessing when OpenAPI contract is missing). | Security Classification: OWASP A01:2025 Broken Access Control (CWE-284) & OWASP X01:2025 Lack of Application Resilience (CWE-400, CWE-799) · OWASP API4:2023 Unrestricted Resource Consumption | OWASP Remediation: Enforce Bearer authentication plus per-user/IP rate-limiting and token quotas on paid OpenAI endpoints (https://cheatsheetseries.owasp.org/cheatsheets/Denial_of_Service_Cheat_Sheet.html).",
+    "reference_url": "https://optibide-org.atlassian.net/wiki/spaces/O/pages/165937257"
+  },
+  "classification": "Needs Verification — (need to brainstorming with team or observe)",
+  "severity": "S3 – Minor",
+  "priority_label": "P2",
+  "reproducibility": "Always (100% — observed on STAG; awaiting OpenAPI auth contract confirmation)",
+  "jira_fields": {
+    "customfield_10038": [
+      {
+        "id": "10025"
+      }
+    ],
+    "customfield_10039": [
+      {
+        "id": "10033"
+      }
+    ]
+  },
+  "attachments": [
+    "../screenshots/bug_api05_translations_unauth_check_1440x900.png",
+    "../postman_per_case/STAG-API-009.postman_collection.json",
+    "../fixtures/valid-room-translation.json"
+  ]
+}

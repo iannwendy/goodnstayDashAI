@@ -1,0 +1,42 @@
+{
+  "title": "[Staying Information API - PUT /api/traveler/request-bids/:id/staying-information] Malformed Guest Email (\"invalid-email-format\") Is Accepted and Persisted With HTTP 200 OK",
+  "environment": "Staging (STAG) · Strapi Backend API & Desktop 1440×900 · Chrome · en-US · FE=turbopack-2h-u0he6dowwt, BE=<CHECK_DEPLOYED_SHA> (https://web.stag.goodnstay.com/en-US/accommodation)",
+  "test_account": "Signed-In QA Traveler Session on Staging (Authorization: Bearer <REDACTED_QA_TOKEN>)",
+  "steps_to_reproduce": [
+    "Prepare the complete valid staying-information fixture (fixtures/valid-staying-information.json) for open Customer Request #1514 with valid E.164 phone '+84900000000', fullName='QA Sample Guest', email='qa-sample@example.test', and valid emergencyContact.",
+    "Single-Variable Mutation: Clone fixtures/valid-staying-information.json and change ONLY stayingGuests[0].email to 'invalid-email-format' (fixtures/staying-information-invalid-email.json).",
+    "Send PUT https://services.stag.goodnstay.com/api/traveler/request-bids/1514/staying-information with Authorization: Bearer <REDACTED_QA_TOKEN>.",
+    "Execute GET https://services.stag.goodnstay.com/api/traveler/request-bids?requestStatus=open&locale=en-US readback to inspect persisted stayingGuests[0].email (then restore valid fixture)."
+  ],
+  "actual_result": "- PUT /api/traveler/request-bids/1514/staying-information returns HTTP 200 OK ({\"success\": true, \"message\": \"Update successful.\", \"data\": {\"acknowledged\": true, \"customerRequestId\": 1514, ...}}).\n- GET /api/traveler/request-bids?requestStatus=open&locale=en-US readback confirms malformed string 'invalid-email-format' was persisted in stayingGuests[0].email.",
+  "expected_result": "- Per GNS-FORM-001 Global Form Validation (Confluence 174227515), PUT /api/traveler/request-bids/:customerRequestId/staying-information must validate stayingGuests[].email format on the server and reject malformed emails with a 4xx validation error (<CHECK_OPENAPI> / <CHECK_ERROR_REGISTRY>).\n- Invalid email strings must not be persisted on the Customer Request.",
+  "evidence": {
+    "url": "https://web.stag.goodnstay.com/en-US/accommodation",
+    "datetime": "19/11/2026 12:43 ICT",
+    "console": "Test Case STAG-API-008 | Single-Variable Delta: stayingGuests[0].email ('qa-sample@example.test' -> 'invalid-email-format') | Restored valid fixture after readback.",
+    "network": "PUT https://services.stag.goodnstay.com/api/traveler/request-bids/1514/staying-information -> HTTP 200 OK; GET /api/traveler/request-bids?requestStatus=open&locale=en-US -> HTTP 200 OK returning stayingGuests[0].email='invalid-email-format'.",
+    "notes": "Frontend chunk 0v23-8ja2iskk.js validates guest contact inputs in UI, but Backend controller persists stayingGuests JSON without server-side email schema validation. | Security Classification: OWASP A06:2025 Insecure Design (CWE-602 Client-Side Enforcement of Server-Side Security) & OWASP A10:2025 (CWE-754) | OWASP Remediation: Enforce strict server-side schema validation on nested stayingGuests[] and emergencyContact fields (https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html).",
+    "reference_url": "https://optibide-org.atlassian.net/wiki/spaces/O/pages/174227515"
+  },
+  "classification": "Confirmed Bug — Missing Server-Side Email Validation on PUT /api/traveler/request-bids/:id/staying-information",
+  "severity": "S2 – Major",
+  "priority_label": "P1",
+  "reproducibility": "Always (100% — single-variable mutation verified via GET readback on STAG)",
+  "jira_fields": {
+    "customfield_10038": [
+      {
+        "id": "10025"
+      }
+    ],
+    "customfield_10039": [
+      {
+        "id": "10033"
+      }
+    ]
+  },
+  "attachments": [
+    "../screenshots/bug_api04_staying_info_invalid_email_1440x900.png",
+    "../postman_per_case/STAG-API-008.postman_collection.json",
+    "../fixtures/staying-information-invalid-email.json"
+  ]
+}

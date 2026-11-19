@@ -1,0 +1,42 @@
+{
+  "title": "[Accommodation Request API - POST /api/traveler/request-bids] 200 OK Room-Request Response Serializes Sensitive User Columns in data.customerRequest.user",
+  "environment": "Staging (STAG) · Strapi Backend API & Desktop 1440×900 · Chrome · en-US · FE=turbopack-2h-u0he6dowwt, BE=<CHECK_DEPLOYED_SHA> (https://web.stag.goodnstay.com/en-US/accommodation)",
+  "test_account": "Signed-In QA Traveler Session on Staging (Authorization: Bearer <REDACTED_QA_TOKEN>)",
+  "steps_to_reproduce": [
+    "Prepare the complete valid room-request baseline fixture (fixtures/valid-request-bids.json) using sanitized QA data (QA Tester, qa-sample@example.test, +84900000000, KR / KR-11, guestCount=2, roomCount=1).",
+    "Send POST https://services.stag.goodnstay.com/api/traveler/request-bids with Authorization: Bearer <REDACTED_QA_TOKEN>.",
+    "Inspect the HTTP 200 OK JSON response body keys inside data.customerRequest.user.",
+    "Execute GET https://services.stag.goodnstay.com/api/customer-requests readback to confirm saved record #1536, then cancel test record #1536."
+  ],
+  "actual_result": "- POST /api/traveler/request-bids returns HTTP 200 OK creating Customer Request #1536, and embeds the unredacted Strapi up_users entity inside data.customerRequest.user containing sensitive internal columns:\n  • data.customerRequest.user.password (\"<REDACTED_HASH>\")\n  • data.customerRequest.user.resetPasswordToken\n  • data.customerRequest.user.confirmationToken",
+  "expected_result": "- Per API Standard (Confluence 524593) and DTO Response Sanitization rules, 2xx room-request creation responses must return only public receipt fields and must never serialize internal credential/token columns (password, resetPasswordToken, confirmationToken) over the network.\n- Customer Request record is persisted and verified via GET /api/customer-requests readback.",
+  "evidence": {
+    "url": "https://web.stag.goodnstay.com/en-US/accommodation",
+    "datetime": "19/11/2026 13:58 ICT",
+    "console": "Test Case STAG-API-203 (Positive DTO Sanitization) | Single-Variable Delta: None — valid baseline fixture | Test record #1536 cancelled after readback.",
+    "network": "POST https://services.stag.goodnstay.com/api/traveler/request-bids (fixtures/valid-request-bids.json) -> HTTP 200 OK exposing data.customerRequest.user.{password, resetPasswordToken, confirmationToken}.",
+    "notes": "Frontend chunk 452btq2-mvhin.js calls POST /api/traveler/request-bids. Strapi custom controller populates and returns the full up_users relation without applying sanitizeOutput / explicit DTO field selection. | Security Classification: OWASP A04:2025 Cryptographic Failures & A01:2025 (CWE-201) · OWASP API3:2023 Broken Object Property Level Authorization (Excessive Data Exposure) | OWASP Remediation: Apply explicit DTO response allow-listing or Strapi contentAPI.sanitize.output before returning customerRequest payloads (https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html).",
+    "reference_url": "https://optibide-org.atlassian.net/wiki/spaces/O/pages/524593"
+  },
+  "classification": "Confirmed Bug — POST /api/traveler/request-bids 200 OK Response Serializes Internal up_users Credential Columns",
+  "severity": "S1 – Critical",
+  "priority_label": "P0",
+  "reproducibility": "Always (100% — reproduced on every valid room-request submission on STAG)",
+  "jira_fields": {
+    "customfield_10038": [
+      {
+        "id": "10025"
+      }
+    ],
+    "customfield_10039": [
+      {
+        "id": "10033"
+      }
+    ]
+  },
+  "attachments": [
+    "../screenshots/bug_api07_request_bids_response_user_columns_1440x900.png",
+    "../postman_per_case/STAG-API-203.postman_collection.json",
+    "../fixtures/valid-request-bids.json"
+  ]
+}

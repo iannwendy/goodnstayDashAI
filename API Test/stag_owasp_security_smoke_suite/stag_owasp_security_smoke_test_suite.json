@@ -1,0 +1,590 @@
+{
+  "suiteName": "goodNstay Staging OWASP Top 10:2025 & API Security Smoke Suite (Non-Destructive)",
+  "jiraTicket": "OP-1626",
+  "relatedJiraTickets": [
+    "OP-1947",
+    "OP-1948",
+    "OP-1949",
+    "OP-1950",
+    "OP-1951",
+    "OP-1952",
+    "OP-1593"
+  ],
+  "environment": "STAGING",
+  "preconditionsChecklist": {
+    "requirementJira": "OWASP Top 10:2025 + OWASP API Security Top 10:2023 + Confluence API Standard (524593) & OpenAPI Governance (144015744)",
+    "openApiDocument": "[QA fills in — BLOCKED: request published STAGING OpenAPI & Error Registry from Gateway/Strapi Backend Owners]",
+    "baseUrl": "https://services.stag.goodnstay.com (Staging-Only boundary; 0 requests to Production)",
+    "methodAndEndpoint": "PUT /api/traveler/update-profile, PUT /api/traveler/request-bids/:id/staying-information, GET {{baseUrl}}{{adminPartnerRequestPath}}, POST /api/traveler/request-bids, POST /api/translations/room-description",
+    "authAndTokens": "Sanitized QA tokens: Traveler A (<REDACTED_QA_TOKEN>), Traveler B (<PROVISION_SECOND_QA_ACCOUNT>), Admin Reviewer (<CHECK_ADMIN_RBAC_TOKEN>)",
+    "testDataFixtures": "Non-destructive sanitized QA fixtures in fixtures/*.json (QA Tester, qa-sample@example.test, +84900000000; 0% PII, 0 exploit payloads)",
+    "deployedBuildSha": "fe_web=turbopack-2h-u0he6dowwt, be_api=<CHECK_DEPLOYED_SHA — verify before runtime execution>"
+  },
+  "baseValidFixtureFile": "fixtures/valid-request-bids.json",
+  "baseValidFixture": {
+    "data": {
+      "fullName": "QA Tester",
+      "email": "qa-sample@example.test",
+      "phone": "900000000",
+      "dob": "2000-01-15",
+      "gender": "male",
+      "country": "VN",
+      "checkInDate": "2026-12-20",
+      "checkOutDate": "2026-12-22",
+      "guestCount": 2,
+      "roomCount": 1,
+      "stayingCountry": "KR",
+      "stayingProvince": "KR-11",
+      "stayingCity": "KR-11",
+      "stayingDistrict": "",
+      "stayingWard": "",
+      "accommodationType": "hotel",
+      "serviceTypes": [],
+      "roomTypes": [
+        "suite",
+        "anyRoom"
+      ],
+      "bedTypes": [],
+      "viewTypes": [],
+      "others": [],
+      "filterOptions": {},
+      "notes": "",
+      "guestComposition": {
+        "adults": 2,
+        "children": 0,
+        "infants": 0,
+        "pets": 0
+      }
+    }
+  },
+  "endpointBaseFixtures": {
+    "request-bids": {
+      "data": {
+        "fullName": "QA Tester",
+        "email": "qa-sample@example.test",
+        "phone": "900000000",
+        "dob": "2000-01-15",
+        "gender": "male",
+        "country": "VN",
+        "checkInDate": "2026-12-20",
+        "checkOutDate": "2026-12-22",
+        "guestCount": 2,
+        "roomCount": 1,
+        "stayingCountry": "KR",
+        "stayingProvince": "KR-11",
+        "stayingCity": "KR-11",
+        "stayingDistrict": "",
+        "stayingWard": "",
+        "accommodationType": "hotel",
+        "serviceTypes": [],
+        "roomTypes": [
+          "suite",
+          "anyRoom"
+        ],
+        "bedTypes": [],
+        "viewTypes": [],
+        "others": [],
+        "filterOptions": {},
+        "notes": "",
+        "guestComposition": {
+          "adults": 2,
+          "children": 0,
+          "infants": 0,
+          "pets": 0
+        }
+      }
+    },
+    "update-profile": {
+      "fullName": "QA Tester",
+      "phone": "+84900000000",
+      "country": "VN",
+      "dob": "2000-01-15",
+      "gender": "male"
+    },
+    "staying-information": {
+      "stayingGuests": [
+        {
+          "sameAsBooker": false,
+          "fullName": "QA Sample Guest",
+          "phone": "+84900000000",
+          "email": "qa-sample@example.test"
+        }
+      ],
+      "emergencyContact": {
+        "sameAsBooker": false,
+        "fullName": "QA Sample Contact",
+        "phone": "+84900000001",
+        "email": "qa-contact@example.test"
+      }
+    },
+    "room-translation": {
+      "text": "Deluxe Suite with panoramic city view",
+      "targetLocale": "vi-VN",
+      "sourceLocale": "en-US"
+    }
+  },
+  "testCases": [
+    {
+      "testCaseId": "OWASP-SEC-001",
+      "title": "Reject unauthenticated profile update when Authorization header is omitted on PUT /api/traveler/update-profile",
+      "testCategory": "Permission",
+      "baseFixtureKey": "update-profile",
+      "headerOnlyMutation": true,
+      "urlConfirmedSource": "Observed live in F12 Network on https://web.stag.goodnstay.com/en-US/user-profile/profile-details (chunk 2k50va9an1vxz.js)",
+      "owaspMapping": "OWASP A01:2025 Broken Access Control (CWE-284) & A07:2025 Authentication Failures (CWE-306) · OWASP API2:2023",
+      "owaspRemediationUrl": "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html",
+      "requirement": "API Standard (Confluence 524593) & SEC-M01 Auth Stripping — Protected Traveler mutation endpoints must fail closed when Bearer authentication is missing.",
+      "priorityAndLayer": "P0 / API Security Smoke (Permission — Auth Stripping)",
+      "environment": "STAGING · Date: 2026-11-19 · Deployed SHA: fe_web=turbopack-2h-u0he6dowwt, be_api=<CHECK_DEPLOYED_SHA — ask Strapi/Gateway Backend & DevOps Owner>",
+      "preconditions": "Staging environment reachable; baseline profile state recorded via authenticated GET /api/traveler/me.",
+      "methodAndUrl": "PUT https://services.stag.goodnstay.com/api/traveler/update-profile",
+      "headersAuthParams": "Content-Type: application/json; Origin: https://web.stag.goodnstay.com (Omit Authorization header)",
+      "payloadAndTestData": "Fixture: fixtures/valid-update-profile.json. Single-Variable Delta: Omit ONLY Authorization header while keeping payload valid.",
+      "singleChangeDelta": "Omit ONLY Authorization Bearer header on PUT /api/traveler/update-profile",
+      "steps": [
+        "1. Load complete valid profile payload fixtures/valid-update-profile.json.",
+        "2. Remove ONLY the Authorization header from PUT https://services.stag.goodnstay.com/api/traveler/update-profile.",
+        "3. Send the request and record HTTP status and error envelope.",
+        "4. Execute authenticated GET https://services.stag.goodnstay.com/api/traveler/me readback to confirm zero profile fields were modified."
+      ],
+      "expectedResponse": "API fails closed with 4xx authentication/authorization error (<CHECK_OPENAPI> / <CHECK_ERROR_REGISTRY>, never 2xx or 500).",
+      "expectedDataResult": "Zero profile records modified; GET /api/traveler/me readback matches pre-test state.",
+      "actualResult": "NOT_RUN — Non-destructive Staging Security Smoke template ready for execution once OpenAPI & BE SHA are confirmed.",
+      "statusAndEvidence": "BLOCKED — API contract missing (confirm exact 401/403 error envelope in STAGING OpenAPI and deployed BE SHA).",
+      "ownerToAsk": "QA Lead / Strapi Backend Owner",
+      "payloadObject": {
+        "fullName": "QA Tester",
+        "phone": "+84900000000",
+        "country": "VN",
+        "dob": "2000-01-15",
+        "gender": "male"
+      },
+      "resultRecord": {
+        "testCaseId": "OWASP-SEC-001",
+        "environment": "STAGING",
+        "method": "PUT",
+        "url": "https://services.stag.goodnstay.com/api/traveler/update-profile",
+        "testDataFile": "valid-update-profile.json",
+        "expectedHttpStatus": "<CHECK_OPENAPI>",
+        "expectedErrorCode": "<CHECK_ERROR_REGISTRY>",
+        "actualHttpStatus": "NOT_RUN",
+        "actualErrorCode": "NOT_RUN",
+        "requestId": "NOT_RUN",
+        "dataCheck": "Zero profile fields modified on GET /api/traveler/me readback",
+        "status": "BLOCKED",
+        "evidenceLink": "<ADD_AFTER_TEST>"
+      }
+    },
+    {
+      "testCaseId": "OWASP-SEC-002",
+      "title": "Reject cross-traveler staying-information update on foreign customerRequestId (BOLA ownership check)",
+      "testCategory": "Permission",
+      "baseFixtureKey": "staying-information",
+      "headerOnlyMutation": true,
+      "urlConfirmedSource": "Observed live in F12 Network on https://web.stag.goodnstay.com/en-US/accommodation (chunk 0v23-8ja2iskk.js)",
+      "owaspMapping": "OWASP A01:2025 Broken Access Control (CWE-283 Unverified Ownership, CWE-639) · OWASP API1:2023 BOLA",
+      "owaspRemediationUrl": "https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html",
+      "requirement": "API Standard (Confluence 524593) & SEC-M02 Cross-Actor BOLA — Traveler A must never modify stayingGuests on a Customer Request owned by Traveler B.",
+      "priorityAndLayer": "P0 / API Security Smoke (Permission — Object-Level Authorization / BOLA)",
+      "environment": "STAGING · Date: 2026-11-19 · Deployed SHA: fe_web=turbopack-2h-u0he6dowwt, be_api=<CHECK_DEPLOYED_SHA — ask Strapi/Gateway Backend & DevOps Owner>",
+      "preconditions": "Two isolated Staging QA Traveler accounts provisioned (Traveler A and Traveler B), with open request {{foreignCustomerRequestId}} owned by Traveler B.",
+      "methodAndUrl": "PUT https://services.stag.goodnstay.com/api/traveler/request-bids/{{foreignCustomerRequestId}}/staying-information",
+      "headersAuthParams": "Content-Type: application/json; Authorization: Bearer <REDACTED_TRAVELER_A_QA_TOKEN>; Path param: {{foreignCustomerRequestId}} (owned by Traveler B)",
+      "payloadAndTestData": "Fixture: fixtures/valid-staying-information.json. Single-Variable Delta: Target Traveler B's customerRequestId using Traveler A's Bearer token.",
+      "singleChangeDelta": "Replace ONLY path parameter :customerRequestId with Traveler B's {{foreignCustomerRequestId}} while authenticated as Traveler A",
+      "steps": [
+        "1. Seed an open Customer Request under Traveler B's QA session and record {{foreignCustomerRequestId}}.",
+        "2. Load complete valid payload fixtures/valid-staying-information.json.",
+        "3. Send PUT https://services.stag.goodnstay.com/api/traveler/request-bids/{{foreignCustomerRequestId}}/staying-information using Traveler A's Bearer token.",
+        "4. Verify 403/404 ownership rejection and execute GET readback under Traveler B's session to confirm stayingGuests was not overwritten."
+      ],
+      "expectedResponse": "API rejects cross-account object access (<CHECK_OPENAPI> / <CHECK_ERROR_REGISTRY>, HTTP 403 or 404 Fail-Closed).",
+      "expectedDataResult": "Traveler B's Customer Request stayingGuests record remains 100% unchanged on GET readback.",
+      "actualResult": "NOT_RUN — Blocked pending second Staging QA Traveler fixture account (Traveler B) and STAGING OpenAPI BOLA error contract.",
+      "statusAndEvidence": "BLOCKED — Missing second Staging QA Traveler account (Traveler B) and STAGING OpenAPI BOLA error contract.",
+      "ownerToAsk": "QA Lead / Strapi Backend Owner",
+      "payloadObject": {
+        "stayingGuests": [
+          {
+            "sameAsBooker": false,
+            "fullName": "QA Sample Guest",
+            "phone": "+84900000000",
+            "email": "qa-sample@example.test"
+          }
+        ],
+        "emergencyContact": {
+          "sameAsBooker": false,
+          "fullName": "QA Sample Contact",
+          "phone": "+84900000001",
+          "email": "qa-contact@example.test"
+        }
+      },
+      "resultRecord": {
+        "testCaseId": "OWASP-SEC-002",
+        "environment": "STAGING",
+        "method": "PUT",
+        "url": "https://services.stag.goodnstay.com/api/traveler/request-bids/{{foreignCustomerRequestId}}/staying-information",
+        "testDataFile": "valid-staying-information.json",
+        "expectedHttpStatus": "<CHECK_OPENAPI>",
+        "expectedErrorCode": "<CHECK_ERROR_REGISTRY>",
+        "actualHttpStatus": "NOT_RUN",
+        "actualErrorCode": "NOT_RUN",
+        "requestId": "NOT_RUN",
+        "dataCheck": "Traveler B request unchanged on GET readback",
+        "status": "BLOCKED",
+        "evidenceLink": "<ADD_AFTER_TEST>"
+      }
+    },
+    {
+      "testCaseId": "OWASP-SEC-003",
+      "title": "Reject Traveler Bearer token when invoking Admin Reviewer partner-requests endpoint (BFLA role boundary)",
+      "testCategory": "Permission",
+      "headerOnlyMutation": true,
+      "owaspMapping": "OWASP A01:2025 Broken Access Control (CWE-285 Improper Authorization) · OWASP API5:2023 BFLA",
+      "owaspRemediationUrl": "https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html",
+      "requirement": "OP-1592, API Standard (Confluence 524593) & SEC-M03 Cross-Role BFLA — Admin Reviewer partner-request endpoints must reject standard Traveler JWTs.",
+      "priorityAndLayer": "P0 / API Security Smoke (Permission — Function-Level Authorization / BFLA)",
+      "environment": "STAGING · Date: 2026-11-19 · Deployed SHA: fe_web=turbopack-2h-u0he6dowwt, be_api=<CHECK_DEPLOYED_SHA — ask Strapi/Gateway Backend & DevOps Owner>",
+      "preconditions": "Confirm exact Admin Reviewer endpoint path in STAGING OpenAPI; prepare standard QA Traveler Bearer token.",
+      "methodAndUrl": "GET {{baseUrl}}{{adminPartnerRequestPath}}",
+      "headersAuthParams": "Accept: application/json; Authorization: Bearer <REDACTED_TRAVELER_QA_TOKEN> (Traveler role instead of Admin Reviewer role)",
+      "payloadAndTestData": "None (GET request without body). Single-Variable Delta: Replace Admin Reviewer token with Traveler Bearer token.",
+      "singleChangeDelta": "Replace ONLY Authorization Bearer token from Admin Reviewer role to Traveler role",
+      "steps": [
+        "1. Confirm exact {{adminPartnerRequestPath}} in STAGING OpenAPI.",
+        "2. Prepare GET {{baseUrl}}{{adminPartnerRequestPath}} with a valid Traveler-role Bearer token.",
+        "3. Send the request and verify HTTP 403 Forbidden response.",
+        "4. Confirm zero partner KYB dossiers or businessDocument URLs are returned in the response body."
+      ],
+      "expectedResponse": "API fails closed with role authorization error (<CHECK_OPENAPI> / <CHECK_ERROR_REGISTRY>, HTTP 403 Forbidden).",
+      "expectedDataResult": "Zero Partner Request or KYB records exposed to Traveler role.",
+      "actualResult": "NOT_RUN — Execute after confirming STAGING Admin Reviewer OpenAPI route and RBAC error registry.",
+      "statusAndEvidence": "BLOCKED — API contract missing (confirm STAGING Admin Reviewer OpenAPI path and 403 errorCode).",
+      "ownerToAsk": "API Gateway & Admin Platform BE Owners",
+      "payloadObject": {},
+      "resultRecord": {
+        "testCaseId": "OWASP-SEC-003",
+        "environment": "STAGING",
+        "method": "GET",
+        "url": "{{baseUrl}}{{adminPartnerRequestPath}}",
+        "testDataFile": "NO_BODY_GET",
+        "expectedHttpStatus": "<CHECK_OPENAPI>",
+        "expectedErrorCode": "<CHECK_ERROR_REGISTRY>",
+        "actualHttpStatus": "NOT_RUN",
+        "actualErrorCode": "NOT_RUN",
+        "requestId": "NOT_RUN",
+        "dataCheck": "Zero Partner KYB records returned",
+        "status": "BLOCKED",
+        "evidenceLink": "<ADD_AFTER_TEST>"
+      }
+    },
+    {
+      "testCaseId": "OWASP-SEC-004",
+      "title": "Prevent privilege escalation via injected role property on PUT /api/traveler/update-profile (Mass Assignment)",
+      "testCategory": "Negative",
+      "baseFixtureKey": "update-profile",
+      "urlConfirmedSource": "Observed live in F12 Network on https://web.stag.goodnstay.com/en-US/user-profile/profile-details (chunk 2k50va9an1vxz.js)",
+      "owaspMapping": "OWASP A01:2025 Broken Access Control & A08:2025 Software or Data Integrity Failures (CWE-915) · OWASP API3:2023 BOPLA",
+      "owaspRemediationUrl": "https://cheatsheetseries.owasp.org/cheatsheets/Mass_Assignment_Cheat_Sheet.html",
+      "requirement": "OpenAPI Governance (Confluence 144015744) & SEC-M04 Mass Assignment — Undeclared privilege fields ('role') in profile update payload must never elevate user privileges.",
+      "priorityAndLayer": "P1 / API Security Smoke (Negative — Mass Assignment & Readback)",
+      "environment": "STAGING · Date: 2026-11-19 · Deployed SHA: fe_web=turbopack-2h-u0he6dowwt, be_api=<CHECK_DEPLOYED_SHA — ask Strapi/Gateway Backend & DevOps Owner>",
+      "preconditions": "Authenticated Staging QA Traveler session; baseline role verified via GET /api/traveler/me.",
+      "methodAndUrl": "PUT https://services.stag.goodnstay.com/api/traveler/update-profile",
+      "headersAuthParams": "Content-Type: application/json; Origin: https://web.stag.goodnstay.com; Authorization: Bearer <REDACTED_QA_TOKEN>",
+      "payloadAndTestData": "Fixture: fixtures/update-profile-mass-assignment-role.json. Single-Variable Delta: Add ONLY undeclared field role='admin' to valid-update-profile.json.",
+      "singleChangeDelta": "Add ONLY undeclared privilege property role='admin' to valid-update-profile.json",
+      "steps": [
+        "1. Record current account role on GET https://services.stag.goodnstay.com/api/traveler/me.",
+        "2. Load fixtures/update-profile-mass-assignment-role.json (valid profile + role='admin').",
+        "3. Send PUT https://services.stag.goodnstay.com/api/traveler/update-profile.",
+        "4. Execute GET https://services.stag.goodnstay.com/api/traveler/me readback and verify user role was NOT changed to admin."
+      ],
+      "expectedResponse": "API either rejects unknown field with 400 (<CHECK_OPENAPI> / <CHECK_ERROR_REGISTRY>) or strips undeclared property per DTO allow-list.",
+      "expectedDataResult": "No privilege escalation created or persisted; GET /api/traveler/me readback confirms Traveler role is unchanged.",
+      "actualResult": "NOT_RUN — Awaiting OpenAPI confirmation whether unknown properties must return 400 or be stripped.",
+      "statusAndEvidence": "BLOCKED — API contract missing (confirm strict additionalProperties=false 400 vs DTO strip policy in STAGING OpenAPI).",
+      "ownerToAsk": "Strapi Backend Owner",
+      "payloadObject": {
+        "fullName": "QA Tester",
+        "phone": "+84900000000",
+        "country": "VN",
+        "dob": "2000-01-15",
+        "gender": "male",
+        "role": "admin"
+      },
+      "resultRecord": {
+        "testCaseId": "OWASP-SEC-004",
+        "environment": "STAGING",
+        "method": "PUT",
+        "url": "https://services.stag.goodnstay.com/api/traveler/update-profile",
+        "testDataFile": "update-profile-mass-assignment-role.json",
+        "expectedHttpStatus": "<CHECK_OPENAPI>",
+        "expectedErrorCode": "<CHECK_ERROR_REGISTRY>",
+        "actualHttpStatus": "NOT_RUN",
+        "actualErrorCode": "NOT_RUN",
+        "requestId": "NOT_RUN",
+        "dataCheck": "GET /api/traveler/me confirms zero role modification",
+        "status": "BLOCKED",
+        "evidenceLink": "<ADD_AFTER_TEST>"
+      }
+    },
+    {
+      "testCaseId": "OWASP-SEC-005",
+      "title": "Verify POST /api/traveler/request-bids 2xx response never exposes raw up_users credential columns (OP-1947 guard)",
+      "testCategory": "Positive",
+      "baseFixtureKey": "request-bids",
+      "urlConfirmedSource": "Observed live in F12 Network on https://web.stag.goodnstay.com/en-US/accommodation (chunk 452btq2-mvhin.js)",
+      "owaspMapping": "OWASP A04:2025 Cryptographic Failures & A01:2025 (CWE-201) · OWASP API3:2023 BOPLA (Excessive Data Exposure)",
+      "owaspRemediationUrl": "https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html",
+      "requirement": "OP-1947 Regression Guard & SEC-M05 Sensitive-Column Guard — Valid room request returns sanitized DTO without password, resetPasswordToken, confirmationToken, or salt.",
+      "priorityAndLayer": "P0 / API Security Smoke (Positive — Response DTO Sanitization & Readback)",
+      "environment": "STAGING · Date: 2026-11-19 · Deployed SHA: fe_web=turbopack-2h-u0he6dowwt, be_api=<CHECK_DEPLOYED_SHA — ask Strapi/Gateway Backend & DevOps Owner>",
+      "preconditions": "Authenticated Staging QA Traveler session; OP-1947 DTO serializer fix deployed to Staging.",
+      "methodAndUrl": "POST https://services.stag.goodnstay.com/api/traveler/request-bids",
+      "headersAuthParams": "Content-Type: application/json; Origin: https://web.stag.goodnstay.com; Authorization: Bearer <REDACTED_QA_TOKEN>",
+      "payloadAndTestData": "Fixture: fixtures/valid-request-bids.json. Single-Variable Delta: None (complete valid baseline fixture).",
+      "singleChangeDelta": "None — complete valid room-request baseline fixture (valid-request-bids.json)",
+      "steps": [
+        "1. Load complete valid fixture fixtures/valid-request-bids.json.",
+        "2. Send POST https://services.stag.goodnstay.com/api/traveler/request-bids in Postman.",
+        "3. Verify automated Postman assertion 'OWASP A04:2025 / API3:2023: Response never exposes raw credential or secret columns' passes with zero leaked keys.",
+        "4. Execute GET https://services.stag.goodnstay.com/api/customer-requests readback to confirm saved request fields (and clean up test request)."
+      ],
+      "expectedResponse": "HTTP 2xx (<CHECK_OPENAPI>) returning sanitized room-request receipt with zero credential/secret columns in JSON body.",
+      "expectedDataResult": "1 valid Customer Request persisted and verified via GET /api/customer-requests readback; zero secret columns leaked.",
+      "actualResult": "NOT_RUN — Retest after Backend deploys OP-1947 DTO response allow-list fix and provides STAGING BE SHA.",
+      "statusAndEvidence": "BLOCKED — Awaiting OP-1947 backend fix deployment and STAGING OpenAPI / BE SHA confirmation.",
+      "ownerToAsk": "Strapi Backend Owner (OP-1947)",
+      "payloadObject": {
+        "data": {
+          "fullName": "QA Tester",
+          "email": "qa-sample@example.test",
+          "phone": "900000000",
+          "dob": "2000-01-15",
+          "gender": "male",
+          "country": "VN",
+          "checkInDate": "2026-12-20",
+          "checkOutDate": "2026-12-22",
+          "guestCount": 2,
+          "roomCount": 1,
+          "stayingCountry": "KR",
+          "stayingProvince": "KR-11",
+          "stayingCity": "KR-11",
+          "stayingDistrict": "",
+          "stayingWard": "",
+          "accommodationType": "hotel",
+          "serviceTypes": [],
+          "roomTypes": [
+            "suite",
+            "anyRoom"
+          ],
+          "bedTypes": [],
+          "viewTypes": [],
+          "others": [],
+          "filterOptions": {},
+          "notes": "",
+          "guestComposition": {
+            "adults": 2,
+            "children": 0,
+            "infants": 0,
+            "pets": 0
+          }
+        }
+      },
+      "resultRecord": {
+        "testCaseId": "OWASP-SEC-005",
+        "environment": "STAGING",
+        "method": "POST",
+        "url": "https://services.stag.goodnstay.com/api/traveler/request-bids",
+        "testDataFile": "valid-request-bids.json",
+        "expectedHttpStatus": "<CHECK_OPENAPI>",
+        "expectedErrorCode": "NONE",
+        "actualHttpStatus": "NOT_RUN",
+        "actualErrorCode": "NOT_RUN",
+        "requestId": "NOT_RUN",
+        "dataCheck": "GET /api/customer-requests readback verified; 0 leaked secret keys",
+        "status": "BLOCKED",
+        "evidenceLink": "<ADD_AFTER_TEST>"
+      }
+    },
+    {
+      "testCaseId": "OWASP-SEC-006",
+      "title": "Reject malformed dob format on PUT /api/traveler/update-profile with controlled 4xx error instead of HTTP 500 (OP-1949 guard)",
+      "testCategory": "Negative",
+      "baseFixtureKey": "update-profile",
+      "urlConfirmedSource": "Observed live in F12 Network on https://web.stag.goodnstay.com/en-US/user-profile/profile-details (chunk 2k50va9an1vxz.js)",
+      "owaspMapping": "OWASP A10:2025 Mishandling of Exceptional Conditions (CWE-248, CWE-755, CWE-209) · OWASP API8:2023",
+      "owaspRemediationUrl": "https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html",
+      "requirement": "OP-1949 Regression Guard, OpenAPI Governance (144015744) & SEC-M06 Exceptional Input Handling — Malformed date strings must return 4xx validation error without HTTP 500 or DB stack trace.",
+      "priorityAndLayer": "P1 / API Security Smoke (Negative — Exceptional Condition Handling)",
+      "environment": "STAGING · Date: 2026-11-19 · Deployed SHA: fe_web=turbopack-2h-u0he6dowwt, be_api=<CHECK_DEPLOYED_SHA — ask Strapi/Gateway Backend & DevOps Owner>",
+      "preconditions": "Authenticated Staging QA Traveler session; OP-1949 date validation fix deployed to Staging.",
+      "methodAndUrl": "PUT https://services.stag.goodnstay.com/api/traveler/update-profile",
+      "headersAuthParams": "Content-Type: application/json; Origin: https://web.stag.goodnstay.com; Authorization: Bearer <REDACTED_QA_TOKEN>",
+      "payloadAndTestData": "Fixture: fixtures/update-profile-exceptional-dob.json. Single-Variable Delta: Mutate ONLY dob from '2000-01-15' to 'not-a-valid-date'.",
+      "singleChangeDelta": "Mutate ONLY dob from '2000-01-15' to 'not-a-valid-date'",
+      "steps": [
+        "1. Load fixtures/update-profile-exceptional-dob.json (dob='not-a-valid-date').",
+        "2. Send PUT https://services.stag.goodnstay.com/api/traveler/update-profile.",
+        "3. Verify automated Postman assertion 'OWASP A10:2025: Server handles exceptional conditions without unhandled 5xx or stack trace leak' passes and status is 4xx.",
+        "4. Execute GET https://services.stag.goodnstay.com/api/traveler/me readback to confirm stored dob was not modified."
+      ],
+      "expectedResponse": "Controlled 4xx client validation error (<CHECK_OPENAPI> / <CHECK_ERROR_REGISTRY>), never HTTP 500 or raw DB error.",
+      "expectedDataResult": "Zero profile records corrupted or modified on GET /api/traveler/me readback.",
+      "actualResult": "NOT_RUN — Retest after Backend deploys OP-1949 pre-cast ISO date validation fix.",
+      "statusAndEvidence": "BLOCKED — Awaiting OP-1949 backend fix deployment and STAGING Error Registry confirmation.",
+      "ownerToAsk": "Strapi Backend Owner (OP-1949)",
+      "payloadObject": {
+        "fullName": "QA Tester",
+        "phone": "+84900000000",
+        "country": "VN",
+        "dob": "not-a-valid-date",
+        "gender": "male"
+      },
+      "resultRecord": {
+        "testCaseId": "OWASP-SEC-006",
+        "environment": "STAGING",
+        "method": "PUT",
+        "url": "https://services.stag.goodnstay.com/api/traveler/update-profile",
+        "testDataFile": "update-profile-exceptional-dob.json",
+        "expectedHttpStatus": "<CHECK_OPENAPI>",
+        "expectedErrorCode": "<CHECK_ERROR_REGISTRY>",
+        "actualHttpStatus": "NOT_RUN",
+        "actualErrorCode": "NOT_RUN",
+        "requestId": "NOT_RUN",
+        "dataCheck": "No profile record modified on GET /api/traveler/me readback",
+        "status": "BLOCKED",
+        "evidenceLink": "<ADD_AFTER_TEST>"
+      }
+    },
+    {
+      "testCaseId": "OWASP-SEC-007",
+      "title": "Reject inverted stay window (checkOutDate earlier than checkInDate) on POST /api/traveler/request-bids (Fail-Closed Invariant)",
+      "testCategory": "Boundary",
+      "baseFixtureKey": "request-bids",
+      "urlConfirmedSource": "Observed live in F12 Network on https://web.stag.goodnstay.com/en-US/accommodation (chunk 452btq2-mvhin.js)",
+      "owaspMapping": "OWASP A06:2025 Insecure Design (CWE-840) & A10:2025 Not Failing Securely (CWE-636) · OWASP API6:2023",
+      "owaspRemediationUrl": "https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html",
+      "requirement": "Accommodation Route Contract (166952975) & SEC-M07 Business Invariant — Reverse-auction requests must enforce checkOutDate > checkInDate on the server.",
+      "priorityAndLayer": "P1 / API Security Smoke (Boundary — Business Logic Invariant)",
+      "environment": "STAGING · Date: 2026-11-19 · Deployed SHA: fe_web=turbopack-2h-u0he6dowwt, be_api=<CHECK_DEPLOYED_SHA — ask Strapi/Gateway Backend & DevOps Owner>",
+      "preconditions": "Authenticated Staging QA Traveler session.",
+      "methodAndUrl": "POST https://services.stag.goodnstay.com/api/traveler/request-bids",
+      "headersAuthParams": "Content-Type: application/json; Origin: https://web.stag.goodnstay.com; Authorization: Bearer <REDACTED_QA_TOKEN>",
+      "payloadAndTestData": "Fixture: fixtures/request-bids-inverted-checkout-date.json. Single-Variable Delta: Mutate ONLY data.checkOutDate from '2026-12-22' to '2026-12-18' (before checkInDate '2026-12-20').",
+      "singleChangeDelta": "Mutate ONLY data.checkOutDate from '2026-12-22' to '2026-12-18' (< checkInDate '2026-12-20')",
+      "steps": [
+        "1. Load fixtures/request-bids-inverted-checkout-date.json where checkOutDate < checkInDate.",
+        "2. Send POST https://services.stag.goodnstay.com/api/traveler/request-bids.",
+        "3. Verify HTTP 4xx domain validation rejection and errorCode.",
+        "4. Execute GET https://services.stag.goodnstay.com/api/customer-requests readback to confirm zero inverted-date Customer Requests were created."
+      ],
+      "expectedResponse": "API fails closed with 4xx domain validation error (<CHECK_OPENAPI> / <CHECK_ERROR_REGISTRY>).",
+      "expectedDataResult": "No Customer Request record created in database on GET /api/customer-requests readback.",
+      "actualResult": "NOT_RUN — Execute after confirming STAGING OpenAPI date-range errorCode.",
+      "statusAndEvidence": "BLOCKED — API contract missing (confirm STAGING OpenAPI errorCode for inverted checkOutDate < checkInDate).",
+      "ownerToAsk": "Strapi Backend Owner",
+      "payloadObject": {
+        "data": {
+          "fullName": "QA Tester",
+          "email": "qa-sample@example.test",
+          "phone": "900000000",
+          "dob": "2000-01-15",
+          "gender": "male",
+          "country": "VN",
+          "checkInDate": "2026-12-20",
+          "checkOutDate": "2026-12-18",
+          "guestCount": 2,
+          "roomCount": 1,
+          "stayingCountry": "KR",
+          "stayingProvince": "KR-11",
+          "stayingCity": "KR-11",
+          "stayingDistrict": "",
+          "stayingWard": "",
+          "accommodationType": "hotel",
+          "serviceTypes": [],
+          "roomTypes": [
+            "suite",
+            "anyRoom"
+          ],
+          "bedTypes": [],
+          "viewTypes": [],
+          "others": [],
+          "filterOptions": {},
+          "notes": "",
+          "guestComposition": {
+            "adults": 2,
+            "children": 0,
+            "infants": 0,
+            "pets": 0
+          }
+        }
+      },
+      "resultRecord": {
+        "testCaseId": "OWASP-SEC-007",
+        "environment": "STAGING",
+        "method": "POST",
+        "url": "https://services.stag.goodnstay.com/api/traveler/request-bids",
+        "testDataFile": "request-bids-inverted-checkout-date.json",
+        "expectedHttpStatus": "<CHECK_OPENAPI>",
+        "expectedErrorCode": "<CHECK_ERROR_REGISTRY>",
+        "actualHttpStatus": "NOT_RUN",
+        "actualErrorCode": "NOT_RUN",
+        "requestId": "NOT_RUN",
+        "dataCheck": "Zero Customer Request records created",
+        "status": "BLOCKED",
+        "evidenceLink": "<ADD_AFTER_TEST>"
+      }
+    },
+    {
+      "testCaseId": "OWASP-SEC-008",
+      "title": "Enforce authentication and untrusted Origin CORS policy on paid OpenAI endpoint POST /api/translations/room-description (OP-1951 guard)",
+      "testCategory": "Permission",
+      "baseFixtureKey": "room-translation",
+      "headerOnlyMutation": true,
+      "urlConfirmedSource": "Observed live in F12 Network on https://web.stag.goodnstay.com/en-US/accommodation (chunk 0v23-8ja2iskk.js)",
+      "owaspMapping": "OWASP A02:2025 Security Misconfiguration (CWE-942) & X01:2025 Lack of Resilience (CWE-400) · OWASP API4:2023 & API8:2023",
+      "owaspRemediationUrl": "https://cheatsheetseries.owasp.org/cheatsheets/Denial_of_Service_Cheat_Sheet.html",
+      "requirement": "OP-1951 Contract Verification & SEC-M08 Cost-Endpoint & CORS Gate — Third-party OpenAI endpoints must enforce auth/quota and never reflect untrusted CORS Origins with credentials.",
+      "priorityAndLayer": "P1 / API Security Smoke (Permission — Paid LLM Gate & CORS Policy)",
+      "environment": "STAGING · Date: 2026-11-19 · Deployed SHA: fe_web=turbopack-2h-u0he6dowwt, be_api=<CHECK_DEPLOYED_SHA — ask Strapi/Gateway Backend & DevOps Owner>",
+      "preconditions": "Confirm OP-1951 authentication & CORS allow-list policy with Architecture / Backend Owner.",
+      "methodAndUrl": "POST https://services.stag.goodnstay.com/api/translations/room-description",
+      "headersAuthParams": "Content-Type: application/json; Origin: https://untrusted-origin.example.test (Omit Authorization header)",
+      "payloadAndTestData": "Fixture: fixtures/valid-room-translation.json. Single-Variable Delta: Omit Authorization header with untrusted Origin header.",
+      "singleChangeDelta": "Omit Authorization header and pass untrusted Origin https://untrusted-origin.example.test",
+      "steps": [
+        "1. Load complete valid translation fixture fixtures/valid-room-translation.json.",
+        "2. Send POST https://services.stag.goodnstay.com/api/translations/room-description without Authorization and with Origin: https://untrusted-origin.example.test.",
+        "3. Inspect HTTP status code and Access-Control-Allow-Origin / Access-Control-Allow-Credentials response headers.",
+        "4. Verify unauthenticated OpenAI execution is blocked (or rate-limited per approved contract) and untrusted Origin is not reflected with credentials."
+      ],
+      "expectedResponse": "Rejected per confirmed auth policy (<CHECK_OPENAPI> / <CHECK_ERROR_REGISTRY>) and Access-Control-Allow-Origin does not reflect https://untrusted-origin.example.test.",
+      "expectedDataResult": "Zero unauthorized OpenAI translation quota consumed; no database state mutated.",
+      "actualResult": "NOT_RUN — Awaiting Architecture / Backend Owner confirmation on OP-1951 OpenAPI auth & quota contract.",
+      "statusAndEvidence": "BLOCKED — API contract missing (confirm OP-1951 OpenAPI auth requirement and CORS allow-list).",
+      "ownerToAsk": "Architecture & Strapi Backend Owners (OP-1951)",
+      "payloadObject": {
+        "text": "Deluxe Suite with panoramic city view",
+        "targetLocale": "vi-VN",
+        "sourceLocale": "en-US"
+      },
+      "resultRecord": {
+        "testCaseId": "OWASP-SEC-008",
+        "environment": "STAGING",
+        "method": "POST",
+        "url": "https://services.stag.goodnstay.com/api/translations/room-description",
+        "testDataFile": "valid-room-translation.json",
+        "expectedHttpStatus": "<CHECK_OPENAPI>",
+        "expectedErrorCode": "<CHECK_ERROR_REGISTRY>",
+        "actualHttpStatus": "NOT_RUN",
+        "actualErrorCode": "NOT_RUN",
+        "requestId": "NOT_RUN",
+        "dataCheck": "Zero unauthorized OpenAI quota consumed",
+        "status": "BLOCKED",
+        "evidenceLink": "<ADD_AFTER_TEST>"
+      }
+    }
+  ]
+}

@@ -1,0 +1,636 @@
+{
+  "suiteName": "goodNstay Staging Traveler Web API Test Suite — QA Guide Compliant (19-11-2026)",
+  "jiraTicket": "OP-1626",
+  "environment": "STAGING",
+  "preconditionsChecklist": {
+    "requirementJira": "Confluence API Standard (524593), OpenAPI Governance (144015744), Accommodation Route Contract (166952975), QA Guide (184944019)",
+    "openApiDocument": "[QA fills in — BLOCKED: Strapi STAGING OpenAPI spec (/openapi.json, /documentation) returned 404; request official STAGING OpenAPI & Error Registry from Backend Owner]",
+    "baseUrl": "https://services.stag.goodnstay.com (invoked from https://web.stag.goodnstay.com)",
+    "methodAndEndpoint": "PUT /api/traveler/update-profile, POST /api/traveler/logout, GET /api/v1/notifications, POST /api/traveler/request-bids, GET /api/ticket-supports, PUT /api/traveler/request-bids/:id/staying-information, POST /api/translations/room-description, GET /api/traveler/login-records",
+    "authAndTokens": "Authorization: Bearer <REDACTED_QA_TOKEN> (Staging QA Traveler session; Origin: https://web.stag.goodnstay.com)",
+    "testDataFixtures": "Per-endpoint complete valid QA fixtures in fixtures/*.json using sanitized QA data (QA Tester, qa-sample@example.test, +84900000000, KR / KR-11)",
+    "deployedBuildSha": "fe_web=turbopack-2h-u0he6dowwt (chunks: 2k50va9an1vxz, 452btq2-mvhin, 0v23-8ja2iskk, 0lu641k7h1gc_, 1yil-2d8cpf3l), be_api=<CHECK_DEPLOYED_SHA — ask Strapi/Gateway Backend & DevOps Owner>"
+  },
+  "baseValidFixtureFile": "fixtures/valid-request-bids.json",
+  "baseValidFixture": {
+    "data": {
+      "fullName": "QA Tester",
+      "email": "qa-sample@example.test",
+      "phone": "900000000",
+      "dob": "2000-01-15",
+      "gender": "male",
+      "country": "VN",
+      "checkInDate": "2026-12-20",
+      "checkOutDate": "2026-12-22",
+      "guestCount": 2,
+      "roomCount": 1,
+      "stayingCountry": "KR",
+      "stayingProvince": "KR-11",
+      "stayingCity": "KR-11",
+      "stayingDistrict": "",
+      "stayingWard": "",
+      "accommodationType": "hotel",
+      "serviceTypes": [],
+      "roomTypes": [
+        "suite",
+        "anyRoom"
+      ],
+      "bedTypes": [],
+      "viewTypes": [],
+      "others": [],
+      "filterOptions": {},
+      "notes": "",
+      "guestComposition": {
+        "adults": 2,
+        "children": 0,
+        "infants": 0,
+        "pets": 0
+      }
+    }
+  },
+  "endpointBaseFixtures": {
+    "request-bids": {
+      "data": {
+        "fullName": "QA Tester",
+        "email": "qa-sample@example.test",
+        "phone": "900000000",
+        "dob": "2000-01-15",
+        "gender": "male",
+        "country": "VN",
+        "checkInDate": "2026-12-20",
+        "checkOutDate": "2026-12-22",
+        "guestCount": 2,
+        "roomCount": 1,
+        "stayingCountry": "KR",
+        "stayingProvince": "KR-11",
+        "stayingCity": "KR-11",
+        "stayingDistrict": "",
+        "stayingWard": "",
+        "accommodationType": "hotel",
+        "serviceTypes": [],
+        "roomTypes": [
+          "suite",
+          "anyRoom"
+        ],
+        "bedTypes": [],
+        "viewTypes": [],
+        "others": [],
+        "filterOptions": {},
+        "notes": "",
+        "guestComposition": {
+          "adults": 2,
+          "children": 0,
+          "infants": 0,
+          "pets": 0
+        }
+      }
+    },
+    "update-profile": {
+      "fullName": "QA Tester",
+      "phone": "+84900000000",
+      "country": "VN",
+      "dob": "2000-01-15",
+      "gender": "male"
+    },
+    "staying-information": {
+      "stayingGuests": [
+        {
+          "sameAsBooker": false,
+          "fullName": "QA Sample Guest",
+          "phone": "+84900000000",
+          "email": "qa-sample@example.test"
+        }
+      ],
+      "emergencyContact": {
+        "sameAsBooker": false,
+        "fullName": "QA Sample Contact",
+        "phone": "+84900000001",
+        "email": "qa-contact@example.test"
+      }
+    },
+    "room-translation": {
+      "text": "Deluxe Suite with panoramic city view",
+      "targetLocale": "vi-VN",
+      "sourceLocale": "en-US"
+    },
+    "logout": {
+      "refreshToken": "<REDACTED_QA_REFRESH_TOKEN>"
+    }
+  },
+  "testCases": [
+    {
+      "testCaseId": "STAG-API-001",
+      "title": "Accept complete valid traveler profile update and persist all fields on GET /api/traveler/me readback",
+      "testCategory": "Positive",
+      "baseFixtureKey": "update-profile",
+      "urlConfirmedSource": "Observed live in F12 Network on https://web.stag.goodnstay.com/en-US/user-profile/profile-details (chunk 2k50va9an1vxz.js)",
+      "requirement": "Traveler Profile Update Contract (chunk 2k50va9an1vxz.js) — Valid profile update persists fullName, phone, country, dob, and gender.",
+      "priorityAndLayer": "P0 / API Positive & Persistence Readback",
+      "environment": "STAGING · Date: 2026-11-19 · Deployed SHA: fe_web=turbopack-2h-u0he6dowwt (chunks: 2k50va9an1vxz, 452btq2-mvhin, 0v23-8ja2iskk, 0lu641k7h1gc_, 1yil-2d8cpf3l), be_api=<CHECK_DEPLOYED_SHA — ask Strapi/Gateway Backend & DevOps Owner>",
+      "preconditions": "Authenticated Staging QA Traveler session; baseline GET /api/traveler/me recorded.",
+      "methodAndUrl": "PUT https://services.stag.goodnstay.com/api/traveler/update-profile",
+      "headersAuthParams": "Content-Type: application/json; Origin: https://web.stag.goodnstay.com; Authorization: Bearer <REDACTED_QA_TOKEN>",
+      "payloadAndTestData": "Fixture: fixtures/valid-update-profile.json. Single-Variable Delta: None (complete baseline valid profile payload).",
+      "singleChangeDelta": "None — complete valid profile fixture (valid-update-profile.json)",
+      "steps": [
+        "1. Load fixtures/valid-update-profile.json containing valid QA profile fields.",
+        "2. Send PUT https://services.stag.goodnstay.com/api/traveler/update-profile with Authorization: Bearer <REDACTED_QA_TOKEN>.",
+        "3. Record HTTP status and response envelope.",
+        "4. Execute GET https://services.stag.goodnstay.com/api/traveler/me readback and verify all 5 submitted fields match."
+      ],
+      "expectedResponse": "HTTP <CHECK_OPENAPI> success envelope returning updated traveler profile.",
+      "expectedDataResult": "Traveler profile record is persisted and matches 100% on GET /api/traveler/me readback.",
+      "actualResult": "Observed HTTP 200 OK ({\"success\": true, \"message\": \"Update successful.\"}); GET /api/traveler/me readback matched all fields. Marked NOT VERIFIED pending Backend Commit SHA & OpenAPI spec confirmation.",
+      "statusAndEvidence": "NOT VERIFIED — Runtime response & GET /api/traveler/me readback matched, but Backend Commit SHA & STAGING OpenAPI spec must be confirmed before marking PASS (QA Guide §2 & §9).",
+      "payloadObject": {
+        "fullName": "QA Tester",
+        "phone": "+84900000000",
+        "country": "VN",
+        "dob": "2000-01-15",
+        "gender": "male"
+      },
+      "resultRecord": {
+        "testCaseId": "STAG-API-001",
+        "environment": "STAGING",
+        "method": "PUT",
+        "url": "https://services.stag.goodnstay.com/api/traveler/update-profile",
+        "testDataFile": "valid-update-profile.json",
+        "expectedHttpStatus": "<CHECK_OPENAPI>",
+        "expectedErrorCode": "NONE",
+        "actualHttpStatus": "200",
+        "actualErrorCode": "NONE",
+        "requestId": "envoy-37ms-profile-valid",
+        "dataCheck": "GET /api/traveler/me readback matched all submitted fields",
+        "status": "NOT VERIFIED",
+        "evidenceLink": "stag_traveler_api_test_cases.md"
+      },
+      "owaspMapping": "OWASP A08:2025 Software or Data Integrity Failures · OWASP API3:2023 BOPLA",
+      "owaspRemediationUrl": "https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html"
+    },
+    {
+      "testCaseId": "STAG-API-002",
+      "title": "Revoke active Traveler Bearer session upon POST /api/traveler/logout",
+      "testCategory": "Permission",
+      "baseFixtureKey": "logout",
+      "urlConfirmedSource": "Observed in chunk 452btq2-mvhin.js module 677852",
+      "headerOnlyMutation": true,
+      "requirement": "Session Lifecycle Contract — Logged-out session token must fail closed on subsequent protected GET /api/traveler/me calls.",
+      "priorityAndLayer": "P0 / API Permission & Session Lifecycle",
+      "environment": "STAGING · Date: 2026-11-19 · Deployed SHA: fe_web=turbopack-2h-u0he6dowwt (chunks: 2k50va9an1vxz, 452btq2-mvhin, 0v23-8ja2iskk, 0lu641k7h1gc_, 1yil-2d8cpf3l), be_api=<CHECK_DEPLOYED_SHA — ask Strapi/Gateway Backend & DevOps Owner>",
+      "preconditions": "Fresh isolated QA Traveler login session on Staging.",
+      "methodAndUrl": "POST https://services.stag.goodnstay.com/api/traveler/logout",
+      "headersAuthParams": "Content-Type: application/json; Origin: https://web.stag.goodnstay.com; Authorization: Bearer <REDACTED_QA_TOKEN>",
+      "payloadAndTestData": "Fixture: fixtures/valid-logout.json ({refreshToken: '<REDACTED_QA_REFRESH_TOKEN>'}).",
+      "singleChangeDelta": "Session state transition: revoke token via POST /api/traveler/logout then replay token on GET /api/traveler/me",
+      "steps": [
+        "1. Obtain an isolated QA Traveler session via POST /api/traveler/login.",
+        "2. Send POST https://services.stag.goodnstay.com/api/traveler/logout with fixtures/valid-logout.json.",
+        "3. Replay the logged-out Bearer token on GET https://services.stag.goodnstay.com/api/traveler/me and verify rejection."
+      ],
+      "expectedResponse": "Logout returns <CHECK_OPENAPI>; subsequent GET /api/traveler/me rejects revoked token (<CHECK_ERROR_REGISTRY>).",
+      "expectedDataResult": "Session is invalidated; zero protected profile data is returned after logout.",
+      "actualResult": "Observed HTTP 200 OK on logout and HTTP 401 (\"You are not logged in.\") on subsequent GET /api/traveler/me. Marked NOT VERIFIED pending Backend Commit SHA & OpenAPI spec.",
+      "statusAndEvidence": "NOT VERIFIED — Token revocation confirmed via GET /api/traveler/me (HTTP 401), awaiting Backend Commit SHA & OpenAPI spec.",
+      "payloadObject": {
+        "refreshToken": "<REDACTED_QA_REFRESH_TOKEN>"
+      },
+      "resultRecord": {
+        "testCaseId": "STAG-API-002",
+        "environment": "STAGING",
+        "method": "POST",
+        "url": "https://services.stag.goodnstay.com/api/traveler/logout",
+        "testDataFile": "valid-logout.json",
+        "expectedHttpStatus": "<CHECK_OPENAPI>",
+        "expectedErrorCode": "<CHECK_ERROR_REGISTRY>",
+        "actualHttpStatus": "200",
+        "actualErrorCode": "NONE",
+        "requestId": "logout-revoked-401",
+        "dataCheck": "Subsequent GET /api/traveler/me returned HTTP 401",
+        "status": "NOT VERIFIED",
+        "evidenceLink": "stag_traveler_api_test_cases.md"
+      },
+      "owaspMapping": "OWASP A07:2025 Authentication Failures (CWE-613) · OWASP API2:2023",
+      "owaspRemediationUrl": "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html"
+    },
+    {
+      "testCaseId": "STAG-API-003",
+      "title": "Reject negative limit query parameter (limit=-5) on GET /api/v1/notifications",
+      "testCategory": "Boundary",
+      "urlConfirmedSource": "Observed live in F12 Network on https://web.stag.goodnstay.com/en-US/home (chunk 0lu641k7h1gc_.js)",
+      "headerOnlyMutation": true,
+      "requirement": "OpenAPI Governance & Error Contract (Confluence 144015744) — Pagination limit < 1 must fail closed with structured fieldErrors.",
+      "priorityAndLayer": "P1 / API Boundary Validation",
+      "environment": "STAGING · Date: 2026-11-19 · Deployed SHA: fe_web=turbopack-2h-u0he6dowwt (chunks: 2k50va9an1vxz, 452btq2-mvhin, 0v23-8ja2iskk, 0lu641k7h1gc_, 1yil-2d8cpf3l), be_api=<CHECK_DEPLOYED_SHA — ask Strapi/Gateway Backend & DevOps Owner>",
+      "preconditions": "Authenticated Staging QA Traveler session.",
+      "methodAndUrl": "GET https://services.stag.goodnstay.com/api/v1/notifications?limit=-5",
+      "headersAuthParams": "Accept: application/json; Origin: https://web.stag.goodnstay.com; Authorization: Bearer <REDACTED_QA_TOKEN>",
+      "payloadAndTestData": "None (GET request; query parameter mutated from limit=5 to limit=-5).",
+      "singleChangeDelta": "Mutate ONLY query parameter limit from 5 to -5",
+      "steps": [
+        "1. Confirm baseline GET https://services.stag.goodnstay.com/api/v1/notifications?limit=5 returns HTTP 200 OK.",
+        "2. Change ONLY query parameter limit to -5 and send GET /api/v1/notifications?limit=-5.",
+        "3. Record HTTP status, error.code, fieldErrors, and meta.requestId; confirm no notification state changed."
+      ],
+      "expectedResponse": "HTTP <CHECK_OPENAPI> with <CHECK_ERROR_REGISTRY> and fieldError on 'limit'.",
+      "expectedDataResult": "No notification records are created or modified.",
+      "actualResult": "Observed HTTP 400 VALIDATION_FAILED (fieldErrors[0].field='limit', debugMessage='limit must not be less than 1', requestId=8ccd0adc-30d5-4217-aeff-8ace66d88765). Marked NOT VERIFIED pending deployed Notification Service SHA.",
+      "statusAndEvidence": "NOT VERIFIED — requestId=8ccd0adc-30d5-4217-aeff-8ace66d88765 (awaiting deployed Backend SHA confirmation).",
+      "payloadObject": {},
+      "resultRecord": {
+        "testCaseId": "STAG-API-003",
+        "environment": "STAGING",
+        "method": "GET",
+        "url": "https://services.stag.goodnstay.com/api/v1/notifications?limit=-5",
+        "testDataFile": "NO_BODY_GET",
+        "expectedHttpStatus": "<CHECK_OPENAPI>",
+        "expectedErrorCode": "<CHECK_ERROR_REGISTRY>",
+        "actualHttpStatus": "400",
+        "actualErrorCode": "VALIDATION_FAILED",
+        "requestId": "8ccd0adc-30d5-4217-aeff-8ace66d88765",
+        "dataCheck": "No notification records modified",
+        "status": "NOT VERIFIED",
+        "evidenceLink": "stag_traveler_api_test_cases.md"
+      },
+      "owaspMapping": "OWASP A06:2025 Insecure Design (CWE-20) · OWASP API4:2023",
+      "owaspRemediationUrl": "https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"
+    },
+    {
+      "testCaseId": "STAG-API-004",
+      "title": "Reject invalid gender enum value on PUT /api/traveler/update-profile without mutating stored profile",
+      "testCategory": "Negative",
+      "baseFixtureKey": "update-profile",
+      "urlConfirmedSource": "Observed live in F12 Network on https://web.stag.goodnstay.com/en-US/user-profile/profile-details (chunk 2k50va9an1vxz.js)",
+      "requirement": "Traveler Profile Validation Contract — Unrecognized gender enum value must be rejected and leave persisted profile unchanged.",
+      "priorityAndLayer": "P1 / API Negative Validation",
+      "environment": "STAGING · Date: 2026-11-19 · Deployed SHA: fe_web=turbopack-2h-u0he6dowwt (chunks: 2k50va9an1vxz, 452btq2-mvhin, 0v23-8ja2iskk, 0lu641k7h1gc_, 1yil-2d8cpf3l), be_api=<CHECK_DEPLOYED_SHA — ask Strapi/Gateway Backend & DevOps Owner>",
+      "preconditions": "Authenticated Staging QA Traveler session with gender='male'.",
+      "methodAndUrl": "PUT https://services.stag.goodnstay.com/api/traveler/update-profile",
+      "headersAuthParams": "Content-Type: application/json; Origin: https://web.stag.goodnstay.com; Authorization: Bearer <REDACTED_QA_TOKEN>",
+      "payloadAndTestData": "Fixture: fixtures/update-profile-invalid-gender.json. Single-Variable Delta: change ONLY gender from 'male' to 'invalid_gender_value'.",
+      "singleChangeDelta": "Mutate ONLY gender from 'male' to 'invalid_gender_value'",
+      "steps": [
+        "1. Load fixtures/valid-update-profile.json.",
+        "2. Mutate ONLY gender to 'invalid_gender_value' (fixtures/update-profile-invalid-gender.json).",
+        "3. Send PUT https://services.stag.goodnstay.com/api/traveler/update-profile.",
+        "4. Execute GET https://services.stag.goodnstay.com/api/traveler/me readback to confirm gender remains 'male'."
+      ],
+      "expectedResponse": "HTTP <CHECK_OPENAPI> rejecting invalid gender (<CHECK_ERROR_REGISTRY>).",
+      "expectedDataResult": "No profile record modified; GET /api/traveler/me readback retains gender='male'.",
+      "actualResult": "Observed HTTP 422 ({\"code\": 422, \"message\": \"Invalid input.\", \"details\": [\"gender:gender_invalid\"]}); GET /api/traveler/me unchanged. Marked NOT VERIFIED pending Backend SHA & OpenAPI.",
+      "statusAndEvidence": "NOT VERIFIED — HTTP 422 rejection and unchanged readback verified; awaiting Backend SHA & OpenAPI spec.",
+      "payloadObject": {
+        "fullName": "QA Tester",
+        "phone": "+84900000000",
+        "country": "VN",
+        "dob": "2000-01-15",
+        "gender": "invalid_gender_value"
+      },
+      "resultRecord": {
+        "testCaseId": "STAG-API-004",
+        "environment": "STAGING",
+        "method": "PUT",
+        "url": "https://services.stag.goodnstay.com/api/traveler/update-profile",
+        "testDataFile": "update-profile-invalid-gender.json",
+        "expectedHttpStatus": "<CHECK_OPENAPI>",
+        "expectedErrorCode": "<CHECK_ERROR_REGISTRY>",
+        "actualHttpStatus": "422",
+        "actualErrorCode": "gender:gender_invalid",
+        "requestId": "envoy-422-gender",
+        "dataCheck": "GET /api/traveler/me readback confirmed gender remained 'male'",
+        "status": "NOT VERIFIED",
+        "evidenceLink": "stag_traveler_api_test_cases.md"
+      },
+      "owaspMapping": "OWASP A06:2025 Insecure Design (CWE-20) · OWASP API8:2023",
+      "owaspRemediationUrl": "https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"
+    },
+    {
+      "testCaseId": "STAG-API-005",
+      "title": "Reject negative roomCount (-1) on POST /api/traveler/request-bids with 400 INVALID_ROOM_OR_GUEST_COUNT",
+      "testCategory": "Boundary",
+      "baseFixtureKey": "request-bids",
+      "urlConfirmedSource": "Observed live in F12 Network on https://web.stag.goodnstay.com/en-US/accommodation (chunk 452btq2-mvhin.js)",
+      "errorContractSource": "Confirmed directly from same endpoint runtime error on roomCount=0 / guestCount=0 -> HTTP 400 INVALID_ROOM_OR_GUEST_COUNT ('Room count and guest count must be greater than 0.')",
+      "requirement": "Accommodation Request Boundary Rule (Confluence 166952975 & same-endpoint rule 'Room count and guest count must be greater than 0.') — roomCount = -1 (< 1) must be rejected with 400 INVALID_ROOM_OR_GUEST_COUNT.",
+      "priorityAndLayer": "P0 / API Boundary Validation & Readback",
+      "environment": "STAGING · Date: 2026-11-19 · Deployed SHA: fe_web=turbopack-2h-u0he6dowwt (chunks: 2k50va9an1vxz, 452btq2-mvhin, 0v23-8ja2iskk, 0lu641k7h1gc_, 1yil-2d8cpf3l), be_api=<CHECK_DEPLOYED_SHA — ask Strapi/Gateway Backend & DevOps Owner>",
+      "preconditions": "Authenticated Staging QA Traveler session.",
+      "methodAndUrl": "POST https://services.stag.goodnstay.com/api/traveler/request-bids",
+      "headersAuthParams": "Content-Type: application/json; Origin: https://web.stag.goodnstay.com; Authorization: Bearer <REDACTED_QA_TOKEN>",
+      "payloadAndTestData": "Fixture: fixtures/request-bids-negative-room-count.json. Single-Variable Delta: start with fixtures/valid-request-bids.json and change ONLY data.roomCount from 1 to -1.",
+      "singleChangeDelta": "Mutate ONLY data.roomCount from 1 to -1 (keeping all other 21 fields identical to valid-request-bids.json)",
+      "steps": [
+        "1. Verify fixtures/valid-request-bids.json is complete and valid.",
+        "2. Mutate ONLY data.roomCount from 1 to -1 (fixtures/request-bids-negative-room-count.json).",
+        "3. Send POST https://services.stag.goodnstay.com/api/traveler/request-bids.",
+        "4. Record HTTP status and response body.",
+        "5. Execute GET https://services.stag.goodnstay.com/api/customer-requests readback to check whether a negative-room Customer Request was created (and cancel test record #1534)."
+      ],
+      "expectedResponse": "HTTP 400 Bad Request with error.message.code = 'INVALID_ROOM_OR_GUEST_COUNT' ('Room count and guest count must be greater than 0.').",
+      "expectedDataResult": "No Customer Request record is created in database.",
+      "actualResult": "FAIL — Returned HTTP 200 OK ({\"success\": true, \"message\": \"Rating created successfully.\"}) and persisted open Customer Request #1534 with roomCount = -1 (verified via GET /api/customer-requests readback; also serialized raw up_users credential columns in response).",
+      "statusAndEvidence": "FAIL — Jira: https://optibide-org.atlassian.net/browse/OP-1947 | Screenshot: screenshots/bug_api01_request_bids_negative_roomcount_1440x900.png (Request #1534 cancelled after readback).",
+      "payloadObject": {
+        "data": {
+          "fullName": "QA Tester",
+          "email": "qa-sample@example.test",
+          "phone": "900000000",
+          "dob": "2000-01-15",
+          "gender": "male",
+          "country": "VN",
+          "checkInDate": "2026-12-20",
+          "checkOutDate": "2026-12-22",
+          "guestCount": 2,
+          "roomCount": -1,
+          "stayingCountry": "KR",
+          "stayingProvince": "KR-11",
+          "stayingCity": "KR-11",
+          "stayingDistrict": "",
+          "stayingWard": "",
+          "accommodationType": "hotel",
+          "serviceTypes": [],
+          "roomTypes": [
+            "suite",
+            "anyRoom"
+          ],
+          "bedTypes": [],
+          "viewTypes": [],
+          "others": [],
+          "filterOptions": {},
+          "notes": "",
+          "guestComposition": {
+            "adults": 2,
+            "children": 0,
+            "infants": 0,
+            "pets": 0
+          }
+        }
+      },
+      "resultRecord": {
+        "testCaseId": "STAG-API-005",
+        "environment": "STAGING",
+        "method": "POST",
+        "url": "https://services.stag.goodnstay.com/api/traveler/request-bids",
+        "testDataFile": "request-bids-negative-room-count.json",
+        "expectedHttpStatus": "400",
+        "expectedErrorCode": "INVALID_ROOM_OR_GUEST_COUNT",
+        "actualHttpStatus": "200",
+        "actualErrorCode": "NONE",
+        "requestId": "req-1534-neg-room",
+        "dataCheck": "FAIL: Open Customer Request #1534 persisted with roomCount=-1 on GET /api/customer-requests",
+        "status": "FAIL",
+        "evidenceLink": "screenshots/bug_api01_request_bids_negative_roomcount_1440x900.png"
+      },
+      "owaspMapping": "OWASP A06:2025 Insecure Design (CWE-840) · OWASP API6:2023",
+      "owaspRemediationUrl": "https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"
+    },
+    {
+      "testCaseId": "STAG-API-006",
+      "title": "Deny unauthenticated public read access to GET /api/ticket-supports",
+      "testCategory": "Permission",
+      "urlConfirmedSource": "Observed in Delete Account / Support module chunk 1yil-2d8cpf3l.js on https://web.stag.goodnstay.com",
+      "headerOnlyMutation": true,
+      "requirement": "API Standard Fail-Closed Access Control (Confluence 524593 & QA Guide §7/§8; same-service Strapi parity with GET /api/customer-requests & GET /api/hotel-bids -> 403 ForbiddenError).",
+      "priorityAndLayer": "P0 / API Permission & Data Privacy",
+      "environment": "STAGING · Date: 2026-11-19 · Deployed SHA: fe_web=turbopack-2h-u0he6dowwt (chunks: 2k50va9an1vxz, 452btq2-mvhin, 0v23-8ja2iskk, 0lu641k7h1gc_, 1yil-2d8cpf3l), be_api=<CHECK_DEPLOYED_SHA — ask Strapi/Gateway Backend & DevOps Owner>",
+      "preconditions": "Unauthenticated client with no Authorization header.",
+      "methodAndUrl": "GET https://services.stag.goodnstay.com/api/ticket-supports",
+      "headersAuthParams": "Accept: application/json; Origin: https://web.stag.goodnstay.com (No Authorization header)",
+      "payloadAndTestData": "None (unauthenticated GET request without body).",
+      "singleChangeDelta": "Omit Authorization header on GET /api/ticket-supports",
+      "steps": [
+        "1. Prepare an unauthenticated GET request with no Authorization header.",
+        "2. Send GET https://services.stag.goodnstay.com/api/ticket-supports.",
+        "3. Inspect HTTP status code and returned data[] collection."
+      ],
+      "expectedResponse": "HTTP <CHECK_OPENAPI> (<CHECK_ERROR_REGISTRY> — 401 Unauthorized or 403 ForbiddenError matching sibling Strapi collections).",
+      "expectedDataResult": "Zero submitted support or account-deletion tickets are returned to unauthenticated callers.",
+      "actualResult": "FAIL — Returned HTTP 200 OK with full paginated Strapi ticket-supports data[] collection (email, phone, type='delete_account', title, description).",
+      "statusAndEvidence": "FAIL — Jira: https://optibide-org.atlassian.net/browse/OP-1948 | Screenshot: screenshots/bug_api02_ticket_supports_unauth_get_1440x900.png.",
+      "payloadObject": {},
+      "resultRecord": {
+        "testCaseId": "STAG-API-006",
+        "environment": "STAGING",
+        "method": "GET",
+        "url": "https://services.stag.goodnstay.com/api/ticket-supports",
+        "testDataFile": "NO_BODY_GET",
+        "expectedHttpStatus": "<CHECK_OPENAPI>",
+        "expectedErrorCode": "<CHECK_ERROR_REGISTRY>",
+        "actualHttpStatus": "200",
+        "actualErrorCode": "NONE",
+        "requestId": "envoy-19ms-tickets-get",
+        "dataCheck": "FAIL: Unauthenticated GET publicly returned submitted ticket records",
+        "status": "FAIL",
+        "evidenceLink": "screenshots/bug_api02_ticket_supports_unauth_get_1440x900.png"
+      },
+      "owaspMapping": "OWASP A01:2025 Broken Access Control (CWE-284, CWE-200) · OWASP API5:2023 BFLA",
+      "owaspRemediationUrl": "https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html"
+    },
+    {
+      "testCaseId": "STAG-API-007",
+      "title": "Reject malformed dob string on PUT /api/traveler/update-profile with 4xx error instead of HTTP 500 Server Error",
+      "testCategory": "Negative",
+      "baseFixtureKey": "update-profile",
+      "urlConfirmedSource": "Observed live in F12 Network on https://web.stag.goodnstay.com/en-US/user-profile/profile-details (chunk 2k50va9an1vxz.js)",
+      "requirement": "OpenAPI Governance 4xx vs 5xx Separation (Confluence 144015744 & GNS-FORM-001 174227515) — Invalid client field format must return deterministic 4xx validation error, never unhandled HTTP 500.",
+      "priorityAndLayer": "P1 / API Negative Validation & Error Handling",
+      "environment": "STAGING · Date: 2026-11-19 · Deployed SHA: fe_web=turbopack-2h-u0he6dowwt (chunks: 2k50va9an1vxz, 452btq2-mvhin, 0v23-8ja2iskk, 0lu641k7h1gc_, 1yil-2d8cpf3l), be_api=<CHECK_DEPLOYED_SHA — ask Strapi/Gateway Backend & DevOps Owner>",
+      "preconditions": "Authenticated Staging QA Traveler session; baseline GET /api/traveler/me recorded.",
+      "methodAndUrl": "PUT https://services.stag.goodnstay.com/api/traveler/update-profile",
+      "headersAuthParams": "Content-Type: application/json; Origin: https://web.stag.goodnstay.com; Authorization: Bearer <REDACTED_QA_TOKEN>",
+      "payloadAndTestData": "Fixture: fixtures/update-profile-malformed-dob.json. Single-Variable Delta: start with fixtures/valid-update-profile.json and change ONLY dob from '2000-01-15' to 'not-a-valid-date'.",
+      "singleChangeDelta": "Mutate ONLY dob from '2000-01-15' to 'not-a-valid-date'",
+      "steps": [
+        "1. Load fixtures/valid-update-profile.json.",
+        "2. Mutate ONLY dob to 'not-a-valid-date' (fixtures/update-profile-malformed-dob.json).",
+        "3. Send PUT https://services.stag.goodnstay.com/api/traveler/update-profile.",
+        "4. Record HTTP status and response body.",
+        "5. Execute GET https://services.stag.goodnstay.com/api/traveler/me readback to verify existing dob was not corrupted."
+      ],
+      "expectedResponse": "HTTP <CHECK_OPENAPI> 4xx validation error with <CHECK_ERROR_REGISTRY> (consistent with HTTP 422 on invalid gender); never HTTP 500.",
+      "expectedDataResult": "No profile record modified; GET /api/traveler/me retains original dob.",
+      "actualResult": "FAIL — Returned unhandled HTTP 500 Internal Server Error ({\"success\": false, \"error\": {\"code\": 500, \"message\": \"Server error.\", \"details\": []}}).",
+      "statusAndEvidence": "FAIL — Jira: https://optibide-org.atlassian.net/browse/OP-1949 | Screenshot: screenshots/bug_api03_update_profile_malformed_dob_500_1440x900.png.",
+      "payloadObject": {
+        "fullName": "QA Tester",
+        "phone": "+84900000000",
+        "country": "VN",
+        "dob": "not-a-valid-date",
+        "gender": "male"
+      },
+      "resultRecord": {
+        "testCaseId": "STAG-API-007",
+        "environment": "STAGING",
+        "method": "PUT",
+        "url": "https://services.stag.goodnstay.com/api/traveler/update-profile",
+        "testDataFile": "update-profile-malformed-dob.json",
+        "expectedHttpStatus": "<CHECK_OPENAPI>",
+        "expectedErrorCode": "<CHECK_ERROR_REGISTRY>",
+        "actualHttpStatus": "500",
+        "actualErrorCode": "500",
+        "requestId": "envoy-500-dob",
+        "dataCheck": "GET /api/traveler/me readback unchanged, but API crashed with HTTP 500",
+        "status": "FAIL",
+        "evidenceLink": "screenshots/bug_api03_update_profile_malformed_dob_500_1440x900.png"
+      },
+      "owaspMapping": "OWASP A10:2025 Mishandling of Exceptional Conditions (CWE-248, CWE-755) · OWASP API8:2023",
+      "owaspRemediationUrl": "https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html"
+    },
+    {
+      "testCaseId": "STAG-API-008",
+      "title": "Reject malformed guest email on PUT /api/traveler/request-bids/:id/staying-information",
+      "testCategory": "Negative",
+      "baseFixtureKey": "staying-information",
+      "urlConfirmedSource": "Observed in chunk 0v23-8ja2iskk.js on https://web.stag.goodnstay.com/en-US/accommodation",
+      "requirement": "GNS-FORM-001 Global Form Validation (Confluence 174227515) — Guest contact email must be a valid email address before persisting to Customer Request.",
+      "priorityAndLayer": "P1 / API Negative Validation & Readback",
+      "environment": "STAGING · Date: 2026-11-19 · Deployed SHA: fe_web=turbopack-2h-u0he6dowwt (chunks: 2k50va9an1vxz, 452btq2-mvhin, 0v23-8ja2iskk, 0lu641k7h1gc_, 1yil-2d8cpf3l), be_api=<CHECK_DEPLOYED_SHA — ask Strapi/Gateway Backend & DevOps Owner>",
+      "preconditions": "Authenticated Staging QA Traveler owning open Customer Request #1514.",
+      "methodAndUrl": "PUT https://services.stag.goodnstay.com/api/traveler/request-bids/1514/staying-information",
+      "headersAuthParams": "Content-Type: application/json; Origin: https://web.stag.goodnstay.com; Authorization: Bearer <REDACTED_QA_TOKEN>",
+      "payloadAndTestData": "Fixture: fixtures/staying-information-invalid-email.json. Single-Variable Delta: start with fixtures/valid-staying-information.json and change ONLY stayingGuests[0].email from 'qa-sample@example.test' to 'invalid-email-format'.",
+      "singleChangeDelta": "Mutate ONLY stayingGuests[0].email from 'qa-sample@example.test' to 'invalid-email-format'",
+      "steps": [
+        "1. Load fixtures/valid-staying-information.json with valid guest fullName, E.164 phone '+84900000000', and emergencyContact.",
+        "2. Mutate ONLY stayingGuests[0].email to 'invalid-email-format' (fixtures/staying-information-invalid-email.json).",
+        "3. Send PUT https://services.stag.goodnstay.com/api/traveler/request-bids/1514/staying-information.",
+        "4. Execute GET https://services.stag.goodnstay.com/api/traveler/request-bids?requestStatus=open&locale=en-US readback to check whether the invalid email was saved (then restore valid fixture)."
+      ],
+      "expectedResponse": "HTTP <CHECK_OPENAPI> 4xx validation error (<CHECK_ERROR_REGISTRY>) on stayingGuests[0].email.",
+      "expectedDataResult": "No invalid email is persisted on Customer Request #1514.",
+      "actualResult": "FAIL — Returned HTTP 200 OK ({\"success\": true, \"message\": \"Update successful.\", \"data\": {\"acknowledged\": true, ...}}) and persisted 'invalid-email-format' onto Request #1514 (confirmed via GET /api/traveler/request-bids readback).",
+      "statusAndEvidence": "FAIL — Jira: https://optibide-org.atlassian.net/browse/OP-1950 | Screenshot: screenshots/bug_api04_staying_info_invalid_email_1440x900.png.",
+      "payloadObject": {
+        "stayingGuests": [
+          {
+            "sameAsBooker": false,
+            "fullName": "QA Sample Guest",
+            "phone": "+84900000000",
+            "email": "invalid-email-format"
+          }
+        ],
+        "emergencyContact": {
+          "sameAsBooker": false,
+          "fullName": "QA Sample Contact",
+          "phone": "+84900000001",
+          "email": "qa-contact@example.test"
+        }
+      },
+      "resultRecord": {
+        "testCaseId": "STAG-API-008",
+        "environment": "STAGING",
+        "method": "PUT",
+        "url": "https://services.stag.goodnstay.com/api/traveler/request-bids/1514/staying-information",
+        "testDataFile": "staying-information-invalid-email.json",
+        "expectedHttpStatus": "<CHECK_OPENAPI>",
+        "expectedErrorCode": "<CHECK_ERROR_REGISTRY>",
+        "actualHttpStatus": "200",
+        "actualErrorCode": "NONE",
+        "requestId": "envoy-50ms-stayinfo-email",
+        "dataCheck": "FAIL: Malformed email 'invalid-email-format' persisted on Request #1514",
+        "status": "FAIL",
+        "evidenceLink": "screenshots/bug_api04_staying_info_invalid_email_1440x900.png"
+      },
+      "owaspMapping": "OWASP A06:2025 Insecure Design (CWE-20) · OWASP API8:2023",
+      "owaspRemediationUrl": "https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"
+    },
+    {
+      "testCaseId": "STAG-API-009",
+      "title": "Verify authentication requirement on POST /api/translations/room-description when Authorization header is omitted",
+      "testCategory": "Permission",
+      "baseFixtureKey": "room-translation",
+      "urlConfirmedSource": "Observed live in F12 Network on https://web.stag.goodnstay.com/en-US/accommodation (chunk 0v23-8ja2iskk.js)",
+      "headerOnlyMutation": true,
+      "ownerToAsk": "QA Lead / Strapi Backend Owner",
+      "requirement": "Translation Endpoint Auth Policy (<CHECK_OPENAPI> — confirm whether OpenAI room-description translation requires Traveler Bearer authentication).",
+      "priorityAndLayer": "P2 / API Permission Contract Check",
+      "environment": "STAGING · Date: 2026-11-19 · Deployed SHA: fe_web=turbopack-2h-u0he6dowwt (chunks: 2k50va9an1vxz, 452btq2-mvhin, 0v23-8ja2iskk, 0lu641k7h1gc_, 1yil-2d8cpf3l), be_api=<CHECK_DEPLOYED_SHA — ask Strapi/Gateway Backend & DevOps Owner>",
+      "preconditions": "Unauthenticated client calling Staging API without Authorization header.",
+      "methodAndUrl": "POST https://services.stag.goodnstay.com/api/translations/room-description",
+      "headersAuthParams": "Content-Type: application/json; Origin: https://web.stag.goodnstay.com (Omit Authorization header)",
+      "payloadAndTestData": "Fixture: fixtures/valid-room-translation.json. Single-Variable Delta: omit ONLY Authorization header.",
+      "singleChangeDelta": "Omit ONLY Authorization header while sending valid-room-translation.json",
+      "steps": [
+        "1. Load fixtures/valid-room-translation.json.",
+        "2. Send POST https://services.stag.goodnstay.com/api/translations/room-description WITHOUT an Authorization header.",
+        "3. Record HTTP status and provider execution, and confirm zero DB mutation."
+      ],
+      "expectedResponse": "<CHECK_OPENAPI> / <CHECK_ERROR_REGISTRY> (confirm with Backend Owner whether unauthenticated calls must return HTTP 401 or are intentionally public).",
+      "expectedDataResult": "No database records created or modified.",
+      "actualResult": "Observed HTTP 200 OK invoking upstream provider='openai' without Authorization header. Logged as Needs Verification (OP-1951) pending OpenAPI auth contract confirmation.",
+      "statusAndEvidence": "BLOCKED — API contract missing (STAGING OpenAPI does not specify whether POST /api/translations/room-description requires Bearer auth; tracked for team verification in OP-1951 | screenshots/bug_api05_translations_unauth_check_1440x900.png).",
+      "payloadObject": {
+        "text": "Deluxe Suite with panoramic city view",
+        "targetLocale": "vi-VN",
+        "sourceLocale": "en-US"
+      },
+      "resultRecord": {
+        "testCaseId": "STAG-API-009",
+        "environment": "STAGING",
+        "method": "POST",
+        "url": "https://services.stag.goodnstay.com/api/translations/room-description",
+        "testDataFile": "valid-room-translation.json",
+        "expectedHttpStatus": "<CHECK_OPENAPI>",
+        "expectedErrorCode": "<CHECK_ERROR_REGISTRY>",
+        "actualHttpStatus": "200",
+        "actualErrorCode": "NONE",
+        "requestId": "openai-trans-unauth-check",
+        "dataCheck": "No DB mutation; upstream OpenAI executed without Bearer header",
+        "status": "BLOCKED",
+        "evidenceLink": "screenshots/bug_api05_translations_unauth_check_1440x900.png"
+      },
+      "owaspMapping": "OWASP A01:2025 Broken Access Control & X01:2025 Lack of Resilience (CWE-400) · OWASP API4:2023",
+      "owaspRemediationUrl": "https://cheatsheetseries.owasp.org/cheatsheets/Denial_of_Service_Cheat_Sheet.html"
+    },
+    {
+      "testCaseId": "STAG-API-010",
+      "title": "Verify negative page parameter handling (page=-1) on GET /api/traveler/login-records",
+      "testCategory": "Boundary",
+      "urlConfirmedSource": "Observed live in F12 Network on https://web.stag.goodnstay.com/en-US/user-profile/profile-details (chunk 2k50va9an1vxz.js)",
+      "headerOnlyMutation": true,
+      "ownerToAsk": "QA Lead / Strapi Backend Owner",
+      "requirement": "Pagination Boundary Contract (<CHECK_OPENAPI> — confirm whether Strapi login-records must reject page < 1 with HTTP 400 like /api/v1/notifications or clamp to page=1).",
+      "priorityAndLayer": "P2 / API Boundary Contract Check",
+      "environment": "STAGING · Date: 2026-11-19 · Deployed SHA: fe_web=turbopack-2h-u0he6dowwt (chunks: 2k50va9an1vxz, 452btq2-mvhin, 0v23-8ja2iskk, 0lu641k7h1gc_, 1yil-2d8cpf3l), be_api=<CHECK_DEPLOYED_SHA — ask Strapi/Gateway Backend & DevOps Owner>",
+      "preconditions": "Authenticated Staging QA Traveler session.",
+      "methodAndUrl": "GET https://services.stag.goodnstay.com/api/traveler/login-records?page=-1&pageSize=6",
+      "headersAuthParams": "Accept: application/json; Origin: https://web.stag.goodnstay.com; Authorization: Bearer <REDACTED_QA_TOKEN>",
+      "payloadAndTestData": "None (GET request; change ONLY query parameter page from 1 to -1).",
+      "singleChangeDelta": "Mutate ONLY query parameter page from 1 to -1 (keeping pageSize=6)",
+      "steps": [
+        "1. Confirm baseline GET https://services.stag.goodnstay.com/api/traveler/login-records?page=1&pageSize=6 returns HTTP 200 OK.",
+        "2. Mutate ONLY page from 1 to -1 and send GET /api/traveler/login-records?page=-1&pageSize=6.",
+        "3. Record HTTP status and returned pagination metadata; confirm no login records are modified."
+      ],
+      "expectedResponse": "<CHECK_OPENAPI> / <CHECK_ERROR_REGISTRY> (confirm with Strapi Backend Owner whether page=-1 must return HTTP 400 or clamp to page=1).",
+      "expectedDataResult": "No login-record rows created or modified.",
+      "actualResult": "Observed HTTP 200 OK clamping page=-1 to page=1. Logged as Needs Verification (OP-1952) pending OpenAPI pagination contract confirmation.",
+      "statusAndEvidence": "BLOCKED — API contract missing (STAGING OpenAPI missing for /api/traveler/login-records pagination clamping vs 400 rejection; tracked in OP-1952 | screenshots/bug_api06_login_records_negative_page_check_1440x900.png).",
+      "payloadObject": {},
+      "resultRecord": {
+        "testCaseId": "STAG-API-010",
+        "environment": "STAGING",
+        "method": "GET",
+        "url": "https://services.stag.goodnstay.com/api/traveler/login-records?page=-1&pageSize=6",
+        "testDataFile": "NO_BODY_GET",
+        "expectedHttpStatus": "<CHECK_OPENAPI>",
+        "expectedErrorCode": "<CHECK_ERROR_REGISTRY>",
+        "actualHttpStatus": "200",
+        "actualErrorCode": "NONE",
+        "requestId": "envoy-25ms-login-records-page",
+        "dataCheck": "No DB mutation; silently clamped page=-1 to page=1",
+        "status": "BLOCKED",
+        "evidenceLink": "screenshots/bug_api06_login_records_negative_page_check_1440x900.png"
+      },
+      "owaspMapping": "OWASP A06:2025 Insecure Design (CWE-20) · OWASP API4:2023",
+      "owaspRemediationUrl": "https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"
+    }
+  ],
+  "relatedJiraTickets": [
+    "OP-1947",
+    "OP-1948",
+    "OP-1949",
+    "OP-1950",
+    "OP-1951",
+    "OP-1952"
+  ]
+}

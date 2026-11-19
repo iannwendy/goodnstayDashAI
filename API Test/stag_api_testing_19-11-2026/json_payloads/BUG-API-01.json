@@ -1,0 +1,43 @@
+{
+  "title": "[Accommodation Request API - POST /api/traveler/request-bids] Negative roomCount (-1) Bypasses INVALID_ROOM_OR_GUEST_COUNT Validation and Persists Open Request (HTTP 200 OK)",
+  "environment": "Staging (STAG) · Strapi Backend API & Desktop 1440×900 · Chrome · en-US · FE=turbopack-2h-u0he6dowwt, BE=<CHECK_DEPLOYED_SHA> (https://web.stag.goodnstay.com/en-US/accommodation)",
+  "test_account": "Signed-In QA Traveler Session on Staging (Authorization: Bearer <REDACTED_QA_TOKEN>)",
+  "steps_to_reproduce": [
+    "Prepare the complete valid room-request fixture (fixtures/valid-request-bids.json) using sanitized QA data (QA Tester, qa-sample@example.test, +84900000000, KR / KR-11, guestCount=2, roomCount=1).",
+    "Verify the endpoint's boundary rule baseline by setting ONLY data.roomCount=0 -> returns HTTP 400 INVALID_ROOM_OR_GUEST_COUNT ('Room count and guest count must be greater than 0.').",
+    "Single-Variable Mutation: Clone fixtures/valid-request-bids.json and change ONLY data.roomCount from 1 to -1 (fixtures/request-bids-negative-room-count.json).",
+    "Send POST https://services.stag.goodnstay.com/api/traveler/request-bids with Authorization: Bearer <REDACTED_QA_TOKEN>.",
+    "Execute GET https://services.stag.goodnstay.com/api/customer-requests readback to check whether a negative-room Customer Request was saved (then cancel the test record)."
+  ],
+  "actual_result": "- POST /api/traveler/request-bids with data.roomCount = -1 returns HTTP 200 OK ({\"success\": true, \"message\": \"Rating created successfully.\"}).\n- GET /api/customer-requests readback confirms open Customer Request #1534 was persisted in PostgreSQL with roomCount = -1.",
+  "expected_result": "- Per the endpoint's own boundary rule ('Room count and guest count must be greater than 0.'), POST /api/traveler/request-bids must reject any data.roomCount < 1 (including negative integers) with HTTP 400 Bad Request and error code INVALID_ROOM_OR_GUEST_COUNT.\n- Zero Customer Request records may be created in the database.",
+  "evidence": {
+    "url": "https://web.stag.goodnstay.com/en-US/accommodation",
+    "datetime": "19/11/2026 12:43 ICT",
+    "console": "Test Case STAG-API-005 | Single-Variable Delta: data.roomCount (1 -> -1) | Test record #1534 cancelled immediately after readback.",
+    "network": "POST https://services.stag.goodnstay.com/api/traveler/request-bids (data.roomCount=-1) -> HTTP 200 OK; GET /api/customer-requests -> HTTP 200 OK confirming id=1534 persisted with roomCount=-1.",
+    "notes": "Frontend chunk 452btq2-mvhin.js calls POST /api/traveler/request-bids. Backend checks !roomCount / roomCount === 0 instead of roomCount < 1. (Note for BE owner: response serializer on this controller also returns unredacted up_users.[REDACTED] columns and message 'Rating created successfully.'). | Security Classification: OWASP A06:2025 Insecure Design (CWE-840) & OWASP A04:2025 Cryptographic Failures / A01:2025 (CWE-201) · OWASP API3:2023 BOPLA (Excessive Data Exposure) | OWASP Remediation: Enforce server-side roomCount >= 1 domain invariant and strict DTO response allow-listing (https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html).",
+    "reference_url": "https://optibide-org.atlassian.net/wiki/spaces/O/pages/166952975"
+  },
+  "classification": "Confirmed Bug — Negative roomCount (-1) Bypasses INVALID_ROOM_OR_GUEST_COUNT Boundary Guard on POST /api/traveler/request-bids",
+  "severity": "S1 – Critical",
+  "priority_label": "P0",
+  "reproducibility": "Always (100% — single-variable mutation verified with GET readback on STAG)",
+  "jira_fields": {
+    "customfield_10038": [
+      {
+        "id": "10025"
+      }
+    ],
+    "customfield_10039": [
+      {
+        "id": "10033"
+      }
+    ]
+  },
+  "attachments": [
+    "../screenshots/bug_api01_request_bids_negative_roomcount_1440x900.png",
+    "../postman_per_case/STAG-API-005.postman_collection.json",
+    "../fixtures/request-bids-negative-room-count.json"
+  ]
+}

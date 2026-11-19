@@ -1,0 +1,6 @@
+{
+  "deviceId": "qa-web-device-01",
+  "platform": "invalid_platform",
+  "token": "qa-sample-push-registration-token",
+  "locale": "en-US"
+}

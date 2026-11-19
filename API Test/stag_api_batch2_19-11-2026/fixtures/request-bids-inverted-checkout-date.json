@@ -1,0 +1,36 @@
+{
+  "data": {
+    "fullName": "QA Tester",
+    "email": "qa-sample@example.test",
+    "phone": "900000000",
+    "dob": "2000-01-15",
+    "gender": "male",
+    "country": "VN",
+    "checkInDate": "2026-12-20",
+    "checkOutDate": "2026-12-18",
+    "guestCount": 2,
+    "roomCount": 1,
+    "stayingCountry": "KR",
+    "stayingProvince": "KR-11",
+    "stayingCity": "KR-11",
+    "stayingDistrict": "",
+    "stayingWard": "",
+    "accommodationType": "hotel",
+    "serviceTypes": [],
+    "roomTypes": [
+      "suite",
+      "anyRoom"
+    ],
+    "bedTypes": [],
+    "viewTypes": [],
+    "others": [],
+    "filterOptions": {},
+    "notes": "",
+    "guestComposition": {
+      "adults": 2,
+      "children": 0,
+      "infants": 0,
+      "pets": 0
+    }
+  }
+}

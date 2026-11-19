@@ -1,0 +1,41 @@
+{
+  "title": "[Location Pin API - POST /api/translations/stay-location-pin] Unauthenticated Request Without Authorization Header Executes OpenAI Geocoding Pipeline (Contract Verification)",
+  "environment": "Staging (STAG) · Strapi Backend API & Desktop 1440×900 · Chrome · en-US · FE=turbopack-2h-u0he6dowwt, BE=<CHECK_DEPLOYED_SHA> (https://web.stag.goodnstay.com/en-US/accommodation)",
+  "test_account": "Unauthenticated Client Session (Authorization header omitted)",
+  "steps_to_reproduce": [
+    "Prepare the complete valid geocoding fixture (fixtures/valid-stay-location-pin.json: {\"hotelName\": \"QA Sample Hotel\", \"hotelAddress\": \"Jung-gu, Seoul, KR\"}).",
+    "Single-Variable Header Mutation: Omit ONLY the Authorization Bearer header (which web client chunk 0v23-8ja2iskk.js attaches via authenticated API client).",
+    "Send POST https://services.stag.goodnstay.com/api/translations/stay-location-pin and record HTTP status and provider metadata."
+  ],
+  "actual_result": "- POST /api/translations/stay-location-pin without an Authorization header executes the OpenAI geocoding provider and returns HTTP 200 OK ({\"success\": true, \"message\": \"Data retrieved successfully.\", \"data\": {\"lat\": 37.5665, \"lng\": 126.978, \"provider\": \"openai\"}}).",
+  "expected_result": "- <CHECK_OPENAPI> / <CHECK_ERROR_REGISTRY>: Because STAGING OpenAPI (/openapi.json) is unpublished (404), confirm with Backend / Architecture Owner whether POST /api/translations/stay-location-pin must require Traveler Bearer authentication (HTTP 401) alongside OP-1951, or is intentionally public with rate-limiting.",
+  "evidence": {
+    "url": "https://web.stag.goodnstay.com/en-US/accommodation",
+    "datetime": "19/11/2026 13:56 ICT",
+    "console": "Test Case STAG-API-208 (Status: BLOCKED — API contract missing) | Single-Variable Header Delta: Omit Authorization header.",
+    "network": "POST https://services.stag.goodnstay.com/api/translations/stay-location-pin (no Authorization header) -> HTTP 200 OK (provider='openai').",
+    "notes": "Frontend chunk 0v23-8ja2iskk.js calls POST /api/translations/stay-location-pin with localStorage token. Marked Needs Verification per QA Guide §2 (No Guessing when OpenAPI contract is missing). | Security Classification: OWASP A02:2025 Security Misconfiguration & X01:2025 Lack of Resilience (CWE-400) · OWASP API4:2023 Unrestricted Resource Consumption | OWASP Remediation: Enforce Bearer authentication and strict per-caller rate-limiting/caching on paid OpenAI endpoints (https://cheatsheetseries.owasp.org/cheatsheets/Denial_of_Service_Cheat_Sheet.html).",
+    "reference_url": "https://optibide-org.atlassian.net/wiki/spaces/O/pages/165937257"
+  },
+  "classification": "Needs Verification — (need to brainstorming with team or observe)",
+  "severity": "S3 – Minor",
+  "priority_label": "P2",
+  "reproducibility": "Always (100% — observed on STAG; awaiting OpenAPI auth contract confirmation)",
+  "jira_fields": {
+    "customfield_10038": [
+      {
+        "id": "10025"
+      }
+    ],
+    "customfield_10039": [
+      {
+        "id": "10033"
+      }
+    ]
+  },
+  "attachments": [
+    "../screenshots/bug_api12_stay_location_pin_unauth_check_1440x900.png",
+    "../postman_per_case/STAG-API-208.postman_collection.json",
+    "../fixtures/valid-stay-location-pin.json"
+  ]
+}
