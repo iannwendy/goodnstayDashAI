@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import datetime
 import json
 import pathlib
 
@@ -198,9 +199,40 @@ def build_room_inventory(accepted_by_room: dict[int, dict]) -> dict:
     maint_rooms = {122, 120, 218}
     staff_cycle = ["Cô Lan", "Chị Hương", "Anh Nam", "Chị Thảo"]
 
+    am_to_option = {
+        "breakfast": "breakfastIncluded",
+        "wifi": "freeWifi",
+        "pool": "swimmingPool",
+        "elevator": "elevator",
+        "parking": "freeParking",
+        "late_checkout": "lateCheckout",
+        "bathtub": "soakingBathtub",
+        "ott_tv": "smartOttTv",
+    }
+    suffix_to_rt_key = {
+        "SUP": "standard",
+        "STD": "standard",
+        "DLX": "deluxe",
+        "FAM": "family_suite",
+        "EXE": "executive_suite",
+        "SUI": "executive_suite",
+    }
+    suffix_to_bed_key = {
+        "SUP": "doubleQueenKing",
+        "STD": "doubleQueenKing",
+        "DLX": "twinSingle",
+        "FAM": "connectingBeds",
+        "EXE": "doubleQueenKing",
+        "SUI": "doubleQueenKing",
+    }
+
     for prop_id, prefix, classes in lamour_specs + [("stay_h11", "H11", h11_specs)]:
         for suffix, name_i18n, bed_i18n, sqm, max_g, room_nums, std_rate, flr_rate, ams in classes:
             rt_id = f"RT-{prefix}-{suffix}"
+            rt_key = suffix_to_rt_key[suffix]
+            bed_key = suffix_to_bed_key[suffix]
+            opt_keys = sorted(am_to_option[a] for a in ams)
+            photo_cnt = 2 if prop_id == "stay_h11" else (6 if suffix in ("EXE", "FAM") else 4)
             room_types.append({
                 "id": rt_id,
                 "propertyId": prop_id,
@@ -213,6 +245,14 @@ def build_room_inventory(accepted_by_room: dict[int, dict]) -> dict:
                 "floorRateVnd": flr_rate,
                 "amenities": ams,
                 "biddingEnabled": True,
+                "catalogMapping": {
+                    "room_id": rt_id,
+                    "room_type_key": rt_key,
+                    "bed_type_key": bed_key,
+                    "service_option_keys": opt_keys,
+                    "combo_signature": f"hotel|{rt_key}|{bed_key}|{'+'.join(opt_keys)}",
+                    "gallery_room_photos_count": photo_cnt,
+                },
             })
             for idx, rnum in enumerate(room_nums):
                 floor = (rnum // 100) + ((rnum % 100) // 10)
@@ -435,6 +475,9 @@ def build_payout_ledgers(accepted_records: list[dict]) -> dict:
             for r in matched:
                 r["payoutBatchId"] = batch_id
             gross = sum(r["netRevenueVnd"] for r in matched)
+            pf_sum = sum(r["telemetry"]["payment_form"]["platform_fee_amount"] for r in matched)
+            vat_sum = sum(r["telemetry"]["payment_form"]["vat_amount"] for r in matched)
+            gmv_sum = sum(r["telemetry"]["payment_form"]["total_booking_amount"] for r in matched)
             batch_obj = {
                 "id": batch_id,
                 "propertyId": prop_id,
@@ -449,6 +492,14 @@ def build_payout_ledgers(accepted_records: list[dict]) -> dict:
                 "adjustmentVnd": 0,
                 "netPayoutVnd": gross,
                 "note": note_i18n,
+                "settlementBreakdown": {
+                    "payment_codes": [r["telemetry"]["payment_form"]["payment_code"] for r in matched],
+                    "booking_currency": "VND",
+                    "partner_base_price_vnd": gross,
+                    "platform_fee_15pct_vnd": pf_sum,
+                    "vat_10pct_vnd": vat_sum,
+                    "total_booking_gmv_vnd": gmv_sum,
+                },
             }
             if paid_dt:
                 batch_obj["paidAtDate"] = paid_dt
@@ -691,6 +742,84 @@ def build_bidding_operations() -> dict:
             "updatedAt": "2026-11-06 16:00",
         },
     ]
+
+    prop_geo = {
+        "br_mykhe": ("VN", "VN-DN", "VN-DN", "VN-DN-SONTRA", "VN-DN-SONTRA-PHUOCMY", 18),
+        "br_songhan": ("VN", "VN-DN", "VN-DN", "VN-DN-HAICHAU", "VN-DN-HAICHAU-HAICHAU1", 22),
+        "br_anthuong": ("VN", "VN-DN", "VN-DN", "VN-DN-NGUHANHSON", "VN-DN-NHS-MYAN", 15),
+        "stay_h11": ("KR", "KR-11", "KR-11", "KR-11-JUNGGU", "KR-11-JUNGGU-MYEONGDONG", 14),
+    }
+    am_to_opt = {
+        "breakfast": "breakfastIncluded",
+        "wifi": "freeWifi",
+        "pool": "swimmingPool",
+        "elevator": "elevator",
+        "parking": "freeParking",
+        "late_checkout": "lateCheckout",
+        "bathtub": "soakingBathtub",
+        "ott_tv": "smartOttTv",
+    }
+    os_cycle = ["ios", "android", "web"]
+    booker_cycle = ["VN", "KR", "VN", "US", "KR", "SG"]
+    for idx, req in enumerate(live_requests):
+        sc, sp, scty, sdist, sward, pcnt = prop_geo[req["propertyId"]]
+        ci = datetime.date.fromisoformat(req["checkInDate"])
+        ref_dt = datetime.date.fromisoformat("2026-11-06")
+        lead_d = max(0, (ci - ref_dt).days)
+        g_cnt = req["guestsCount"]
+        if g_cnt == 4:
+            adults, children, gtype = 2, 2, "family"
+        elif g_cnt >= 3:
+            adults, children, gtype = g_cnt, 0, "group"
+        elif g_cnt == 2:
+            adults, children, gtype = 2, 0, "couple"
+        else:
+            adults, children, gtype = 1, 0, "solo"
+        opts = sorted(am_to_opt[p] for p in req["requestedPerks"])
+        rt_pref = "family_suite" if g_cnt >= 4 else ("executive_suite" if req["id"] in ("REQ-9015", "REQ-9013") else "deluxe")
+        bed_pref = "connectingBeds" if g_cnt >= 4 else ("twinSingle" if req["id"] == "REQ-9017" else "doubleQueenKing")
+        dev_os = os_cycle[idx % len(os_cycle)]
+        dev_type = "desktop" if dev_os == "web" else ("tablet" if idx == 4 else "mobile")
+        req["requestTelemetry"] = {
+            "request_id": f"190{18 - idx}",
+            "request_code": req["id"],
+            "session_form_id": f"SFM-LIVE-{idx + 1:02d}",
+            "device_os": dev_os,
+            "device_type": dev_type,
+            "booker_country": booker_cycle[idx % len(booker_cycle)],
+            "staying_country": sc,
+            "staying_province": sp,
+            "staying_city": scty,
+            "staying_district": sdist,
+            "staying_ward": sward,
+            "partner_count": pcnt,
+            "lead_time_days": lead_d,
+            "room_count": 1,
+            "adults": adults,
+            "children": children,
+            "infants": 0,
+            "pets": 0,
+            "group_type": gtype,
+            "accommodation_type": "hotel",
+            "combo_signature": f"hotel|{rt_pref}|{bed_pref}|{'+'.join(opts)}",
+            "criteria_count": 2 + len(opts),
+            "remaining_ttl_sec": req["expiresInMinutes"] * 60,
+        }
+
+    rule_targets = {
+        "br_mykhe": (75, 16),
+        "br_songhan": (72, 14),
+        "br_anthuong": (70, 17),
+        "stay_h11": (65, 12),
+    }
+    for rule in auto_bid_rules:
+        min_match, sav_target = rule_targets[rule["propertyId"]]
+        rule["guardrailTelemetry"] = {
+            "is_auto_bid_default": rule["enabled"],
+            "min_match_rate_pct_trigger": min_match,
+            "supported_option_keys": sorted(am_to_opt[p] for p in rule["defaultPerks"]),
+            "target_saving_vs_ota_pct": sav_target,
+        }
 
     return {
         "liveRequests": live_requests,
@@ -1244,6 +1373,504 @@ def build_hub_inbox() -> dict:
     }
 
 
+def build_marketplace_identities() -> dict[str, dict]:
+    return {
+        "br_mykhe": {
+            "property_id": "br_mykhe",
+            "staying_country": "VN",
+            "staying_province": "VN-DN",
+            "staying_city": "VN-DN",
+            "staying_district": "VN-DN-SONTRA",
+            "staying_ward": "VN-DN-SONTRA-PHUOCMY",
+            "accommodation_type": "hotel",
+            "star_rating": 4,
+            "review_score": 4.9,
+            "review_count": 64,
+            "partner_count_in_district": 18,
+            "gallery_media_counts": {
+                "videos": 2,
+                "property_views": 6,
+                "facilities": 8,
+                "dining": 5,
+                "rooms": 14,
+                "nearby_attractions": 4,
+            },
+        },
+        "br_songhan": {
+            "property_id": "br_songhan",
+            "staying_country": "VN",
+            "staying_province": "VN-DN",
+            "staying_city": "VN-DN",
+            "staying_district": "VN-DN-HAICHAU",
+            "staying_ward": "VN-DN-HAICHAU-HAICHAU1",
+            "accommodation_type": "hotel",
+            "star_rating": 4,
+            "review_score": 4.8,
+            "review_count": 46,
+            "partner_count_in_district": 22,
+            "gallery_media_counts": {
+                "videos": 1,
+                "property_views": 5,
+                "facilities": 6,
+                "dining": 4,
+                "rooms": 12,
+                "nearby_attractions": 5,
+            },
+        },
+        "br_anthuong": {
+            "property_id": "br_anthuong",
+            "staying_country": "VN",
+            "staying_province": "VN-DN",
+            "staying_city": "VN-DN",
+            "staying_district": "VN-DN-NGUHANHSON",
+            "staying_ward": "VN-DN-NHS-MYAN",
+            "accommodation_type": "hotel",
+            "star_rating": 4,
+            "review_score": 4.7,
+            "review_count": 32,
+            "partner_count_in_district": 15,
+            "gallery_media_counts": {
+                "videos": 1,
+                "property_views": 5,
+                "facilities": 7,
+                "dining": 4,
+                "rooms": 10,
+                "nearby_attractions": 4,
+            },
+        },
+        "stay_h11": {
+            "property_id": "stay_h11",
+            "staying_country": "KR",
+            "staying_province": "KR-11",
+            "staying_city": "KR-11",
+            "staying_district": "KR-11-JUNGGU",
+            "staying_ward": "KR-11-JUNGGU-MYEONGDONG",
+            "accommodation_type": "hotel",
+            "star_rating": 3,
+            "review_score": 0.0,
+            "review_count": 0,
+            "partner_count_in_district": 14,
+            "gallery_media_counts": {
+                "videos": 0,
+                "property_views": 3,
+                "facilities": 4,
+                "dining": 2,
+                "rooms": 6,
+                "nearby_attractions": 0,
+            },
+        },
+    }
+
+
+def _infer_booker_country(phone: str | None, idx: int, prop_id: str) -> str:
+    if phone:
+        if phone.startswith("+84"):
+            return "VN"
+        if phone.startswith("+82"):
+            return "KR"
+        if phone.startswith("+33"):
+            return "FR"
+        if phone.startswith("+1"):
+            return "US"
+        if phone.startswith("+65"):
+            return "SG"
+        if phone.startswith("+49"):
+            return "DE"
+    if prop_id == "stay_h11":
+        return ["KR", "VN", "US", "SG"][idx % 4]
+    return ["VN", "KR", "VN", "US", "SG"][idx % 5]
+
+
+def enrich_bid_records_telemetry(
+    bid_records: list[dict],
+    prop_identities: dict[str, dict],
+    room_types: list[dict],
+    currency_rates: dict[str, float],
+) -> None:
+    rt_by_id = {rt["id"]: rt for rt in room_types}
+    default_rt_by_prop = {
+        "br_mykhe": "RT-MK-DLX",
+        "br_songhan": "RT-SH-DLX",
+        "br_anthuong": "RT-AT-DLX",
+        "stay_h11": "RT-H11-DLX",
+    }
+    entry_sources = ["home_hero_cta", "explore_stays_cta", "header_nav", "gns_ai_handoff"]
+    os_list = ["ios", "android", "web"]
+    ota_codes = ["A", "B", "T", "E"]
+    content_cats = ["rooms", "facilities", "property_views", "dining", "nearby_attractions", "videos"]
+    map_actions = ["zoom_in", "open_google_maps_link", "pan_drag", None]
+    unmatched_pool = ["swimmingPool", "breakfastIncluded", "lateCheckout", "petAllow", "soakingBathtub"]
+    post_ctas = ["view_receipt", "download_receipt_pdf", "view_booking_history", "back_to_home"]
+
+    for idx, rec in enumerate(bid_records):
+        prop_id = rec["propertyId"]
+        status = rec["status"]
+        ident = prop_identities[prop_id]
+        sess_dt = datetime.date.fromisoformat(rec["sessionDate"])
+
+        if status == "accepted":
+            ci_str = rec["checkInDate"]
+            co_str = rec["checkOutDate"]
+            ci_dt = datetime.date.fromisoformat(ci_str)
+            lead_days = max(0, (ci_dt - sess_dt).days)
+            g_cnt = rec["guestsCount"]
+            room_id = rec["roomTypeId"]
+        else:
+            lead_days = (idx % 6) + (0 if idx % 3 == 0 else 1)
+            ci_dt = sess_dt + datetime.timedelta(days=lead_days)
+            co_dt = ci_dt + datetime.timedelta(days=rec["nights"])
+            ci_str = ci_dt.isoformat()
+            co_str = co_dt.isoformat()
+            g_cnt = [2, 2, 1, 3, 4][idx % 5]
+            room_id = default_rt_by_prop[prop_id]
+
+        rt_meta = rt_by_id[room_id]["catalogMapping"]
+        if g_cnt >= 4:
+            adults, children, infants, gtype = 2, 2, 0, "family"
+        elif g_cnt == 3:
+            adults, children, infants, gtype = 3, 0, 0, "group"
+        elif g_cnt == 2:
+            adults, children, infants, gtype = 2, 0, 0, "couple"
+        else:
+            adults, children, infants, gtype = 1, 0, 0, "solo"
+
+        pets = 1 if (status == "rejected" and idx % 9 == 0) else 0
+        booker_country = _infer_booker_country(rec.get("guestPhone"), idx, prop_id)
+        device_os = os_list[idx % len(os_list)]
+        device_type = "desktop" if (device_os == "web" and idx % 2 == 0) else ("tablet" if idx % 11 == 0 else "mobile")
+        combo_sig = rt_meta["combo_signature"] + ("+petAllow" if pets > 0 else "")
+        criteria_cnt = 2 + len(rt_meta["service_option_keys"]) + (1 if pets > 0 else 0)
+        act_offers = 3 + (idx % 3)
+        tot_offers = max(act_offers, card_pos if "card_pos" in locals() else 4)
+
+        booking_tel = {
+            "session_form_id": f"SFM-{1001 + idx}",
+            "request_id": str(1501 + idx),
+            "request_code": rec["id"],
+            "entry_source": entry_sources[idx % len(entry_sources)],
+            "device_os": device_os,
+            "device_type": device_type,
+            "booker_country": booker_country,
+            "staying_country": ident["staying_country"],
+            "staying_province": ident["staying_province"],
+            "staying_city": ident["staying_city"],
+            "staying_district": ident["staying_district"],
+            "staying_ward": ident["staying_ward"],
+            "partner_count": ident["partner_count_in_district"],
+            "check_in_date": ci_str,
+            "check_out_date": co_str,
+            "stay_nights": rec["nights"],
+            "lead_time_days": lead_days,
+            "room_count": 2 if (g_cnt >= 4 and idx % 2 == 1) else 1,
+            "adults": adults,
+            "children": children,
+            "infants": infants,
+            "pets": pets,
+            "total_guests": g_cnt,
+            "group_type": gtype,
+            "accommodation_type": ident["accommodation_type"],
+            "combo_signature": combo_sig,
+            "criteria_count": criteria_cnt,
+            "duration_ms": 28000 + (idx % 12) * 3400,
+            "is_no_matched_hotel": False,
+            "cancel_source": (
+                ("step4_cancel_button" if idx % 2 == 0 else "tab_cancel_icon")
+                if status == "cancelled"
+                else None
+            ),
+            "active_offers_count": 3 + (idx % 3),
+            "elapsed_open_sec": 240 + (idx % 18) * 185,
+        }
+
+        base_price_vnd = rec.get("netRevenueVnd") or (rec["offeredRatePerNightVnd"] * rec["nights"])
+        platform_fee_vnd = round(base_price_vnd * 0.15)
+        vat_vnd = round((base_price_vnd + platform_fee_vnd) * 0.10)
+        total_gmv_vnd = base_price_vnd + platform_fee_vnd + vat_vnd
+
+        if status == "accepted":
+            match_pct = 90 + (idx % 11)
+            card_pos = 1 if idx % 3 != 2 else 2
+            saving_pct = 13 + (idx % 9)
+            was_impressed = True
+            was_viewed = idx % 5 != 4  # 80% opened CHOT BID NGAY popup, 20% fast card select
+            if was_viewed:
+                first_sec = 32 + (idx % 10) * 28  # 32s..284s (0-5m high-intent bucket)
+                browse_list = [first_sec] if idx % 3 != 0 else [first_sec, first_sec + 185]
+            else:
+                browse_list = []
+            decision_sec = (browse_list[-1] + 54) if browse_list else (48 + (idx % 6) * 19)
+            unmatched: list[str] = [] if match_pct >= 96 else [unmatched_pool[idx % len(unmatched_pool)]]
+        elif status == "rejected":
+            match_pct = 64 + (idx % 20)
+            card_pos = (3 + (idx % 4)) if prop_id == "stay_h11" else (2 + (idx % 3))
+            saving_pct = 4 + (idx % 7)
+            was_impressed = True
+            was_viewed = idx % 3 != 0  # 67% opened popup then rejected (e.g. 0 reviews on stay_h11), 33% card reject
+            if was_viewed:
+                first_sec = 140 + (idx % 14) * 135  # 2m..33m distribution curve spread
+                browse_list = [first_sec] if idx % 4 != 1 else [first_sec, first_sec + 420]
+            else:
+                browse_list = []
+            decision_sec = (browse_list[-1] + 42) if browse_list else (35 + (idx % 7) * 16)
+            unmatched = ["petAllow"] if pets > 0 else [
+                unmatched_pool[idx % len(unmatched_pool)],
+                unmatched_pool[(idx + 2) % len(unmatched_pool)],
+            ]
+        elif status == "expired":
+            match_pct = 68 + (idx % 18)
+            card_pos = (4 + (idx % 3)) if prop_id == "stay_h11" else (2 + (idx % 3))
+            saving_pct = 5 + (idx % 6)
+            was_impressed = idx % 4 != 0
+            was_viewed = was_impressed and (idx % 2 == 1)
+            if was_viewed:
+                first_sec = 480 + (idx % 8) * 340  # 8m..53m attention decay before 60m TTL expiry
+                browse_list = [first_sec, min(3540, first_sec + 690)] if idx % 3 == 1 else [first_sec]
+            else:
+                browse_list = []
+            decision_sec = None
+            unmatched = [unmatched_pool[idx % len(unmatched_pool)]]
+        else:  # cancelled
+            match_pct = 74 + (idx % 15)
+            card_pos = 2 + (idx % 2)
+            saving_pct = 8 + (idx % 5)
+            was_impressed = idx % 2 == 0
+            was_viewed = False
+            browse_list = []
+            decision_sec = None
+            unmatched = [unmatched_pool[idx % len(unmatched_pool)]]
+
+        ota_price_vnd = round(total_gmv_vnd / (1.0 - saving_pct / 100.0))
+
+        offer_tel = {
+            "offer_id": f"OFR-{rec['id']}",
+            "property_id": prop_id,
+            "room_id": room_id,
+            "room_type_key": rt_meta["room_type_key"],
+            "is_auto_bid": rec["bidMode"] == "auto",
+            "match_rate_pct": match_pct,
+            "offer_total_price": total_gmv_vnd,
+            "currency": "VND",
+            "card_position": card_pos,
+            "total_offers_count": max(booking_tel["active_offers_count"] + 1, card_pos),
+            "device_type": device_type,
+            "device_os": device_os,
+            "is_expired": status == "expired",
+            "ota_code": ota_codes[idx % len(ota_codes)],
+            "ota_price": ota_price_vnd,
+            "saving_pct": saving_pct,
+            "was_impressed": was_impressed,
+            "was_detail_viewed": was_viewed,
+            "browse_click_count": len(browse_list),
+            "elapsed_since_bid_sec": browse_list[0] if browse_list else None,
+            "browse_elapsed_sec_list": browse_list,
+            "decision_duration_sec": decision_sec,
+            "unmatched_keys": unmatched,
+        }
+
+        if was_viewed:
+            if booker_country == "KR":
+                disp_cur = "KRW"
+                approx_amt = round(total_gmv_vnd / currency_rates["KRW"])
+            elif booker_country in ("US", "FR", "SG", "DE"):
+                disp_cur = "USD"
+                approx_amt = round(total_gmv_vnd / currency_rates["USD"], 2)
+            else:
+                disp_cur = "VND"
+                approx_amt = total_gmv_vnd
+
+            cat_pick = content_cats[idx % len(content_cats)]
+            m_type = "video" if cat_pick == "videos" else "image"
+            selected_in_modal = status == "accepted" and (idx % 4 != 0)
+            close_m = (
+                "selected_cta"
+                if selected_in_modal
+                else (["close_x_button", "backdrop_click", "escape_key"][idx % 3])
+            )
+            explore_tel: dict | None = {
+                "view_session_id": f"VWS-{rec['id']}",
+                "trigger_element": "browse_button" if idx % 3 != 2 else "card_thumbnail",
+                "star_rating": ident["star_rating"],
+                "review_score": ident["review_score"],
+                "review_count": ident["review_count"],
+                "approx_display_amount": approx_amt,
+                "display_currency": disp_cur,
+                "scroll_down_count": 3 + (idx % 6),
+                "scroll_up_count": 1 + (idx % 4),
+                "max_scroll_depth_pct": 78 + (idx % 23) if status == "accepted" else 45 + (idx % 48),
+                "description_dwell_ms": 4200 + (idx % 7) * 1650,
+                "total_dwell_ms": 18500 + (idx % 9) * 5200,
+                "content_category": cat_pick,
+                "media_type": m_type,
+                "media_clicked_count": (
+                    0
+                    if (prop_id == "stay_h11" and cat_pick in ("videos", "nearby_attractions"))
+                    else (2 + (idx % 5))
+                ),
+                "view_duration_sec": 19 + (idx % 9) * 5,
+                "map_action": map_actions[idx % len(map_actions)],
+                "close_method": close_m,
+            }
+        else:
+            explore_tel = None
+
+        if status == "accepted":
+            bk_num = rec["bookingCode"].lstrip("#").zfill(4)
+            entry_surf = (
+                "explore_stay_modal_select"
+                if (explore_tel is not None and explore_tel["close_method"] == "selected_cta")
+                else "offer_card_select"
+            )
+            if booker_country == "KR":
+                gw, pm_type, chg_cur = "nhn_kcp", "local_card", "KRW"
+                ex_rate = currency_rates["KRW"]
+                fx_fee = round(total_gmv_vnd * 0.012 / ex_rate)
+                chg_amt = round(total_gmv_vnd / ex_rate) + fx_fee
+                fx_code: str | None = f"FXQ-KRW-{bk_num}"
+            elif booker_country in ("US", "FR", "SG", "DE"):
+                gw, pm_type, chg_cur = "paypal", "paypal_wallet", "USD"
+                ex_rate = currency_rates["USD"]
+                fx_fee = round((total_gmv_vnd * 0.015) / ex_rate, 2)
+                chg_amt = round((total_gmv_vnd / ex_rate) + fx_fee, 2)
+                fx_code = f"FXQ-USD-{bk_num}"
+            else:
+                gw, pm_type, chg_cur = ("stripe" if idx % 2 == 0 else "nhn_kcp"), "credit_card", "VND"
+                ex_rate = 1.0
+                fx_fee = 0
+                chg_amt = total_gmv_vnd
+                fx_code = None
+
+            is_first = idx % 3 != 1
+            interrupted = idx % 7 == 3
+            payment_tel: dict | None = {
+                "checkout_session_id": f"CHK-{rec['id']}",
+                "payment_code": f"PM-2026-{bk_num}",
+                "booking_id": rec["bookingCode"],
+                "entry_surface": entry_surf,
+                "gateway_type": gw,
+                "payment_method_type": pm_type,
+                "booking_currency": "VND",
+                "base_price": base_price_vnd,
+                "platform_fee_amount": platform_fee_vnd,
+                "vat_amount": vat_vnd,
+                "total_booking_amount": total_gmv_vnd,
+                "charge_currency": chg_cur,
+                "fx_quote_code": fx_code,
+                "exchange_rate": ex_rate,
+                "charge_amount": chg_amt,
+                "fx_fee_amount": fx_fee,
+                "skip_staying_info": idx % 4 == 2,
+                "guest_same_as_booker": idx % 5 != 3,
+                "save_card_opt_in": idx % 2 == 0,
+                "interruption_reason": "popup_closed_early" if interrupted else "none",
+                "recovery_action": "resume_current_payment" if interrupted else "none",
+                "recovery_outcome": "COMPLETED",
+                "is_first_payment": is_first,
+                "time_since_signup_hours": round(1.5 + (idx % 12) * 3.8, 1) if is_first else None,
+                "days_since_prev_payment": None if is_first else (9 + (idx % 6) * 7),
+                "select_to_paid_sec": (145 if interrupted else 64) + (idx % 8) * 11,
+                "post_pay_cta": (
+                    "download_receipt_pdf"
+                    if booker_country in ("KR", "SG") and idx % 2 == 0
+                    else post_ctas[idx % len(post_ctas)]
+                ),
+            }
+        else:
+            payment_tel = None
+
+        rec["telemetry"] = {
+            "booking_form": booking_tel,
+            "offer_listing": offer_tel,
+            "explore_stays": explore_tel,
+            "payment_form": payment_tel,
+        }
+
+
+EVENT_SHEETS_METADATA = {
+    "spreadsheetId": "1y8z02l_JBR5_qP41CV6Ex4HARZkA_SDpP64iRDma8QI",
+    "pricingFormulaInvariant": {
+        "partnerBasePrice": "netRevenueVnd = offeredRatePerNightVnd * nights (100% settled to hotel, 0% deduction)",
+        "platformFee15Pct": "round(base_price * 0.15)",
+        "vat10Pct": "round((base_price + platform_fee_amount) * 0.10)",
+        "travelerTotalGmv": "base_price + platform_fee_amount + vat_amount (1.265 * base_price)",
+    },
+    "entityLineage": (
+        "session_form_id -> request_id (request_code) -> offer_id -> view_session_id "
+        "-> checkout_session_id -> payment_code -> booking_id (bookingCode) -> payoutBatchId"
+    ),
+    "sheets": {
+        "booking_form": {
+            "eventsCount": 12,
+            "events": [
+                "booking_form_view",
+                "booking_form_start",
+                "booking_form_step_view",
+                "booking_destination_select",
+                "booking_stay_details_complete",
+                "booking_accommodation_type_select",
+                "booking_preference_change",
+                "booking_form_validation_error",
+                "booking_form_submit_attempt",
+                "booking_form_submit_result",
+                "booking_form_complete",
+                "booking_request_cancel",
+            ],
+            "mappedMasterTables": ["bidRecords", "biddingOperations", "roomInventory", "hubConfig"],
+        },
+        "offer_listing": {
+            "eventsCount": 10,
+            "events": [
+                "offer_listing_view",
+                "offer_card_impression",
+                "offer_card_photo_slide",
+                "offer_room_option_switch",
+                "offer_card_ota_expand",
+                "offer_browse_click",
+                "offer_card_select_click",
+                "offer_reject_attempt",
+                "offer_reject_confirm",
+                "offer_ttl_expired",
+            ],
+            "mappedMasterTables": ["bidRecords", "biddingOperations", "marketingCampaigns"],
+        },
+        "explore_stays": {
+            "eventsCount": 12,
+            "events": [
+                "explore_stay_modal_view",
+                "explore_stay_room_carousel_interact",
+                "explore_stay_description_engage",
+                "explore_stay_scroll_summary",
+                "explore_stay_ota_compare_click",
+                "explore_stay_gallery_open",
+                "explore_stay_gallery_tab_switch",
+                "explore_stay_media_click",
+                "explore_stay_map_interact",
+                "explore_stay_review_inspect",
+                "explore_stay_select_click",
+                "explore_stay_modal_close",
+            ],
+            "mappedMasterTables": ["bidRecords", "hubConfig", "roomInventory"],
+        },
+        "payment_form": {
+            "eventsCount": 11,
+            "events": [
+                "payment_form_view",
+                "payment_staying_info_update",
+                "payment_gateway_select",
+                "payment_fx_quote_result",
+                "payment_submit_attempt",
+                "payment_gateway_window_open",
+                "payment_session_interrupted",
+                "payment_recovery_action",
+                "payment_complete",
+                "payment_fail",
+                "payment_receipt_action",
+            ],
+            "mappedMasterTables": ["bidRecords", "payoutLedgers", "hubInbox"],
+        },
+    },
+}
+
+
 def main() -> None:
     seed_cfg = json.loads((SEED_DIR / "partner_hub_config.json").read_text("utf-8"))
     seed_bids = json.loads((SEED_DIR / "bid_records.json").read_text("utf-8"))
@@ -1303,12 +1930,14 @@ def main() -> None:
             "+82 2-6014-8811",
         ),
     }
+    prop_identities = build_marketplace_identities()
     for prop in hub_config["properties"]:
         addr, hotline = prop_contacts[prop["id"]]
         prop["address"] = addr
         prop["hotline"] = hotline
         prop["checkInTime"] = "14:00"
         prop["checkOutTime"] = "12:00"
+        prop["marketplaceIdentity"] = prop_identities[prop["id"]]
 
     # 2. Enrich bid_records.json while preserving 100% of existing values
     bid_records = copy.deepcopy(seed_bids)
@@ -1327,11 +1956,17 @@ def main() -> None:
         if rec["checkInDate"] <= "2026-11-06" < rec["checkOutDate"]:
             occupied_on_ref[rec["roomNumber"]] = rec
 
-    # 3. Build Payout Ledgers (also stamps payoutBatchId on accepted_records)
+    # 3. Build Room Inventory, enrich 4-sheet telemetry on all 143 bid_records, then build Payout Ledgers
+    room_inventory = build_room_inventory(occupied_on_ref)
+    enrich_bid_records_telemetry(
+        bid_records,
+        prop_identities,
+        room_inventory["roomTypes"],
+        hub_config["currencyRates"],
+    )
     payout_ledgers = build_payout_ledgers(accepted_records)
 
-    # 4. Build Room Inventory, Bidding Operations, Marketing Campaigns, and Hub Inbox
-    room_inventory = build_room_inventory(occupied_on_ref)
+    # 4. Build Bidding Operations, Marketing Campaigns, and Hub Inbox
     bidding_operations = build_bidding_operations()
     marketing_campaigns = build_marketing_campaigns()
     hub_inbox = build_hub_inbox()
@@ -1339,49 +1974,195 @@ def main() -> None:
     schema_manifest = {
         "schemaVersion": "4.0.0",
         "architecture": "Optibide Partner Hub • Full 7-Module Hotelier Suite • Pure-Business • Multi-Property • VI/EN/KO & VND/KRW/USD",
-        "generatedAt": "2026-11-15T22:45:00+07:00",
+        "generatedAt": "2026-11-18T10:35:00+07:00",
         "primaryReferenceDate": "2026-11-06",
+        "eventSheetsMetadata": EVENT_SHEETS_METADATA,
         "tables": {
             "hubConfig": {
                 "file": "partner_hub_config.json",
                 "pk": "schemaVersion",
-                "description": "Cấu hình cổng đối tác Optibide, tỷ giá VND/KRW/USD, hồ sơ ca trực (Quản lý & Lễ tân), kỳ lọc Today/7D/30D và 4 cơ sở",
+                "mappedSheets": ["booking_form", "offer_listing", "explore_stays", "payment_form"],
+                "sourceEvents": [
+                    "booking_destination_select",
+                    "offer_card_impression",
+                    "explore_stay_modal_view",
+                    "explore_stay_gallery_tab_switch",
+                    "explore_stay_review_inspect",
+                    "payment_fx_quote_result",
+                ],
+                "mappedParameters": [
+                    "property_id",
+                    "staying_country",
+                    "staying_province",
+                    "staying_city",
+                    "staying_district",
+                    "staying_ward",
+                    "partner_count",
+                    "star_rating",
+                    "review_score",
+                    "review_count",
+                    "content_category",
+                    "exchange_rate",
+                ],
+                "description": "Cấu hình cổng đối tác Optibide, tỷ giá VND/KRW/USD, hồ sơ ca trực (Quản lý & Lễ tân), kỳ lọc Today/7D/30D và 4 cơ sở kèm định danh marketplaceIdentity",
             },
             "bidRecords": {
                 "file": "bid_records.json",
                 "pk": "id",
                 "fk": "propertyId -> hubConfig.properties.id, roomTypeId -> roomInventory.roomTypes.id, payoutBatchId -> payoutLedgers.batches.id",
-                "description": "Lịch sử 143 lượt báo giá & 29 phiếu đặt phòng hoàn tất (#43..#71) liên kết trực tiếp lịch phòng và kỳ đối soát",
+                "mappedSheets": ["booking_form", "offer_listing", "explore_stays", "payment_form"],
+                "sourceEvents": [
+                    "booking_form_complete",
+                    "booking_request_cancel",
+                    "offer_card_impression",
+                    "offer_browse_click",
+                    "offer_card_select_click",
+                    "offer_reject_confirm",
+                    "offer_ttl_expired",
+                    "explore_stay_modal_view",
+                    "explore_stay_scroll_summary",
+                    "explore_stay_media_click",
+                    "explore_stay_select_click",
+                    "explore_stay_modal_close",
+                    "payment_form_view",
+                    "payment_session_interrupted",
+                    "payment_recovery_action",
+                    "payment_complete",
+                    "payment_receipt_action",
+                ],
+                "mappedParameters": [
+                    "session_form_id",
+                    "request_id",
+                    "request_code",
+                    "staying_ward",
+                    "device_type",
+                    "device_os",
+                    "offer_id",
+                    "card_position",
+                    "total_offers_count",
+                    "view_session_id",
+                    "checkout_session_id",
+                    "payment_code",
+                    "booking_id",
+                    "match_rate_pct",
+                    "unmatched_keys",
+                    "elapsed_since_bid_sec",
+                    "browse_elapsed_sec_list",
+                    "scroll_down_count",
+                    "scroll_up_count",
+                    "base_price",
+                    "platform_fee_amount",
+                    "vat_amount",
+                    "total_booking_amount",
+                    "is_first_payment",
+                    "time_since_signup_hours",
+                    "days_since_prev_payment",
+                ],
+                "description": "Lịch sử 143 lượt báo giá & 29 phiếu đặt phòng hoàn tất (#43..#71) gắn đầy đủ telemetry xuyên suốt 4 sheets (booking_form -> offer_listing -> explore_stays -> payment_form)",
             },
             "hubInbox": {
                 "file": "hub_inbox.json",
                 "pk": "messages.id / notifications.id / quickReplies.id",
                 "fk": "propertyId -> hubConfig.properties.id, bookingCode -> bidRecords.bookingCode",
-                "description": "Hội thoại tin nhắn khách đặt phòng hai chiều, mẫu phản hồi nhanh lễ tân & thông báo vận hành",
+                "mappedSheets": ["payment_form", "booking_form"],
+                "sourceEvents": [
+                    "payment_staying_info_update",
+                    "payment_complete",
+                    "payment_receipt_action",
+                ],
+                "mappedParameters": [
+                    "booking_id",
+                    "property_id",
+                    "guest_same_as_booker",
+                    "post_pay_cta",
+                ],
+                "description": "Hội thoại tin nhắn khách đặt phòng hai chiều, mẫu phản hồi nhanh lễ tân & thông báo vận hành hậu thanh toán",
             },
             "roomInventory": {
                 "file": "room_inventory.json",
                 "pk": "roomTypes.id / units.unitId / calendarBlocks.id",
                 "fk": "propertyId -> hubConfig.properties.id, activeBookingCode -> bidRecords.bookingCode",
-                "description": "Danh mục 15 hạng phòng, 48 phòng vật lý thực tế (#101..#130, #201..#218), trạng thái buồng phòng & lịch khóa ngày",
+                "mappedSheets": ["booking_form", "offer_listing", "explore_stays"],
+                "sourceEvents": [
+                    "booking_stay_details_complete",
+                    "booking_preference_change",
+                    "offer_room_option_switch",
+                    "explore_stay_room_carousel_interact",
+                    "explore_stay_media_click",
+                ],
+                "mappedParameters": [
+                    "room_id",
+                    "room_type_key",
+                    "combo_signature",
+                    "check_in_date",
+                    "check_out_date",
+                    "stay_nights",
+                    "room_count",
+                ],
+                "description": "Danh mục 15 hạng phòng (kèm catalogMapping ánh xạ combo_signature), 48 phòng vật lý thực tế (#101..#130, #201..#218), trạng thái buồng phòng & lịch khóa ngày",
             },
             "payoutLedgers": {
                 "file": "payout_ledgers.json",
                 "pk": "bankAccounts.propertyId / batches.id",
                 "fk": "propertyId -> hubConfig.properties.id, bookingCodes -> bidRecords.bookingCode",
-                "description": "Tài khoản ngân hàng nhận tiền từng cơ sở & các kỳ sao kê đối soát khớp 100% với doanh thu thực nhận",
+                "mappedSheets": ["payment_form"],
+                "sourceEvents": [
+                    "payment_fx_quote_result",
+                    "payment_complete",
+                    "payment_fail",
+                ],
+                "mappedParameters": [
+                    "payment_code",
+                    "booking_id",
+                    "booking_currency",
+                    "base_price",
+                    "platform_fee_amount",
+                    "vat_amount",
+                    "total_booking_amount",
+                ],
+                "description": "Tài khoản ngân hàng nhận tiền từng cơ sở & 12 kỳ sao kê đối soát khớp 100% doanh thu thực nhận (66.360.000 ₫) kèm đối chiếu phí sàn 15% & VAT 10%",
             },
             "biddingOperations": {
                 "file": "bidding_operations.json",
                 "pk": "liveRequests.id / autoBidRules.propertyId",
                 "fk": "propertyId -> hubConfig.properties.id",
-                "description": "Hàng đợi yêu cầu hỏi phòng trực tiếp của khách & cấu hình khung giá sàn Báo giá tự động theo từng cơ sở",
+                "mappedSheets": ["booking_form", "offer_listing"],
+                "sourceEvents": [
+                    "booking_form_complete",
+                    "offer_listing_view",
+                    "offer_card_impression",
+                    "offer_ttl_expired",
+                ],
+                "mappedParameters": [
+                    "request_id",
+                    "request_code",
+                    "session_form_id",
+                    "is_auto_bid",
+                    "match_rate_pct",
+                    "remaining_ttl_sec",
+                    "combo_signature",
+                    "saving_pct",
+                ],
+                "description": "Hàng đợi yêu cầu hỏi phòng trực tiếp 60 phút của khách (kèm requestTelemetry) & cấu hình khung giá sàn Báo giá tự động theo từng cơ sở",
             },
             "marketingCampaigns": {
                 "file": "marketing_campaigns.json",
                 "pk": "flashDeals.id / upsellOffers.id",
                 "fk": "propertyId -> hubConfig.properties.id",
-                "description": "Chiến dịch Ưu đãi giờ chót & Gói nâng hạng phòng / dịch vụ cộng thêm gia tăng doanh thu",
+                "mappedSheets": ["booking_form", "offer_listing", "explore_stays"],
+                "sourceEvents": [
+                    "booking_stay_details_complete",
+                    "offer_card_ota_expand",
+                    "explore_stay_ota_compare_click",
+                ],
+                "mappedParameters": [
+                    "lead_time_days",
+                    "stay_nights",
+                    "saving_pct",
+                    "offer_total_price",
+                    "ota_price",
+                ],
+                "description": "Chiến dịch Ưu đãi giờ chót (nhắm khách lead_time_days = 0) & Gói nâng hạng phòng / dịch vụ cộng thêm gia tăng doanh thu",
             },
         },
     }

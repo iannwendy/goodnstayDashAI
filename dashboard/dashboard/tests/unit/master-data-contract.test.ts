@@ -385,4 +385,189 @@ describe("TC-DATA: Partner Hub Master Data v4.0 Contract & Cross-Table Referenti
       assert.ok(up.title.vi && up.title.en && up.title.ko);
     }
   });
+
+  it("TC-DATA-10: schema_manifest v4.0.0 maps all 4 event tracking sheets (45 events) across all 7 master-data tables", () => {
+    const manifest = JSON.parse(
+      fs.readFileSync(path.join(MASTER_DATA_DIR, "schema_manifest.json"), "utf-8"),
+    );
+    const seedManifest = JSON.parse(
+      fs.readFileSync(path.join(SEED_DATA_DIR, "schema_manifest.json"), "utf-8"),
+    );
+    assert.deepEqual(manifest, seedManifest);
+
+    assert.ok(manifest.eventSheetsMetadata);
+    assert.equal(
+      manifest.eventSheetsMetadata.spreadsheetId,
+      "1y8z02l_JBR5_qP41CV6Ex4HARZkA_SDpP64iRDma8QI",
+    );
+    const sheets = manifest.eventSheetsMetadata.sheets;
+    assert.deepEqual(Object.keys(sheets).sort(), [
+      "booking_form",
+      "explore_stays",
+      "offer_listing",
+      "payment_form",
+    ]);
+    assert.equal(sheets.booking_form.events.length, 12);
+    assert.equal(sheets.offer_listing.events.length, 10);
+    assert.equal(sheets.explore_stays.events.length, 12);
+    assert.equal(sheets.payment_form.events.length, 11);
+
+    const totalEvents =
+      sheets.booking_form.events.length +
+      sheets.offer_listing.events.length +
+      sheets.explore_stays.events.length +
+      sheets.payment_form.events.length;
+    assert.equal(totalEvents, 45);
+
+    for (const [tableKey, tableDef] of Object.entries<any>(manifest.tables)) {
+      assert.ok(
+        Array.isArray(tableDef.mappedSheets) && tableDef.mappedSheets.length >= 1,
+        `Table ${tableKey} missing mappedSheets`,
+      );
+      assert.ok(
+        Array.isArray(tableDef.sourceEvents) && tableDef.sourceEvents.length >= 1,
+        `Table ${tableKey} missing sourceEvents`,
+      );
+      assert.ok(
+        Array.isArray(tableDef.mappedParameters) && tableDef.mappedParameters.length >= 1,
+        `Table ${tableKey} missing mappedParameters`,
+      );
+    }
+  });
+
+  it("TC-DATA-11: 143 bid_records, 4 properties, 15 roomTypes, 12 payout batches & 6 liveRequests satisfy 4-sheet telemetry, Distribution Curve, and x1.265 GMV/Fee/VAT invariants", () => {
+    const bundle = loadSeedMasterBundle();
+    const propMap = new Map(bundle.hubConfig.properties.map((p) => [p.id, p]));
+    const rtMap = new Map(bundle.roomInventory.roomTypes.map((rt) => [rt.id, rt]));
+
+    for (const prop of bundle.hubConfig.properties) {
+      assert.ok(prop.marketplaceIdentity, `Missing marketplaceIdentity on ${prop.id}`);
+      assert.equal(prop.marketplaceIdentity!.property_id, prop.id);
+      assert.ok(prop.marketplaceIdentity!.staying_ward.length > 5);
+      assert.equal(prop.marketplaceIdentity!.review_score, prop.reviewRating5);
+      assert.equal(prop.marketplaceIdentity!.review_count, prop.reviewCount);
+    }
+
+    for (const rt of bundle.roomInventory.roomTypes) {
+      assert.ok(rt.catalogMapping, `Missing catalogMapping on ${rt.id}`);
+      assert.equal(rt.catalogMapping!.room_id, rt.id);
+      assert.ok(rt.catalogMapping!.combo_signature.startsWith("hotel|"));
+    }
+
+    let sumAcceptedBaseVnd = 0;
+    let sumAcceptedFeeVnd = 0;
+    let sumAcceptedVatVnd = 0;
+    let sumAcceptedGmvVnd = 0;
+
+    for (const rec of bundle.bidRecords) {
+      assert.ok(rec.telemetry, `Missing telemetry on ${rec.id}`);
+      const { booking_form: bf, offer_listing: ol, explore_stays: es, payment_form: pf } =
+        rec.telemetry!;
+
+      assert.equal(bf.request_code, rec.id);
+      assert.ok(["mobile", "tablet", "desktop"].includes(bf.device_type));
+      assert.ok(bf.staying_ward.length > 5);
+      assert.equal(bf.stay_nights, rec.nights);
+      assert.equal(bf.adults + bf.children + bf.infants, bf.total_guests);
+      assert.equal(
+        bf.cancel_source !== null,
+        rec.status === "cancelled",
+        `cancel_source mismatch on ${rec.id}`,
+      );
+
+      assert.equal(ol.property_id, rec.propertyId);
+      assert.ok(rtMap.has(ol.room_id), `Unknown room_id ${ol.room_id} on ${rec.id}`);
+      assert.equal(ol.is_auto_bid, rec.bidMode === "auto");
+      assert.equal(ol.device_type, bf.device_type);
+      assert.equal(ol.device_os, bf.device_os);
+      assert.ok(ol.card_position >= 1 && ol.card_position <= ol.total_offers_count);
+      assert.equal(ol.is_expired, rec.status === "expired");
+      assert.equal(
+        ol.browse_click_count,
+        ol.browse_elapsed_sec_list.length,
+        `Distribution curve list length != browse_click_count on ${rec.id}`,
+      );
+      if (ol.was_detail_viewed) {
+        assert.ok(ol.browse_elapsed_sec_list.length >= 1);
+        assert.equal(ol.elapsed_since_bid_sec, ol.browse_elapsed_sec_list[0]);
+        for (let i = 0; i < ol.browse_elapsed_sec_list.length; i++) {
+          const sec = ol.browse_elapsed_sec_list[i];
+          assert.ok(sec > 0 && sec <= 3600, `Invalid browse sec ${sec} on ${rec.id}`);
+          if (i > 0) {
+            assert.ok(sec > ol.browse_elapsed_sec_list[i - 1]);
+          }
+        }
+        assert.ok(es !== null, `Expected explore_stays telemetry when viewed on ${rec.id}`);
+        const propIdent = propMap.get(rec.propertyId)!.marketplaceIdentity!;
+        assert.equal(es!.star_rating, propIdent.star_rating);
+        assert.equal(es!.review_score, propIdent.review_score);
+        assert.equal(es!.review_count, propIdent.review_count);
+      } else {
+        assert.equal(ol.elapsed_since_bid_sec, null);
+        assert.equal(es, null);
+      }
+
+      const expectedBase = rec.netRevenueVnd ?? rec.offeredRatePerNightVnd * rec.nights;
+      const expectedFee = Math.round(expectedBase * 0.15);
+      const expectedVat = Math.round((expectedBase + expectedFee) * 0.1);
+      const expectedGmv = expectedBase + expectedFee + expectedVat;
+      assert.equal(ol.offer_total_price, expectedGmv);
+      assert.ok(ol.ota_price > ol.offer_total_price);
+
+      if (rec.status === "accepted") {
+        assert.ok(pf !== null, `Missing payment_form telemetry on accepted ${rec.id}`);
+        assert.equal(pf!.booking_id, rec.bookingCode);
+        assert.equal(pf!.base_price, expectedBase);
+        assert.equal(pf!.platform_fee_amount, expectedFee);
+        assert.equal(pf!.vat_amount, expectedVat);
+        assert.equal(pf!.total_booking_amount, expectedGmv);
+        if (pf!.is_first_payment) {
+          assert.ok(pf!.time_since_signup_hours !== null && pf!.time_since_signup_hours > 0);
+          assert.equal(pf!.days_since_prev_payment, null);
+        } else {
+          assert.equal(pf!.time_since_signup_hours, null);
+          assert.ok(pf!.days_since_prev_payment !== null && pf!.days_since_prev_payment > 0);
+        }
+        sumAcceptedBaseVnd += pf!.base_price;
+        sumAcceptedFeeVnd += pf!.platform_fee_amount;
+        sumAcceptedVatVnd += pf!.vat_amount;
+        sumAcceptedGmvVnd += pf!.total_booking_amount;
+      } else {
+        assert.equal(pf, null, `Non-accepted bid ${rec.id} must have payment_form = null`);
+      }
+    }
+
+    assert.equal(sumAcceptedBaseVnd, 66_360_000);
+    let batchBase = 0;
+    let batchFee = 0;
+    let batchVat = 0;
+    let batchGmv = 0;
+    for (const batch of bundle.payoutLedgers.batches) {
+      assert.ok(batch.settlementBreakdown, `Missing settlementBreakdown on ${batch.id}`);
+      const sb = batch.settlementBreakdown!;
+      assert.equal(sb.payment_codes.length, batch.bookingsCount);
+      assert.equal(sb.partner_base_price_vnd, batch.netPayoutVnd);
+      assert.equal(
+        sb.partner_base_price_vnd + sb.platform_fee_15pct_vnd + sb.vat_10pct_vnd,
+        sb.total_booking_gmv_vnd,
+      );
+      batchBase += sb.partner_base_price_vnd;
+      batchFee += sb.platform_fee_15pct_vnd;
+      batchVat += sb.vat_10pct_vnd;
+      batchGmv += sb.total_booking_gmv_vnd;
+    }
+    assert.equal(batchBase, sumAcceptedBaseVnd);
+    assert.equal(batchFee, sumAcceptedFeeVnd);
+    assert.equal(batchVat, sumAcceptedVatVnd);
+    assert.equal(batchGmv, sumAcceptedGmvVnd);
+
+    for (const req of bundle.biddingOperations.liveRequests) {
+      assert.ok(req.requestTelemetry, `Missing requestTelemetry on ${req.id}`);
+      assert.equal(req.requestTelemetry!.remaining_ttl_sec, req.expiresInMinutes * 60);
+    }
+    for (const rule of bundle.biddingOperations.autoBidRules) {
+      assert.ok(rule.guardrailTelemetry, `Missing guardrailTelemetry on ${rule.propertyId}`);
+      assert.equal(rule.guardrailTelemetry!.is_auto_bid_default, rule.enabled);
+    }
+  });
 });

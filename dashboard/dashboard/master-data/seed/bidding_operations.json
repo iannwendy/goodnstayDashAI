@@ -31,7 +31,32 @@
         "en": "Prefer high floor with morning breakfast for 2 adults.",
         "ko": "고층 객실 및 성인 2인 조식 포함 조건을 희망합니다."
       },
-      "status": "waiting_offer"
+      "status": "waiting_offer",
+      "requestTelemetry": {
+        "request_id": "19018",
+        "request_code": "REQ-9018",
+        "session_form_id": "SFM-LIVE-01",
+        "device_os": "ios",
+        "device_type": "mobile",
+        "booker_country": "VN",
+        "staying_country": "VN",
+        "staying_province": "VN-DN",
+        "staying_city": "VN-DN",
+        "staying_district": "VN-DN-SONTRA",
+        "staying_ward": "VN-DN-SONTRA-PHUOCMY",
+        "partner_count": 18,
+        "lead_time_days": 1,
+        "room_count": 1,
+        "adults": 2,
+        "children": 0,
+        "infants": 0,
+        "pets": 0,
+        "group_type": "couple",
+        "accommodation_type": "hotel",
+        "combo_signature": "hotel|deluxe|doubleQueenKing|breakfastIncluded+freeWifi+swimmingPool",
+        "criteria_count": 5,
+        "remaining_ttl_sec": 1080
+      }
     },
     {
       "id": "REQ-9017",
@@ -64,7 +89,32 @@
         "en": "Need quiet workspace desk and corporate tax receipt at check-out.",
         "ko": "조용한 업무용 책상과 체크아웃 시 법인 영수증 발급이 필요합니다."
       },
-      "status": "waiting_offer"
+      "status": "waiting_offer",
+      "requestTelemetry": {
+        "request_id": "19017",
+        "request_code": "REQ-9017",
+        "session_form_id": "SFM-LIVE-02",
+        "device_os": "android",
+        "device_type": "mobile",
+        "booker_country": "KR",
+        "staying_country": "VN",
+        "staying_province": "VN-DN",
+        "staying_city": "VN-DN",
+        "staying_district": "VN-DN-HAICHAU",
+        "staying_ward": "VN-DN-HAICHAU-HAICHAU1",
+        "partner_count": 22,
+        "lead_time_days": 2,
+        "room_count": 1,
+        "adults": 2,
+        "children": 0,
+        "infants": 0,
+        "pets": 0,
+        "group_type": "couple",
+        "accommodation_type": "hotel",
+        "combo_signature": "hotel|deluxe|twinSingle|breakfastIncluded+freeParking+freeWifi",
+        "criteria_count": 5,
+        "remaining_ttl_sec": 1440
+      }
     },
     {
       "id": "REQ-9016",
@@ -97,7 +147,32 @@
         "en": "Traveling with 2 kids, looking for connecting suite with pool access.",
         "ko": "어린이 2명 동반 가족으로 수영장 이용이 편한 커넥팅 룸을 원합니다."
       },
-      "status": "waiting_offer"
+      "status": "waiting_offer",
+      "requestTelemetry": {
+        "request_id": "19016",
+        "request_code": "REQ-9016",
+        "session_form_id": "SFM-LIVE-03",
+        "device_os": "web",
+        "device_type": "desktop",
+        "booker_country": "VN",
+        "staying_country": "VN",
+        "staying_province": "VN-DN",
+        "staying_city": "VN-DN",
+        "staying_district": "VN-DN-NGUHANHSON",
+        "staying_ward": "VN-DN-NHS-MYAN",
+        "partner_count": 15,
+        "lead_time_days": 1,
+        "room_count": 1,
+        "adults": 2,
+        "children": 2,
+        "infants": 0,
+        "pets": 0,
+        "group_type": "family",
+        "accommodation_type": "hotel",
+        "combo_signature": "hotel|family_suite|connectingBeds|breakfastIncluded+lateCheckout+swimmingPool",
+        "criteria_count": 5,
+        "remaining_ttl_sec": 1920
+      }
     },
     {
       "id": "REQ-9015",
@@ -137,7 +212,32 @@
         "bathtub",
         "late_checkout"
       ],
-      "respondedAt": "18:52"
+      "respondedAt": "18:52",
+      "requestTelemetry": {
+        "request_id": "19015",
+        "request_code": "REQ-9015",
+        "session_form_id": "SFM-LIVE-04",
+        "device_os": "ios",
+        "device_type": "mobile",
+        "booker_country": "US",
+        "staying_country": "VN",
+        "staying_province": "VN-DN",
+        "staying_city": "VN-DN",
+        "staying_district": "VN-DN-SONTRA",
+        "staying_ward": "VN-DN-SONTRA-PHUOCMY",
+        "partner_count": 18,
+        "lead_time_days": 3,
+        "room_count": 1,
+        "adults": 2,
+        "children": 0,
+        "infants": 0,
+        "pets": 0,
+        "group_type": "couple",
+        "accommodation_type": "hotel",
+        "combo_signature": "hotel|executive_suite|doubleQueenKing|breakfastIncluded+lateCheckout+soakingBathtub",
+        "criteria_count": 5,
+        "remaining_ttl_sec": 2400
+      }
     },
     {
       "id": "REQ-9014",
@@ -170,7 +270,32 @@
         "en": "Traveler seeking clean newly opened hotel for 2 weekend nights — high win chance with breakfast!",
         "ko": "신축급 깔끔한 주말 2박 숙소를 찾는 고객입니다 — 조식 포함 제안 시 수락 가능성이 높습니다!"
       },
-      "status": "waiting_offer"
+      "status": "waiting_offer",
+      "requestTelemetry": {
+        "request_id": "19014",
+        "request_code": "REQ-9014",
+        "session_form_id": "SFM-LIVE-05",
+        "device_os": "android",
+        "device_type": "tablet",
+        "booker_country": "KR",
+        "staying_country": "KR",
+        "staying_province": "KR-11",
+        "staying_city": "KR-11",
+        "staying_district": "KR-11-JUNGGU",
+        "staying_ward": "KR-11-JUNGGU-MYEONGDONG",
+        "partner_count": 14,
+        "lead_time_days": 1,
+        "room_count": 1,
+        "adults": 2,
+        "children": 0,
+        "infants": 0,
+        "pets": 0,
+        "group_type": "couple",
+        "accommodation_type": "hotel",
+        "combo_signature": "hotel|deluxe|doubleQueenKing|breakfastIncluded+freeWifi+lateCheckout",
+        "criteria_count": 5,
+        "remaining_ttl_sec": 900
+      }
     },
     {
       "id": "REQ-9013",
@@ -203,7 +328,32 @@
         "en": "Need spacious suite for 3 adults, arriving around 3:00 PM.",
         "ko": "성인 3명 투숙 가능한 넓은 스위트 희망, 15시경 체크인 예정."
       },
-      "status": "waiting_offer"
+      "status": "waiting_offer",
+      "requestTelemetry": {
+        "request_id": "19013",
+        "request_code": "REQ-9013",
+        "session_form_id": "SFM-LIVE-06",
+        "device_os": "web",
+        "device_type": "desktop",
+        "booker_country": "SG",
+        "staying_country": "KR",
+        "staying_province": "KR-11",
+        "staying_city": "KR-11",
+        "staying_district": "KR-11-JUNGGU",
+        "staying_ward": "KR-11-JUNGGU-MYEONGDONG",
+        "partner_count": 14,
+        "lead_time_days": 2,
+        "room_count": 1,
+        "adults": 3,
+        "children": 0,
+        "infants": 0,
+        "pets": 0,
+        "group_type": "group",
+        "accommodation_type": "hotel",
+        "combo_signature": "hotel|executive_suite|doubleQueenKing|breakfastIncluded+freeParking+freeWifi",
+        "criteria_count": 5,
+        "remaining_ttl_sec": 1680
+      }
     }
   ],
   "autoBidRules": [
@@ -220,7 +370,17 @@
         "pool"
       ],
       "targetResponseSeconds": 25,
-      "updatedAt": "2026-11-06 18:00"
+      "updatedAt": "2026-11-06 18:00",
+      "guardrailTelemetry": {
+        "is_auto_bid_default": true,
+        "min_match_rate_pct_trigger": 75,
+        "supported_option_keys": [
+          "breakfastIncluded",
+          "freeWifi",
+          "swimmingPool"
+        ],
+        "target_saving_vs_ota_pct": 16
+      }
     },
     {
       "propertyId": "br_songhan",
@@ -235,7 +395,17 @@
         "parking"
       ],
       "targetResponseSeconds": 30,
-      "updatedAt": "2026-11-06 17:30"
+      "updatedAt": "2026-11-06 17:30",
+      "guardrailTelemetry": {
+        "is_auto_bid_default": true,
+        "min_match_rate_pct_trigger": 72,
+        "supported_option_keys": [
+          "breakfastIncluded",
+          "freeParking",
+          "freeWifi"
+        ],
+        "target_saving_vs_ota_pct": 14
+      }
     },
     {
       "propertyId": "br_anthuong",
@@ -250,7 +420,17 @@
         "late_checkout"
       ],
       "targetResponseSeconds": 30,
-      "updatedAt": "2026-11-06 16:45"
+      "updatedAt": "2026-11-06 16:45",
+      "guardrailTelemetry": {
+        "is_auto_bid_default": true,
+        "min_match_rate_pct_trigger": 70,
+        "supported_option_keys": [
+          "breakfastIncluded",
+          "freeWifi",
+          "lateCheckout"
+        ],
+        "target_saving_vs_ota_pct": 17
+      }
     },
     {
       "propertyId": "stay_h11",
@@ -264,7 +444,16 @@
         "elevator"
       ],
       "targetResponseSeconds": 20,
-      "updatedAt": "2026-11-06 16:00"
+      "updatedAt": "2026-11-06 16:00",
+      "guardrailTelemetry": {
+        "is_auto_bid_default": true,
+        "min_match_rate_pct_trigger": 65,
+        "supported_option_keys": [
+          "elevator",
+          "freeWifi"
+        ],
+        "target_saving_vs_ota_pct": 12
+      }
     }
   ]
 }

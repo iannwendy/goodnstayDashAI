@@ -1,49 +1,318 @@
 {
   "schemaVersion": "4.0.0",
   "architecture": "Optibide Partner Hub • Full 7-Module Hotelier Suite • Pure-Business • Multi-Property • VI/EN/KO & VND/KRW/USD",
-  "generatedAt": "2026-11-15T22:45:00+07:00",
+  "generatedAt": "2026-11-18T10:35:00+07:00",
   "primaryReferenceDate": "2026-11-06",
+  "eventSheetsMetadata": {
+    "spreadsheetId": "1y8z02l_JBR5_qP41CV6Ex4HARZkA_SDpP64iRDma8QI",
+    "pricingFormulaInvariant": {
+      "partnerBasePrice": "netRevenueVnd = offeredRatePerNightVnd * nights (100% settled to hotel, 0% deduction)",
+      "platformFee15Pct": "round(base_price * 0.15)",
+      "vat10Pct": "round((base_price + platform_fee_amount) * 0.10)",
+      "travelerTotalGmv": "base_price + platform_fee_amount + vat_amount (1.265 * base_price)"
+    },
+    "entityLineage": "session_form_id -> request_id (request_code) -> offer_id -> view_session_id -> checkout_session_id -> payment_code -> booking_id (bookingCode) -> payoutBatchId",
+    "sheets": {
+      "booking_form": {
+        "eventsCount": 12,
+        "events": [
+          "booking_form_view",
+          "booking_form_start",
+          "booking_form_step_view",
+          "booking_destination_select",
+          "booking_stay_details_complete",
+          "booking_accommodation_type_select",
+          "booking_preference_change",
+          "booking_form_validation_error",
+          "booking_form_submit_attempt",
+          "booking_form_submit_result",
+          "booking_form_complete",
+          "booking_request_cancel"
+        ],
+        "mappedMasterTables": [
+          "bidRecords",
+          "biddingOperations",
+          "roomInventory",
+          "hubConfig"
+        ]
+      },
+      "offer_listing": {
+        "eventsCount": 10,
+        "events": [
+          "offer_listing_view",
+          "offer_card_impression",
+          "offer_card_photo_slide",
+          "offer_room_option_switch",
+          "offer_card_ota_expand",
+          "offer_browse_click",
+          "offer_card_select_click",
+          "offer_reject_attempt",
+          "offer_reject_confirm",
+          "offer_ttl_expired"
+        ],
+        "mappedMasterTables": [
+          "bidRecords",
+          "biddingOperations",
+          "marketingCampaigns"
+        ]
+      },
+      "explore_stays": {
+        "eventsCount": 12,
+        "events": [
+          "explore_stay_modal_view",
+          "explore_stay_room_carousel_interact",
+          "explore_stay_description_engage",
+          "explore_stay_scroll_summary",
+          "explore_stay_ota_compare_click",
+          "explore_stay_gallery_open",
+          "explore_stay_gallery_tab_switch",
+          "explore_stay_media_click",
+          "explore_stay_map_interact",
+          "explore_stay_review_inspect",
+          "explore_stay_select_click",
+          "explore_stay_modal_close"
+        ],
+        "mappedMasterTables": [
+          "bidRecords",
+          "hubConfig",
+          "roomInventory"
+        ]
+      },
+      "payment_form": {
+        "eventsCount": 11,
+        "events": [
+          "payment_form_view",
+          "payment_staying_info_update",
+          "payment_gateway_select",
+          "payment_fx_quote_result",
+          "payment_submit_attempt",
+          "payment_gateway_window_open",
+          "payment_session_interrupted",
+          "payment_recovery_action",
+          "payment_complete",
+          "payment_fail",
+          "payment_receipt_action"
+        ],
+        "mappedMasterTables": [
+          "bidRecords",
+          "payoutLedgers",
+          "hubInbox"
+        ]
+      }
+    }
+  },
   "tables": {
     "hubConfig": {
       "file": "partner_hub_config.json",
       "pk": "schemaVersion",
-      "description": "Cấu hình cổng đối tác Optibide, tỷ giá VND/KRW/USD, hồ sơ ca trực (Quản lý & Lễ tân), kỳ lọc Today/7D/30D và 4 cơ sở"
+      "mappedSheets": [
+        "booking_form",
+        "offer_listing",
+        "explore_stays",
+        "payment_form"
+      ],
+      "sourceEvents": [
+        "booking_destination_select",
+        "offer_card_impression",
+        "explore_stay_modal_view",
+        "explore_stay_gallery_tab_switch",
+        "explore_stay_review_inspect",
+        "payment_fx_quote_result"
+      ],
+      "mappedParameters": [
+        "property_id",
+        "staying_country",
+        "staying_province",
+        "staying_city",
+        "staying_district",
+        "staying_ward",
+        "partner_count",
+        "star_rating",
+        "review_score",
+        "review_count",
+        "content_category",
+        "exchange_rate"
+      ],
+      "description": "Cấu hình cổng đối tác Optibide, tỷ giá VND/KRW/USD, hồ sơ ca trực (Quản lý & Lễ tân), kỳ lọc Today/7D/30D và 4 cơ sở kèm định danh marketplaceIdentity"
     },
     "bidRecords": {
       "file": "bid_records.json",
       "pk": "id",
       "fk": "propertyId -> hubConfig.properties.id, roomTypeId -> roomInventory.roomTypes.id, payoutBatchId -> payoutLedgers.batches.id",
-      "description": "Lịch sử 143 lượt báo giá & 29 phiếu đặt phòng hoàn tất (#43..#71) liên kết trực tiếp lịch phòng và kỳ đối soát"
+      "mappedSheets": [
+        "booking_form",
+        "offer_listing",
+        "explore_stays",
+        "payment_form"
+      ],
+      "sourceEvents": [
+        "booking_form_complete",
+        "booking_request_cancel",
+        "offer_card_impression",
+        "offer_browse_click",
+        "offer_card_select_click",
+        "offer_reject_confirm",
+        "offer_ttl_expired",
+        "explore_stay_modal_view",
+        "explore_stay_scroll_summary",
+        "explore_stay_media_click",
+        "explore_stay_select_click",
+        "explore_stay_modal_close",
+        "payment_form_view",
+        "payment_session_interrupted",
+        "payment_recovery_action",
+        "payment_complete",
+        "payment_receipt_action"
+      ],
+      "mappedParameters": [
+        "session_form_id",
+        "request_id",
+        "request_code",
+        "staying_ward",
+        "device_type",
+        "device_os",
+        "offer_id",
+        "card_position",
+        "total_offers_count",
+        "view_session_id",
+        "checkout_session_id",
+        "payment_code",
+        "booking_id",
+        "match_rate_pct",
+        "unmatched_keys",
+        "elapsed_since_bid_sec",
+        "browse_elapsed_sec_list",
+        "scroll_down_count",
+        "scroll_up_count",
+        "base_price",
+        "platform_fee_amount",
+        "vat_amount",
+        "total_booking_amount",
+        "is_first_payment",
+        "time_since_signup_hours",
+        "days_since_prev_payment"
+      ],
+      "description": "Lịch sử 143 lượt báo giá & 29 phiếu đặt phòng hoàn tất (#43..#71) gắn đầy đủ telemetry xuyên suốt 4 sheets (booking_form -> offer_listing -> explore_stays -> payment_form)"
     },
     "hubInbox": {
       "file": "hub_inbox.json",
       "pk": "messages.id / notifications.id / quickReplies.id",
       "fk": "propertyId -> hubConfig.properties.id, bookingCode -> bidRecords.bookingCode",
-      "description": "Hội thoại tin nhắn khách đặt phòng hai chiều, mẫu phản hồi nhanh lễ tân & thông báo vận hành"
+      "mappedSheets": [
+        "payment_form",
+        "booking_form"
+      ],
+      "sourceEvents": [
+        "payment_staying_info_update",
+        "payment_complete",
+        "payment_receipt_action"
+      ],
+      "mappedParameters": [
+        "booking_id",
+        "property_id",
+        "guest_same_as_booker",
+        "post_pay_cta"
+      ],
+      "description": "Hội thoại tin nhắn khách đặt phòng hai chiều, mẫu phản hồi nhanh lễ tân & thông báo vận hành hậu thanh toán"
     },
     "roomInventory": {
       "file": "room_inventory.json",
       "pk": "roomTypes.id / units.unitId / calendarBlocks.id",
       "fk": "propertyId -> hubConfig.properties.id, activeBookingCode -> bidRecords.bookingCode",
-      "description": "Danh mục 15 hạng phòng, 48 phòng vật lý thực tế (#101..#130, #201..#218), trạng thái buồng phòng & lịch khóa ngày"
+      "mappedSheets": [
+        "booking_form",
+        "offer_listing",
+        "explore_stays"
+      ],
+      "sourceEvents": [
+        "booking_stay_details_complete",
+        "booking_preference_change",
+        "offer_room_option_switch",
+        "explore_stay_room_carousel_interact",
+        "explore_stay_media_click"
+      ],
+      "mappedParameters": [
+        "room_id",
+        "room_type_key",
+        "combo_signature",
+        "check_in_date",
+        "check_out_date",
+        "stay_nights",
+        "room_count"
+      ],
+      "description": "Danh mục 15 hạng phòng (kèm catalogMapping ánh xạ combo_signature), 48 phòng vật lý thực tế (#101..#130, #201..#218), trạng thái buồng phòng & lịch khóa ngày"
     },
     "payoutLedgers": {
       "file": "payout_ledgers.json",
       "pk": "bankAccounts.propertyId / batches.id",
       "fk": "propertyId -> hubConfig.properties.id, bookingCodes -> bidRecords.bookingCode",
-      "description": "Tài khoản ngân hàng nhận tiền từng cơ sở & các kỳ sao kê đối soát khớp 100% với doanh thu thực nhận"
+      "mappedSheets": [
+        "payment_form"
+      ],
+      "sourceEvents": [
+        "payment_fx_quote_result",
+        "payment_complete",
+        "payment_fail"
+      ],
+      "mappedParameters": [
+        "payment_code",
+        "booking_id",
+        "booking_currency",
+        "base_price",
+        "platform_fee_amount",
+        "vat_amount",
+        "total_booking_amount"
+      ],
+      "description": "Tài khoản ngân hàng nhận tiền từng cơ sở & 12 kỳ sao kê đối soát khớp 100% doanh thu thực nhận (66.360.000 ₫) kèm đối chiếu phí sàn 15% & VAT 10%"
     },
     "biddingOperations": {
       "file": "bidding_operations.json",
       "pk": "liveRequests.id / autoBidRules.propertyId",
       "fk": "propertyId -> hubConfig.properties.id",
-      "description": "Hàng đợi yêu cầu hỏi phòng trực tiếp của khách & cấu hình khung giá sàn Báo giá tự động theo từng cơ sở"
+      "mappedSheets": [
+        "booking_form",
+        "offer_listing"
+      ],
+      "sourceEvents": [
+        "booking_form_complete",
+        "offer_listing_view",
+        "offer_card_impression",
+        "offer_ttl_expired"
+      ],
+      "mappedParameters": [
+        "request_id",
+        "request_code",
+        "session_form_id",
+        "is_auto_bid",
+        "match_rate_pct",
+        "remaining_ttl_sec",
+        "combo_signature",
+        "saving_pct"
+      ],
+      "description": "Hàng đợi yêu cầu hỏi phòng trực tiếp 60 phút của khách (kèm requestTelemetry) & cấu hình khung giá sàn Báo giá tự động theo từng cơ sở"
     },
     "marketingCampaigns": {
       "file": "marketing_campaigns.json",
       "pk": "flashDeals.id / upsellOffers.id",
       "fk": "propertyId -> hubConfig.properties.id",
-      "description": "Chiến dịch Ưu đãi giờ chót & Gói nâng hạng phòng / dịch vụ cộng thêm gia tăng doanh thu"
+      "mappedSheets": [
+        "booking_form",
+        "offer_listing",
+        "explore_stays"
+      ],
+      "sourceEvents": [
+        "booking_stay_details_complete",
+        "offer_card_ota_expand",
+        "explore_stay_ota_compare_click"
+      ],
+      "mappedParameters": [
+        "lead_time_days",
+        "stay_nights",
+        "saving_pct",
+        "offer_total_price",
+        "ota_price"
+      ],
+      "description": "Chiến dịch Ưu đãi giờ chót (nhắm khách lead_time_days = 0) & Gói nâng hạng phòng / dịch vụ cộng thêm gia tăng doanh thu"
     }
   }
 }

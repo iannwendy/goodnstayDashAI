@@ -23,7 +23,19 @@
         "elevator",
         "ott_tv"
       ],
-      "biddingEnabled": true
+      "biddingEnabled": true,
+      "catalogMapping": {
+        "room_id": "RT-MK-SUP",
+        "room_type_key": "standard",
+        "bed_type_key": "doubleQueenKing",
+        "service_option_keys": [
+          "elevator",
+          "freeWifi",
+          "smartOttTv"
+        ],
+        "combo_signature": "hotel|standard|doubleQueenKing|elevator+freeWifi+smartOttTv",
+        "gallery_room_photos_count": 4
+      }
     },
     {
       "id": "RT-MK-DLX",
@@ -49,7 +61,20 @@
         "pool",
         "elevator"
       ],
-      "biddingEnabled": true
+      "biddingEnabled": true,
+      "catalogMapping": {
+        "room_id": "RT-MK-DLX",
+        "room_type_key": "deluxe",
+        "bed_type_key": "twinSingle",
+        "service_option_keys": [
+          "breakfastIncluded",
+          "elevator",
+          "freeWifi",
+          "swimmingPool"
+        ],
+        "combo_signature": "hotel|deluxe|twinSingle|breakfastIncluded+elevator+freeWifi+swimmingPool",
+        "gallery_room_photos_count": 4
+      }
     },
     {
       "id": "RT-MK-FAM",
@@ -76,7 +101,21 @@
         "parking",
         "bathtub"
       ],
-      "biddingEnabled": true
+      "biddingEnabled": true,
+      "catalogMapping": {
+        "room_id": "RT-MK-FAM",
+        "room_type_key": "family_suite",
+        "bed_type_key": "connectingBeds",
+        "service_option_keys": [
+          "breakfastIncluded",
+          "freeParking",
+          "freeWifi",
+          "soakingBathtub",
+          "swimmingPool"
+        ],
+        "combo_signature": "hotel|family_suite|connectingBeds|breakfastIncluded+freeParking+freeWifi+soakingBathtub+swimmingPool",
+        "gallery_room_photos_count": 6
+      }
     },
     {
       "id": "RT-MK-EXE",
@@ -103,7 +142,21 @@
         "bathtub",
         "late_checkout"
       ],
-      "biddingEnabled": true
+      "biddingEnabled": true,
+      "catalogMapping": {
+        "room_id": "RT-MK-EXE",
+        "room_type_key": "executive_suite",
+        "bed_type_key": "doubleQueenKing",
+        "service_option_keys": [
+          "breakfastIncluded",
+          "freeWifi",
+          "lateCheckout",
+          "soakingBathtub",
+          "swimmingPool"
+        ],
+        "combo_signature": "hotel|executive_suite|doubleQueenKing|breakfastIncluded+freeWifi+lateCheckout+soakingBathtub+swimmingPool",
+        "gallery_room_photos_count": 6
+      }
     },
     {
       "id": "RT-SH-SUP",
@@ -128,7 +181,19 @@
         "elevator",
         "ott_tv"
       ],
-      "biddingEnabled": true
+      "biddingEnabled": true,
+      "catalogMapping": {
+        "room_id": "RT-SH-SUP",
+        "room_type_key": "standard",
+        "bed_type_key": "doubleQueenKing",
+        "service_option_keys": [
+          "elevator",
+          "freeWifi",
+          "smartOttTv"
+        ],
+        "combo_signature": "hotel|standard|doubleQueenKing|elevator+freeWifi+smartOttTv",
+        "gallery_room_photos_count": 4
+      }
     },
     {
       "id": "RT-SH-DLX",
@@ -154,7 +219,20 @@
         "elevator",
         "parking"
       ],
-      "biddingEnabled": true
+      "biddingEnabled": true,
+      "catalogMapping": {
+        "room_id": "RT-SH-DLX",
+        "room_type_key": "deluxe",
+        "bed_type_key": "twinSingle",
+        "service_option_keys": [
+          "breakfastIncluded",
+          "elevator",
+          "freeParking",
+          "freeWifi"
+        ],
+        "combo_signature": "hotel|deluxe|twinSingle|breakfastIncluded+elevator+freeParking+freeWifi",
+        "gallery_room_photos_count": 4
+      }
     },
     {
       "id": "RT-SH-FAM",
@@ -180,7 +258,20 @@
         "parking",
         "bathtub"
       ],
-      "biddingEnabled": true
+      "biddingEnabled": true,
+      "catalogMapping": {
+        "room_id": "RT-SH-FAM",
+        "room_type_key": "family_suite",
+        "bed_type_key": "connectingBeds",
+        "service_option_keys": [
+          "breakfastIncluded",
+          "freeParking",
+          "freeWifi",
+          "soakingBathtub"
+        ],
+        "combo_signature": "hotel|family_suite|connectingBeds|breakfastIncluded+freeParking+freeWifi+soakingBathtub",
+        "gallery_room_photos_count": 6
+      }
     },
     {
       "id": "RT-SH-EXE",
@@ -207,7 +298,21 @@
         "late_checkout",
         "ott_tv"
       ],
-      "biddingEnabled": true
+      "biddingEnabled": true,
+      "catalogMapping": {
+        "room_id": "RT-SH-EXE",
+        "room_type_key": "executive_suite",
+        "bed_type_key": "doubleQueenKing",
+        "service_option_keys": [
+          "breakfastIncluded",
+          "freeWifi",
+          "lateCheckout",
+          "smartOttTv",
+          "soakingBathtub"
+        ],
+        "combo_signature": "hotel|executive_suite|doubleQueenKing|breakfastIncluded+freeWifi+lateCheckout+smartOttTv+soakingBathtub",
+        "gallery_room_photos_count": 6
+      }
     },
     {
       "id": "RT-AT-SUP",
@@ -232,7 +337,19 @@
         "elevator",
         "ott_tv"
       ],
-      "biddingEnabled": true
+      "biddingEnabled": true,
+      "catalogMapping": {
+        "room_id": "RT-AT-SUP",
+        "room_type_key": "standard",
+        "bed_type_key": "doubleQueenKing",
+        "service_option_keys": [
+          "elevator",
+          "freeWifi",
+          "smartOttTv"
+        ],
+        "combo_signature": "hotel|standard|doubleQueenKing|elevator+freeWifi+smartOttTv",
+        "gallery_room_photos_count": 4
+      }
     },
     {
       "id": "RT-AT-DLX",
@@ -258,7 +375,20 @@
         "pool",
         "elevator"
       ],
-      "biddingEnabled": true
+      "biddingEnabled": true,
+      "catalogMapping": {
+        "room_id": "RT-AT-DLX",
+        "room_type_key": "deluxe",
+        "bed_type_key": "twinSingle",
+        "service_option_keys": [
+          "breakfastIncluded",
+          "elevator",
+          "freeWifi",
+          "swimmingPool"
+        ],
+        "combo_signature": "hotel|deluxe|twinSingle|breakfastIncluded+elevator+freeWifi+swimmingPool",
+        "gallery_room_photos_count": 4
+      }
     },
     {
       "id": "RT-AT-FAM",
@@ -284,7 +414,20 @@
         "pool",
         "parking"
       ],
-      "biddingEnabled": true
+      "biddingEnabled": true,
+      "catalogMapping": {
+        "room_id": "RT-AT-FAM",
+        "room_type_key": "family_suite",
+        "bed_type_key": "connectingBeds",
+        "service_option_keys": [
+          "breakfastIncluded",
+          "freeParking",
+          "freeWifi",
+          "swimmingPool"
+        ],
+        "combo_signature": "hotel|family_suite|connectingBeds|breakfastIncluded+freeParking+freeWifi+swimmingPool",
+        "gallery_room_photos_count": 6
+      }
     },
     {
       "id": "RT-AT-EXE",
@@ -311,7 +454,21 @@
         "bathtub",
         "late_checkout"
       ],
-      "biddingEnabled": true
+      "biddingEnabled": true,
+      "catalogMapping": {
+        "room_id": "RT-AT-EXE",
+        "room_type_key": "executive_suite",
+        "bed_type_key": "doubleQueenKing",
+        "service_option_keys": [
+          "breakfastIncluded",
+          "freeWifi",
+          "lateCheckout",
+          "soakingBathtub",
+          "swimmingPool"
+        ],
+        "combo_signature": "hotel|executive_suite|doubleQueenKing|breakfastIncluded+freeWifi+lateCheckout+soakingBathtub+swimmingPool",
+        "gallery_room_photos_count": 6
+      }
     },
     {
       "id": "RT-H11-STD",
@@ -336,7 +493,19 @@
         "elevator",
         "ott_tv"
       ],
-      "biddingEnabled": true
+      "biddingEnabled": true,
+      "catalogMapping": {
+        "room_id": "RT-H11-STD",
+        "room_type_key": "standard",
+        "bed_type_key": "doubleQueenKing",
+        "service_option_keys": [
+          "elevator",
+          "freeWifi",
+          "smartOttTv"
+        ],
+        "combo_signature": "hotel|standard|doubleQueenKing|elevator+freeWifi+smartOttTv",
+        "gallery_room_photos_count": 2
+      }
     },
     {
       "id": "RT-H11-DLX",
@@ -362,7 +531,20 @@
         "elevator",
         "parking"
       ],
-      "biddingEnabled": true
+      "biddingEnabled": true,
+      "catalogMapping": {
+        "room_id": "RT-H11-DLX",
+        "room_type_key": "deluxe",
+        "bed_type_key": "twinSingle",
+        "service_option_keys": [
+          "breakfastIncluded",
+          "elevator",
+          "freeParking",
+          "freeWifi"
+        ],
+        "combo_signature": "hotel|deluxe|twinSingle|breakfastIncluded+elevator+freeParking+freeWifi",
+        "gallery_room_photos_count": 2
+      }
     },
     {
       "id": "RT-H11-SUI",
@@ -389,7 +571,21 @@
         "late_checkout",
         "parking"
       ],
-      "biddingEnabled": true
+      "biddingEnabled": true,
+      "catalogMapping": {
+        "room_id": "RT-H11-SUI",
+        "room_type_key": "executive_suite",
+        "bed_type_key": "doubleQueenKing",
+        "service_option_keys": [
+          "breakfastIncluded",
+          "freeParking",
+          "freeWifi",
+          "lateCheckout",
+          "soakingBathtub"
+        ],
+        "combo_signature": "hotel|executive_suite|doubleQueenKing|breakfastIncluded+freeParking+freeWifi+lateCheckout+soakingBathtub",
+        "gallery_room_photos_count": 2
+      }
     }
   ],
   "units": [

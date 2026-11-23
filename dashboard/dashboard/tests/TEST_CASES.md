@@ -30,6 +30,8 @@ Tài liệu này liệt kê toàn bộ các nhóm Test Case tự động bảo v
 | `TC-DATA-07` | Bất biến `payout_ledgers.json`: `4` tài khoản ngân hàng đã xác thực & `12` kỳ sao kê đối soát gom đúng 1-1 toàn bộ `29` đơn `#43..#71` | Tổng tiền thực nhận các kỳ sao kê bằng chính xác `66.360.000 ₫` |
 | `TC-DATA-08` | Bất biến `bidding_operations.json`: hàng đợi yêu cầu đặt phòng trực tiếp (bao gồm yêu cầu mở hàng cho `stay_h11`) & quy tắc Báo giá tự động 24/7 khớp `autoBidEnabled` từng cơ sở | Đầy đủ thông tin ngân sách khách đề xuất & giá sàn bảo vệ |
 | `TC-DATA-09` | Bất biến `marketing_campaigns.json`: chiến dịch *Ưu đãi giờ chót* (`flashDeals`) & *Gói nâng hạng / Dịch vụ cộng thêm* (`upsellOffers`) trên cả 4 cơ sở | `dealRateVnd < originalRateVnd`, đầy đủ bản dịch `vi`/`en`/`ko` |
+| `TC-DATA-10` | Bất biến `schema_manifest.json` (`eventSheetsMetadata` & ánh xạ bảng): đối chiếu đủ 4 sheets (`booking_form`, `offer_listing`, `explore_stays`, `payment_form` = `45` events) vào 7 bảng Master Data | `mappedSheets`, `sourceEvents` & `mappedParameters` đầy đủ 100% trên cả 7 bảng, đồng bộ `seed/` |
+| `TC-DATA-11` | Toàn vẹn `telemetry` 4-sheet trên `143` `bid_records`, `marketplaceIdentity` (4 cơ sở), `catalogMapping` (15 hạng phòng), `settlementBreakdown` (12 kỳ sao kê) & Distribution Curve (`browse_elapsed_sec_list`) | Khớp 100% công thức `GMV = base_price + 15% phí sàn + 10% VAT` (`66.360.000 ₫` giá gốc đối tác), `browse_click_count === browse_elapsed_sec_list.length` |
 
 ---
 

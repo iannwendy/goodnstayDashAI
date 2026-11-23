@@ -77,6 +77,16 @@
         "vi": "Đơn mới phát sinh hôm nay — sẽ gộp vào kỳ đối soát ngày 10/11/2026",
         "en": "New bookings paid today — scheduled for Nov 10, 2026 cycle",
         "ko": "오늘 결제된 신규 예약 — 2026.11.10 정산 주기 포함 예정"
+      },
+      "settlementBreakdown": {
+        "payment_codes": [
+          "PM-2026-0068"
+        ],
+        "booking_currency": "VND",
+        "partner_base_price_vnd": 2850000,
+        "platform_fee_15pct_vnd": 427500,
+        "vat_10pct_vnd": 327750,
+        "total_booking_gmv_vnd": 3605250
       }
     },
     {
@@ -100,6 +110,18 @@
         "vi": "Đơn mới phát sinh hôm nay — sẽ gộp vào kỳ đối soát ngày 10/11/2026",
         "en": "New bookings paid today — scheduled for Nov 10, 2026 cycle",
         "ko": "오늘 결제된 신규 예약 — 2026.11.10 정산 주기 포함 예정"
+      },
+      "settlementBreakdown": {
+        "payment_codes": [
+          "PM-2026-0071",
+          "PM-2026-0070",
+          "PM-2026-0067"
+        ],
+        "booking_currency": "VND",
+        "partner_base_price_vnd": 5600000,
+        "platform_fee_15pct_vnd": 840000,
+        "vat_10pct_vnd": 644000,
+        "total_booking_gmv_vnd": 7084000
       }
     },
     {
@@ -121,6 +143,16 @@
         "vi": "Đơn mới phát sinh hôm nay — sẽ gộp vào kỳ đối soát ngày 10/11/2026",
         "en": "New bookings paid today — scheduled for Nov 10, 2026 cycle",
         "ko": "오늘 결제된 신규 예약 — 2026.11.10 정산 주기 포함 예정"
+      },
+      "settlementBreakdown": {
+        "payment_codes": [
+          "PM-2026-0069"
+        ],
+        "booking_currency": "VND",
+        "partner_base_price_vnd": 3400000,
+        "platform_fee_15pct_vnd": 510000,
+        "vat_10pct_vnd": 391000,
+        "total_booking_gmv_vnd": 4301000
       }
     },
     {
@@ -143,6 +175,17 @@
         "vi": "Ngân hàng đang xử lý lệnh chuyển — dự kiến nhận trong ngày 07/11/2026",
         "en": "Bank transfer queued — expected arrival on Nov 07, 2026",
         "ko": "은행 이체 처리 중 — 2026.11.07 입금 예정"
+      },
+      "settlementBreakdown": {
+        "payment_codes": [
+          "PM-2026-0066",
+          "PM-2026-0064"
+        ],
+        "booking_currency": "VND",
+        "partner_base_price_vnd": 5060000,
+        "platform_fee_15pct_vnd": 759000,
+        "vat_10pct_vnd": 581900,
+        "total_booking_gmv_vnd": 6400900
       },
       "bankTransferRef": "PENDING-261107-SH"
     },
@@ -167,6 +210,17 @@
         "en": "Bank transfer queued — expected arrival on Nov 07, 2026",
         "ko": "은행 이체 처리 중 — 2026.11.07 입금 예정"
       },
+      "settlementBreakdown": {
+        "payment_codes": [
+          "PM-2026-0063",
+          "PM-2026-0062"
+        ],
+        "booking_currency": "VND",
+        "partner_base_price_vnd": 2810000,
+        "platform_fee_15pct_vnd": 421500,
+        "vat_10pct_vnd": 323150,
+        "total_booking_gmv_vnd": 3554650
+      },
       "bankTransferRef": "PENDING-261107-MK"
     },
     {
@@ -188,6 +242,16 @@
         "vi": "Ngân hàng đang xử lý lệnh chuyển — dự kiến nhận trong ngày 07/11/2026",
         "en": "Bank transfer queued — expected arrival on Nov 07, 2026",
         "ko": "은행 이체 처리 중 — 2026.11.07 입금 예정"
+      },
+      "settlementBreakdown": {
+        "payment_codes": [
+          "PM-2026-0065"
+        ],
+        "booking_currency": "VND",
+        "partner_base_price_vnd": 2040000,
+        "platform_fee_15pct_vnd": 306000,
+        "vat_10pct_vnd": 234600,
+        "total_booking_gmv_vnd": 2580600
       },
       "bankTransferRef": "PENDING-261107-AT"
     },
@@ -214,6 +278,19 @@
         "en": "Reconciled and credited in early-November payout run",
         "ko": "11월 초 정기 정산 주기에 정상 입금 완료"
       },
+      "settlementBreakdown": {
+        "payment_codes": [
+          "PM-2026-0061",
+          "PM-2026-0058",
+          "PM-2026-0056",
+          "PM-2026-0053"
+        ],
+        "booking_currency": "VND",
+        "partner_base_price_vnd": 9560000,
+        "platform_fee_15pct_vnd": 1434000,
+        "vat_10pct_vnd": 1099400,
+        "total_booking_gmv_vnd": 12093400
+      },
       "paidAtDate": "2026-11-04",
       "bankTransferRef": "VCB-261104-SH"
     },
@@ -238,6 +315,18 @@
         "vi": "Đã đối soát & nổi tiền hoàn tất trong kỳ đầu tháng 11",
         "en": "Reconciled and credited in early-November payout run",
         "ko": "11월 초 정기 정산 주기에 정상 입금 완료"
+      },
+      "settlementBreakdown": {
+        "payment_codes": [
+          "PM-2026-0060",
+          "PM-2026-0059",
+          "PM-2026-0057"
+        ],
+        "booking_currency": "VND",
+        "partner_base_price_vnd": 7080000,
+        "platform_fee_15pct_vnd": 1062000,
+        "vat_10pct_vnd": 814200,
+        "total_booking_gmv_vnd": 8956200
       },
       "paidAtDate": "2026-11-04",
       "bankTransferRef": "VCB-261104-MK"
@@ -264,6 +353,18 @@
         "en": "Reconciled and credited in early-November payout run",
         "ko": "11월 초 정기 정산 주기에 정상 입금 완료"
       },
+      "settlementBreakdown": {
+        "payment_codes": [
+          "PM-2026-0055",
+          "PM-2026-0054",
+          "PM-2026-0052"
+        ],
+        "booking_currency": "VND",
+        "partner_base_price_vnd": 6240000,
+        "platform_fee_15pct_vnd": 936000,
+        "vat_10pct_vnd": 717600,
+        "total_booking_gmv_vnd": 7893600
+      },
       "paidAtDate": "2026-11-04",
       "bankTransferRef": "VCB-261104-AT"
     },
@@ -287,6 +388,17 @@
         "vi": "Đã chuyển khoản đủ 100% về tài khoản ngân hàng của cơ sở",
         "en": "100% net room payout settled to property bank account",
         "ko": "호텔 지정 계좌로 100% 정산 입금 완료"
+      },
+      "settlementBreakdown": {
+        "payment_codes": [
+          "PM-2026-0049",
+          "PM-2026-0044"
+        ],
+        "booking_currency": "VND",
+        "partner_base_price_vnd": 5280000,
+        "platform_fee_15pct_vnd": 792000,
+        "vat_10pct_vnd": 607200,
+        "total_booking_gmv_vnd": 6679200
       },
       "paidAtDate": "2026-10-26",
       "bankTransferRef": "VCB-261026-SH"
@@ -315,6 +427,20 @@
         "en": "100% net room payout settled to property bank account",
         "ko": "호텔 지정 계좌로 100% 정산 입금 완료"
       },
+      "settlementBreakdown": {
+        "payment_codes": [
+          "PM-2026-0048",
+          "PM-2026-0050",
+          "PM-2026-0047",
+          "PM-2026-0045",
+          "PM-2026-0043"
+        ],
+        "booking_currency": "VND",
+        "partner_base_price_vnd": 12800000,
+        "platform_fee_15pct_vnd": 1920000,
+        "vat_10pct_vnd": 1472000,
+        "total_booking_gmv_vnd": 16192000
+      },
       "paidAtDate": "2026-10-26",
       "bankTransferRef": "VCB-261026-MK"
     },
@@ -338,6 +464,17 @@
         "vi": "Đã chuyển khoản đủ 100% về tài khoản ngân hàng của cơ sở",
         "en": "100% net room payout settled to property bank account",
         "ko": "호텔 지정 계좌로 100% 정산 입금 완료"
+      },
+      "settlementBreakdown": {
+        "payment_codes": [
+          "PM-2026-0051",
+          "PM-2026-0046"
+        ],
+        "booking_currency": "VND",
+        "partner_base_price_vnd": 3640000,
+        "platform_fee_15pct_vnd": 546000,
+        "vat_10pct_vnd": 418600,
+        "total_booking_gmv_vnd": 4604600
       },
       "paidAtDate": "2026-10-26",
       "bankTransferRef": "VCB-261026-AT"

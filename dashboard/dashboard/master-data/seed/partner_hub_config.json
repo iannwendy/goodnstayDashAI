@@ -133,7 +133,28 @@
       },
       "hotline": "+84 236 3928 101",
       "checkInTime": "14:00",
-      "checkOutTime": "12:00"
+      "checkOutTime": "12:00",
+      "marketplaceIdentity": {
+        "property_id": "br_mykhe",
+        "staying_country": "VN",
+        "staying_province": "VN-DN",
+        "staying_city": "VN-DN",
+        "staying_district": "VN-DN-SONTRA",
+        "staying_ward": "VN-DN-SONTRA-PHUOCMY",
+        "accommodation_type": "hotel",
+        "star_rating": 4,
+        "review_score": 4.9,
+        "review_count": 64,
+        "partner_count_in_district": 18,
+        "gallery_media_counts": {
+          "videos": 2,
+          "property_views": 6,
+          "facilities": 8,
+          "dining": 5,
+          "rooms": 14,
+          "nearby_attractions": 4
+        }
+      }
     },
     {
       "id": "br_songhan",
@@ -184,7 +205,28 @@
       },
       "hotline": "+84 236 3889 202",
       "checkInTime": "14:00",
-      "checkOutTime": "12:00"
+      "checkOutTime": "12:00",
+      "marketplaceIdentity": {
+        "property_id": "br_songhan",
+        "staying_country": "VN",
+        "staying_province": "VN-DN",
+        "staying_city": "VN-DN",
+        "staying_district": "VN-DN-HAICHAU",
+        "staying_ward": "VN-DN-HAICHAU-HAICHAU1",
+        "accommodation_type": "hotel",
+        "star_rating": 4,
+        "review_score": 4.8,
+        "review_count": 46,
+        "partner_count_in_district": 22,
+        "gallery_media_counts": {
+          "videos": 1,
+          "property_views": 5,
+          "facilities": 6,
+          "dining": 4,
+          "rooms": 12,
+          "nearby_attractions": 5
+        }
+      }
     },
     {
       "id": "br_anthuong",
@@ -235,7 +277,28 @@
       },
       "hotline": "+84 236 3954 303",
       "checkInTime": "14:00",
-      "checkOutTime": "12:00"
+      "checkOutTime": "12:00",
+      "marketplaceIdentity": {
+        "property_id": "br_anthuong",
+        "staying_country": "VN",
+        "staying_province": "VN-DN",
+        "staying_city": "VN-DN",
+        "staying_district": "VN-DN-NGUHANHSON",
+        "staying_ward": "VN-DN-NHS-MYAN",
+        "accommodation_type": "hotel",
+        "star_rating": 4,
+        "review_score": 4.7,
+        "review_count": 32,
+        "partner_count_in_district": 15,
+        "gallery_media_counts": {
+          "videos": 1,
+          "property_views": 5,
+          "facilities": 7,
+          "dining": 4,
+          "rooms": 10,
+          "nearby_attractions": 4
+        }
+      }
     },
     {
       "id": "stay_h11",
@@ -286,7 +349,28 @@
       },
       "hotline": "+82 2-6014-8811",
       "checkInTime": "14:00",
-      "checkOutTime": "12:00"
+      "checkOutTime": "12:00",
+      "marketplaceIdentity": {
+        "property_id": "stay_h11",
+        "staying_country": "KR",
+        "staying_province": "KR-11",
+        "staying_city": "KR-11",
+        "staying_district": "KR-11-JUNGGU",
+        "staying_ward": "KR-11-JUNGGU-MYEONGDONG",
+        "accommodation_type": "hotel",
+        "star_rating": 3,
+        "review_score": 0.0,
+        "review_count": 0,
+        "partner_count_in_district": 14,
+        "gallery_media_counts": {
+          "videos": 0,
+          "property_views": 3,
+          "facilities": 4,
+          "dining": 2,
+          "rooms": 6,
+          "nearby_attractions": 0
+        }
+      }
     }
   ],
   "staffProfiles": [
