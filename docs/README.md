@@ -26,6 +26,7 @@ docs/
 - [`2026-11-23-bigquery-ga4-simulation-bff-and-rbac-viewport-design.md`](./ga4-bigquery/2026-11-23-bigquery-ga4-simulation-bff-and-rbac-viewport-design.md) — Đặc tả thiết kế kỹ thuật Phương án B: Giả lập dữ liệu 30 ngày trên GCP BigQuery (`aevo-512307`), tách microservice `bigquery-bff` (`:4000`), phân quyền `userID × branchID` và tích hợp `BigQuery Live Viewport` vào Dashboard.
 
 ### 2. Bảo Mật, Phân Quyền Đa Chi Nhánh & OWASP API (`security/`)
+- [`Giai_Phap_Phan_Quyen_Branch_Va_User_Theo_Y_Tuong_Dashboard_CTO.md`](./security/Giai_Phap_Phan_Quyen_Branch_Va_User_Theo_Y_Tuong_Dashboard_CTO.md) — **(Tài liệu dễ đọc cho mọi phòng ban)** Giải thích ngắn gọn mô hình phân quyền *Chi nhánh (`branch_id`) – Người dùng (`user_id`)* và kết nối trực tiếp với ý tưởng 3 biểu đồ trên trang tính `dashboard_sample` của CTO.
 - [`goodNstay_Multi_Tenant_RBAC_And_BigQuery_Security.md`](./security/goodNstay_Multi_Tenant_RBAC_And_BigQuery_Security.md) — Kiến trúc phân tách `traveler_user_id` vs. `staff_user_id`, ma trận phân quyền 3 chiều (`Role × Branch × Action`), chống lộ dữ liệu chéo `BOLA (403)`, Parameterized Queries, lý do dùng BFF Filter + Authorized Views thay vì BigQuery RLS và quy tắc bảo vệ khóa GCP.
 - [`goodNstay_OWASP_API_Security_And_Staging_Audit_Guide.md`](./security/goodNstay_OWASP_API_Security_And_Staging_Audit_Guide.md) — Tiêu chuẩn kiểm thử bảo mật phi phá hủy theo **OWASP Top 10:2025 & API Security Top 10:2023** (`SEC-M01`..`SEC-M08`), quy tắc che lọc `0% PII` và mục lục dẫn tới các bộ test thực thi trong `API Test/`.
 

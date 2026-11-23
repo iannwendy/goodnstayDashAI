@@ -1,0 +1,58 @@
+[
+  { "name": "event_date", "type": "STRING", "mode": "REQUIRED", "description": "GA4 event date in YYYYMMDD format" },
+  { "name": "event_timestamp", "type": "INT64", "mode": "REQUIRED", "description": "Event timestamp in microseconds UTC" },
+  { "name": "event_name", "type": "STRING", "mode": "REQUIRED", "description": "GA4 event name (<= 40 chars)" },
+  { "name": "user_id", "type": "STRING", "mode": "NULLABLE", "description": "Pseudonymous traveler user ID (TRV-XXXX)" },
+  { "name": "user_pseudo_id", "type": "STRING", "mode": "REQUIRED", "description": "GA4 client_id (<int>.<int>)" },
+  { "name": "stream_id", "type": "STRING", "mode": "REQUIRED", "description": "GA4 Web/App stream ID" },
+  { "name": "platform", "type": "STRING", "mode": "REQUIRED", "description": "WEB, IOS, or ANDROID" },
+  {
+    "name": "device",
+    "type": "RECORD",
+    "mode": "NULLABLE",
+    "fields": [
+      { "name": "category", "type": "STRING", "mode": "NULLABLE" },
+      { "name": "operating_system", "type": "STRING", "mode": "NULLABLE" },
+      { "name": "language", "type": "STRING", "mode": "NULLABLE" }
+    ]
+  },
+  {
+    "name": "geo",
+    "type": "RECORD",
+    "mode": "NULLABLE",
+    "fields": [
+      { "name": "country", "type": "STRING", "mode": "NULLABLE" },
+      { "name": "region", "type": "STRING", "mode": "NULLABLE" },
+      { "name": "city", "type": "STRING", "mode": "NULLABLE" }
+    ]
+  },
+  {
+    "name": "traffic_source",
+    "type": "RECORD",
+    "mode": "NULLABLE",
+    "fields": [
+      { "name": "name", "type": "STRING", "mode": "NULLABLE" },
+      { "name": "medium", "type": "STRING", "mode": "NULLABLE" },
+      { "name": "source", "type": "STRING", "mode": "NULLABLE" }
+    ]
+  },
+  {
+    "name": "event_params",
+    "type": "RECORD",
+    "mode": "REPEATED",
+    "fields": [
+      { "name": "key", "type": "STRING", "mode": "REQUIRED" },
+      {
+        "name": "value",
+        "type": "RECORD",
+        "mode": "NULLABLE",
+        "fields": [
+          { "name": "string_value", "type": "STRING", "mode": "NULLABLE" },
+          { "name": "int_value", "type": "INT64", "mode": "NULLABLE" },
+          { "name": "float_value", "type": "FLOAT64", "mode": "NULLABLE" },
+          { "name": "double_value", "type": "FLOAT64", "mode": "NULLABLE" }
+        ]
+      }
+    ]
+  }
+]

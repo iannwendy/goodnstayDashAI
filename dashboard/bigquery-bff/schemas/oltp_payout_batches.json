@@ -1,0 +1,77 @@
+[
+  {
+    "name": "batch_id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "partner_id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "branch_id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "cycle_code",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "period_start",
+    "type": "DATE",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "period_end",
+    "type": "DATE",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "scheduled_payout_date",
+    "type": "DATE",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "paid_at_date",
+    "type": "DATE",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "status",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "bookings_count",
+    "type": "INT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "net_payout_vnd",
+    "type": "INT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "platform_fee_vnd",
+    "type": "INT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "vat_amount_vnd",
+    "type": "INT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "gross_gmv_vnd",
+    "type": "INT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "booking_codes",
+    "type": "STRING",
+    "mode": "REPEATED"
+  }
+]

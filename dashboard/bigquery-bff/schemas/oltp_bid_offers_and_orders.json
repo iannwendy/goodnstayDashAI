@@ -1,0 +1,217 @@
+[
+  {
+    "name": "record_id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "offer_id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "request_id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "booking_code",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "payment_code",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "payout_batch_id",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "partner_id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "branch_id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "session_date",
+    "type": "DATE",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "time_label",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "status",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "bid_mode",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "check_in_date",
+    "type": "DATE",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "check_out_date",
+    "type": "DATE",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "nights",
+    "type": "INT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "guests_count",
+    "type": "INT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "room_type_id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "room_type_key",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "room_number",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "offered_rate_per_night_vnd",
+    "type": "INT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "net_revenue_vnd",
+    "type": "INT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "platform_fee_vnd",
+    "type": "INT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "vat_amount_vnd",
+    "type": "INT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "gross_gmv_vnd",
+    "type": "INT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "offer_total_price_display",
+    "type": "FLOAT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "offer_currency",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "match_rate_pct",
+    "type": "FLOAT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "saving_pct",
+    "type": "FLOAT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "ota_code",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "ota_price_display",
+    "type": "FLOAT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "was_impressed",
+    "type": "BOOL",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "was_detail_viewed",
+    "type": "BOOL",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "browse_click_count",
+    "type": "INT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "decision_duration_sec",
+    "type": "INT64",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "unmatched_keys",
+    "type": "STRING",
+    "mode": "REPEATED"
+  },
+  {
+    "name": "device_os",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "device_type",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "booker_country",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "group_type",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "accommodation_type",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "lead_time_days",
+    "type": "INT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "combo_signature",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "traveler_pseudo_id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  }
+]

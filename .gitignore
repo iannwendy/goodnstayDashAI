@@ -26,6 +26,9 @@ __pycache__/
 .pytest_cache/
 ota-rate-shopping-demo/dist/
 ota-rate-shopping-demo/node_modules
+dashboard/bigquery-bff/.generated_warehouse/
+dashboard/bigquery-bff/node_modules/
+dashboard/bigquery-bff/dist/
 *.tsbuildinfo
 
 # Báo cáo Bug QA, tệp theo dõi & ảnh demo cục bộ

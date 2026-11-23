@@ -1,0 +1,82 @@
+[
+  {
+    "name": "user_id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "partner_id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "role_key",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "display_name_vi",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "display_name_en",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "display_name_ko",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "initials_vi",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "initials_en",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "initials_ko",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "role_badge_vi",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "role_badge_en",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "role_badge_ko",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "allowed_branch_ids",
+    "type": "STRING",
+    "mode": "REPEATED"
+  },
+  {
+    "name": "can_view_chain_all",
+    "type": "BOOL",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "can_view_financials",
+    "type": "BOOL",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "can_manage_pricing",
+    "type": "BOOL",
+    "mode": "REQUIRED"
+  }
+]

@@ -1,0 +1,97 @@
+[
+  {
+    "name": "branch_id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "partner_id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "is_chain_member",
+    "type": "BOOL",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "label_vi",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "label_en",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "label_ko",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "short_name_vi",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "short_name_en",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "short_name_ko",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "staying_country",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "staying_city",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "staying_district",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "accommodation_type",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "rooms_count",
+    "type": "INT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "star_rating",
+    "type": "INT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "review_rating_5",
+    "type": "FLOAT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "review_count",
+    "type": "INT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "elo_score",
+    "type": "INT64",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "auto_bid_enabled",
+    "type": "BOOL",
+    "mode": "REQUIRED"
+  }
+]
