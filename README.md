@@ -38,9 +38,14 @@ goodNstay/
 │   ├── ota-rate-shopping-clone.html  # Bản HTML standalone chạy độc lập (VI/EN)
 │   └── ota-rate-shopping-clone-ko.html # Bản HTML standalone chạy độc lập (KO)
 │
-└── docs/                             # Tài liệu Nghiệp vụ Hệ thống & Biểu mẫu QA Chung
-    ├── goodNstay_Bao_Cao_Chi_Tiet_Nghiep_Vu_Va_He_Thong.md
-    └── templates/                    # Mẫu Bug Report, Ngân hàng câu hỏi Intern (.docx) & mẫu SRS tham khảo
+└── docs/                             # Kho Tài liệu Kỹ thuật, Kiến trúc & Nghiệp vụ theo chuyên đề
+    ├── README.md                     # Mục lục trung tâm điều hướng toàn bộ tài liệu
+    ├── ga4-bigquery/                 # Nghiên cứu & Thiết kế triển khai GA4 + BigQuery + BFF/Viewport
+    ├── security/                     # Bảo mật Đa chi nhánh (userID × branchID RBAC) & Chuẩn OWASP API
+    ├── analytics-and-schema/         # Ánh xạ 45 Events, Database Schema & Phân cụm AI (C1–C4)
+    ├── partner-dashboard/            # Thiết kế & Kế hoạch phát triển Optibide Partner Hub
+    ├── business-and-system/          # Giải phẫu Nghiệp vụ & Hệ sinh thái goodNstay
+    └── presentations/                # Kịch bản thuyết trình CTO/Team & HTML Proposal (.pptx giữ local)
 ```
 
 ---

@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Optibide — Bảng Quản Trị Đấu Thầu Dành Cho Chủ Khách Sạn</title>
+  <style>
+    :root {
+      --bg: #F3F5F9;
+      --card: #FFFFFF;
+      --ink: #0F172A;
+      --sub: #334155;
+      --muted: #64748B;
+      --line: #CBD5E1;
+      --line-soft: #E2E8F0;
+      --blue: #1D4ED8;
+      --green: #047857;
+      --amber: #B45309;
+      --red: #B91C1C;
+      --purple: #6D28D9;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+      font-variant-numeric: tabular-nums;
+    }
+    html[lang="ko"] body { word-break: keep-all; }
+    .app-shell { display: flex; min-height: 100vh; }
+    .sidebar {
+      width: 240px; background: #FFFFFF; border-right: 1px solid var(--line-soft);
+      padding: 22px 16px; flex-shrink: 0; display: flex; flex-direction: column; gap: 6px;
+    }
+    .brand { display: flex; align-items: center; gap: 11px; padding: 4px 8px 18px; border-bottom: 1px solid var(--line-soft); margin-bottom: 10px; }
+    .brand-logo {
+      width: 38px; height: 38px; border-radius: 10px; background: var(--blue); color: #FFF;
+      font-weight: 800; font-size: 18px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .brand-name { font-weight: 800; font-size: 16px; color: var(--ink); line-height: 1.2; }
+    .brand-sub { font-size: 12px; color: var(--muted); font-weight: 600; }
+    .nav-item {
+      padding: 11px 14px; border-radius: 8px; font-size: 14.5px; font-weight: 600; color: #475569;
+      display: flex; align-items: center; gap: 10px; cursor: pointer;
+    }
+    .nav-item.active { background: #EFF6FF; color: var(--blue); font-weight: 700; }
+    .main-area { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .topbar {
+      min-height: 66px; background: #FFFFFF; border-bottom: 1px solid var(--line-soft);
+      padding: 10px 28px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+    }
+    .topbar-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    select, .btn-lineage {
+      height: 40px; padding: 0 14px; border-radius: 8px; border: 1px solid var(--line);
+      background: #FFFFFF; color: var(--ink); font-size: 14px; font-weight: 600; cursor: pointer;
+      font-family: inherit;
+    }
+    select:hover, .btn-lineage:hover { border-color: #94A3B8; }
+    .btn-lineage.active { background: #0F172A; color: #FFFFFF; border-color: #0F172A; }
+    .content { max-width: 1460px; width: 100%; margin: 0 auto; padding: 22px 26px 44px; display: flex; flex-direction: column; gap: 20px; }
+    .data-cutoff-note { font-size: 13px; color: var(--muted); font-weight: 600; white-space: nowrap; }
+
+    /* KPI Cards — Clear, Large Numbers for 50–60yo Executives */
+    .kpi-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+    .kpi-card { background: var(--card); border: 1px solid var(--line-soft); border-radius: 12px; padding: 18px 20px; }
+    .kpi-label { font-size: 13.5px; font-weight: 700; color: #475569; margin-bottom: 6px; }
+    .kpi-val { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; }
+    .kpi-sub { font-size: 13px; color: var(--muted); margin-top: 5px; font-weight: 500; }
+
+    .grid-2 { display: grid; grid-template-columns: 1.1fr 1fr; gap: 20px; }
+    .grid-2-eq { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .chart-card {
+      background: var(--card); border: 1px solid var(--line-soft); border-radius: 14px;
+      padding: 22px 26px; display: flex; flex-direction: column; gap: 16px;
+    }
+    .card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .card-title { font-size: 18px; font-weight: 800; color: var(--ink); }
+    .card-purpose { font-size: 14px; color: #475569; margin-top: 4px; }
+    .card-purpose strong { color: var(--ink); font-weight: 700; }
+    .badge-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .badge-kpi {
+      font-size: 13px; font-weight: 700; padding: 6px 12px; border-radius: 8px; white-space: nowrap; border: 1px solid transparent;
+    }
+    .lineage-chip {
+      display: none; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 11.5px; font-weight: 700; color: #1E40AF; background: #EFF6FF;
+      border: 1px solid #BFDBFE; padding: 4px 9px; border-radius: 6px; margin-top: 6px; width: fit-content;
+    }
+    body.show-lineage .lineage-chip { display: inline-block; }
+
+    /* Context Paired Bars */
+    .hbar-list { display: flex; flex-direction: column; gap: 15px; padding: 4px 0; }
+    .hbar-item { display: flex; flex-direction: column; gap: 6px; }
+    .hbar-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 700; }
+    .hbar-pair { display: flex; flex-direction: column; gap: 6px; }
+    .hbar-row { display: grid; grid-template-columns: 164px 1fr 62px; align-items: center; gap: 10px; font-size: 13.5px; color: #475569; font-weight: 600; }
+    .hbar-track { height: 13px; background: #F1F5F9; border-radius: 6px; overflow: hidden; }
+    .hbar-fill { height: 100%; border-radius: 6px; transition: width 0.25s ease; }
+
+    /* TRUE Interactive 4-Stage Funnel Layout + Dual Loss-Rate Summary Table */
+    .funnel-layout { display: grid; grid-template-columns: 0.88fr 1.16fr; gap: 20px; align-items: center; }
+    .funnel-stage-poly { cursor: pointer; transition: opacity 0.18s ease, filter 0.18s ease; }
+    .funnel-stage-poly:hover, .funnel-stage-poly.is-active { filter: brightness(0.95) drop-shadow(0 4px 10px rgba(15,23,42,0.18)); }
+    .excel-table { width: 100%; border-collapse: collapse; font-size: 13.5px; border: 1px solid var(--line); }
+    .excel-table th {
+      background: #F1F5F9; color: var(--ink); font-weight: 700; text-align: left;
+      padding: 8px 10px; border: 1px solid var(--line-soft); font-size: 12.8px; line-height: 1.3;
+    }
+    .excel-table td { padding: 9px 10px; border: 1px solid var(--line-soft); vertical-align: middle; line-height: 1.35; }
+    .excel-table tr.f-row { cursor: pointer; transition: background 0.15s ease; }
+    .excel-table tr.f-row:hover, .excel-table tr.f-row.is-active { background: #EFF6FF !important; }
+    .funnel-detail-bar {
+      background: #F8FAFC; border: 1.5px solid var(--line);
+      border-radius: 10px; padding: 13px 18px; display: flex; justify-content: space-between; align-items: center; gap: 16px; font-size: 14.5px; flex-wrap: wrap;
+    }
+
+    /* Ranked Cause Bars */
+    .pareto-col { display: flex; flex-direction: column; gap: 15px; }
+    .pareto-sub { font-size: 15.5px; font-weight: 800; color: var(--ink); padding-bottom: 8px; border-bottom: 1.5px solid var(--line-soft); }
+    .p-row { display: flex; flex-direction: column; gap: 7px; }
+    .p-head { display: flex; justify-content: space-between; gap: 10px; font-size: 14.5px; font-weight: 700; }
+
+    /* Calm Executive Recommendation Cards (Monochrome Slate & Navy — Zero Rainbow) */
+    .ai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .ai-card {
+      border: 1px solid var(--line); border-radius: 12px;
+      padding: 22px 24px; background: #FFFFFF; display: flex; flex-direction: column; gap: 12px;
+    }
+    .ai-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .ai-tier {
+      font-size: 12.5px; font-weight: 700; padding: 5px 11px; border-radius: 6px;
+      background: #F1F5F9; color: #334155; border: 1px solid #E2E8F0;
+    }
+    .ai-score { font-size: 24px; font-weight: 800; color: #0F172A; }
+    .ai-bar-track { height: 6px; border-radius: 99px; background: #E2E8F0; overflow: hidden; }
+    .ai-bar-fill { height: 100%; border-radius: 99px; background: #1E40AF; }
+    .ai-action { font-size: 16.5px; font-weight: 800; color: #0F172A; line-height: 1.38; margin-top: 2px; }
+    .ai-note { font-size: 14.5px; color: #475569; line-height: 1.5; }
+
+    /* Floating Interactive Tooltip */
+    #chart-tooltip {
+      position: fixed; pointer-events: none; z-index: 9999; display: none;
+      background: #0F172A; color: #FFFFFF; padding: 12px 15px; border-radius: 10px;
+      font-size: 13.5px; line-height: 1.45; max-width: 360px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.28); border: 1px solid #334155;
+    }
+  </style>
+</head>
+<body>
+  <div id="chart-tooltip"></div>
+  <div class="app-shell" id="app-shell" data-capture="full-hub">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">O</div>
+        <div>
+          <div class="brand-name">Optibide</div>
+          <div class="brand-sub" id="brand-sub">Quản trị Đấu thầu Khách sạn</div>
+        </div>
+      </div>
+      <div class="nav-item active" id="nav-overview">Tổng quan kinh doanh</div>
+      <div class="nav-item" id="nav-calendar">Lịch khách nhận phòng</div>
+      <div class="nav-item" id="nav-payout">Doanh thu &amp; Công nợ</div>
+      <div class="nav-item" id="nav-rooms">Danh mục hạng phòng</div>
+      <div class="nav-item" id="nav-bidding">Cài đặt báo giá tự động</div>
+    </aside>
+    <div class="main-area">
+      <header class="topbar">
+        <div class="topbar-controls">
+          <select id="property-select" data-testid="topbar-property-select" aria-label="Chọn khách sạn">
+            <option value="a" id="prop-opt-a">Khách sạn mẫu A — Đang kinh doanh ổn định (91 lượt báo giá)</option>
+            <option value="b" id="prop-opt-b">Khách sạn mẫu B — Mới khai trương (75 lượt báo giá · Chưa có đơn)</option>
+          </select>
+          <select id="period-select" data-testid="period-select" aria-label="Chọn kỳ báo cáo">
+            <option value="30d" id="period-opt-30d">Kỳ báo cáo: 30 ngày qua</option>
+            <option value="7d" id="period-opt-7d">Kỳ báo cáo: 7 ngày qua</option>
+          </select>
+          <span class="data-cutoff-note" id="data-cutoff-note"></span>
+        </div>
+        <div class="topbar-controls">
+          <select id="language-select" data-testid="topbar-language-select" aria-label="Language">
+            <option value="vi">Tiếng Việt</option>
+            <option value="en">English</option>
+            <option value="ko">한국어</option>
+          </select>
+          <select id="currency-select" data-testid="topbar-currency-select" aria-label="Đơn vị tiền tệ">
+            <option value="VND" id="cur-opt-vnd">Đơn vị: VNĐ (₫)</option>
+            <option value="KRW" id="cur-opt-krw">Đơn vị: Won Hàn Quốc (₩)</option>
+            <option value="USD" id="cur-opt-usd">Đơn vị: Đô la Mỹ ($)</option>
+          </select>
+          <button class="btn-lineage" id="cto-lineage-toggle" type="button">Xem nguồn sự kiện thu thập</button>
+        </div>
+      </header>
+      <main class="content">
+        <section class="kpi-strip" id="kpi-strip"></section>
+        <section class="chart-card" id="chart-revenue-card" data-capture="chart-revenue"></section>
+        <div class="grid-2" id="winning-price-section" data-capture="winning-price-section">
+          <section class="chart-card" id="chart-sweetspot-card" data-capture="chart-sweetspot"></section>
+          <section class="chart-card" id="chart-context-card" data-capture="chart-context"></section>
+        </div>
+        <section class="chart-card" id="loss-diagnosis-section" data-capture="chart-waterfall"></section>
+        <section class="chart-card" id="chart-pareto-card" data-capture="chart-pareto"></section>
+        <section class="chart-card" id="ai-advisor-section" data-capture="ai-advisor-section"></section>
+      </main>
+    </div>
+  </div>
+  <script>
+    const STORAGE_KEY = 'optibide_ai_proposal_prefs_v2';
+    const EN_MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+    const UI_COPY = {
+      vi: {
+        docTitle: 'Optibide — Bảng Quản Trị Đấu Thầu Dành Cho Chủ Khách Sạn',
+        brandSub: 'Quản trị Đấu thầu Khách sạn',
+        nav: [
+          'Tổng quan kinh doanh',
+          'Lịch khách nhận phòng',
+          'Doanh thu & Công nợ',
+          'Danh mục hạng phòng',
+          'Cài đặt báo giá tự động',
+        ],
+        ariaProperty: 'Chọn khách sạn',
+        ariaPeriod: 'Chọn kỳ báo cáo',
+        ariaLanguage: 'Chọn ngôn ngữ',
+        ariaCurrency: 'Đơn vị tiền tệ',
+        propOptions: {
+          a: 'Khách sạn mẫu A — Đang kinh doanh ổn định (91 lượt báo giá)',
+          b: 'Khách sạn mẫu B — Mới khai trương (75 lượt báo giá · Chưa có đơn)',
+        },
+        periodOptions: {
+          '30d': 'Kỳ báo cáo: 30 ngày qua',
+          '7d': 'Kỳ báo cáo: 7 ngày qua',
+        },
+        cutoffCaption: (t1Str) => `Số liệu tính đến 23:59 · ${t1Str}`,
+        currencyOptions: {
+          VND: 'Đơn vị: VNĐ (₫)',
+          KRW: 'Đơn vị: Won Hàn Quốc (₩)',
+          USD: 'Đơn vị: Đô la Mỹ ($)',
+        },
+        lineageBtn: 'Xem nguồn sự kiện thu thập',
+        sourceEventPrefix: 'Sự kiện gốc:',
+        eventChipPrefix: 'Sự kiện:',
+        purposeLabel: 'Mục đích:',
+        kpi: {
+          revLbl: 'Doanh thu thực nhận',
+          revSub: (won) => `Từ ${won} đơn đặt phòng hoàn tất`,
+          bidsLbl: 'Tổng số lượt chào giá',
+          bidsVal: (bids) => `${bids} lượt`,
+          bidsSub: (lost, lossPct) => `Thua ${lost} lượt (Tỷ lệ thua ${lossPct}%)`,
+          winLbl: 'Tỷ lệ thắng / Tỷ lệ thua',
+          winVal: (winPct, lossPct) => `${winPct}% / ${lossPct}%`,
+          winSub: 'Thắng thầu / Thua thầu (Khu vực thắng: 32,0%)',
+          ratingLbl: 'Điểm đánh giá của khách',
+          autoLbl: 'Tỷ lệ gửi báo giá tự động',
+          autoSub: 'Phản hồi khách trong 1 phút',
+        },
+        chart1: {
+          title: 'Biểu đồ 1 · Doanh Thu Thực Nhận & Số Đơn Thành Công Theo Ngày',
+          purpose: 'Giúp chủ khách sạn theo dõi song song số đơn hoàn tất (trục trái) và doanh thu thực nhận (trục phải) qua từng ngày.',
+          badge: 'Trục trái (cột xanh): Số đơn · Trục phải (đường xanh lá): Doanh thu',
+          yLeftAxis: '↑ Số đơn (cột)',
+          yRightAxis: 'Doanh thu thực nhận (đường) ↑',
+          barUnit: (n) => `${n} đơn`,
+          tipDate: (d) => `Ngày ${d}`,
+          tipWon: (n) => `Số đơn đặt phòng thành công: <strong>${n} đơn</strong>`,
+          tipRev: (m) => `Doanh thu thực nhận: <strong>${m}</strong>`,
+        },
+        chart2: {
+          title: 'Biểu đồ 2 · Tỷ Lệ Chốt Đơn Theo Mức Ưu Đãi Giá So Với Thị Trường',
+          purpose: 'Đối chiếu số lượt báo giá gửi đi (trục trái) với tỷ lệ chốt đơn % (trục phải) để tìm vùng ưu đãi hiệu quả nhất (10% – 15%).',
+          yLeftAxis: '↑ Lượt báo giá',
+          yRightAxis: 'Tỷ lệ chốt (%) ↑',
+          barBids: (n) => `${n} lượt`,
+          tipBids: (n) => `Số lượt gửi báo giá: <strong>${n} lượt</strong>`,
+          tipRate: (r) => `Tỷ lệ chốt đơn thành công: <strong style="color:#6EE7B7">${r}%</strong>`,
+        },
+        chart3: {
+          title: 'Biểu đồ 3 · Tỷ Lệ Chốt Đơn Theo Nhóm Yêu Cầu & Cách Chào Phòng',
+          purpose: 'Tổng hợp từ yêu cầu khách đã bấm gửi tìm phòng: chỉ rõ tệp khách nào và cách chào nhiều hạng phòng nào giúp tăng hơn gấp đôi tỷ lệ thắng.',
+        },
+        chart4: {
+          title: 'Biểu đồ 4 · Phễu Hành Trình Báo Giá & Tỷ Lệ Thua Qua 4 Bước Của Khách Sạn',
+          purpose: 'Chỉ đo lường 4 bước thuộc tầm kiểm soát của khách sạn (đã loại trừ lỗi thanh toán kỹ thuật). Hiển thị song song tỷ lệ thua tại từng bước và tỷ lệ thua trên tổng báo giá.',
+          lossBadge: (lossPct, lost, bids) => `Tổng tỷ lệ thua: ${lossPct}% (${lost}/${bids} lượt)`,
+          winBadge: (winPct, won, bids) => `Tỷ lệ thắng: ${winPct}% (${won}/${bids} đơn)`,
+          stageCount: (n, pct) => `${n} lượt (${pct}%)`,
+          dropCalloutTop: (c, stepPct) => `−${c} lượt · Thua ${stepPct}% bước`,
+          dropCalloutSub: (totPct) => `(${totPct}% tổng báo giá)`,
+          winStageTitle: '5. Đặt phòng thành công',
+          winStageCount: (won, pct) => `${won} đơn (Thắng ${pct}%)`,
+          winTipTitle: (won, winPct, lossPct) => `5. Đặt phòng thành công: ${won} đơn (Thắng ${winPct}% · Tổng thua ${lossPct}%)`,
+          winTipBody: 'Số đơn khách đã thanh toán hoàn tất. Các sự cố lỗi thẻ/cổng thanh toán kỹ thuật đã được tách khỏi phễu đánh giá khách sạn.',
+          colStage: 'Bước khách rời đi',
+          colCount: 'Lượt thua',
+          colStepLoss: 'Thua tại bước',
+          colTotalLoss: 'Thua / Tổng gửi',
+          colAction: 'Hướng xử lý cho khách sạn',
+          stepPrefix: (n) => `Bước ${n}:`,
+          footTotal: 'Tổng cộng lượt thua thầu',
+          footStepDash: 'Toàn phễu',
+          footWon: (won, winPct) => `Thắng: ${won} đơn (${winPct}%)`,
+          viewingPrefix: (stage) => `Đang xem ${stage}:`,
+          actionPrefix: (act) => `Hướng xử lý: ${act}`,
+          tipHeader: (stage, start, next) => `${stage} (${start} lượt vào bước → ${next} lượt đi tiếp)`,
+          tipStepLoss: (c, stepPct) => `• Tỷ lệ thua tại bước này: <strong style="color:#FCA5A5">−${c} lượt (${stepPct}% số lượt vào bước)</strong>`,
+          tipTotLoss: (totPct, shareLostPct) => `• Tỷ lệ thua trên tổng báo giá: <strong>${totPct}%</strong> (chiếm ${shareLostPct}% tổng đơn thua)`,
+        },
+        chart5: {
+          title: 'Biểu đồ 5 · Thống Kê Chi Tiết Các Lý Do Khiến Khách Chưa Đặt Phòng',
+          purpose: 'Xếp hạng cụ thể những dịch vụ khách cần hoặc mục hình ảnh/video còn thiếu để chủ khách sạn ưu tiên bổ sung trước.',
+          rowStat: (c, pct) => `${c} lượt (${pct}%)`,
+        },
+        ai: {
+          title: 'Đề Xuất Điều Chỉnh Kinh Doanh Trong Tuần',
+          purpose: 'Hệ thống tự động đối chiếu dữ liệu hành vi đặt phòng phía sau và chọn ra 3 việc thiết thực nhất cho từng khách sạn.',
+          badge: 'Tự động thích ứng theo từng khách sạn',
+        },
+      },
+      en: {
+        docTitle: 'Optibide — Hotel Partner Bidding Analytics Dashboard',
+        brandSub: 'Partner Hub',
+        nav: [
+          'Dashboard Overview',
+          'Booking Calendar',
+          'Payout & Revenue',
+          'Rooms Management',
+          'Auto-Bid Settings',
+        ],
+        ariaProperty: 'Select property',
+        ariaPeriod: 'Select reporting period',
+        ariaLanguage: 'Select language',
+        ariaCurrency: 'Select currency',
+        propOptions: {
+          a: 'Sample Hotel A — Steady Operations (91 bids sent)',
+          b: 'Sample Hotel B — Newly Opened (75 bids · 0 bookings)',
+        },
+        periodOptions: {
+          '30d': 'Period: Last 30 Days',
+          '7d': 'Period: Last 7 Days',
+        },
+        cutoffCaption: (t1Str) => `Data through ${t1Str} · 23:59`,
+        currencyOptions: {
+          VND: 'Currency: VND (₫)',
+          KRW: 'Currency: KRW (₩)',
+          USD: 'Currency: USD ($)',
+        },
+        lineageBtn: 'View Event Lineage',
+        sourceEventPrefix: 'Source event:',
+        eventChipPrefix: 'Event:',
+        purposeLabel: 'Purpose:',
+        kpi: {
+          revLbl: 'Net Hotel Revenue',
+          revSub: (won) => `From ${won} completed ${won === 1 ? 'booking' : 'bookings'}`,
+          bidsLbl: 'Total Bids Sent',
+          bidsVal: (bids) => `${bids} ${bids === 1 ? 'bid' : 'bids'}`,
+          bidsSub: (lost, lossPct) => `${lost} lost (${lossPct}% loss rate)`,
+          winLbl: 'Win Rate / Loss Rate',
+          winVal: (winPct, lossPct) => `${winPct}% / ${lossPct}%`,
+          winSub: 'Won vs. Lost share (Area win: 32.0%)',
+          ratingLbl: 'Guest Review Score',
+          autoLbl: 'Auto-Bid Coverage',
+          autoSub: 'Replies to guests within 1 min',
+        },
+        chart1: {
+          title: 'Chart 1 · Daily Net Hotel Revenue & Completed Bookings',
+          purpose: 'Tracks daily completed bookings (left axis) alongside net room revenue (right axis) across the selected period.',
+          badge: 'Left axis (blue bars): Bookings · Right axis (green line): Net revenue',
+          yLeftAxis: '↑ Bookings (bars)',
+          yRightAxis: 'Net revenue (line) ↑',
+          barUnit: (n) => `${n} won`,
+          tipDate: (d) => `Date: ${d}`,
+          tipWon: (n) => `Completed bookings: <strong>${n} ${Number(n) === 1 ? 'booking' : 'bookings'}</strong>`,
+          tipRev: (m) => `Net hotel revenue: <strong>${m}</strong>`,
+        },
+        chart2: {
+          title: 'Chart 2 · Booking Win Rate by Discount Band vs. Market Rate',
+          purpose: 'Compares bid volume (left axis) against booking win rate % (right axis) to pinpoint the 10%–15% sweet spot.',
+          yLeftAxis: '↑ Bids sent',
+          yRightAxis: 'Win rate (%) ↑',
+          barBids: (n) => `${n} ${Number(n) === 1 ? 'bid' : 'bids'}`,
+          tipBids: (n) => `Bids submitted: <strong>${n} ${Number(n) === 1 ? 'bid' : 'bids'}</strong>`,
+          tipRate: (r) => `Booking win rate: <strong style="color:#6EE7B7">${r}%</strong>`,
+        },
+        chart3: {
+          title: 'Chart 3 · Win Rate by Submitted Request Segment & Offer Strategy',
+          purpose: 'Built strictly from submitted room requests: shows which guest segments and multi-room offer habits more than double conversion.',
+        },
+        chart4: {
+          title: 'Chart 4 · Bid-to-Booking Funnel & Dual Loss Rates Across 4 Hotel Stages',
+          purpose: 'Tracks the 4 stages controlled by the hotel (technical payment errors excluded). Displays both step-by-step drop-off loss % and share of total bids.',
+          lossBadge: (lossPct, lost, bids) => `Overall Loss Rate: ${lossPct}% (${lost}/${bids} bids)`,
+          winBadge: (winPct, won, bids) => `Win Rate: ${winPct}% (${won}/${bids} won)`,
+          stageCount: (n, pct) => `${n} bids (${pct}%)`,
+          dropCalloutTop: (c, stepPct) => `−${c} · ${stepPct}% step loss`,
+          dropCalloutSub: (totPct) => `(${totPct}% of all bids)`,
+          winStageTitle: '5. Booking Completed',
+          winStageCount: (won, pct) => `${won} won (${pct}% win)`,
+          winTipTitle: (won, winPct, lossPct) => `5. Booking Completed: ${won} won (Win ${winPct}% · Total Loss ${lossPct}%)`,
+          winTipBody: 'Confirmed paid reservations. Technical card/gateway failures are excluded from hotel funnel scoring.',
+          colStage: 'Guest Drop-Off Stage',
+          colCount: 'Lost Bids',
+          colStepLoss: 'Step Loss %',
+          colTotalLoss: 'Loss / Total',
+          colAction: 'Hotel Action',
+          stepPrefix: (n) => `Step ${n}:`,
+          footTotal: 'Total Lost Bids',
+          footStepDash: 'Full Funnel',
+          footWon: (won, winPct) => `Won: ${won} (${winPct}%)`,
+          viewingPrefix: (stage) => `Viewing ${stage}:`,
+          actionPrefix: (act) => `Action: ${act}`,
+          tipHeader: (stage, start, next) => `${stage} (${start} entering → ${next} advancing)`,
+          tipStepLoss: (c, stepPct) => `• Step Loss Rate: <strong style="color:#FCA5A5">−${c} bids (${stepPct}% of stage entrants)</strong>`,
+          tipTotLoss: (totPct, shareLostPct) => `• Loss vs. Total Bids: <strong>${totPct}%</strong> (${shareLostPct}% of all lost bids)`,
+        },
+        chart5: {
+          title: 'Chart 5 · Ranked Breakdown of Specific Reasons Guests Did Not Book',
+          purpose: 'Ranks exact missing perks or media gaps so hotel owners know what to prioritize first.',
+          rowStat: (c, pct) => `${c} bids (${pct}%)`,
+        },
+        ai: {
+          title: 'Weekly Business Action Recommendations',
+          purpose: 'Cross-checks behavioral funnel signals behind the scenes to surface the 3 highest-impact actions for each property.',
+          badge: 'Auto-tailored per property',
+        },
+      },
+      ko: {
+        docTitle: 'Optibide — 호텔 파트너 입찰 성과 분석 대시보드',
+        brandSub: '파트너 허브',
+        nav: [
+          '대시보드 개요',
+          '예약 캘린더',
+          '정산 및 수익 내역',
+          '객실 관리',
+          '자동 입찰 설정',
+        ],
+        ariaProperty: '숙소 선택',
+        ariaPeriod: '조회 기간 선택',
+        ariaLanguage: '언어 선택',
+        ariaCurrency: '통화 단위 선택',
+        propOptions: {
+          a: '샘플 호텔 A — 안정 운영 중 (입찰 91건)',
+          b: '샘플 호텔 B — 신규 오픈 (입찰 75건 · 예약 0건)',
+        },
+        periodOptions: {
+          '30d': '조회 기간: 최근 30일',
+          '7d': '조회 기간: 최근 7일',
+        },
+        cutoffCaption: (t1Str) => `집계 기준: ${t1Str} 23:59까지`,
+        currencyOptions: {
+          VND: '통화: VND (₫)',
+          KRW: '통화: KRW (₩)',
+          USD: '통화: USD ($)',
+        },
+        lineageBtn: '수집 이벤트 출처 보기',
+        sourceEventPrefix: '원본 이벤트:',
+        eventChipPrefix: '이벤트:',
+        purposeLabel: '목적:',
+        kpi: {
+          revLbl: '호텔 실수령 순수익',
+          revSub: (won) => `확정 예약 ${won}건 기준`,
+          bidsLbl: '총 입찰 발송 건수',
+          bidsVal: (bids) => `${bids}건`,
+          bidsSub: (lost, lossPct) => `미성사 ${lost}건 (실패율 ${lossPct}%)`,
+          winLbl: '성사율 / 실패율(패배율)',
+          winVal: (winPct, lossPct) => `${winPct}% / ${lossPct}%`,
+          winSub: '예약 성사 vs 미성사 (지역 평균 성사: 32.0%)',
+          ratingLbl: '투숙객 평점',
+          autoLbl: '자동 입찰 응답률',
+          autoSub: '1분 이내 즉시 자동 응답',
+        },
+        chart1: {
+          title: '차트 1 · 일별 실수령 순수익 및 확정 예약 건수',
+          purpose: '일자별 확정 예약 건수(좌측 축)와 호텔 실수령 순수익(우측 축)을 동시에 추적합니다.',
+          badge: '좌측 축(막대): 확정 예약 수 · 우측 축(선): 실수령 순수익',
+          yLeftAxis: '↑ 예약 건수 (막대)',
+          yRightAxis: '실수령 순수익 (선) ↑',
+          barUnit: (n) => `${n}건`,
+          tipDate: (d) => `${d}`,
+          tipWon: (n) => `확정 예약 건수: <strong>${n}건</strong>`,
+          tipRev: (m) => `실수령 순수익: <strong>${m}</strong>`,
+        },
+        chart2: {
+          title: '차트 2 · 시장가 대비 할인 구간별 예약 성사율',
+          purpose: '구간별 발송 입찰 건수(좌측 축)와 예약 성사율 %(우측 축)을 교차 비교하여 최적 할인 구간(10~15%)을 찾습니다.',
+          yLeftAxis: '↑ 입찰 건수',
+          yRightAxis: '성사율 (%) ↑',
+          barBids: (n) => `${n}건`,
+          tipBids: (n) => `발송한 입찰 수: <strong>${n}건</strong>`,
+          tipRate: (r) => `예약 성사율: <strong style="color:#6EE7B7">${r}%</strong>`,
+        },
+        chart3: {
+          title: '차트 3 · 확정 요청 고객 유형 및 객실 제안 방식별 성사율',
+          purpose: '"입찰 찾기"를 완료한 요청 데이터만 반영하여, 어떤 투숙객군과 다중 객실 제안이 성사율을 2배 이상 높이는지 보여줍니다.',
+        },
+        chart4: {
+          title: '차트 4 · 입찰 여정 퍼널 및 호텔 통제 4단계별 입찰 실패율',
+          purpose: '호텔이 직접 개선 가능한 4단계만 측정합니다(결제 시스템 오류 제외). 단계별 이탈 실패율과 전체 입찰 대비 실패율을 동시에 표시합니다.',
+          lossBadge: (lossPct, lost, bids) => `전체 입찰 실패율: ${lossPct}% (${lost}/${bids}건)`,
+          winBadge: (winPct, won, bids) => `예약 성사율: ${winPct}% (${won}/${bids}건)`,
+          stageCount: (n, pct) => `${n}건 (${pct}%)`,
+          dropCalloutTop: (c, stepPct) => `−${c}건 · 단계 실패 ${stepPct}%`,
+          dropCalloutSub: (totPct) => `(전체 입찰의 ${totPct}%)`,
+          winStageTitle: '5. 예약·결제 완료',
+          winStageCount: (won, pct) => `${won}건 (성사 ${pct}%)`,
+          winTipTitle: (won, winPct, lossPct) => `5. 예약·결제 완료: ${won}건 (성사율 ${winPct}% · 전체 실패율 ${lossPct}%)`,
+          winTipBody: '결제가 완료된 확정 예약입니다. 카드 승인 거절 등 결제망 기술 오류는 호텔 평가 퍼널에서 제외됩니다.',
+          colStage: '고객 이탈 단계',
+          colCount: '미성사 수',
+          colStepLoss: '단계 실패율',
+          colTotalLoss: '전체 대비 실패율',
+          colAction: '호텔 권장 조치',
+          stepPrefix: (n) => `${n}단계:`,
+          footTotal: '총 미성사(패배) 합계',
+          footStepDash: '전체 퍼널',
+          footWon: (won, winPct) => `성사: ${won}건 (${winPct}%)`,
+          viewingPrefix: (stage) => `선택 단계 (${stage}):`,
+          actionPrefix: (act) => `권장 조치: ${act}`,
+          tipHeader: (stage, start, next) => `${stage} (${start}건 진입 → ${next}건 다음 단계 이동)`,
+          tipStepLoss: (c, stepPct) => `• 현 단계 실패율: <strong style="color:#FCA5A5">−${c}건 (진입 대비 ${stepPct}%)</strong>`,
+          tipTotLoss: (totPct, shareLostPct) => `• 전체 입찰 대비 실패율: <strong>${totPct}%</strong> (전체 미성사의 ${shareLostPct}%)`,
+        },
+        chart5: {
+          title: '차트 5 · 고객 미예약 세부 사유 순위 분석',
+          purpose: '고객이 원하는 부가 혜택이나 누락된 시각 자료를 순위별로 집계하여 우선 보완 항목을 제시합니다.',
+          rowStat: (c, pct) => `${c}건 (${pct}%)`,
+        },
+        ai: {
+          title: '이번 주 호텔 운영 개선 핵심 제안',
+          purpose: '실제 예약 여정 행동 데이터를 자동 교차 분석하여 숙소별 가장 효과적인 3가지 실행 과제를 선정합니다.',
+          badge: '숙소별 맞춤형 자동 분석',
+        },
+      },
+    };
+
+    const DATA = {
+      a: {
+        revVnd: 61200000, won: 17, ratingNum: 4.6, autoBidPct: 68.1,
+        isoDays: ['2026-11-02','2026-11-06','2026-11-10','2026-11-14','2026-11-18','2026-11-22','2026-11-26','2026-11-30'],
+        dayWon: [1, 2, 2, 1, 3, 2, 4, 2], dayRev: [3.6, 7.2, 6.8, 3.8, 10.8, 7.4, 14.2, 7.4],
+        sweetBadgeBg: '#ECFDF5', sweetBadgeColor: '#047857',
+        ratingSub: {
+          vi: 'Từ 28 lượt khách đánh giá',
+          en: 'From 28 verified reviews',
+          ko: '실투숙 리뷰 28건 기준',
+        },
+        sweetBadge: {
+          vi: 'Mức ưu đãi hiệu quả nhất: 10% – 15% (Tỷ lệ chốt 46,2%)',
+          en: 'Best sweet spot: 10%–15% off (46.2% win rate)',
+          ko: '최적 할인 구간: 10%–15% 할인 (성사율 46.2%)',
+        },
+        bands: [
+          { bids: 14, rate: 0.0, label: { vi: 'Cao hơn thị trường', en: 'Above Market', ko: '시장가보다 높음' } },
+          { bids: 26, rate: 7.7, label: { vi: 'Giảm nhẹ 0–5%', en: '0–5% Off', ko: '0~5% 소폭 할인' } },
+          { bids: 22, rate: 22.7, label: { vi: 'Giảm vừa 5–10%', en: '5–10% Off', ko: '5~10% 적정 할인' } },
+          { bids: 13, rate: 46.2, sweet: true, label: { vi: 'Giảm 10% – 15%', en: '10%–15% Off', ko: '10~15% 최적 할인' } },
+          { bids: 16, rate: 25.0, label: { vi: 'Giảm sâu trên 15%', en: 'Over 15% Off', ko: '15% 이상 과다할인' } },
+        ],
+        contexts: [
+          {
+            onVal: 31.8, offVal: 14.5,
+            name: { vi: 'Khách đặt phòng gấp trong ngày', en: 'Same-Day Last-Minute Guests', ko: '당일 긴급 예약 고객' },
+            lift: { vi: 'Tăng gấp 2,2 lần', en: '2.2x higher win rate', ko: '성사율 2.2배 상승' },
+            onLbl: { vi: 'Đặt gấp trong ngày', en: 'Same-day booking', ko: '당일 긴급 예약' },
+            offLbl: { vi: 'Đặt trước nhiều ngày', en: 'Booked days ahead', ko: '사전 여유 예약' },
+          },
+          {
+            onVal: 29.2, offVal: 14.9,
+            name: { vi: 'Khách lưu trú dài ngày (từ 3 đêm)', en: 'Extended-Stay Guests (3+ Nights)', ko: '장기 투숙 고객 (3박 이상)' },
+            lift: { vi: 'Tăng gấp 2,0 lần', en: '2.0x higher win rate', ko: '성사율 2.0배 상승' },
+            onLbl: { vi: 'Lưu trú từ 3 đêm', en: '3+ nights stay', ko: '3박 이상 투숙' },
+            offLbl: { vi: 'Lưu trú 1 – 2 đêm', en: '1–2 nights stay', ko: '1~2박 단기 투숙' },
+          },
+          {
+            onVal: 22.6, offVal: 10.3,
+            name: { vi: 'Chế độ gửi báo giá tự động', en: 'Automated Instant Bidding', ko: '자동 입찰 즉시 응답 모드' },
+            lift: { vi: 'Tăng gấp 2,2 lần', en: '2.2x higher win rate', ko: '성사율 2.2배 상승' },
+            onLbl: { vi: 'Gửi báo giá tự động', en: 'Auto-bid enabled', ko: '자동 입찰 발송' },
+            offLbl: { vi: 'Nhập báo giá thủ công', en: 'Manual quote entry', ko: '수동 직접 입찰' },
+          },
+          {
+            onVal: 28.9, offVal: 11.3,
+            name: { vi: 'Giới thiệu kèm từ 2 hạng phòng', en: 'Offering 2+ Room Categories', ko: '2개 이상 객실 타입 동시 제안' },
+            lift: { vi: 'Tăng gấp 2,6 lần', en: '2.6x higher win rate', ko: '성사율 2.6배 상승' },
+            onLbl: { vi: 'Chào từ 2 hạng phòng', en: '2+ room options', ko: '2개 이상 객실 제안' },
+            offLbl: { vi: 'Chỉ chào 1 hạng phòng', en: 'Single room option', ko: '단일 객실만 제안' },
+          },
+        ],
+        // 4 Hotel-Controllable Stages Only: 13 + 24 + 18 + 19 = 74 Lost + 17 Won = 91 Total Bids
+        losses: [
+          {
+            count: 13, color: '#475569', polyClr: '#1E40AF',
+            stage: { vi: '1. Đã gửi báo giá đi', en: '1. Bid Offer Sent', ko: '1. 입찰 제안 발송' },
+            dropName: { vi: 'Khuất tầm nhìn do thứ hạng / gửi chậm', en: 'Unseen due to sort rank or late reply', ko: '정렬 순위 밀림·응답 지연' },
+            act: { vi: 'Bật báo giá tự động cả ban đêm', en: 'Enable 24/7 overnight auto-bid', ko: '24시간 자동 입찰 활성화' },
+            detail: {
+              vi: (n) => `${n} lượt báo giá bị đẩy xuống cuối danh sách khi khách sắp xếp theo mức giá hoặc gửi chậm lúc ban đêm.`,
+              en: (n) => `${n} offers ranked below the fold when guests sorted by lowest price / % savings or arrived late overnight.`,
+              ko: (n) => `${n}건의 입찰이 고객의 최저가·할인율 정렬 시 하단으로 밀렸거나 심야 수동 응답 지연으로 노출되지 못했습니다.`,
+            },
+          },
+          {
+            count: 24, syncPareto: 'left', color: '#B91C1C', polyClr: '#1D4ED8',
+            stage: { vi: '2. Khách đã nhìn thấy', en: '2. Seen by Guest', ko: '2. 고객 목록 노출' },
+            dropName: { vi: 'Từ chối ngay ngoài danh sách', en: 'Declined directly on offer list', ko: '제안 목록에서 즉시 거절' },
+            act: { vi: 'Bổ sung bữa sáng vào gói phòng', en: 'Bundle free breakfast in offer', ko: '객실 패키지에 무료 조식 포함' },
+            detail: {
+              vi: (n) => `${n} lượt khách nhìn thấy báo giá nhưng từ chối ngay do gói phòng thiếu dịch vụ bắt buộc khách chọn (bữa sáng, chỗ đậu xe).`,
+              en: (n) => `${n} travelers saw the offer card but declined immediately because requested perks (breakfast, parking) were missing.`,
+              ko: (n) => `${n}명의 고객이 제안을 확인했으나 조식·무료 주차 등 필수 요청 혜택이 빠져 목록에서 즉시 거절했습니다.`,
+            },
+          },
+          {
+            count: 18, color: '#B45309', polyClr: '#2563EB',
+            stage: { vi: '3. Mở xem thông tin', en: '3. Opened & Price-Checked', ko: '3. 상세 열람·가격 비교' },
+            dropName: { vi: 'Dừng lại sau khi đối chiếu giá', en: 'Left after market price check', ko: '타사 요금 비교 후 이탈' },
+            act: { vi: 'Điều chỉnh ưu đãi về mức 10–15%', en: 'Align discount to 10%–15% band', ko: '할인 폭을 10~15% 최적 구간 조정' },
+            detail: {
+              vi: (n) => `${n} lượt khách đối chiếu với giá thị trường thấy mức ưu đãi dưới 5% chưa đủ sức thuyết phục để đặt phòng.`,
+              en: (n) => `${n} travelers compared external OTA rates and found sub-5% discounts insufficient to switch and book.`,
+              ko: (n) => `${n}명의 고객이 외부 플랫폼 요금과 비교한 뒤 5% 미만 소폭 할인만으로는 매력이 부족해 이탈했습니다.`,
+            },
+          },
+          {
+            count: 19, syncPareto: 'right', color: '#6D28D9', polyClr: '#3B82F6',
+            stage: { vi: '4. Hài lòng mức giá', en: '4. Satisfied w/ Price', ko: '4. 제안 요금 만족' },
+            dropName: { vi: 'Đóng trang khi xem ảnh & vị trí', en: 'Exited on missing video & map check', ko: '영상 누락·이동 거리 확인 후 이탈' },
+            act: { vi: 'Bổ sung video thực tế của phòng', en: 'Upload real walkthrough room video', ko: '실제 객실 투어 영상 업로드' },
+            detail: {
+              vi: (n) => `${n} lượt khách đã hài lòng mức giá nhưng đóng trang vì mục Video thực tế phòng đang bỏ trống hoặc thấy khoảng cách xa.`,
+              en: (n) => `${n} travelers liked the price band but exited after finding the Room Video tab empty or checking transit distance.`,
+              ko: (n) => `${n}명의 고객이 가격에는 만족했으나 객실 실제 영상 탭이 비어 있거나 이동 거리를 확인한 후 창을 닫았습니다.`,
+            },
+          },
+        ],
+        paretoLeftTitle: {
+          vi: (n) => `Lý do khách từ chối ngay ngoài danh sách (${n} lượt)`,
+          en: (n) => `Why guests declined directly on the offer list (${n} bids)`,
+          ko: (n) => `제안 목록에서 즉시 거절한 세부 사유 (${n}건)`,
+        },
+        paretoLeft: [
+          { count: 11, pct: 45.8, color: '#DC2626', label: { vi: 'Gói phòng chưa kèm bữa sáng miễn phí', en: 'Room package excludes free breakfast', ko: '객실 패키지에 무료 조식 미포함' } },
+          { count: 6, pct: 25.0, color: '#EF4444', label: { vi: 'Chưa hỗ trợ trả phòng trễ đến 14:00', en: 'No late check-out until 14:00 offered', ko: '14:00 레이트 체크아웃 미지원' } },
+          { count: 4, pct: 16.7, color: '#F87171', label: { vi: 'Chưa có chỗ đậu xe ô tô tại khách sạn', en: 'On-site car parking not available', ko: '호텔 내 무료 주차 공간 미제공' } },
+          { count: 3, pct: 12.5, color: '#FCA5A5', label: { vi: 'Chưa giới thiệu hạng phòng gia đình', en: 'Family room option not included in quote', ko: '패밀리 객실 타입 미제안' } },
+        ],
+        paretoRightTitle: {
+          vi: (n) => `Lý do khách đóng trang thông tin chi tiết (${n} lượt)`,
+          en: (n) => `Why guests closed the property detail view (${n} bids)`,
+          ko: (n) => `숙소 상세 페이지를 닫고 이탈한 사유 (${n}건)`,
+        },
+        paretoRight: [
+          { count: 9, pct: 47.4, color: '#7C3AED', label: { vi: 'Mục Video thực tế phòng đang bỏ trống', en: 'Real room walkthrough video tab is empty', ko: '실제 객실 영상 탭이 비어 있음' } },
+          { count: 6, pct: 31.6, color: '#8B5CF6', label: { vi: 'Mở bản đồ kiểm tra thấy khoảng cách xa', en: 'Checked map and found transit distance far', ko: '지도 확인 결과 주요 이동 거리가 멈' } },
+          { count: 4, pct: 21.0, color: '#A78BFA', label: { vi: 'Còn băn khoăn quy định phụ thu trẻ em', en: 'Unclear child extra-bed surcharge policy', ko: '아동 동반 추가 요금 규정 불명확' } },
+        ],
+        aiCards: [
+          {
+            score: 21.4, src: 'offer_listing_sort_change · explore_stay_ota_compare_click',
+            tier: { vi: 'Mức dưới 30% · Ưu tiên xử lý 1', en: 'Below 30% · Priority Action 1', ko: '30% 미만 · 최우선 개선 1순위' },
+            action: { vi: 'Điều chỉnh mức ưu đãi giá về khoảng 10% – 15%', en: 'Align bid discount into the 10%–15% sweet spot', ko: '제안 할인율을 최적 구간(10~15%)으로 조정' },
+            note: {
+              vi: 'Hiện phần lớn lượt chào giá đang giảm dưới 5% nên dễ tụt thứ hạng khi khách sắp xếp theo giá và rời đi sau bước đối chiếu.',
+              en: 'Most current bids offer less than 5% off, losing top visibility when guests sort by price and compare market rates.',
+              ko: '현재 대다수 입찰이 5% 미만 할인에 머물러 가격순 정렬 및 시장가 비교 직후 고객이 이탈하고 있습니다.',
+            },
+          },
+          {
+            score: 52.6, src: 'offer_reject_confirm · explore_stay_media_click',
+            tier: { vi: 'Mức 30% – 70% · Ưu tiên xử lý 2', en: '30%–70% · Priority Action 2', ko: '30~70% · 핵심 개선 2순위' },
+            action: { vi: 'Bổ sung Video thực tế phòng & gói Bữa sáng', en: 'Add real Room Video & Breakfast-included package', ko: '실제 객실 영상 등록 및 조식 포함 패키지 구성' },
+            note: {
+              vi: (lTot, rTot) => `Khắc phục trực tiếp ${lTot} lượt từ chối ngoài danh sách do thiếu bữa sáng và ${rTot} lượt đóng trang chi tiết do trống mục Video.`,
+              en: (lTot, rTot) => `Directly resolves the ${lTot} list rejections (missing breakfast) and ${rTot} detail exits (empty room video tab).`,
+              ko: (lTot, rTot) => `조식 미포함 목록 거절(${lTot}건)과 객실 영상 누락 상세 이탈(${rTot}건)을 동시에 해결합니다.`,
+            },
+          },
+          {
+            score: 78.4, src: 'booking_form_complete · offer_card_impression',
+            tier: { vi: 'Mức trên 70% · Phát huy thế mạnh', en: 'Above 70% · Scale Strength', ko: '70% 이상 · 핵심 강점 확대' },
+            action: { vi: 'Bật báo giá tự động ban đêm & chào kèm từ 2 hạng phòng', en: 'Enable overnight Auto-bid & quote 2+ room categories', ko: '야간 자동 입찰 가동 및 2개 이상 객실 동시 제안' },
+            note: {
+              vi: 'Nhóm khách đặt phòng gấp trong ngày đang chốt cao gấp 2,2 lần; chào từ 2 hạng phòng giúp tăng mạnh thứ hạng hiển thị.',
+              en: 'Same-day bookers convert at 2.2x; offering 2+ room options lifts visibility rank without cutting base room rates.',
+              ko: '당일 예약 고객의 성사율이 2.2배 높으며, 다중 객실 제안 시 조건 일치도 정렬 노출 순위가 크게 상승합니다.',
+            },
+          },
+        ],
+      },
+      b: {
+        revVnd: 0, won: 0, ratingNum: 0.0, autoBidPct: 100.0,
+        isoDays: ['2026-11-02','2026-11-06','2026-11-10','2026-11-14','2026-11-18','2026-11-22','2026-11-26','2026-11-30'],
+        dayWon: [0, 0, 0, 0, 0, 0, 0, 0], dayRev: [0, 0, 0, 0, 0, 0, 0, 0],
+        sweetBadgeBg: '#FEF2F2', sweetBadgeColor: '#B91C1C',
+        ratingSub: {
+          vi: 'Chưa có lượt đánh giá nào',
+          en: 'No guest reviews yet',
+          ko: '아직 등록된 리뷰 없음',
+        },
+        sweetBadge: {
+          vi: 'Chưa phát sinh đơn do cơ sở mới chưa có đánh giá (Không phải do giá cao)',
+          en: '0 bookings due to zero reviews on new property (Not caused by high price)',
+          ko: '신규 숙소 리뷰 부재로 인한 미예약 상태 (높은 요금 때문이 아님)',
+        },
+        bands: [
+          { bids: 8, rate: 0.0, label: { vi: 'Cao hơn thị trường', en: 'Above Market', ko: '시장가보다 높음' } },
+          { bids: 29, rate: 0.0, label: { vi: 'Giảm nhẹ 0–5%', en: '0–5% Off', ko: '0~5% 소폭 할인' } },
+          { bids: 19, rate: 0.0, label: { vi: 'Giảm vừa 5–10%', en: '5–10% Off', ko: '5~10% 적정 할인' } },
+          { bids: 12, rate: 0.0, sweet: true, label: { vi: 'Giảm 10–15%', en: '10%–15% Off', ko: '10~15% 할인' } },
+          { bids: 7, rate: 0.0, label: { vi: 'Giảm sâu trên 15%', en: 'Over 15% Off', ko: '15% 이상 과다할인' } },
+        ],
+        contexts: [
+          {
+            onVal: 0.0, offVal: 28.4,
+            name: { vi: 'Khách đặt phòng gấp trong ngày', en: 'Same-Day Last-Minute Guests', ko: '당일 긴급 예약 고객' },
+            lift: { vi: 'Cần tích lũy đánh giá', en: 'Needs initial reviews', ko: '초기 리뷰 확보 필요' },
+            onLbl: { vi: 'Khách sạn của bạn', en: 'Your property', ko: '내 숙소 현황' },
+            offLbl: { vi: 'Bình quân khu vực', en: 'Area average', ko: '지역 평균' },
+          },
+          {
+            onVal: 0.0, offVal: 24.0,
+            name: { vi: 'Khách lưu trú dài ngày (từ 3 đêm)', en: 'Extended-Stay Guests (3+ Nights)', ko: '장기 투숙 고객 (3박 이상)' },
+            lift: { vi: 'Cần tích lũy đánh giá', en: 'Needs initial reviews', ko: '초기 리뷰 확보 필요' },
+            onLbl: { vi: 'Khách sạn của bạn', en: 'Your property', ko: '내 숙소 현황' },
+            offLbl: { vi: 'Bình quân khu vực', en: 'Area average', ko: '지역 평균' },
+          },
+          {
+            onVal: 16.0, offVal: 54.0,
+            name: { vi: 'Tỷ lệ xuất hiện ở 3 vị trí đầu tiên', en: 'Top-3 Offer List Visibility', ko: '상위 3위 이내 노출 비율' },
+            lift: { vi: 'Điểm ưu tiên: 800', en: 'Priority score: 800', ko: '노출 신뢰 점수: 800' },
+            onLbl: { vi: 'Khách sạn của bạn', en: 'Your property', ko: '내 숙소 현황' },
+            offLbl: { vi: 'Bình quân khu vực', en: 'Area average', ko: '지역 평균' },
+          },
+          {
+            onVal: 14.7, offVal: 72.0,
+            name: { vi: 'Mức độ đầy đủ ảnh & video phòng', en: 'Room Photo & Video Completeness', ko: '객실 사진·실제 영상 완성도' },
+            lift: { vi: 'Cần bổ sung Video', en: 'Add room videos', ko: '실제 영상 추가 필요' },
+            onLbl: { vi: 'Khách sạn của bạn', en: 'Your property', ko: '내 숙소 현황' },
+            offLbl: { vi: 'Bình quân khu vực', en: 'Area average', ko: '지역 평균' },
+          },
+        ],
+        // 4 Hotel-Controllable Stages Only: 19 + 12 + 9 + 35 = 75 Lost + 0 Won = 75 Total Bids
+        losses: [
+          {
+            count: 19, color: '#475569', polyClr: '#1E40AF',
+            stage: { vi: '1. Đã gửi báo giá đi', en: '1. Bid Offer Sent', ko: '1. 입찰 제안 발송' },
+            dropName: { vi: 'Nằm khuất ở cuối danh sách hiển thị', en: 'Buried when guests sort by rating / match', ko: '평점순 정렬·초기 점수로 하단 배치' },
+            act: { vi: 'Giới thiệu kèm 2 – 3 hạng phòng', en: 'Quote 2–3 room types per bid', ko: '2~3개 객실 타입 동시 제안' },
+            detail: {
+              vi: (n) => `${n} lượt nằm ở cuối danh sách do cơ sở mới có điểm khởi điểm 800 và bị tụt hạng khi khách sắp xếp theo điểm đánh giá.`,
+              en: (n) => `${n} offers fell to the bottom due to baseline score 800 and 0.0 rating whenever guests sorted by highest rating.`,
+              ko: (n) => `신규 기본 점수(800점) 및 평점 0.0 상태로 인해 고객이 평점 높은순 정렬을 사용할 때 ${n}건이 하단으로 밀렸습니다.`,
+            },
+          },
+          {
+            count: 12, syncPareto: 'left', color: '#B91C1C', polyClr: '#1D4ED8',
+            stage: { vi: '2. Khách đã nhìn thấy', en: '2. Seen by Guest', ko: '2. 고객 목록 노출' },
+            dropName: { vi: 'Từ chối ngay ngoài danh sách', en: 'Declined directly on offer list', ko: '제안 목록에서 즉시 거절' },
+            act: { vi: 'Bổ sung bữa sáng vào giá chào', en: 'Include breakfast in bid package', ko: '제안 요금에 무료 조식 포함' },
+            detail: {
+              vi: (n) => `${n} lượt khách bỏ qua vì gói phòng chưa bao gồm bữa sáng hoặc dịch vụ đón sân bay / đậu xe.`,
+              en: (n) => `${n} travelers skipped the offer card because complimentary breakfast or parking/pickup perks were absent.`,
+              ko: (n) => `${n}명의 고객이 무료 조식 또는 주차·픽업 혜택이 포함되지 않아 목록에서 제안을 건너뛰었습니다.`,
+            },
+          },
+          {
+            count: 9, color: '#B45309', polyClr: '#2563EB',
+            stage: { vi: '3. Mở xem thông tin', en: '3. Opened & Price-Checked', ko: '3. 상세 열람·가격 비교' },
+            dropName: { vi: 'Dừng lại sau khi đối chiếu giá', en: 'Left after market price check', ko: '타사 요금 비교 후 이탈' },
+            act: { vi: 'Áp dụng ưu đãi khai trương 12%', en: 'Apply 12% grand-opening offer', ko: '신규 오픈 기념 12% 할인 적용' },
+            detail: {
+              vi: (n) => `${n} lượt khách đối chiếu giá thị trường thấy ngang bằng cơ sở lâu năm nên chưa ưu tiên chọn khách sạn mới.`,
+              en: (n) => `${n} travelers saw price parity with established hotels and did not switch to an unreviewed new property.`,
+              ko: (n) => `${n}명의 고객이 기존 유명 호텔과 가격 차이가 크지 않자 리뷰 없는 신규 숙소 선택을 멈췄습니다.`,
+            },
+          },
+          {
+            count: 35, syncPareto: 'right', color: '#6D28D9', polyClr: '#3B82F6',
+            stage: { vi: '4. Hài lòng mức giá', en: '4. Satisfied w/ Price', ko: '4. 제안 요금 만족' },
+            dropName: { vi: 'E ngại cơ sở mới chưa có đánh giá', en: 'Exited over 0 reviews & empty video tab', ko: '리뷰 0건 우려 및 실제 영상 부재로 이탈' },
+            act: { vi: 'Ưu đãi đón 5 đoàn khách đầu tiên', en: 'First-5-stays perk + Upload room video', ko: '첫 5팀 웰컴 혜택 + 실제 객실 영상 등록' },
+            detail: {
+              vi: (n) => `${n} lượt khách đã ưng mức giá nhưng đóng trang khi thấy cơ sở chưa có đánh giá nào và thiếu Video phòng.`,
+              en: (n) => `${n} travelers liked the price band but exited upon seeing zero verified reviews and an empty room video tab.`,
+              ko: (n) => `${n}명의 고객이 가격에는 만족했으나 등록된 후기가 0건이고 실제 객실 영상이 없어 최종 단계에서 이탈했습니다.`,
+            },
+          },
+        ],
+        paretoLeftTitle: {
+          vi: (n) => `Lý do khách từ chối ngay ngoài danh sách (${n} lượt)`,
+          en: (n) => `Why guests declined directly on the offer list (${n} bids)`,
+          ko: (n) => `제안 목록에서 즉시 거절한 세부 사유 (${n}건)`,
+        },
+        paretoLeft: [
+          { count: 6, pct: 50.0, color: '#DC2626', label: { vi: 'Gói phòng chưa kèm bữa sáng miễn phí', en: 'Room package excludes free breakfast', ko: '객실 패키지에 무료 조식 미포함' } },
+          { count: 4, pct: 33.3, color: '#EF4444', label: { vi: 'Chưa có dịch vụ đón sân bay / đậu xe', en: 'No airport pickup or parking perk', ko: '공항 픽업·무료 주차 혜택 미제공' } },
+          { count: 2, pct: 16.7, color: '#F87171', label: { vi: 'Chỉ giới thiệu duy nhất 1 hạng phòng', en: 'Quoted only a single room category', ko: '단 1개 객실 타입만 단일 제안' } },
+        ],
+        paretoRightTitle: {
+          vi: (n) => `Lý do khách đóng trang thông tin chi tiết (${n} lượt)`,
+          en: (n) => `Why guests closed the property detail view (${n} bids)`,
+          ko: (n) => `숙소 상세 페이지를 닫고 이탈한 사유 (${n}건)`,
+        },
+        paretoRight: [
+          { count: 21, pct: 60.0, color: '#7C3AED', label: { vi: 'E ngại khách sạn mới chưa có đánh giá', en: 'Hesitant because new hotel has 0 reviews', ko: '신규 오픈 숙소라 등록된 리뷰가 없음' } },
+          { count: 10, pct: 28.6, color: '#8B5CF6', label: { vi: 'Mục Video thực tế phòng đang bỏ trống', en: 'Real room walkthrough video tab is empty', ko: '실제 객실 영상 탭이 비어 있음' } },
+          { count: 4, pct: 11.4, color: '#A78BFA', label: { vi: 'Mở bản đồ kiểm tra khoảng cách di chuyển', en: 'Checked map to verify travel distance', ko: '지도에서 주변 이동 거리를 확인 후 이탈' } },
+        ],
+        aiCards: [
+          {
+            score: 18.2, src: 'offer_listing_sort_change · explore_stay_modal_view',
+            tier: { vi: 'Mức dưới 30% · Ưu tiên xử lý 1', en: 'Below 30% · Priority Action 1', ko: '30% 미만 · 최우선 개선 1순위' },
+            action: { vi: 'Áp dụng gói ưu đãi đón những đoàn khách đầu tiên', en: 'Launch welcome perk package for first guest stays', ko: '첫 투숙객 유치를 위한 웰컴 특가 패키지 운영' },
+            note: {
+              vi: 'Giúp khách sạn nhanh chóng tích lũy đánh giá thực tế ban đầu để tạo niềm tin và cải thiện thứ hạng hiển thị.',
+              en: 'Helps your property earn its first verified reviews quickly to unlock trust and improve sort visibility.',
+              ko: '실투숙 첫 리뷰를 빠르게 확보하여 신규 고객의 예약 망설임을 해소하고 평점 정렬 순위를 높입니다.',
+            },
+          },
+          {
+            score: 14.7, src: 'explore_stay_media_click · offer_reject_confirm',
+            tier: { vi: 'Mức dưới 30% · Ưu tiên xử lý 2', en: 'Below 30% · Priority Action 2', ko: '30% 미만 · 최우선 개선 2순위' },
+            action: { vi: 'Quay Video phòng thực tế & kèm Bữa sáng miễn phí', en: 'Upload walkthrough Room Videos & bundle free Breakfast', ko: '실제 객실 투어 영상 등록 및 무료 조식 포함' },
+            note: {
+              vi: (lTot, rTot) => `Xử lý trực tiếp ${rTot} lượt khách đã ưng giá nhưng đóng trang vì thiếu tư liệu thực tế và ${lTot} lượt từ chối do thiếu bữa sáng.`,
+              en: (lTot, rTot) => `Addresses the ${rTot} detail-page exits caused by missing visual proof and ${lTot} list rejections from missing breakfast.`,
+              ko: (lTot, rTot) => `가격에 만족했으나 시각 자료 부족으로 이탈한 ${rTot}건과 조식 미포함 거절 ${lTot}건을 직접 개선합니다.`,
+            },
+          },
+          {
+            score: 94.7, src: 'booking_form_complete · offer_card_impression',
+            tier: { vi: 'Mức trên 70% · Điểm mạnh duy trì', en: 'Above 70% · Keep Strength', ko: '70% 이상 · 강점 유지 항목' },
+            action: { vi: 'Duy trì báo giá tự động và chào kèm 2 – 3 hạng phòng', en: 'Maintain 100% Auto-bid and quote 2–3 room categories', ko: '자동 입찰 100% 유지 및 2~3개 객실 타입 동시 제안' },
+            note: {
+              vi: 'Tốc độ phản hồi dưới 1 phút đang rất tốt; giới thiệu thêm lựa chọn hạng phòng giúp nâng thứ hạng xuất hiện trên danh sách.',
+              en: 'Sub-1-minute response coverage is strong; quoting 2–3 room options lifts ranking on the guest offer list.',
+              ko: '1분 이내 자동 응답 강점을 유지하면서 다중 객실을 함께 제안하면 목록 노출 순위가 높아집니다.',
+            },
+          },
+        ],
+      },
+    };
+
+    let activeFunnelIdx = 1;
+    const tip = document.getElementById('chart-tooltip');
+
+    function showTip(e, html) {
+      tip.innerHTML = html;
+      tip.style.display = 'block';
+      tip.style.left = Math.min(window.innerWidth - 380, e.clientX + 16) + 'px';
+      tip.style.top = Math.max(12, e.clientY - 24) + 'px';
+    }
+    function hideTip() { tip.style.display = 'none'; }
+
+    function fmtDec(num, digits, locale) {
+      const s = Number(num).toFixed(digits);
+      return locale === 'vi' ? s.replace('.', ',') : s;
+    }
+
+    function fmtChartDate(isoDate, locale) {
+      const [ , mStr, dStr ] = isoDate.split('-');
+      const mIdx = Number(mStr) - 1;
+      if (locale === 'vi') return `${dStr}/${mStr}`;
+      if (locale === 'ko') return `${Number(mStr)}월 ${Number(dStr)}일`;
+      return `${EN_MONTHS[mIdx]} ${dStr}`;
+    }
+
+    function fmtFullDateOffset(daysAgo, locale) {
+      const dt = new Date(Date.now() - daysAgo * 86400000);
+      const y = dt.getFullYear();
+      const m = String(dt.getMonth() + 1).padStart(2, '0');
+      const d = String(dt.getDate()).padStart(2, '0');
+      if (locale === 'vi') return `${d}/${m}/${y}`;
+      if (locale === 'ko') return `${y}.${m}.${d}`;
+      return `${EN_MONTHS[dt.getMonth()]} ${d}, ${y}`;
+    }
+
+    function fmtMoney(vnd, cur, mult, locale) {
+      const v = vnd * mult;
+      if (v === 0) return cur === 'KRW' ? '0 ₩' : cur === 'USD' ? '$0' : '0 ₫';
+      if (cur === 'USD') {
+        const usd = Math.round(v / 25400);
+        return `$${usd.toLocaleString('en-US')}`;
+      }
+      if (cur === 'KRW') {
+        const krw = v / 18.5;
+        if (locale === 'ko') {
+          const man = krw / 10000;
+          return man >= 100
+            ? `${Math.round(man).toLocaleString('ko-KR')}만 ₩`
+            : `${man.toFixed(1).replace(/\.0$/, '')}만 ₩`;
+        }
+        if (locale === 'en') {
+          return krw >= 1000000
+            ? `${(krw / 1000000).toFixed(2).replace(/\.?0+$/, '')}M ₩`
+            : `${Math.round(krw / 1000).toLocaleString('en-US')}K ₩`;
+        }
+        return `${(krw / 1000).toFixed(0)} Nghìn ₩`;
+      }
+      const tr = v / 1000000;
+      if (locale === 'vi') return `${tr.toFixed(1).replace('.', ',')} Triệu ₫`;
+      if (locale === 'ko') return `${tr.toFixed(1)}백만 ₫`;
+      return `${tr.toFixed(1)}M ₫`;
+    }
+
+    function loadInitialPrefs() {
+      const params = new URLSearchParams(window.location.search);
+      const qLang = params.get('lang');
+      const qCur = params.get('currency');
+      const qProp = params.get('property');
+      const qPeriod = params.get('period');
+      let saved = {};
+      try {
+        saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {};
+      } catch (_) {
+        saved = {};
+      }
+      const lang = ['vi', 'en', 'ko'].includes(qLang) ? qLang : (['vi', 'en', 'ko'].includes(saved.lang) ? saved.lang : 'vi');
+      const cur = ['VND', 'KRW', 'USD'].includes(qCur) ? qCur : (['VND', 'KRW', 'USD'].includes(saved.cur) ? saved.cur : 'VND');
+      const prop = ['a', 'b'].includes(qProp) ? qProp : (['a', 'b'].includes(saved.prop) ? saved.prop : 'a');
+      const period = ['30d', '7d'].includes(qPeriod) ? qPeriod : (['30d', '7d'].includes(saved.period) ? saved.period : '30d');
+
+      document.getElementById('language-select').value = lang;
+      document.getElementById('currency-select').value = cur;
+      document.getElementById('property-select').value = prop;
+      document.getElementById('period-select').value = period;
+    }
+
+    function savePrefs(lang, cur, prop, period) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ lang, cur, prop, period }));
+      } catch (_) {
+        // Ignore storage quota errors
+      }
+    }
+
+    function syncStaticChrome(locale) {
+      const t = UI_COPY[locale];
+      document.documentElement.lang = locale;
+      document.title = t.docTitle;
+      document.getElementById('brand-sub').textContent = t.brandSub;
+
+      const navIds = ['nav-overview', 'nav-calendar', 'nav-payout', 'nav-rooms', 'nav-bidding'];
+      navIds.forEach((id, i) => {
+        document.getElementById(id).textContent = t.nav[i];
+      });
+
+      const propSel = document.getElementById('property-select');
+      propSel.setAttribute('aria-label', t.ariaProperty);
+      document.getElementById('prop-opt-a').textContent = t.propOptions.a;
+      document.getElementById('prop-opt-b').textContent = t.propOptions.b;
+
+      const periodSel = document.getElementById('period-select');
+      periodSel.setAttribute('aria-label', t.ariaPeriod);
+      document.getElementById('period-opt-30d').textContent = t.periodOptions['30d'];
+      document.getElementById('period-opt-7d').textContent = t.periodOptions['7d'];
+
+      document.getElementById('language-select').setAttribute('aria-label', t.ariaLanguage);
+
+      const curSel = document.getElementById('currency-select');
+      curSel.setAttribute('aria-label', t.ariaCurrency);
+      document.getElementById('cur-opt-vnd').textContent = t.currencyOptions.VND;
+      document.getElementById('cur-opt-krw').textContent = t.currencyOptions.KRW;
+      document.getElementById('cur-opt-usd').textContent = t.currencyOptions.USD;
+
+      document.getElementById('cto-lineage-toggle').textContent = t.lineageBtn;
+    }
+
+    function render() {
+      const locale = document.getElementById('language-select').value || 'vi';
+      const propKey = document.getElementById('property-select').value;
+      const period = document.getElementById('period-select').value;
+      const cur = document.getElementById('currency-select').value;
+      savePrefs(locale, cur, propKey, period);
+      syncStaticChrome(locale);
+      hideTip();
+
+      const t = UI_COPY[locale];
+      const mult = period === '7d' ? 0.26 : 1;
+      const d = DATA[propKey];
+      const sc = (n) => (n === 0 ? 0 : Math.max(1, Math.round(n * mult)));
+
+      // Subtle 1-line data cutoff timestamp ( >= 24h T-1 delay, zero technical banner )
+      const t1Date = fmtFullDateOffset(1, locale);
+      document.getElementById('data-cutoff-note').textContent = t.cutoffCaption(t1Date);
+
+      const leftTotal = d.paretoLeft.reduce((s, x) => s + sc(x.count), 0);
+      const rightTotal = d.paretoRight.reduce((s, x) => s + sc(x.count), 0);
+      const won = d.won === 0 ? 0 : sc(d.won);
+      const losses = d.losses.map((l) => {
+        const c = l.syncPareto === 'left' ? leftTotal : l.syncPareto === 'right' ? rightTotal : sc(l.count);
+        const rawDetail = l.detail[locale];
+        return {
+          ...l,
+          c,
+          stageText: l.stage[locale],
+          dropText: l.dropName[locale],
+          actText: l.act[locale],
+          detailText: typeof rawDetail === 'function' ? rawDetail(c) : rawDetail,
+        };
+      });
+      if (activeFunnelIdx >= losses.length) activeFunnelIdx = 0;
+
+      const lostSum = losses.reduce((s, x) => s + x.c, 0);
+      const bids = won + lostSum;
+      const winPctNum = bids > 0 ? (won / bids) * 100 : 0;
+      const lossPctNum = bids > 0 ? (lostSum / bids) * 100 : 0;
+      const winPctStr = fmtDec(winPctNum, 1, locale);
+      const lossPctStr = fmtDec(lossPctNum, 1, locale);
+
+      // 5 Executive KPI Cards (with explicit Win Rate AND Loss Rate on a single crisp line)
+      document.getElementById('kpi-strip').innerHTML = [
+        { lbl: t.kpi.revLbl, val: fmtMoney(d.revVnd, cur, mult, locale), sub: t.kpi.revSub(won), clr: '#047857' },
+        { lbl: t.kpi.bidsLbl, val: t.kpi.bidsVal(bids), sub: t.kpi.bidsSub(lostSum, lossPctStr), clr: '#0F172A' },
+        {
+          lbl: t.kpi.winLbl,
+          val: `<span style="font-size:23px;white-space:nowrap"><span style="color:#1D4ED8">${winPctStr}%</span> <span style="color:#94A3B8;font-weight:600;font-size:19px">/</span> <span style="color:#B91C1C">${lossPctStr}%</span></span>`,
+          sub: t.kpi.winSub,
+          clr: '#1D4ED8',
+        },
+        { lbl: t.kpi.ratingLbl, val: `${fmtDec(d.ratingNum, 1, locale)} / ${fmtDec(5.0, 1, locale)}`, sub: d.ratingSub[locale], clr: '#B45309' },
+        { lbl: t.kpi.autoLbl, val: `${fmtDec(d.autoBidPct, 1, locale)}%`, sub: t.kpi.autoSub, clr: '#6D28D9' },
+      ].map((k) => `<div class="kpi-card"><div class="kpi-label">${k.lbl}</div><div class="kpi-val" style="color:${k.clr}">${k.val}</div><div class="kpi-sub">${k.sub}</div></div>`).join('');
+
+      // Chart 1: Dual Y-Axis Combo (Left Y = Completed Bookings [Bars], Right Y = Net Revenue [Line])
+      const c1Steps = 4;
+      const c1XLeft = 56, c1XRight = 862, c1YTop = 36, c1YBot = 196;
+      const c1PlotH = c1YBot - c1YTop; // 160px
+      const wDays = d.dayWon.map((n) => (n === 0 ? 0 : sc(n)));
+      const maxWonDay = Math.max(0, ...wDays);
+      const yMaxWon = maxWonDay <= 2 ? 4 : 8; // 0,1,2,3,4 or 0,2,4,6,8 (always exact integers on 4 steps)
+
+      const revRate = cur === 'USD' ? 25400 : cur === 'KRW' ? 18.5 : 1;
+      const yMaxRevCur = cur === 'USD'
+        ? (period === '7d' ? 200 : 800)
+        : cur === 'KRW'
+          ? (period === '7d' ? 240000 : 1000000)
+          : (period === '7d' ? 4000000 : 16000000);
+
+      const fmtRevTick = (valCur) => {
+        if (valCur === 0) return cur === 'KRW' ? '0 ₩' : cur === 'USD' ? '$0' : '0 ₫';
+        if (cur === 'USD') return `$${Math.round(valCur)}`;
+        if (cur === 'KRW') {
+          if (locale === 'ko') return `${Math.round(valCur / 10000)}만 ₩`;
+          if (locale === 'en') return valCur >= 1000000 ? `${(valCur / 1000000).toFixed(1).replace(/\.0$/, '')}M ₩` : `${Math.round(valCur / 1000)}K ₩`;
+          return valCur >= 1000000 ? `${(valCur / 1000000).toFixed(1).replace('.', ',')}Tr ₩` : `${Math.round(valCur / 1000)}N ₩`;
+        }
+        const m = valCur / 1000000;
+        if (locale === 'vi') return `${m}tr ₫`;
+        if (locale === 'ko') return `${m}백만 ₫`;
+        return `${m}M ₫`;
+      };
+
+      const fmtRevPoint = (valCur) => {
+        if (valCur <= 0) return '';
+        if (cur === 'USD') return `$${Math.round(valCur)}`;
+        if (cur === 'KRW') {
+          if (locale === 'ko') return `${(valCur / 10000).toFixed(1).replace(/\.0$/, '')}만`;
+          if (locale === 'en') return `${Math.round(valCur / 1000)}K`;
+          return `${Math.round(valCur / 1000)}N`;
+        }
+        const m = valCur / 1000000;
+        return locale === 'vi' ? `${m.toFixed(1).replace('.', ',')}tr` : `${m.toFixed(1)}M`;
+      };
+
+      const c1GridAndTicks = Array.from({ length: c1Steps + 1 }, (_, k) => {
+        const ratio = k / c1Steps;
+        const gy = (c1YBot - ratio * c1PlotH).toFixed(1);
+        const leftVal = Math.round(ratio * yMaxWon);
+        const rightVal = ratio * yMaxRevCur;
+        const isBase = k === 0;
+        return `
+          <line x1="${c1XLeft}" y1="${gy}" x2="${c1XRight}" y2="${gy}" stroke="${isBase ? '#94A3B8' : '#E2E8F0'}" stroke-width="${isBase ? '1.3' : '1'}" ${isBase ? '' : 'stroke-dasharray="4 4"'}/>
+          <line x1="${c1XLeft - 5}" y1="${gy}" x2="${c1XLeft}" y2="${gy}" stroke="#1D4ED8" stroke-width="1.3"/>
+          <text x="${c1XLeft - 9}" y="${Number(gy) + 4}" text-anchor="end" font-size="11.5" font-weight="700" fill="#1D4ED8">${leftVal}</text>
+          <line x1="${c1XRight}" y1="${gy}" x2="${c1XRight + 5}" y2="${gy}" stroke="#059669" stroke-width="1.3"/>
+          <text x="${c1XRight + 9}" y="${Number(gy) + 4}" text-anchor="start" font-size="11.5" font-weight="700" fill="#047857">${fmtRevTick(rightVal)}</text>`;
+      }).join('');
+
+      const c1Pts = [];
+      const revBars = d.isoDays.map((isoDay, i) => {
+        const dayLbl = fmtChartDate(isoDay, locale);
+        const x = Math.round(108 + i * ((c1XRight - 50 - 108) / 7));
+        const wDay = wDays[i];
+        const bh = (wDay / yMaxWon) * c1PlotH;
+        const yBar = c1YBot - bh;
+
+        const dayVnd = d.dayRev[i] * 1000000 * mult;
+        const dayCur = dayVnd / revRate;
+        const dotY = c1YBot - (dayCur / yMaxRevCur) * c1PlotH;
+        c1Pts.push({ x, y: dotY, valCur: dayCur });
+
+        const dayRevFmt = fmtMoney(d.dayRev[i] * 1000000, cur, mult, locale);
+        const barLblY = c1YBot - 5.5;
+        return `<g class="rev-pt" data-day="${dayLbl}" data-won="${wDay}" data-rev="${dayRevFmt}" style="cursor:pointer">
+                <rect x="${x - 26}" y="${c1YTop - 8}" width="52" height="${c1PlotH + 14}" fill="transparent"/>
+                ${wDay > 0 ? `<rect x="${x - 21}" y="${yBar.toFixed(1)}" width="42" height="${bh.toFixed(1)}" rx="5" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/>` : ''}
+                <text x="${x}" y="${c1YBot + 20}" text-anchor="middle" font-size="12" fill="#475569" font-weight="600">${dayLbl}</text>
+                ${wDay > 0 ? `<text class="c1-bar-lbl" x="${x}" y="${barLblY}" text-anchor="middle" font-size="11" fill="#1E40AF" font-weight="800">${t.chart1.barUnit(wDay)}</text>` : ''}
+                </g>`;
+      }).join('');
+
+      const c1LineNodes = c1Pts.map((p, i) => {
+        const bh = (wDays[i] / yMaxWon) * c1PlotH;
+        const yBar = c1YBot - bh;
+        const revLblY = Math.min(p.y, yBar) - 10;
+        const ptTxt = fmtRevPoint(p.valCur);
+        return `
+          <circle cx="${p.x}" cy="${p.y.toFixed(1)}" r="5" fill="#059669" stroke="#FFFFFF" stroke-width="2" pointer-events="none"/>
+          ${ptTxt ? `<text class="c1-rev-lbl" x="${p.x}" y="${revLblY.toFixed(1)}" text-anchor="middle" font-size="11" font-weight="800" fill="#047857" stroke="#FFFFFF" stroke-width="3" paint-order="stroke" pointer-events="none">${ptTxt}</text>` : ''}`;
+      }).join('');
+
+      document.getElementById('chart-revenue-card').innerHTML = `
+        <div class="card-head">
+          <div>
+            <div class="card-title">${t.chart1.title}</div>
+            <div class="card-purpose"><strong>${t.purposeLabel}</strong> ${t.chart1.purpose}</div>
+            <div class="lineage-chip">${t.sourceEventPrefix} payment_complete</div>
+          </div>
+          <span class="badge-kpi" style="background:#EFF6FF;color:#1D4ED8;border-color:#BFDBFE">${t.chart1.badge}</span>
+        </div>
+        <svg viewBox="0 0 940 226" width="100%" height="226" id="chart-revenue-svg">
+          <text x="${c1XLeft - 18}" y="16" text-anchor="start" font-size="11.5" font-weight="800" fill="#1D4ED8">${t.chart1.yLeftAxis}</text>
+          <text x="${c1XRight + 48}" y="16" text-anchor="end" font-size="11.5" font-weight="800" fill="#047857">${t.chart1.yRightAxis}</text>
+          <line x1="${c1XLeft}" y1="${c1YTop - 6}" x2="${c1XLeft}" y2="${c1YBot}" stroke="#1D4ED8" stroke-width="1.5"/>
+          <line x1="${c1XRight}" y1="${c1YTop - 6}" x2="${c1XRight}" y2="${c1YBot}" stroke="#059669" stroke-width="1.5"/>
+          ${c1GridAndTicks}
+          ${revBars}
+          <polyline points="${c1Pts.map((p) => `${p.x},${p.y.toFixed(1)}`).join(' ')}" fill="none" stroke="#059669" stroke-width="3" pointer-events="none"/>
+          ${c1LineNodes}
+        </svg>`;
+
+      // Chart 2: Dual Y-Axis Sweet Spot Combo (Left Y = Bids Sent [Bars], Right Y = Win Rate % [Line])
+      const c2Steps = 3;
+      const c2XLeft = 48, c2XRight = 596, c2YTop = 38, c2YBot = 198;
+      const c2PlotH = c2YBot - c2YTop; // 160px
+      const bandCounts = d.bands.map((b) => sc(b.bids));
+      const maxBandBids = Math.max(1, ...bandCounts);
+      const yMaxBids = maxBandBids <= 9 ? 9 : 30; // 0,3,6,9 in 7d; 0,10,20,30 in 30d
+      const yMaxRate = 60; // 0%, 20%, 40%, 60%
+
+      const c2GridAndTicks = Array.from({ length: c2Steps + 1 }, (_, k) => {
+        const ratio = k / c2Steps;
+        const gy = (c2YBot - ratio * c2PlotH).toFixed(1);
+        const leftVal = Math.round(ratio * yMaxBids);
+        const rightVal = Math.round(ratio * yMaxRate);
+        const isBase = k === 0;
+        return `
+          <line x1="${c2XLeft}" y1="${gy}" x2="${c2XRight}" y2="${gy}" stroke="${isBase ? '#94A3B8' : '#E2E8F0'}" stroke-width="${isBase ? '1.3' : '1'}" ${isBase ? '' : 'stroke-dasharray="4 4"'}/>
+          <line x1="${c2XLeft - 5}" y1="${gy}" x2="${c2XLeft}" y2="${gy}" stroke="#475569" stroke-width="1.3"/>
+          <text x="${c2XLeft - 8}" y="${Number(gy) + 4}" text-anchor="end" font-size="11.5" font-weight="700" fill="#475569">${leftVal}</text>
+          <line x1="${c2XRight}" y1="${gy}" x2="${c2XRight + 5}" y2="${gy}" stroke="#1D4ED8" stroke-width="1.3"/>
+          <text x="${c2XRight + 8}" y="${Number(gy) + 4}" text-anchor="start" font-size="11.5" font-weight="700" fill="#1D4ED8">${rightVal}%</text>`;
+      }).join('');
+
+      const swPts = [];
+      const swBars = d.bands.map((b, i) => {
+        const cx = 103 + i * 109;
+        const bc = bandCounts[i];
+        const bh = (bc / yMaxBids) * c2PlotH;
+        const yBar = c2YBot - bh;
+        const py = c2YBot - (b.rate / yMaxRate) * c2PlotH;
+        swPts.push({ x: cx, y: py, r: b.rate, sweet: b.sweet, yBar, bh });
+
+        const bLbl = b.label[locale];
+        const bRate = fmtDec(b.rate, 1, locale);
+        // Keep bar count label cleanly separated from line % label in 100% of cases
+        const lineNearBottom = py > c2YBot - 30;
+        const barTxtY = lineNearBottom
+          ? (yBar <= c2YBot - 58 ? yBar + 16 : yBar - 7)
+          : (c2YBot - 7);
+        return `
+          <g class="sw-band" data-lbl="${bLbl}" data-bids="${bc}" data-rate="${bRate}" style="cursor:pointer">
+            ${b.sweet ? `<rect x="${cx - 44}" y="${c2YTop - 6}" width="88" height="${c2PlotH + 6}" rx="8" fill="#ECFDF5" stroke="#10B981" stroke-width="1.6" stroke-dasharray="4 3"/>` : `<rect x="${cx - 44}" y="${c2YTop - 6}" width="88" height="${c2PlotH + 6}" fill="transparent"/>`}
+            <rect x="${cx - 22}" y="${yBar.toFixed(1)}" width="44" height="${bh.toFixed(1)}" rx="5" fill="${b.sweet ? '#34D399' : '#CBD5E1'}"/>
+            <text class="c2-bar-lbl" x="${cx}" y="${barTxtY.toFixed(1)}" text-anchor="middle" font-size="11" font-weight="700" fill="${b.sweet ? '#064E3B' : '#334155'}">${t.chart2.barBids(bc)}</text>
+            <text class="c2-x-lbl" x="${cx}" y="${c2YBot + 21}" text-anchor="middle" font-size="11.2" font-weight="${b.sweet ? '800' : '600'}" fill="${b.sweet ? '#047857' : '#475569'}">${bLbl}</text>
+          </g>`;
+      }).join('');
+
+      document.getElementById('chart-sweetspot-card').innerHTML = `
+        <div class="card-head">
+          <div>
+            <div class="card-title">${t.chart2.title}</div>
+            <div class="card-purpose"><strong>${t.purposeLabel}</strong> ${t.chart2.purpose}</div>
+            <div class="lineage-chip">${t.sourceEventPrefix} explore_stay_ota_compare_click · offer_listing_sort_change</div>
+          </div>
+          <span class="badge-kpi" style="background:${d.sweetBadgeBg};color:${d.sweetBadgeColor}">${d.sweetBadge[locale]}</span>
+        </div>
+        <svg viewBox="0 0 648 232" width="100%" height="232" id="chart-sweetspot-svg">
+          <text x="${c2XLeft - 14}" y="16" text-anchor="start" font-size="11.5" font-weight="800" fill="#475569">${t.chart2.yLeftAxis}</text>
+          <text x="${c2XRight + 40}" y="16" text-anchor="end" font-size="11.5" font-weight="800" fill="#1D4ED8">${t.chart2.yRightAxis}</text>
+          <line x1="${c2XLeft}" y1="${c2YTop - 6}" x2="${c2XLeft}" y2="${c2YBot}" stroke="#64748B" stroke-width="1.5"/>
+          <line x1="${c2XRight}" y1="${c2YTop - 6}" x2="${c2XRight}" y2="${c2YBot}" stroke="#1D4ED8" stroke-width="1.5"/>
+          ${c2GridAndTicks}
+          ${swBars}
+          <polyline points="${swPts.map((p) => `${p.x},${p.y.toFixed(1)}`).join(' ')}" fill="none" stroke="#1D4ED8" stroke-width="3.2" pointer-events="none"/>
+          ${swPts.map((p) => `<circle cx="${p.x}" cy="${p.y.toFixed(1)}" r="5.5" fill="${p.sweet ? '#059669' : '#1D4ED8'}" stroke="#FFFFFF" stroke-width="2" pointer-events="none"/>
+            <text class="c2-rate-lbl" x="${p.x}" y="${(p.y - 10).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="800" fill="${p.sweet ? '#047857' : '#1E40AF'}" stroke="#FFFFFF" stroke-width="3.2" paint-order="stroke" pointer-events="none">${fmtDec(p.r, 1, locale)}%</text>`).join('')}
+        </svg>`;
+
+      // Chart 3: 4 Submitted Request Contexts (Post-"Find Bid" only: booking_form_complete)
+      document.getElementById('chart-context-card').innerHTML = `
+        <div class="card-head">
+          <div>
+            <div class="card-title">${t.chart3.title}</div>
+            <div class="card-purpose"><strong>${t.purposeLabel}</strong> ${t.chart3.purpose}</div>
+            <div class="lineage-chip">${t.sourceEventPrefix} booking_form_complete · offer_card_impression</div>
+          </div>
+        </div>
+        <div class="hbar-list">
+          ${d.contexts.map((c) => `
+            <div class="hbar-item">
+              <div class="hbar-top"><span>${c.name[locale]}</span><span style="color:#047857">${c.lift[locale]}</span></div>
+              <div class="hbar-pair">
+                <div class="hbar-row"><span>${c.onLbl[locale]}</span><div class="hbar-track"><div class="hbar-fill" style="width:${Math.min(100, c.onVal * 2.2)}%;background:#2563EB"></div></div><strong style="color:#1D4ED8;text-align:right">${fmtDec(c.onVal, 1, locale)}%</strong></div>
+                <div class="hbar-row"><span>${c.offLbl[locale]}</span><div class="hbar-track"><div class="hbar-fill" style="width:${Math.min(100, c.offVal * 2.2)}%;background:#CBD5E1"></div></div><span style="text-align:right">${fmtDec(c.offVal, 1, locale)}%</span></div>
+              </div>
+            </div>`).join('')}
+        </div>`;
+
+      // Chart 4: 4-STAGE HOTEL-CONTROLLABLE FUNNEL + DUAL LOSS RATES (Step Loss % & Overall Loss %)!
+      let rem = bids;
+      const stages = [];
+      losses.forEach((l, idx) => {
+        const startCount = rem;
+        const nextCount = rem - l.c;
+        const stepLossNum = startCount > 0 ? (l.c / startCount) * 100 : 0;
+        const totLossNum = bids > 0 ? (l.c / bids) * 100 : 0;
+        const shareOfLostNum = lostSum > 0 ? (l.c / lostSum) * 100 : 0;
+        stages.push({
+          ...l, idx, startCount, nextCount,
+          pctOfTotal: fmtDec((startCount / bids) * 100, 1, locale),
+          stepLossPct: fmtDec(stepLossNum, 1, locale),
+          totLossPct: fmtDec(totLossNum, 1, locale),
+          shareOfLostPct: fmtDec(shareOfLostNum, 1, locale),
+        });
+        rem = nextCount;
+      });
+
+      const cx = 198;
+      const minW = 112, maxW = 372;
+      const wFor = (val) => minW + ((val / bids) * (maxW - minW));
+      const rowH = 54, gapY = 7, calloutX = 398, calloutW = 196;
+
+      const funnelPolys = stages.map((st, i) => {
+        const y1 = 10 + i * (rowH + gapY);
+        const y2 = y1 + rowH;
+        const w1 = wFor(st.startCount);
+        const w2 = wFor(st.nextCount);
+        const pStr = `${(cx - w1/2).toFixed(1)},${y1} ${(cx + w1/2).toFixed(1)},${y1} ${(cx + w2/2).toFixed(1)},${y2} ${(cx - w2/2).toFixed(1)},${y2}`;
+        const slopeMidX = cx + (w1 + w2) / 4;
+        return `
+          <g class="funnel-slice" data-fidx="${i}" style="cursor:pointer">
+            <rect x="8" y="${y1}" width="590" height="${rowH}" rx="8" fill="transparent"/>
+            <polygon class="funnel-stage-poly ${i === activeFunnelIdx ? 'is-active' : ''}" points="${pStr}" fill="${st.polyClr}" stroke="${i === activeFunnelIdx ? '#0F172A' : '#FFFFFF'}" stroke-width="${i === activeFunnelIdx ? '2.5' : '1.5'}"/>
+            <text x="${cx}" y="${y1 + 22}" text-anchor="middle" font-size="12.5" font-weight="700" fill="#FFFFFF" pointer-events="none">${st.stageText}</text>
+            <text x="${cx}" y="${y1 + 41}" text-anchor="middle" font-size="13" font-weight="800" fill="#E0F2FE" pointer-events="none">${t.chart4.stageCount(st.startCount, st.pctOfTotal)}</text>
+            <line x1="${slopeMidX.toFixed(1)}" y1="${y1 + rowH/2}" x2="${calloutX - 4}" y2="${y1 + rowH/2}" stroke="${st.color}" stroke-width="1.5" stroke-dasharray="4 3" pointer-events="none"/>
+            <circle cx="${slopeMidX.toFixed(1)}" cy="${y1 + rowH/2}" r="3.2" fill="${st.color}" pointer-events="none"/>
+            <rect class="callout-box" x="${calloutX}" y="${y1 + 6}" width="${calloutW}" height="42" rx="7" fill="#FEF2F2" stroke="${st.color}" stroke-width="1.3"/>
+            <text class="callout-top-txt" x="${calloutX + calloutW/2}" y="${y1 + 23}" text-anchor="middle" font-size="11.5" font-weight="800" fill="${st.color}" pointer-events="none">${t.chart4.dropCalloutTop(st.c, st.stepLossPct)}</text>
+            <text class="callout-sub-txt" x="${calloutX + calloutW/2}" y="${y1 + 39}" text-anchor="middle" font-size="11" font-weight="600" fill="#475569" pointer-events="none">${t.chart4.dropCalloutSub(st.totLossPct)}</text>
+          </g>`;
+      }).join('');
+
+      const yWin = 10 + 4 * (rowH + gapY);
+      const wWinTop = wFor(won);
+      const wWinBot = Math.max(102, wWinTop - 16);
+      const winPolyStr = `${(cx - wWinTop/2).toFixed(1)},${yWin} ${(cx + wWinTop/2).toFixed(1)},${yWin} ${(cx + wWinBot/2).toFixed(1)},${yWin + 48} ${(cx - wWinBot/2).toFixed(1)},${yWin + 48}`;
+      const winBlock = `
+        <g id="funnel-win-stage" style="cursor:pointer">
+          <polygon points="${winPolyStr}" fill="#059669" stroke="#064E3B" stroke-width="1.5"/>
+          <text x="${cx}" y="${yWin + 21}" text-anchor="middle" font-size="12" font-weight="700" fill="#ECFDF5" pointer-events="none">${t.chart4.winStageTitle}</text>
+          <text x="${cx}" y="${yWin + 39}" text-anchor="middle" font-size="13" font-weight="900" fill="#FFFFFF" pointer-events="none">${t.chart4.winStageCount(won, winPctStr)}</text>
+        </g>`;
+
+      const selStage = stages[activeFunnelIdx] || stages[0];
+      document.getElementById('loss-diagnosis-section').innerHTML = `
+        <div class="card-head">
+          <div>
+            <div class="card-title">${t.chart4.title}</div>
+            <div class="card-purpose"><strong>${t.purposeLabel}</strong> ${t.chart4.purpose}</div>
+            <div class="lineage-chip">${t.sourceEventPrefix} offer_listing_sort_change · offer_ttl_expired · offer_reject_confirm · explore_stay_ota_compare_click · explore_stay_media_click</div>
+          </div>
+          <div class="badge-group">
+            <span class="badge-kpi" style="background:#FEF2F2;color:#B91C1C;border-color:#FECACA">${t.chart4.lossBadge(lossPctStr, lostSum, bids)}</span>
+            <span class="badge-kpi" style="background:#ECFDF5;color:#047857;border-color:#A7F3D0">${t.chart4.winBadge(winPctStr, won, bids)}</span>
+          </div>
+        </div>
+        <div class="funnel-layout">
+          <svg viewBox="0 0 602 310" width="100%" height="310" id="funnel-svg">
+            ${funnelPolys}
+            ${winBlock}
+          </svg>
+          <div>
+            <table class="excel-table">
+              <thead>
+                <tr>
+                  <th>${t.chart4.colStage}</th>
+                  <th style="text-align:right;width:74px">${t.chart4.colCount}</th>
+                  <th style="text-align:right;width:90px">${t.chart4.colStepLoss}</th>
+                  <th style="text-align:right;width:96px">${t.chart4.colTotalLoss}</th>
+                  <th style="width:186px">${t.chart4.colAction}</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${stages.map((st, i) => `
+                  <tr class="f-row ${i === activeFunnelIdx ? 'is-active' : ''}" data-fidx="${i}">
+                    <td><strong style="color:${st.color}">${t.chart4.stepPrefix(i + 1)}</strong> ${st.dropText}</td>
+                    <td style="text-align:right;font-weight:800;color:${st.color}">−${st.c}</td>
+                    <td style="text-align:right;font-weight:800;color:#B91C1C">${st.stepLossPct}%</td>
+                    <td style="text-align:right;font-weight:700;color:#334155">${st.totLossPct}%</td>
+                    <td style="font-weight:600;color:#334155">${st.actText}</td>
+                  </tr>`).join('')}
+              </tbody>
+              <tfoot>
+                <tr style="background:#FEF2F2;font-weight:800;color:#0F172A">
+                  <td>${t.chart4.footTotal}</td>
+                  <td style="text-align:right;color:#B91C1C">−${lostSum}</td>
+                  <td style="text-align:right;color:#64748B;font-weight:700">${t.chart4.footStepDash}</td>
+                  <td style="text-align:right;color:#B91C1C">${lossPctStr}%</td>
+                  <td style="color:#047857;font-weight:800">${t.chart4.footWon(won, winPctStr)}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <div class="funnel-detail-bar" id="funnel-detail-bar">
+          <div><strong>${t.chart4.viewingPrefix(selStage.stageText)}</strong> ${selStage.detailText}</div>
+          <span class="badge-kpi" style="background:#FFFFFF;border-color:#CBD5E1;color:${selStage.color}">${t.chart4.actionPrefix(selStage.actText)}</span>
+        </div>`;
+
+      // Bind interactive Funnel hover & click events
+      const updateActiveFunnel = (idx) => {
+        activeFunnelIdx = idx;
+        document.querySelectorAll('.funnel-stage-poly').forEach((el, k) => {
+          el.classList.toggle('is-active', k === idx);
+          el.setAttribute('stroke', k === idx ? '#0F172A' : '#FFFFFF');
+          el.setAttribute('stroke-width', k === idx ? '2.5' : '1.5');
+        });
+        document.querySelectorAll('.excel-table tr.f-row').forEach((row, k) => row.classList.toggle('is-active', k === idx));
+        const st = stages[idx];
+        document.getElementById('funnel-detail-bar').innerHTML = `
+          <div><strong>${t.chart4.viewingPrefix(st.stageText)}</strong> ${st.detailText}</div>
+          <span class="badge-kpi" style="background:#FFFFFF;border-color:#CBD5E1;color:${st.color}">${t.chart4.actionPrefix(st.actText)}</span>`;
+      };
+
+      document.querySelectorAll('[data-fidx]').forEach((el) => {
+        const idx = Number(el.getAttribute('data-fidx'));
+        const st = stages[idx];
+        el.addEventListener('mouseenter', (e) => {
+          updateActiveFunnel(idx);
+          showTip(e, `<div style="font-weight:800;font-size:14.5px;margin-bottom:4px;color:#93C5FD">${t.chart4.tipHeader(st.stageText, st.startCount, st.nextCount)}</div>
+                      <div>${t.chart4.tipStepLoss(st.c, st.stepLossPct)}</div>
+                      <div>${t.chart4.tipTotLoss(st.totLossPct, st.shareOfLostPct)}</div>
+                      <div style="margin-top:5px;color:#E2E8F0">${st.detailText}</div>`);
+        });
+        el.addEventListener('mousemove', (e) => showTip(e, tip.innerHTML));
+        el.addEventListener('mouseleave', hideTip);
+        el.addEventListener('click', () => updateActiveFunnel(idx));
+      });
+
+      const winEl = document.getElementById('funnel-win-stage');
+      if (winEl) {
+        winEl.addEventListener('mouseenter', (e) => showTip(e, `<div style="font-weight:800;font-size:14.5px;margin-bottom:4px;color:#6EE7B7">${t.chart4.winTipTitle(won, winPctStr, lossPctStr)}</div><div>${t.chart4.winTipBody}</div>`));
+        winEl.addEventListener('mousemove', (e) => showTip(e, tip.innerHTML));
+        winEl.addEventListener('mouseleave', hideTip);
+      }
+
+      document.querySelectorAll('.sw-band').forEach((el) => {
+        el.addEventListener('mouseenter', (e) => showTip(e, `<strong>${el.dataset.lbl}</strong><br/>${t.chart2.tipBids(el.dataset.bids)}<br/>${t.chart2.tipRate(el.dataset.rate)}`));
+        el.addEventListener('mousemove', (e) => showTip(e, tip.innerHTML));
+        el.addEventListener('mouseleave', hideTip);
+      });
+      document.querySelectorAll('.rev-pt').forEach((el) => {
+        el.addEventListener('mouseenter', (e) => showTip(e, `<strong>${t.chart1.tipDate(el.dataset.day)}</strong><br/>${t.chart1.tipWon(el.dataset.won)}<br/>${t.chart1.tipRev(el.dataset.rev)}`));
+        el.addEventListener('mousemove', (e) => showTip(e, tip.innerHTML));
+        el.addEventListener('mouseleave', hideTip);
+      });
+
+      // Chart 5: Ranked Specific Causes
+      const renderPareto = (items) => items.map((it) => `
+        <div class="p-row">
+          <div class="p-head"><span>${it.label[locale]}</span><span style="color:${it.color};white-space:nowrap">${t.chart5.rowStat(sc(it.count), fmtDec(it.pct, 1, locale))}</span></div>
+          <div class="hbar-track"><div class="hbar-fill" style="width:${it.pct}%;background:${it.color}"></div></div>
+        </div>`).join('');
+      document.getElementById('chart-pareto-card').innerHTML = `
+        <div class="card-head">
+          <div>
+            <div class="card-title">${t.chart5.title}</div>
+            <div class="card-purpose"><strong>${t.purposeLabel}</strong> ${t.chart5.purpose}</div>
+            <div class="lineage-chip">${t.sourceEventPrefix} offer_reject_confirm · explore_stay_modal_view · explore_stay_media_click · explore_stay_map_interact</div>
+          </div>
+        </div>
+        <div class="grid-2-eq">
+          <div class="pareto-col"><div class="pareto-sub">${d.paretoLeftTitle[locale](leftTotal)}</div>${renderPareto(d.paretoLeft)}</div>
+          <div class="pareto-col"><div class="pareto-sub">${d.paretoRightTitle[locale](rightTotal)}</div>${renderPareto(d.paretoRight)}</div>
+        </div>`;
+
+      // AI Business Action Summary (Calm, Neutral Executive Design)
+      document.getElementById('ai-advisor-section').innerHTML = `
+        <div class="card-head">
+          <div>
+            <div class="card-title">${t.ai.title}</div>
+            <div class="card-purpose"><strong>${t.purposeLabel}</strong> ${t.ai.purpose}</div>
+          </div>
+          <span class="badge-kpi" style="background:#F8FAFC;color:#334155;border-color:#CBD5E1">${t.ai.badge}</span>
+        </div>
+        <div class="ai-grid">
+          ${d.aiCards.map((c, idx) => `
+            <div class="ai-card" id="ai-card-${idx}">
+              <div class="ai-top">
+                <span class="ai-tier">${c.tier[locale]}</span>
+                <span class="ai-score">${fmtDec(c.score, 1, locale)}%</span>
+              </div>
+              <div class="ai-bar-track"><div class="ai-bar-fill" style="width:${c.score}%"></div></div>
+              <div class="ai-action">${c.action[locale]}</div>
+              <div class="ai-note">${typeof c.note[locale] === 'function' ? c.note[locale](leftTotal, rightTotal) : c.note[locale]}</div>
+              <div class="lineage-chip">${t.eventChipPrefix} ${c.src}</div>
+            </div>`).join('')}
+        </div>`;
+    }
+
+    ['property-select', 'period-select', 'language-select', 'currency-select'].forEach((id) =>
+      document.getElementById(id).addEventListener('change', render)
+    );
+    document.getElementById('cto-lineage-toggle').addEventListener('click', (e) => {
+      document.body.classList.toggle('show-lineage');
+      e.currentTarget.classList.toggle('active');
+    });
+
+    loadInitialPrefs();
+    render();
+  </script>
+</body>
+</html>

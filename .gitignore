@@ -6,12 +6,15 @@
 !.env.example
 /AGENTS.md
 /CLAUDE.md
-/docs/
+/docs/templates/
+/docs/presentations/**/*.pptx
 
 # Bộ nhớ đệm công cụ trình duyệt & kỹ năng AI cục bộ
 .playwright-mcp/
 skills/system/
 .agents/skills/
+.agents/rules/
+.agents/workflows/
 
 # Tệp tạm thời hệ điều hành, Office & Python
 .DS_Store
@@ -33,8 +36,9 @@ ota-rate-shopping-demo/node_modules
 /~$gns_Bug_Report_Tracking*.xlsx
 /external-ota-comparison-spike/
 
-# Bộ nhớ đệm & sidecar kiểm tra tạm của Archify
+# Bộ nhớ đệm & sidecar kiểm tra tạm của Archify / Graphify
 .archify/
+graphify-out/
 *.browser-check.json
 *.delivery.json
 *.finalize.json
