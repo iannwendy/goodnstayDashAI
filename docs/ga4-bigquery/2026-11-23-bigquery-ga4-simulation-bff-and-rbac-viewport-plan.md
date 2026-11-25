@@ -75,9 +75,9 @@
 - Create: `dashboard/bigquery-bff/src/server.ts`
 - Test: `dashboard/bigquery-bff/tests/bff.test.ts`
 
-- [ ] **Step 1: Write unit & live BigQuery integration tests covering JWT login for all 5 `userID`s, `403 FORBIDDEN_BRANCH_SCOPE` cross-branch BOLA blocking, `receptionist` financial masking, `/api/v1/analytics/viewport`, and `/api/v1/analytics/bundle`**
-- [ ] **Step 2: Implement BFF service with parameterized `@google-cloud/bigquery` queries, `maximumBytesBilled = "52428800"`, 60s TTL cache, and in-memory operational overlay**
-- [ ] **Step 3: Run `npm test` in `dashboard/bigquery-bff` against live `aevo-512307` and verify 100% pass**
+- [x] **Step 1: Write unit & live BigQuery integration tests covering JWT login for all 5 `userID`s, `403 FORBIDDEN_BRANCH_SCOPE` cross-branch BOLA blocking, `receptionist` financial masking, `/api/v1/analytics/viewport`, `/api/v1/analytics/bundle`, and all 6 BigQuery cost guardrails**
+- [x] **Step 2: Implement BFF service (`config.ts`, `types.ts`, `auth.ts`, `costGuard.ts`, `bigqueryService.ts`, `server.ts`, `index.ts`) with parameterized `@google-cloud/bigquery` queries, 6-layer cost guard (`25 MiB` default ceiling, `$0` dry-run preflight, `500 MiB/24h` circuit breaker, Singleflight + TTL cache, per-user rate limit), and in-memory operational overlay**
+- [x] **Step 3: Run `npm test` in `dashboard/bigquery-bff` against live `aevo-512307` and verify 100% pass (14/14 TS tests + 3/3 Python tests)**
 
 ---
 
