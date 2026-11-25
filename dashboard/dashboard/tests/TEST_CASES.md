@@ -23,7 +23,7 @@ Tài liệu này liệt kê toàn bộ các nhóm Test Case tự động bảo v
 | :--- | :--- | :--- |
 | `TC-DATA-01` | Kiểm tra đủ **7 bảng JSON Master Data v4.0** + `schema_manifest.json` (`4.0.0`) tại `master-data/` & `master-data/seed/`; cấm 12 file thừa v2.7 | Đồng bộ 100% giữa `master-data/` và `master-data/seed/`, `0` file rác cũ tồn tại |
 | `TC-DATA-02` | Đồng bộ ánh xạ 7 bảng giữa `vite.config.ts` (`TABLE_FILE_MAP`) và `src/services/masterDataService.ts` (`STATIC_TABLE_PATHS`) | Khớp 100% cả 7 khóa (`hubConfig`, `bidRecords`, `hubInbox`, `roomInventory`, `payoutLedgers`, `biddingOperations`, `marketingCampaigns`) |
-| `TC-DATA-03` | Bất biến `partner_hub_config.json`: thương hiệu `Optibide`, tỷ giá `currencyRates`, hồ sơ `partnerUser` + 2 vai trò `staffProfiles` (`manager`, `receptionist`), 4 cơ sở (`br_mykhe`, `br_songhan`, `br_anthuong`, `stay_h11`), tổng phòng chuỗi `30 = 12+10+8`, tổng `previousPeriodRevenueVnd` khớp chính xác 3 chi nhánh | Toàn vẹn cấu hình, phân quyền ca trực & toán học 100% (`9.8M`, `25.2M`, `54.6M`) |
+| `TC-DATA-03` | Bất biến `partner_hub_config.json`: thương hiệu `Optibide`, tỷ giá `currencyRates`, hồ sơ `partnerUser` + 5 hồ sơ phân quyền `staffProfiles` (`USR-PARTNER-01`, `USR-MGR-MYKHE`, `USR-MGR-SONGHAN`, `USR-STAFF-02`, `USR-MGR-H11`) kèm `allowedBranchIds`/`canViewChainAll`/`canViewFinancials`/`canManagePricing`, 4 cơ sở (`br_mykhe`, `br_songhan`, `br_anthuong`, `stay_h11`), tổng phòng chuỗi `30 = 12+10+8`, tổng `previousPeriodRevenueVnd` khớp chính xác 3 chi nhánh | Toàn vẹn cấu hình, phân quyền 5 tài khoản `user_id × branch_id` & toán học 100% (`9.8M`, `25.2M`, `54.6M`) |
 | `TC-DATA-04` | Bất biến `bid_records.json`: `143` bản ghi (`68` chuỗi L'amour + `75` Stay Hotel H11), đủ 4 nhóm trạng thái > 0 trên chuỗi L'amour, và 29 đơn hoàn tất (`#43..#71`) gắn khóa ngoại `roomTypeId`, `payoutBatchId`, `guestFullName`, `guestPhone`, `stayStatus` | Không mồ côi khóa ngoại chéo sang `room_inventory` & `payout_ledgers` |
 | `TC-DATA-05` | Bất biến `hub_inbox.json`: luồng hội thoại 2 chiều `thread`, mẫu phản hồi nhanh lễ tân `quickReplies` & thông báo vận hành đa ngôn ngữ (`0` tin nhắn khách trên `stay_h11`) | Đầy đủ bản dịch `vi`/`en`/`ko` cho từng lượt tin nhắn |
 | `TC-DATA-06` | Bất biến `room_inventory.json`: `15` hạng phòng & `48` phòng vật lý (`#101..#130`, `#201..#218`) khớp chính xác `roomsCount` từng cơ sở (`12+10+8+18`), khóa ngoại `activeBookingCode` & `calendarBlocks` hợp lệ | Không trùng số phòng vật lý, giá sàn bảo vệ `<=` giá niêm yết |
@@ -61,7 +61,17 @@ Tài liệu này liệt kê toàn bộ các nhóm Test Case tự động bảo v
 
 ---
 
-## 5. Build & TypeScript Gate (`tests/unit/build-and-typecheck.test.ts`)
+## 5. Multi-Tenant RBAC Scoping Unit Tests (`tests/unit/rbac-scoping.test.ts`)
+
+| Mã TC | Mô tả kiểm thử | Kỳ vọng chuẩn |
+| :--- | :--- | :--- |
+| `TC-RBAC-01` | Giải mã 5 hồ sơ `staffProfiles` (`USR-PARTNER-01`, `USR-MGR-MYKHE`, `USR-MGR-SONGHAN`, `USR-STAFF-02`, `USR-MGR-H11`) và cờ quyền `allowedBranchIds` / `canViewChainAll` / `canViewFinancials` / `canManagePricing` | Khớp 100% phạm vi chi nhánh và cờ che tài chính / khóa báo giá từng tài khoản |
+| `TC-RBAC-02` | `filterPropertiesForProfile` lọc danh sách cơ sở trên dropdown chọn khách sạn theo đúng `allowedBranchIds` của từng tài khoản | Quản lý chi nhánh / Lễ tân chỉ thấy đúng 1 chi nhánh được giao (ẩn `"all"` và chi nhánh khác); Chủ chuỗi thấy đủ `all` + 4 cơ sở |
+| `TC-RBAC-03` | `clampPropertyKeyForProfile` & `deriveNextPropertyKeyOnUserSwitch` kẹp ngữ cảnh khi đổi tài khoản liên hoàn | Chuyển `USR-PARTNER-01 -> USR-MGR-MYKHE -> USR-MGR-SONGHAN -> USR-MGR-H11 -> USR-PARTNER-01` luôn tự kẹp `all -> br_mykhe -> br_songhan -> stay_h11 -> all` |
+
+---
+
+## 6. Build & TypeScript Gate (`tests/unit/build-and-typecheck.test.ts`)
 
 | Mã TC | Mô tả kiểm thử | Kỳ vọng chuẩn |
 | :--- | :--- | :--- |
@@ -127,7 +137,19 @@ Kiểm thử tự động trên đủ **7 kích thước màn hình chuẩn**:
 - `375×667` (iPhone SE)
 - `360×800` (Compact Android)
 
+## 11. Live BigQuery Viewport, 6-Layer Cost Guard & 5-Profile RBAC E2E (`tests/e2e/bigquery-live-and-rbac.spec.ts`)
+
+| Mã TC | Mô tả kiểm thử | Kỳ vọng chuẩn |
+| :--- | :--- | :--- |
+| `TC-BQ-01` | Mở mục `Kho BigQuery` (`nav-item-bigquery`) dưới tài khoản `USR-PARTNER-01`, kiểm tra số liệu sống từ `aevo-512307`, bảng 6 lớp chặn chi phí, bộ 3 biểu đồ ngày của CTO (đổi ống kính `Offer Funnel ↔ Booking Form`), phễu GA4 8 bước và nút `Truy vấn trực tiếp` | Hiển thị chính xác `66.360.000 ₫`, badge `aevo-512307`, telemetry `ms` / `Cache`, `0` lỗi console |
+| `TC-BQ-02` | Đổi sang Quản lý Mỹ Khê (`USR-MGR-MYKHE`), xác nhận bộ chọn cơ sở khóa cứng `br_mykhe`, doanh thu cập nhật `28.290.000 ₫` và bấm nút `Kiểm thử chặn chéo chi nhánh (403)` | BFF chặn chéo chi nhánh thành công và hiển thị trực quan `HTTP 403 · FORBIDDEN_BRANCH_SCOPE (target: br_songhan)` |
+| `TC-BQ-03` | Đổi sang Lễ tân ca trực (`USR-STAFF-02`), xác nhận khóa cứng `br_mykhe` và che số liệu tài chính cả từ BigQuery SQL lẫn giao diện | Hiển thị `Đã che số tiền` và `•••••• ₫ (Đã che)` trên thẻ doanh thu |
+| `TC-BQ-04` | Chuyển đổi Bộ chuyển nguồn toàn cục (`Local JSON ↔ BigQuery`) ngay trên trang Tổng quan và kết hợp đổi tài khoản (`USR-PARTNER-01` -> `USR-MGR-MYKHE` -> `USR-STAFF-02` -> khôi phục `Local JSON`) | Tổng quan nạp trực tiếp bundle scoped từ BigQuery BFF (`28.290.000 ₫` / `•••••• ₫ (Đã che)`) và quay về `Local JSON` (`66.360.000 ₫`) sạch sẽ |
+| `TC-BQ-05` | Đổi sang Quản lý Stay Hotel H11 (`USR-MGR-H11`) trên `Kho BigQuery` | Bộ chọn cơ sở khóa cứng `stay_h11`, hiển thị `0 ₫` và `0 / 75 bids` từ BigQuery |
+
+---
+
 **Tiêu chuẩn bắt buộc trên mọi viewport**:
-1. `document.documentElement.scrollWidth <= window.innerWidth` trên **trang Tổng quan** (cả có đơn & `stay_h11` trống đơn), **toàn bộ 7 màn hình phân hệ menu trái** (`Calendar`, `Payout`, `Rooms`, `Bidding`, `Messages`, `Marketing Deals`, `Marketing Upsell`), popover thông báo, ngăn kéo menu di động và `BookingDetailModal`.
+1. `document.documentElement.scrollWidth <= window.innerWidth` trên **trang Tổng quan** (cả có đơn & `stay_h11` trống đơn), **toàn bộ 8 màn hình phân hệ menu trái** (`Calendar`, `Payout`, `Rooms`, `Bidding`, `Messages`, `BigQuery Live`, `Marketing Deals`, `Marketing Upsell`), thanh chuyển nguồn `Local JSON ↔ BigQuery`, popover thông báo, ngăn kéo menu di động và `BookingDetailModal`.
 2. `>= 1024px` hiển thị thanh menu trái cố định (`sidebar-nav`); `< 1024px` chuyển sang nút mở ngăn kéo trượt (`mobile-menu-btn` -> `mobile-sidebar-drawer`).
 3. `0` lỗi `console.error` và `0` lỗi `pageerror`.

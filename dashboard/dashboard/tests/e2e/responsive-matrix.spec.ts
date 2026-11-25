@@ -126,6 +126,11 @@ test.describe("TC-RESP: Multi-Viewport Responsive Matrix (7 Viewports × All Lef
         { label: "Bidding", navId: "nav-item-bidding", viewTestId: "module-bidding-view" },
         { label: "Messages", navId: "nav-item-messages", viewTestId: "module-messages-view" },
         {
+          label: "BigQuery Live",
+          navId: "nav-item-bigquery",
+          viewTestId: "module-bigquery-view",
+        },
+        {
           label: "Marketing Deals",
           navId: "nav-item-marketing",
           subId: "nav-sub-deals",
@@ -147,6 +152,11 @@ test.describe("TC-RESP: Multi-Viewport Responsive Matrix (7 Viewports × All Lef
           mod.subId,
         );
         await expect(page.getByTestId(mod.viewTestId)).toBeVisible();
+        if (mod.viewTestId === "module-bigquery-view") {
+          await expect(page.getByTestId("bq-kpi-revenue")).toBeVisible({
+            timeout: 15_000,
+          });
+        }
         await assertNoHorizontalOverflow(page, `${vp.name} - Module ${mod.label}`);
       }
 

@@ -200,6 +200,7 @@ export interface OverviewCopy {
   navRooms: string;
   navBidding: string;
   navMessages: string;
+  navBigQuery: string;
   navMarketing: string;
   navMarketingSubDeals: string;
   navMarketingSubUpsell: string;
@@ -318,6 +319,7 @@ const VI_COPY: OverviewCopy = {
   navRooms: "Quản lý phòng",
   navBidding: "Quản lý báo giá",
   navMessages: "Tin nhắn khách hàng",
+  navBigQuery: "Kho BigQuery",
   navMarketing: "Khuyến mãi & Tiếp thị",
   navMarketingSubDeals: "Ưu đãi giờ chót",
   navMarketingSubUpsell: "Gói nâng hạng phòng",
@@ -465,6 +467,7 @@ const EN_COPY: OverviewCopy = {
   navRooms: "Rooms Management",
   navBidding: "Bidding Management",
   navMessages: "Messages",
+  navBigQuery: "BigQuery Live",
   navMarketing: "Marketing",
   navMarketingSubDeals: "Last-Minute Deals",
   navMarketingSubUpsell: "Room Upsell Offers",
@@ -610,6 +613,7 @@ const KO_COPY: OverviewCopy = {
   navRooms: "객실 관리",
   navBidding: "입찰 관리",
   navMessages: "메시지",
+  navBigQuery: "BigQuery 라이브",
   navMarketing: "마케팅",
   navMarketingSubDeals: "마감 특가 프로모션",
   navMarketingSubUpsell: "객실 업그레이드 혜택",

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   CircleDollarSign,
   Bed,
@@ -31,6 +31,7 @@ import type {
   HubNavSection,
   MarketingCampaignsMaster,
   MasterDataBundle,
+  PartnerUserMaster,
   PayoutLedgersMaster,
   PropertyId,
   RoomInventoryMaster,
@@ -40,6 +41,22 @@ import {
   loadMasterDataBundle,
   persistMasterTable,
 } from "@/services/masterDataService";
+import {
+  fetchBigQueryScopedBundle,
+  persistBffSessionOverlay,
+  type DataSourceMode,
+} from "@/services/bigQueryApiService";
+import {
+  ALL_SYSTEM_PROPERTY_IDS,
+  canProfileManagePricing,
+  canProfileViewChainAll,
+  canProfileViewFinancials,
+  clampPropertyKeyForProfile,
+  deriveNextPropertyKeyOnUserSwitch,
+  filterPropertiesForProfile,
+  getEffectiveAllowedBranchIds,
+  resolveStaffProfile,
+} from "@/lib/rbacScoping";
 import {
   formatAxisTickMoney,
   formatBusinessMoney,
@@ -76,6 +93,7 @@ import { RoomsManagementView } from "@/components/modules/RoomsManagementView";
 import { BiddingManagementView } from "@/components/modules/BiddingManagementView";
 import { GuestMessagesView } from "@/components/modules/GuestMessagesView";
 import { MarketingCampaignsView } from "@/components/modules/MarketingCampaignsView";
+import { BigQueryWarehouseView } from "@/components/modules/BigQueryWarehouseView";
 
 const HUB_PREFS_STORAGE_KEY = "gns_partner_hub_prefs_v1";
 
@@ -86,6 +104,7 @@ const VALID_NAV_SECTIONS: HubNavSection[] = [
   "rooms",
   "bidding",
   "messages",
+  "bigquery_live",
   "marketing_deals",
   "marketing_upsell",
 ];
@@ -98,6 +117,8 @@ interface PersistedHubPrefs {
   rowsPerPage: number;
   activeSection: HubNavSection;
   activeRoleKey: StaffRoleKey;
+  activeUserId: string;
+  dataSourceMode: DataSourceMode;
 }
 
 function readInitialHubPrefs(): PersistedHubPrefs {
@@ -109,11 +130,25 @@ function readInitialHubPrefs(): PersistedHubPrefs {
     rowsPerPage: 5,
     activeSection: "overview",
     activeRoleKey: "manager",
+    activeUserId: "USR-PARTNER-01",
+    dataSourceMode: "local-json",
   };
   try {
     const raw = localStorage.getItem(HUB_PREFS_STORAGE_KEY);
     if (!raw) return fallback;
     const parsed = JSON.parse(raw) as Partial<PersistedHubPrefs>;
+    const resolvedRole: StaffRoleKey =
+      parsed.activeRoleKey === "manager" ||
+      parsed.activeRoleKey === "branch_manager" ||
+      parsed.activeRoleKey === "receptionist"
+        ? parsed.activeRoleKey
+        : "manager";
+    const resolvedUserId =
+      typeof parsed.activeUserId === "string" && parsed.activeUserId.trim()
+        ? parsed.activeUserId.trim()
+        : resolvedRole === "receptionist"
+          ? "USR-STAFF-02"
+          : "USR-PARTNER-01";
     return {
       locale:
         parsed.locale === "vi" || parsed.locale === "en" || parsed.locale === "ko"
@@ -150,11 +185,12 @@ function readInitialHubPrefs(): PersistedHubPrefs {
       )
         ? (parsed.activeSection as HubNavSection)
         : "overview",
-      activeRoleKey:
-        parsed.activeRoleKey === "manager" ||
-        parsed.activeRoleKey === "receptionist"
-          ? parsed.activeRoleKey
-          : "manager",
+      activeRoleKey: resolvedRole,
+      activeUserId: resolvedUserId,
+      dataSourceMode:
+        parsed.dataSourceMode === "live-bigquery"
+          ? "live-bigquery"
+          : "local-json",
     };
   } catch {
     return fallback;
@@ -219,6 +255,14 @@ export function App() {
   const [activeRoleKey, setActiveRoleKey] = useState<StaffRoleKey>(
     initialPrefs.activeRoleKey,
   );
+  const [activeUserId, setActiveUserId] = useState<string>(
+    initialPrefs.activeUserId,
+  );
+  const [dataSourceMode, setDataSourceMode] = useState<DataSourceMode>(
+    initialPrefs.dataSourceMode,
+  );
+  const [bqSyncing, setBqSyncing] = useState<boolean>(false);
+  const prevDataSourceRef = useRef<DataSourceMode>(initialPrefs.dataSourceMode);
   const [calendarWindow, setCalendarWindow] =
     useState<CalendarWindowKey>("current7d");
   const [signedOut, setSignedOut] = useState(false);
@@ -233,6 +277,7 @@ export function App() {
     string | undefined
   >(undefined);
 
+  // Initial load from Local JSON seed/API (zero unsolicited calls to BigQuery BFF in Local JSON mode)
   useEffect(() => {
     let mounted = true;
     loadMasterDataBundle()
@@ -250,16 +295,121 @@ export function App() {
     };
   }, []);
 
+  const staffMasters: PartnerUserMaster[] = useMemo(() => {
+    if (!bundle) return [];
+    return (
+      bundle.hubConfig.staffProfiles ?? [
+        { ...bundle.hubConfig.partnerUser, roleKey: "manager" as const },
+      ]
+    );
+  }, [bundle]);
+
+  const activeStaffMaster: PartnerUserMaster | null = useMemo(() => {
+    if (staffMasters.length === 0) return null;
+    return resolveStaffProfile(staffMasters, activeUserId, activeRoleKey);
+  }, [staffMasters, activeUserId, activeRoleKey]);
+
+  const effectiveAllowedBranches: PropertyId[] = useMemo(() => {
+    if (!activeStaffMaster) return [...ALL_SYSTEM_PROPERTY_IDS];
+    return getEffectiveAllowedBranchIds(
+      activeStaffMaster,
+      ALL_SYSTEM_PROPERTY_IDS,
+    );
+  }, [activeStaffMaster]);
+
+  const canViewChainAll = activeStaffMaster
+    ? canProfileViewChainAll(activeStaffMaster)
+    : true;
+  const canViewFinancials = activeStaffMaster
+    ? canProfileViewFinancials(activeStaffMaster)
+    : true;
+  const canManagePricing = activeStaffMaster
+    ? canProfileManagePricing(activeStaffMaster)
+    : true;
+
+  const effectivePropertyKey: PropertyFilterKey = useMemo(() => {
+    if (!activeStaffMaster) return propertyKey;
+    return clampPropertyKeyForProfile(
+      propertyKey,
+      activeStaffMaster,
+      ALL_SYSTEM_PROPERTY_IDS,
+    );
+  }, [propertyKey, activeStaffMaster]);
+
+  const effectiveModuleRole: StaffRoleKey = canManagePricing
+    ? "manager"
+    : "receptionist";
+
+  const targetUserId = activeStaffMaster?.userId ?? activeUserId;
+  const bundleScopeBranch: PropertyFilterKey = canViewChainAll
+    ? "all"
+    : (effectiveAllowedBranches[0] ?? "br_mykhe");
+  const localeRef = useRef<AppLocale>(locale);
+  localeRef.current = locale;
+
+  // Synchronize live BigQuery scoped bundle when Global Data Source is "live-bigquery"
+  // Dependencies are strictly primitive strings so updating `bundle` NEVER triggers a re-fetch loop.
+  useEffect(() => {
+    let cancelled = false;
+
+    if (dataSourceMode === "live-bigquery") {
+      setBqSyncing(true);
+      fetchBigQueryScopedBundle({
+        userId: targetUserId,
+        branchId: bundleScopeBranch,
+      })
+        .then((res) => {
+          if (cancelled) return;
+          setBundle(res.bundle);
+          setLoading(false);
+          setBqSyncing(false);
+        })
+        .catch(() => {
+          if (cancelled) return;
+          setBqSyncing(false);
+          setDataSourceMode("local-json");
+          const curLoc = localeRef.current;
+          setToastMessage(
+            curLoc === "vi"
+              ? "BigQuery BFF (:4000) hiện chưa bật — đã tự động chuyển về Local JSON."
+              : curLoc === "ko"
+                ? "BigQuery BFF(:4000)에 연결할 수 없어 Local JSON 모드로 전환했습니다."
+                : "BigQuery BFF (:4000) is offline — reverted safely to Local JSON.",
+          );
+        });
+    } else if (prevDataSourceRef.current === "live-bigquery") {
+      // Switching back from Live BigQuery to Local JSON restores the full local dataset
+      loadMasterDataBundle()
+        .then((res) => {
+          if (!cancelled) {
+            setBundle(res.bundle);
+            setLoading(false);
+          }
+        })
+        .catch(() => {
+          // Keep existing in-memory bundle if local reload fails
+        });
+    }
+
+    prevDataSourceRef.current = dataSourceMode;
+
+    return () => {
+      cancelled = true;
+    };
+  }, [dataSourceMode, targetUserId, bundleScopeBranch]);
+
   useEffect(() => {
     try {
       const prefs: PersistedHubPrefs = {
         locale,
         currency,
-        propertyKey,
+        propertyKey: effectivePropertyKey,
         periodKey,
         rowsPerPage,
         activeSection,
-        activeRoleKey,
+        activeRoleKey: activeStaffMaster?.roleKey ?? activeRoleKey,
+        activeUserId: activeStaffMaster?.userId ?? activeUserId,
+        dataSourceMode,
       };
       localStorage.setItem(HUB_PREFS_STORAGE_KEY, JSON.stringify(prefs));
     } catch {
@@ -268,17 +418,21 @@ export function App() {
   }, [
     locale,
     currency,
-    propertyKey,
+    effectivePropertyKey,
     periodKey,
     rowsPerPage,
     activeSection,
     activeRoleKey,
+    activeUserId,
+    activeStaffMaster?.roleKey,
+    activeStaffMaster?.userId,
+    dataSourceMode,
   ]);
 
   // Reset pagination to page 1 whenever property, period, or page size changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [propertyKey, periodKey, rowsPerPage]);
+  }, [effectivePropertyKey, periodKey, rowsPerPage]);
 
   const copy = useMemo(() => getDictionary(locale), [locale]);
   const mCopy = useMemo(() => getModulesDictionary(locale), [locale]);
@@ -286,13 +440,20 @@ export function App() {
   const vm = useMemo(() => {
     if (!bundle) return null;
     return buildOverviewViewModel(bundle, {
-      propertyKey,
+      propertyKey: effectivePropertyKey,
       periodKey,
       locale,
       currency,
       analyzedTimeText: analyzedTimeOverride,
     });
-  }, [bundle, propertyKey, periodKey, locale, currency, analyzedTimeOverride]);
+  }, [
+    bundle,
+    effectivePropertyKey,
+    periodKey,
+    locale,
+    currency,
+    analyzedTimeOverride,
+  ]);
 
   const allBookingsMap = useMemo(() => {
     if (!bundle) return {};
@@ -302,56 +463,56 @@ export function App() {
   const calendarVm = useMemo(() => {
     if (!bundle) return null;
     return buildCalendarModuleViewModel(bundle, {
-      propertyKey,
+      propertyKey: effectivePropertyKey,
       windowKey: calendarWindow,
       locale,
       currency,
     });
-  }, [bundle, propertyKey, calendarWindow, locale, currency]);
+  }, [bundle, effectivePropertyKey, calendarWindow, locale, currency]);
 
   const payoutVm = useMemo(() => {
     if (!bundle) return null;
     return buildPayoutModuleViewModel(bundle, {
-      propertyKey,
+      propertyKey: effectivePropertyKey,
       locale,
       currency,
     });
-  }, [bundle, propertyKey, locale, currency]);
+  }, [bundle, effectivePropertyKey, locale, currency]);
 
   const roomsVm = useMemo(() => {
     if (!bundle) return null;
     return buildRoomsModuleViewModel(bundle, {
-      propertyKey,
+      propertyKey: effectivePropertyKey,
       locale,
       currency,
     });
-  }, [bundle, propertyKey, locale, currency]);
+  }, [bundle, effectivePropertyKey, locale, currency]);
 
   const biddingVm = useMemo(() => {
     if (!bundle) return null;
     return buildBiddingModuleViewModel(bundle, {
-      propertyKey,
+      propertyKey: effectivePropertyKey,
       locale,
       currency,
     });
-  }, [bundle, propertyKey, locale, currency]);
+  }, [bundle, effectivePropertyKey, locale, currency]);
 
   const messagesVm = useMemo(() => {
     if (!bundle) return null;
     return buildMessagesModuleViewModel(bundle, {
-      propertyKey,
+      propertyKey: effectivePropertyKey,
       locale,
     });
-  }, [bundle, propertyKey, locale]);
+  }, [bundle, effectivePropertyKey, locale]);
 
   const marketingVm = useMemo(() => {
     if (!bundle) return null;
     return buildMarketingModuleViewModel(bundle, {
-      propertyKey,
+      propertyKey: effectivePropertyKey,
       locale,
       currency,
     });
-  }, [bundle, propertyKey, locale, currency]);
+  }, [bundle, effectivePropertyKey, locale, currency]);
 
   if (loading || !bundle || !vm) {
     return (
@@ -393,27 +554,69 @@ export function App() {
     );
   }
 
-  const staffProfiles: StaffProfileOption[] = (
-    bundle.hubConfig.staffProfiles ?? [
-      { ...bundle.hubConfig.partnerUser, roleKey: "manager" as const },
-    ]
-  ).map((sp) => ({
+  const staffProfiles: StaffProfileOption[] = staffMasters.map((sp) => ({
     userId: sp.userId,
-    roleKey: sp.roleKey,
+    roleKey: sp.roleKey ?? "manager",
     displayName: sp.displayName[locale],
     initials: sp.initials[locale],
     roleBadge: sp.roleBadge[locale],
+    allowedBranchIds: getEffectiveAllowedBranchIds(sp, ALL_SYSTEM_PROPERTY_IDS),
+    canViewChainAll: canProfileViewChainAll(sp),
+    canViewFinancials: canProfileViewFinancials(sp),
+    canManagePricing: canProfileManagePricing(sp),
   }));
 
   const activeStaffProfile =
-    staffProfiles.find((s) => s.roleKey === activeRoleKey) ?? staffProfiles[0];
+    staffProfiles.find(
+      (s) => s.userId === (activeStaffMaster?.userId ?? activeUserId),
+    ) ?? staffProfiles[0];
+
+  const scopedProperties = activeStaffMaster
+    ? filterPropertiesForProfile(vm.properties, activeStaffMaster)
+    : vm.properties;
+  const selectedScopedProperty =
+    scopedProperties.find((p) => p.key === effectivePropertyKey) ??
+    scopedProperties[0] ??
+    vm.selectedProperty;
+
+  const handleSelectUserProfile = (nextUserId: string) => {
+    const nextMaster = resolveStaffProfile(staffMasters, nextUserId);
+    const prevMaster = activeStaffMaster ?? nextMaster;
+    const nextPropKey = deriveNextPropertyKeyOnUserSwitch(
+      prevMaster,
+      nextMaster,
+      effectivePropertyKey,
+      ALL_SYSTEM_PROPERTY_IDS,
+    );
+    setActiveUserId(nextMaster.userId);
+    setActiveRoleKey(nextMaster.roleKey ?? "manager");
+    setPropertyKey(nextPropKey);
+    setToastMessage(mCopy.common.savedToast);
+  };
+
+  const persistActiveTable = <
+    K extends keyof Omit<MasterDataBundle, "bidRecords">,
+  >(
+    tableKey: K,
+    data: MasterDataBundle[K],
+  ) => {
+    if (dataSourceMode === "live-bigquery") {
+      void persistBffSessionOverlay({
+        userId: activeStaffProfile.userId,
+        tableKey,
+        data,
+      });
+    } else {
+      void persistMasterTable(tableKey, data);
+    }
+  };
 
   const handleSaveRoomInventory = (
     next: RoomInventoryMaster,
     notice?: string,
   ) => {
     setBundle((prev) => (prev ? { ...prev, roomInventory: next } : prev));
-    void persistMasterTable("roomInventory", next);
+    persistActiveTable("roomInventory", next);
     if (notice) setToastMessage(notice);
   };
 
@@ -422,7 +625,7 @@ export function App() {
     notice?: string,
   ) => {
     setBundle((prev) => (prev ? { ...prev, payoutLedgers: next } : prev));
-    void persistMasterTable("payoutLedgers", next);
+    persistActiveTable("payoutLedgers", next);
     if (notice) setToastMessage(notice);
   };
 
@@ -449,18 +652,18 @@ export function App() {
             }
           : prev,
       );
-      void persistMasterTable("biddingOperations", next);
-      void persistMasterTable("hubConfig", nextHubConfig);
+      persistActiveTable("biddingOperations", next);
+      persistActiveTable("hubConfig", nextHubConfig);
     } else {
       setBundle((prev) => (prev ? { ...prev, biddingOperations: next } : prev));
-      void persistMasterTable("biddingOperations", next);
+      persistActiveTable("biddingOperations", next);
     }
     if (notice) setToastMessage(notice);
   };
 
   const handleSaveHubInbox = (next: HubInboxMaster, notice?: string) => {
     setBundle((prev) => (prev ? { ...prev, hubInbox: next } : prev));
-    void persistMasterTable("hubInbox", next);
+    persistActiveTable("hubInbox", next);
     if (notice) setToastMessage(notice);
   };
 
@@ -469,7 +672,7 @@ export function App() {
     notice?: string,
   ) => {
     setBundle((prev) => (prev ? { ...prev, marketingCampaigns: next } : prev));
-    void persistMasterTable("marketingCampaigns", next);
+    persistActiveTable("marketingCampaigns", next);
     if (notice) setToastMessage(notice);
   };
 
@@ -493,14 +696,27 @@ export function App() {
   const rangeStart = totalBookings === 0 ? 0 : startIdx + 1;
   const rangeEnd = Math.min(totalBookings, startIdx + pagedBookings.length);
 
+  const isOverviewFinancialsMasked =
+    dataSourceMode === "live-bigquery" && !canViewFinancials;
+  const maskedMoneyText =
+    locale === "vi"
+      ? "•••••• ₫ (Đã che)"
+      : locale === "ko"
+        ? "•••••• (권한 제한)"
+        : "•••••• (Restricted)";
+
   const kpiCards = [
     {
       id: "revenue",
       testId: "kpi-card-revenue",
       label: copy.kpiRevenue,
       hint: copy.kpiRevenueHint,
-      value: vm.kpis.revenueFormatted,
-      valueClass: "text-[#16A34A]",
+      value: isOverviewFinancialsMasked
+        ? maskedMoneyText
+        : vm.kpis.revenueFormatted,
+      valueClass: isOverviewFinancialsMasked
+        ? "text-amber-700"
+        : "text-[#16A34A]",
       icon: (
         <span className="w-7 h-7 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
           <CircleDollarSign className="w-[18px] h-[18px] text-[#16A34A]" />
@@ -572,13 +788,34 @@ export function App() {
     setAnalyzedTimeOverride(formatCurrentClock(locale));
   };
 
-  const formattedPeriodNet = formatBusinessMoney(
-    vm.kpis.revenueVnd,
-    currency,
-    { rates: vm.currencyRates },
-  );
+  const formattedPeriodNet = isOverviewFinancialsMasked
+    ? maskedMoneyText
+    : formatBusinessMoney(vm.kpis.revenueVnd, currency, {
+        rates: vm.currencyRates,
+      });
 
   const renderActiveSection = () => {
+    if (activeSection === "bigquery_live") {
+      return (
+        <BigQueryWarehouseView
+          activeUserId={activeStaffProfile.userId}
+          activeUserName={activeStaffProfile.displayName}
+          activeRoleKey={activeStaffProfile.roleKey}
+          allowedBranchIds={activeStaffProfile.allowedBranchIds}
+          propertyKey={effectivePropertyKey}
+          periodKey={periodKey}
+          onChangePeriod={setPeriodKey}
+          locale={locale}
+          currency={currency}
+          currencyRates={vm.currencyRates}
+          onSwitchToLocalJson={() => {
+            setDataSourceMode("local-json");
+            setActiveSection("overview");
+          }}
+        />
+      );
+    }
+
     if (activeSection === "calendar" && calendarVm) {
       return (
         <BookingCalendarView
@@ -599,7 +836,7 @@ export function App() {
           vm={payoutVm}
           payoutLedgers={bundle.payoutLedgers}
           mCopy={mCopy}
-          activeRole={activeRoleKey}
+          activeRole={effectiveModuleRole}
           onRequireManagerRole={() =>
             setToastMessage(mCopy.common.roleRestrictedNotice)
           }
@@ -615,7 +852,7 @@ export function App() {
           vm={roomsVm}
           roomInventory={bundle.roomInventory}
           mCopy={mCopy}
-          activeRole={activeRoleKey}
+          activeRole={effectiveModuleRole}
           onRequireManagerRole={() =>
             setToastMessage(mCopy.common.roleRestrictedNotice)
           }
@@ -635,7 +872,7 @@ export function App() {
           locale={locale}
           currency={currency}
           currencyRates={vm.currencyRates}
-          activeRole={activeRoleKey}
+          activeRole={effectiveModuleRole}
           onRequireManagerRole={() =>
             setToastMessage(mCopy.common.roleRestrictedNotice)
           }
@@ -667,9 +904,9 @@ export function App() {
           onChangeSubTab={setActiveSection}
           vm={marketingVm}
           marketingCampaigns={bundle.marketingCampaigns}
-          propertyKey={propertyKey}
+          propertyKey={effectivePropertyKey}
           mCopy={mCopy}
-          activeRole={activeRoleKey}
+          activeRole={effectiveModuleRole}
           onRequireManagerRole={() =>
             setToastMessage(mCopy.common.roleRestrictedNotice)
           }
@@ -1370,11 +1607,22 @@ export function App() {
       brandName={vm.brandName}
       partnerUser={activeStaffProfile}
       staffProfiles={staffProfiles}
-      activeRoleKey={activeRoleKey}
-      onChangeRoleKey={(nextRole) => {
-        setActiveRoleKey(nextRole);
-        setToastMessage(mCopy.common.savedToast);
+      activeUserId={activeStaffProfile.userId}
+      onSelectUserProfile={handleSelectUserProfile}
+      dataSourceMode={dataSourceMode}
+      onChangeDataSourceMode={(nextMode) => {
+        setDataSourceMode(nextMode);
+        if (nextMode === "local-json") {
+          setToastMessage(
+            locale === "vi"
+              ? "Đã chuyển nguồn dữ liệu sang Local JSON."
+              : locale === "ko"
+                ? "데이터 소스를 Local JSON으로 전환했습니다."
+                : "Switched data source to Local JSON.",
+          );
+        }
       }}
+      bqSyncing={bqSyncing}
       activeSection={activeSection}
       onSelectSection={setActiveSection}
       openBiddingCount={biddingVm?.kpis.waitingRequestsCount ?? 0}
@@ -1391,9 +1639,9 @@ export function App() {
       }}
       currency={currency}
       onChangeCurrency={setCurrency}
-      propertyKey={propertyKey}
-      properties={vm.properties}
-      selectedProperty={vm.selectedProperty}
+      propertyKey={effectivePropertyKey}
+      properties={scopedProperties}
+      selectedProperty={selectedScopedProperty}
       onChangeProperty={setPropertyKey}
       copy={copy}
       mCopy={mCopy}

@@ -104,11 +104,43 @@ describe("TC-DATA: Partner Hub Master Data v4.0 Contract & Cross-Table Referenti
       assert.ok(cfg.partnerUser.roleBadge[loc].length > 0);
     }
 
-    assert.ok(Array.isArray(cfg.staffProfiles) && cfg.staffProfiles.length === 2);
+    assert.ok(Array.isArray(cfg.staffProfiles) && cfg.staffProfiles.length === 5);
+    assert.deepEqual(
+      cfg.staffProfiles.map((s) => s.userId),
+      [
+        "USR-PARTNER-01",
+        "USR-MGR-MYKHE",
+        "USR-MGR-SONGHAN",
+        "USR-STAFF-02",
+        "USR-MGR-H11",
+      ],
+    );
     assert.deepEqual(
       cfg.staffProfiles.map((s) => s.roleKey),
-      ["manager", "receptionist"],
+      ["manager", "branch_manager", "branch_manager", "receptionist", "branch_manager"],
     );
+    const ownerProfile = cfg.staffProfiles.find((s) => s.userId === "USR-PARTNER-01")!;
+    assert.deepEqual(ownerProfile.allowedBranchIds, [
+      "br_mykhe",
+      "br_songhan",
+      "br_anthuong",
+      "stay_h11",
+    ]);
+    assert.equal(ownerProfile.canViewChainAll, true);
+    assert.equal(ownerProfile.canViewFinancials, true);
+    assert.equal(ownerProfile.canManagePricing, true);
+
+    const receptionistProfile = cfg.staffProfiles.find((s) => s.userId === "USR-STAFF-02")!;
+    assert.deepEqual(receptionistProfile.allowedBranchIds, ["br_mykhe"]);
+    assert.equal(receptionistProfile.canViewChainAll, false);
+    assert.equal(receptionistProfile.canViewFinancials, false);
+    assert.equal(receptionistProfile.canManagePricing, false);
+
+    const h11Manager = cfg.staffProfiles.find((s) => s.userId === "USR-MGR-H11")!;
+    assert.deepEqual(h11Manager.allowedBranchIds, ["stay_h11"]);
+    assert.equal(h11Manager.canViewChainAll, false);
+    assert.equal(h11Manager.canViewFinancials, true);
+    assert.equal(h11Manager.canManagePricing, true);
 
     assert.equal(cfg.properties.length, 4);
     const propIds = cfg.properties.map((p) => p.id);

@@ -95,6 +95,6 @@
 - Modify: `dashboard/dashboard/src/App.tsx`
 - Test: `dashboard/dashboard/tests/unit/master-data-contract.test.ts`, `tests/e2e/bigquery-live-and-rbac.spec.ts`, `tests/e2e/responsive-matrix.spec.ts`, `tests/TEST_CASES.md`
 
-- [ ] **Step 1: Update 5 `staffProfiles` with `allowedBranchIds` / `canViewFinancials` / `canManagePricing` and add `BigQueryWarehouseView` (`vi`/`en`/`ko`) + Global Source Switcher**
-- [ ] **Step 2: Add comprehensive Unit + Playwright E2E + 7-Viewport Responsive tests verifying live BFF/BigQuery connection, `403` cross-branch guard inspector, and offline fallback**
-- [ ] **Step 3: Execute mandatory `npm test` + `npm run build` gate in `dashboard/dashboard` and confirm 100% pass with 0 errors**
+- [x] **Step 1: Update 5 `staffProfiles` with `allowedBranchIds` / `canViewFinancials` / `canManagePricing`, add `src/lib/rbacScoping.ts`, `src/services/bigQueryApiService.ts`, `BigQueryWarehouseView` (`vi`/`en`/`ko`), and Global `Local JSON <-> BigQuery` Source Switcher**
+- [x] **Step 2: Add comprehensive Unit (`TC-RBAC-01..03`, updated `TC-DATA-03`) + Playwright E2E (`TC-BQ-01..05`) + 7-Viewport Responsive (`TC-RESP` incl. `BigQuery Live`) tests verifying live BFF/BigQuery connection, `HTTP 403 FORBIDDEN_BRANCH_SCOPE` cross-branch guard inspector, receptionist financial masking, and offline resilience**
+- [x] **Step 3: Execute mandatory `npm test` (32/32 unit + 23/23 Playwright E2E/responsive) + `npm run build` gate in `dashboard/dashboard` and confirm 100% pass with 0 errors**

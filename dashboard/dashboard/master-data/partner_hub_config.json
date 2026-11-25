@@ -24,7 +24,16 @@
       "en": "Property Manager",
       "ko": "호텔 지배인"
     },
-    "roleKey": "manager"
+    "roleKey": "manager",
+    "allowedBranchIds": [
+      "br_mykhe",
+      "br_songhan",
+      "br_anthuong",
+      "stay_h11"
+    ],
+    "canViewChainAll": true,
+    "canViewFinancials": true,
+    "canManagePricing": true
   },
   "periodsMeta": {
     "today": {
@@ -391,7 +400,66 @@
         "vi": "Quản lý khách sạn",
         "en": "Property Manager",
         "ko": "호텔 지배인"
-      }
+      },
+      "allowedBranchIds": [
+        "br_mykhe",
+        "br_songhan",
+        "br_anthuong",
+        "stay_h11"
+      ],
+      "canViewChainAll": true,
+      "canViewFinancials": true,
+      "canManagePricing": true
+    },
+    {
+      "userId": "USR-MGR-MYKHE",
+      "roleKey": "branch_manager",
+      "displayName": {
+        "vi": "Lê Hoàng Nam",
+        "en": "Lee Hoang Nam",
+        "ko": "레 호앙 남"
+      },
+      "initials": {
+        "vi": "HN",
+        "en": "HN",
+        "ko": "HN"
+      },
+      "roleBadge": {
+        "vi": "Quản lý CN Mỹ Khê",
+        "en": "Branch Manager · My Khe",
+        "ko": "미케 지점장"
+      },
+      "allowedBranchIds": [
+        "br_mykhe"
+      ],
+      "canViewChainAll": false,
+      "canViewFinancials": true,
+      "canManagePricing": true
+    },
+    {
+      "userId": "USR-MGR-SONGHAN",
+      "roleKey": "branch_manager",
+      "displayName": {
+        "vi": "Phạm Minh Tuấn",
+        "en": "Pham Minh Tuan",
+        "ko": "팜 민 뚜언"
+      },
+      "initials": {
+        "vi": "MT",
+        "en": "MT",
+        "ko": "MT"
+      },
+      "roleBadge": {
+        "vi": "Quản lý CN Sông Hàn",
+        "en": "Branch Manager · Han River",
+        "ko": "한강 지점장"
+      },
+      "allowedBranchIds": [
+        "br_songhan"
+      ],
+      "canViewChainAll": false,
+      "canViewFinancials": true,
+      "canManagePricing": true
     },
     {
       "userId": "USR-STAFF-02",
@@ -410,7 +478,38 @@
         "vi": "Lễ tân ca trực",
         "en": "Front-Desk Receptionist",
         "ko": "프런트 매니저"
-      }
+      },
+      "allowedBranchIds": [
+        "br_mykhe"
+      ],
+      "canViewChainAll": false,
+      "canViewFinancials": false,
+      "canManagePricing": false
+    },
+    {
+      "userId": "USR-MGR-H11",
+      "roleKey": "branch_manager",
+      "displayName": {
+        "vi": "Kim Ji-hoon",
+        "en": "Kim Ji-hoon",
+        "ko": "김지훈"
+      },
+      "initials": {
+        "vi": "JH",
+        "en": "JH",
+        "ko": "JH"
+      },
+      "roleBadge": {
+        "vi": "Quản lý Stay Hotel H11",
+        "en": "Manager · Stay Hotel H11",
+        "ko": "스테이 호텔 H11 지배인"
+      },
+      "allowedBranchIds": [
+        "stay_h11"
+      ],
+      "canViewChainAll": false,
+      "canViewFinancials": true,
+      "canManagePricing": true
     }
   ]
 }

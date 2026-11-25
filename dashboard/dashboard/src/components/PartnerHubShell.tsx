@@ -19,6 +19,7 @@ import {
   Sparkles,
   AlertCircle,
   ShieldCheck,
+  Database,
 } from "lucide-react";
 import {
   Dialog,
@@ -27,9 +28,10 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import type { HubNavSection, StaffRoleKey } from "@/data";
+import type { HubNavSection, PropertyId, StaffRoleKey } from "@/data";
 import type { AppLocale, CurrencyCode, OverviewCopy } from "@/lib/i18n";
 import type { HubModulesCopy } from "@/lib/hubModulesI18n";
+import type { DataSourceMode } from "@/services/bigQueryApiService";
 import type {
   InboxMessageViewItem,
   InboxNotificationViewItem,
@@ -43,18 +45,26 @@ export interface StaffProfileOption {
   displayName: string;
   initials: string;
   roleBadge: string;
+  allowedBranchIds: PropertyId[];
+  canViewChainAll: boolean;
+  canViewFinancials: boolean;
+  canManagePricing: boolean;
 }
 
 interface PartnerHubShellProps {
   brandName: string;
   partnerUser: {
+    userId: string;
     displayName: string;
     initials: string;
     roleBadge: string;
   };
   staffProfiles: StaffProfileOption[];
-  activeRoleKey: StaffRoleKey;
-  onChangeRoleKey: (next: StaffRoleKey) => void;
+  activeUserId: string;
+  onSelectUserProfile: (userId: string) => void;
+  dataSourceMode: DataSourceMode;
+  onChangeDataSourceMode: (next: DataSourceMode) => void;
+  bqSyncing?: boolean;
   activeSection: HubNavSection;
   onSelectSection: (next: HubNavSection) => void;
   openBiddingCount: number;
@@ -162,8 +172,11 @@ export function PartnerHubShell({
   brandName,
   partnerUser,
   staffProfiles,
-  activeRoleKey,
-  onChangeRoleKey,
+  activeUserId,
+  onSelectUserProfile,
+  dataSourceMode,
+  onChangeDataSourceMode,
+  bqSyncing = false,
   activeSection,
   onSelectSection,
   openBiddingCount,
@@ -243,6 +256,12 @@ export function PartnerHubShell({
       label: copy.navMessages,
       icon: MessageSquare,
       badgeCount: unreadMessagesCount,
+    },
+    {
+      id: "bigquery_live",
+      testId: "nav-item-bigquery",
+      label: copy.navBigQuery,
+      icon: Database,
     },
   ];
 
@@ -500,8 +519,42 @@ export function PartnerHubShell({
             </div>
           </div>
 
-          {/* Right: Language + Currency + Utility Icons + Profile */}
+          {/* Right: Data Source + Language + Currency + Utility Icons + Profile */}
           <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap justify-between sm:justify-end w-full sm:w-auto">
+            {/* Global Data Source Toggle: Local JSON vs Live BigQuery */}
+            <div
+              data-testid="topbar-data-source-switcher"
+              role="group"
+              aria-label="Data source"
+              className="inline-flex items-center rounded-lg border border-slate-200/95 bg-slate-50 p-0.5 shrink-0"
+            >
+              <button
+                type="button"
+                data-testid="source-toggle-local"
+                onClick={() => onChangeDataSourceMode("local-json")}
+                className={`px-2 py-1 rounded-md text-[11.5px] font-semibold transition-colors whitespace-nowrap ${
+                  dataSourceMode === "local-json"
+                    ? "bg-white text-slate-900 shadow-xs"
+                    : "text-slate-500 hover:text-slate-800"
+                }`}
+              >
+                Local JSON
+              </button>
+              <button
+                type="button"
+                data-testid="source-toggle-bigquery"
+                onClick={() => onChangeDataSourceMode("live-bigquery")}
+                className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11.5px] font-semibold transition-colors whitespace-nowrap ${
+                  dataSourceMode === "live-bigquery"
+                    ? "bg-indigo-600 text-white shadow-xs"
+                    : "text-slate-600 hover:text-indigo-700"
+                }`}
+              >
+                <Database className="w-3 h-3 shrink-0" />
+                <span>{bqSyncing ? "BQ..." : "BigQuery"}</span>
+              </button>
+            </div>
+
             {/* Language Switcher */}
             <div className="relative flex items-center">
               <select
@@ -587,7 +640,7 @@ export function PartnerHubShell({
               {activePopover === "messages" && (
                 <div
                   data-testid="messages-popover"
-                  className="fixed left-3 right-3 top-28 sm:absolute sm:left-auto sm:right-0 sm:top-10 sm:w-80 rounded-xl bg-white border border-slate-200 shadow-lg p-3.5 z-30"
+                  className="fixed left-3 right-3 top-36 sm:absolute sm:left-auto sm:right-0 sm:top-10 sm:w-80 rounded-xl bg-white border border-slate-200 shadow-lg p-3.5 z-30"
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-[12.5px] font-semibold text-slate-900">
@@ -644,7 +697,7 @@ export function PartnerHubShell({
               {activePopover === "notifications" && (
                 <div
                   data-testid="notifications-popover"
-                  className="fixed left-3 right-3 top-28 sm:absolute sm:left-auto sm:right-0 sm:top-10 sm:w-80 rounded-xl bg-white border border-slate-200 shadow-lg p-3.5 z-30 space-y-2.5 max-h-80 overflow-y-auto"
+                  className="fixed left-3 right-3 top-36 sm:absolute sm:left-auto sm:right-0 sm:top-10 sm:w-80 rounded-xl bg-white border border-slate-200 shadow-lg p-3.5 z-30 space-y-2.5 max-h-80 overflow-y-auto"
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-[12.5px] font-semibold text-slate-900">
@@ -813,24 +866,31 @@ export function PartnerHubShell({
 
             <div className="space-y-2">
               {staffProfiles.map((prof) => {
-                const isCurrent = prof.roleKey === activeRoleKey;
+                const isCurrent = prof.userId === activeUserId;
+                const btnTestId =
+                  prof.userId === "USR-PARTNER-01"
+                    ? "switch-role-manager"
+                    : prof.userId === "USR-STAFF-02"
+                      ? "switch-role-receptionist"
+                      : `switch-user-${prof.userId}`;
                 return (
                   <button
                     key={prof.userId}
                     type="button"
-                    data-testid={`switch-role-${prof.roleKey}`}
+                    data-testid={btnTestId}
+                    data-user-id={prof.userId}
                     onClick={() => {
-                      onChangeRoleKey(prof.roleKey);
+                      onSelectUserProfile(prof.userId);
                       setSessionDialogOpen(false);
                     }}
-                    className={`w-full text-left rounded-xl border p-3.5 transition-colors ${
+                    className={`w-full text-left rounded-xl border p-3 transition-colors ${
                       isCurrent
                         ? "border-indigo-600 bg-indigo-50/75"
                         : "border-slate-200 bg-white hover:bg-slate-50"
                     }`}
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-bold text-slate-900 text-[13.5px]">
+                      <span className="font-bold text-slate-900 text-[13px] min-w-0">
                         {prof.displayName} ·{" "}
                         <span className="text-indigo-700">
                           {prof.roleBadge}
@@ -840,10 +900,38 @@ export function PartnerHubShell({
                         <CheckCircle2 className="w-4 h-4 text-indigo-600 shrink-0" />
                       )}
                     </div>
-                    <p className="text-[12px] text-slate-600 mt-1 mb-0 leading-relaxed">
+                    <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+                      <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10.5px] font-mono font-semibold text-slate-700">
+                        {prof.userId}
+                      </span>
+                      {prof.allowedBranchIds.map((bId) => (
+                        <span
+                          key={bId}
+                          className="rounded bg-indigo-50 border border-indigo-100 px-1.5 py-0.5 text-[10.5px] font-mono text-indigo-700"
+                        >
+                          {bId}
+                        </span>
+                      ))}
+                      {!prof.canViewFinancials && (
+                        <span className="rounded bg-amber-50 border border-amber-200 px-1.5 py-0.5 text-[10.5px] font-semibold text-amber-800">
+                          {locale === "vi"
+                            ? "Che tài chính"
+                            : locale === "ko"
+                              ? "매출 마스킹"
+                              : "Financials Masked"}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-[11.5px] text-slate-600 mt-1 mb-0 leading-relaxed">
                       {prof.roleKey === "manager"
                         ? mCopy.session.managerPermNote
-                        : mCopy.session.receptionistPermNote}
+                        : prof.roleKey === "branch_manager"
+                          ? locale === "vi"
+                            ? "Toàn quyền quản trị vận hành, báo giá & doanh thu trong phạm vi chi nhánh được phân công."
+                            : locale === "ko"
+                              ? "배정된 지점 범위 내 운영·입찰·매출 전체 관리 권한."
+                              : "Full operational, bidding, and revenue access strictly inside assigned branch scope."
+                          : mCopy.session.receptionistPermNote}
                     </p>
                   </button>
                 );

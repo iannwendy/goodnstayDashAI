@@ -1879,6 +1879,10 @@ def main() -> None:
     hub_config = copy.deepcopy(seed_cfg)
     hub_config["schemaVersion"] = "4.0.0"
     hub_config["partnerUser"]["roleKey"] = "manager"
+    hub_config["partnerUser"]["allowedBranchIds"] = ["br_mykhe", "br_songhan", "br_anthuong", "stay_h11"]
+    hub_config["partnerUser"]["canViewChainAll"] = True
+    hub_config["partnerUser"]["canViewFinancials"] = True
+    hub_config["partnerUser"]["canManagePricing"] = True
     hub_config["staffProfiles"] = [
         {
             "userId": "USR-PARTNER-01",
@@ -1894,6 +1898,48 @@ def main() -> None:
                 "en": "Property Manager",
                 "ko": "호텔 지배인",
             },
+            "allowedBranchIds": ["br_mykhe", "br_songhan", "br_anthuong", "stay_h11"],
+            "canViewChainAll": True,
+            "canViewFinancials": True,
+            "canManagePricing": True,
+        },
+        {
+            "userId": "USR-MGR-MYKHE",
+            "roleKey": "branch_manager",
+            "displayName": {
+                "vi": "Lê Hoàng Nam",
+                "en": "Lee Hoang Nam",
+                "ko": "레 호앙 남",
+            },
+            "initials": {"vi": "HN", "en": "HN", "ko": "HN"},
+            "roleBadge": {
+                "vi": "Quản lý CN Mỹ Khê",
+                "en": "Branch Manager · My Khe",
+                "ko": "미케 지점장",
+            },
+            "allowedBranchIds": ["br_mykhe"],
+            "canViewChainAll": False,
+            "canViewFinancials": True,
+            "canManagePricing": True,
+        },
+        {
+            "userId": "USR-MGR-SONGHAN",
+            "roleKey": "branch_manager",
+            "displayName": {
+                "vi": "Phạm Minh Tuấn",
+                "en": "Pham Minh Tuan",
+                "ko": "팜 민 뚜언",
+            },
+            "initials": {"vi": "MT", "en": "MT", "ko": "MT"},
+            "roleBadge": {
+                "vi": "Quản lý CN Sông Hàn",
+                "en": "Branch Manager · Han River",
+                "ko": "한강 지점장",
+            },
+            "allowedBranchIds": ["br_songhan"],
+            "canViewChainAll": False,
+            "canViewFinancials": True,
+            "canManagePricing": True,
         },
         {
             "userId": "USR-STAFF-02",
@@ -1909,6 +1955,29 @@ def main() -> None:
                 "en": "Front-Desk Receptionist",
                 "ko": "프런트 매니저",
             },
+            "allowedBranchIds": ["br_mykhe"],
+            "canViewChainAll": False,
+            "canViewFinancials": False,
+            "canManagePricing": False,
+        },
+        {
+            "userId": "USR-MGR-H11",
+            "roleKey": "branch_manager",
+            "displayName": {
+                "vi": "Kim Ji-hoon",
+                "en": "Kim Ji-hoon",
+                "ko": "김지훈",
+            },
+            "initials": {"vi": "JH", "en": "JH", "ko": "JH"},
+            "roleBadge": {
+                "vi": "Quản lý Stay Hotel H11",
+                "en": "Manager · Stay Hotel H11",
+                "ko": "스테이 호텔 H11 지배인",
+            },
+            "allowedBranchIds": ["stay_h11"],
+            "canViewChainAll": False,
+            "canViewFinancials": True,
+            "canManagePricing": True,
         },
     ]
 

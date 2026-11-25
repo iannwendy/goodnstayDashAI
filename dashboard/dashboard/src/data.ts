@@ -10,9 +10,10 @@ export type HubNavSection =
   | "bidding"
   | "messages"
   | "marketing_deals"
-  | "marketing_upsell";
+  | "marketing_upsell"
+  | "bigquery_live";
 
-export type StaffRoleKey = "manager" | "receptionist";
+export type StaffRoleKey = "manager" | "branch_manager" | "receptionist";
 
 export type PropertyId =
   | "br_mykhe"
@@ -254,6 +255,10 @@ export interface PartnerUserMaster {
   displayName: LocalizedText;
   initials: LocalizedText;
   roleBadge: LocalizedText;
+  allowedBranchIds?: PropertyId[];
+  canViewChainAll?: boolean;
+  canViewFinancials?: boolean;
+  canManagePricing?: boolean;
 }
 
 export interface PeriodMetaMaster {

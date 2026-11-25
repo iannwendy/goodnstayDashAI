@@ -18,12 +18,20 @@ export default defineConfig({
   fullyParallel: false,
   workers: 1,
   reporter: "list",
-  webServer: {
-    command: "npm run dev",
-    url: "http://localhost:5182",
-    reuseExistingServer: true,
-    timeout: 30_000,
-  },
+  webServer: [
+    {
+      command: "npm run dev",
+      url: "http://localhost:5182",
+      reuseExistingServer: true,
+      timeout: 30_000,
+    },
+    {
+      command: "npm --prefix ../bigquery-bff run dev",
+      url: "http://127.0.0.1:4000/api/v1/health",
+      reuseExistingServer: true,
+      timeout: 45_000,
+    },
+  ],
   use: {
     baseURL: "http://localhost:5182",
     headless: true,

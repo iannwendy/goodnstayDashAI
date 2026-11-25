@@ -2,7 +2,7 @@ import { expect, type APIRequestContext, type Page } from "@playwright/test";
 
 export function attachErrorMonitor(
   page: Page,
-  options?: { ignoreNetAbort?: boolean },
+  options?: { ignoreNetAbort?: boolean; ignoreHttp403?: boolean },
 ): {
   errors: string[];
   assertZeroErrors: () => void;
@@ -17,6 +17,12 @@ export function attachErrorMonitor(
       if (
         options?.ignoreNetAbort &&
         text.includes("Failed to load resource: net::ERR_FAILED")
+      ) {
+        return;
+      }
+      if (
+        options?.ignoreHttp403 &&
+        text.includes("Failed to load resource: the server responded with a status of 403")
       ) {
         return;
       }
