@@ -33,15 +33,25 @@ class TestBigQueryMockGenerator(unittest.TestCase):
                     if sv is not None:
                         self.assertLessEqual(len(sv), 100)
 
-    def test_financial_invariant_matches_seed_master_data(self) -> None:
+    def test_financial_invariant_matches_live_bigquery_delta(self) -> None:
         rec = self.summary["reconciliation"]
-        self.assertEqual(rec["lamour_accepted_bookings"], 29)
-        self.assertEqual(rec["lamour_net_revenue_vnd"], 66_360_000)
-        self.assertEqual(rec["lamour_platform_fee_vnd"], 9_954_000)
-        self.assertEqual(rec["lamour_vat_amount_vnd"], 7_631_400)
-        self.assertEqual(rec["lamour_gross_gmv_vnd"], 83_945_400)
-        self.assertEqual(rec["stay_h11_total_bids"], 75)
-        self.assertEqual(rec["stay_h11_net_revenue_vnd"], 0)
+        # BigQuery live wave adds +18 bids / +11 paid bookings (+45.6M VND total across 4 branches)
+        # on top of Local JSON seed (66.36M VND) so Local JSON <-> BigQuery switching is visually unmistakable.
+        self.assertEqual(rec["portfolio_accepted_bookings"], 40)
+        self.assertEqual(rec["portfolio_net_revenue_vnd"], 111_960_000)
+        self.assertEqual(rec["portfolio_platform_fee_vnd"], 16_794_000)
+        self.assertEqual(rec["portfolio_vat_amount_vnd"], 12_875_400)
+        self.assertEqual(rec["portfolio_gross_gmv_vnd"], 141_629_400)
+
+        self.assertEqual(rec["lamour_accepted_bookings"], 38)
+        self.assertEqual(rec["lamour_net_revenue_vnd"], 104_360_000)
+        self.assertEqual(rec["lamour_platform_fee_vnd"], 15_654_000)
+        self.assertEqual(rec["lamour_vat_amount_vnd"], 12_001_400)
+        self.assertEqual(rec["lamour_gross_gmv_vnd"], 132_015_400)
+
+        self.assertEqual(rec["stay_h11_total_bids"], 78)
+        self.assertEqual(rec["stay_h11_accepted_bookings"], 2)
+        self.assertEqual(rec["stay_h11_net_revenue_vnd"], 7_600_000)
 
     def test_five_rbac_profiles_and_zero_pii(self) -> None:
         self.assertEqual(self.summary["counts"]["rbac_profiles"], 5)

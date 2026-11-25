@@ -94,6 +94,7 @@ import { BiddingManagementView } from "@/components/modules/BiddingManagementVie
 import { GuestMessagesView } from "@/components/modules/GuestMessagesView";
 import { MarketingCampaignsView } from "@/components/modules/MarketingCampaignsView";
 import { BigQueryWarehouseView } from "@/components/modules/BigQueryWarehouseView";
+import { OverviewBigQueryChartsPanel } from "@/components/OverviewBigQueryChartsPanel";
 
 const HUB_PREFS_STORAGE_KEY = "gns_partner_hub_prefs_v1";
 
@@ -992,6 +993,17 @@ export function App() {
             );
           })}
         </section>
+
+        {/* 1b. Live BigQuery GA4 & CTO 3-Chart Suite (visible inline on Overview when BigQuery mode is active) */}
+        {dataSourceMode === "live-bigquery" && (
+          <OverviewBigQueryChartsPanel
+            activeUserId={activeStaffProfile.userId}
+            propertyKey={effectivePropertyKey}
+            periodKey={periodKey}
+            locale={locale}
+            onOpenBigQueryInspector={() => setActiveSection("bigquery_live")}
+          />
+        )}
 
         {/* 2. Revenue Timeline Card + AI Advisor */}
         <section

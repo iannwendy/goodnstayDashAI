@@ -27,6 +27,388 @@ BRANCH_TO_PARTNER: dict[str, str] = {
     "stay_h11": "HTL-KR-011",
 }
 
+# Distinct live BigQuery Cloud Warehouse overrides & wave (+18 bids, +11 paid orders, +45,600,000 VND total)
+# so switching Local JSON <-> BigQuery Live produces an immediate, unmistakable, fully reconciled delta
+# across all 4 branches (while keeping Local JSON seed untouched).
+BQ_LIVE_BRANCH_UPDATES: dict[str, dict[str, Any]] = {
+    "br_mykhe": {"review_rating_5": 4.9, "review_count": 78, "elo_score": 1845},
+    "br_songhan": {"review_rating_5": 4.9, "review_count": 59, "elo_score": 1790},
+    "br_anthuong": {"review_rating_5": 4.8, "review_count": 41, "elo_score": 1715},
+    "stay_h11": {"review_rating_5": 4.6, "review_count": 2, "elo_score": 960},
+}
+
+BQ_LIVE_EXTRA_RECORDS: list[dict[str, Any]] = [
+    # --- br_mykhe (+6 bids: 4 paid = +18,200,000 VND, 1 rejected, 1 expired) ---
+    {
+        "id": "BQ-LIVE-01",
+        "propertyId": "br_mykhe",
+        "status": "accepted",
+        "bidMode": "auto",
+        "sessionDate": "2026-11-06",
+        "timeLabel": "16:20",
+        "nights": 2,
+        "guestsCount": 2,
+        "offeredRatePerNightVnd": 2_500_000,
+        "bookingCode": "#72",
+        "checkInDate": "2026-11-08",
+        "checkOutDate": "2026-11-10",
+        "roomTypeId": "RT-MK-EXE",
+        "roomTypeKey": "executive_suite",
+        "roomNumber": 129,
+        "payoutBatchId": "STL-BQ-MK",
+        "deviceOs": "ios",
+        "bookerCountry": "KR",
+        "matchRate": 96.0,
+        "savingPct": 16.5,
+    },
+    {
+        "id": "BQ-LIVE-02",
+        "propertyId": "br_mykhe",
+        "status": "accepted",
+        "bidMode": "auto",
+        "sessionDate": "2026-11-05",
+        "timeLabel": "14:40",
+        "nights": 2,
+        "guestsCount": 2,
+        "offeredRatePerNightVnd": 2_400_000,
+        "bookingCode": "#73",
+        "checkInDate": "2026-11-09",
+        "checkOutDate": "2026-11-11",
+        "roomTypeId": "RT-MK-EXE",
+        "roomTypeKey": "executive_suite",
+        "roomNumber": 130,
+        "payoutBatchId": "STL-BQ-MK",
+        "deviceOs": "android",
+        "bookerCountry": "VN",
+        "matchRate": 94.0,
+        "savingPct": 15.0,
+    },
+    {
+        "id": "BQ-LIVE-03",
+        "propertyId": "br_mykhe",
+        "status": "accepted",
+        "bidMode": "manual",
+        "sessionDate": "2026-11-03",
+        "timeLabel": "19:15",
+        "nights": 2,
+        "guestsCount": 3,
+        "offeredRatePerNightVnd": 2_200_000,
+        "bookingCode": "#74",
+        "checkInDate": "2026-11-07",
+        "checkOutDate": "2026-11-09",
+        "roomTypeId": "RT-MK-DLX",
+        "roomTypeKey": "deluxe",
+        "roomNumber": 111,
+        "payoutBatchId": "STL-BQ-MK",
+        "deviceOs": "ios",
+        "bookerCountry": "SG",
+        "matchRate": 92.5,
+        "savingPct": 14.0,
+    },
+    {
+        "id": "BQ-LIVE-04",
+        "propertyId": "br_mykhe",
+        "status": "accepted",
+        "bidMode": "auto",
+        "sessionDate": "2026-10-28",
+        "timeLabel": "11:30",
+        "nights": 2,
+        "guestsCount": 2,
+        "offeredRatePerNightVnd": 2_000_000,
+        "bookingCode": "#75",
+        "checkInDate": "2026-11-01",
+        "checkOutDate": "2026-11-03",
+        "roomTypeId": "RT-MK-DLX",
+        "roomTypeKey": "deluxe",
+        "roomNumber": 112,
+        "payoutBatchId": "STL-BQ-MK",
+        "deviceOs": "web",
+        "bookerCountry": "AU",
+        "matchRate": 91.0,
+        "savingPct": 13.5,
+    },
+    {
+        "id": "BQ-LIVE-05",
+        "propertyId": "br_mykhe",
+        "status": "rejected",
+        "bidMode": "auto",
+        "sessionDate": "2026-11-04",
+        "timeLabel": "17:10",
+        "nights": 2,
+        "guestsCount": 2,
+        "offeredRatePerNightVnd": 2_300_000,
+        "roomTypeId": "RT-MK-DLX",
+        "roomTypeKey": "deluxe",
+        "deviceOs": "android",
+        "bookerCountry": "KR",
+        "matchRate": 76.0,
+        "savingPct": 7.5,
+        "unmatchedKeys": ["price_above_target"],
+    },
+    {
+        "id": "BQ-LIVE-06",
+        "propertyId": "br_mykhe",
+        "status": "expired",
+        "bidMode": "manual",
+        "sessionDate": "2026-10-30",
+        "timeLabel": "20:05",
+        "nights": 1,
+        "guestsCount": 2,
+        "offeredRatePerNightVnd": 2_100_000,
+        "roomTypeId": "RT-MK-DLX",
+        "roomTypeKey": "deluxe",
+        "deviceOs": "web",
+        "bookerCountry": "VN",
+        "matchRate": 82.0,
+        "savingPct": 9.0,
+    },
+    # --- br_songhan (+5 bids: 3 paid = +12,800,000 VND, 1 rejected, 1 expired) ---
+    {
+        "id": "BQ-LIVE-07",
+        "propertyId": "br_songhan",
+        "status": "accepted",
+        "bidMode": "auto",
+        "sessionDate": "2026-11-06",
+        "timeLabel": "15:50",
+        "nights": 2,
+        "guestsCount": 2,
+        "offeredRatePerNightVnd": 2_300_000,
+        "bookingCode": "#76",
+        "checkInDate": "2026-11-08",
+        "checkOutDate": "2026-11-10",
+        "roomTypeId": "RT-SH-EXE",
+        "roomTypeKey": "executive_suite",
+        "roomNumber": 127,
+        "payoutBatchId": "STL-BQ-SH",
+        "deviceOs": "ios",
+        "bookerCountry": "KR",
+        "matchRate": 95.0,
+        "savingPct": 15.5,
+    },
+    {
+        "id": "BQ-LIVE-08",
+        "propertyId": "br_songhan",
+        "status": "accepted",
+        "bidMode": "auto",
+        "sessionDate": "2026-11-04",
+        "timeLabel": "13:20",
+        "nights": 2,
+        "guestsCount": 2,
+        "offeredRatePerNightVnd": 2_100_000,
+        "bookingCode": "#77",
+        "checkInDate": "2026-11-07",
+        "checkOutDate": "2026-11-09",
+        "roomTypeId": "RT-SH-DLX",
+        "roomTypeKey": "deluxe",
+        "roomNumber": 113,
+        "payoutBatchId": "STL-BQ-SH",
+        "deviceOs": "android",
+        "bookerCountry": "VN",
+        "matchRate": 92.0,
+        "savingPct": 14.0,
+    },
+    {
+        "id": "BQ-LIVE-09",
+        "propertyId": "br_songhan",
+        "status": "accepted",
+        "bidMode": "manual",
+        "sessionDate": "2026-10-25",
+        "timeLabel": "18:10",
+        "nights": 2,
+        "guestsCount": 2,
+        "offeredRatePerNightVnd": 2_000_000,
+        "bookingCode": "#78",
+        "checkInDate": "2026-10-29",
+        "checkOutDate": "2026-10-31",
+        "roomTypeId": "RT-SH-DLX",
+        "roomTypeKey": "deluxe",
+        "roomNumber": 114,
+        "payoutBatchId": "STL-BQ-SH",
+        "deviceOs": "ios",
+        "bookerCountry": "JP",
+        "matchRate": 90.5,
+        "savingPct": 13.0,
+    },
+    {
+        "id": "BQ-LIVE-10",
+        "propertyId": "br_songhan",
+        "status": "rejected",
+        "bidMode": "auto",
+        "sessionDate": "2026-11-01",
+        "timeLabel": "12:45",
+        "nights": 2,
+        "guestsCount": 2,
+        "offeredRatePerNightVnd": 2_200_000,
+        "roomTypeId": "RT-SH-DLX",
+        "roomTypeKey": "deluxe",
+        "deviceOs": "web",
+        "bookerCountry": "KR",
+        "matchRate": 74.0,
+        "savingPct": 8.0,
+        "unmatchedKeys": ["breakfast_missing"],
+    },
+    {
+        "id": "BQ-LIVE-11",
+        "propertyId": "br_songhan",
+        "status": "expired",
+        "bidMode": "manual",
+        "sessionDate": "2026-10-27",
+        "timeLabel": "21:00",
+        "nights": 1,
+        "guestsCount": 2,
+        "offeredRatePerNightVnd": 1_900_000,
+        "roomTypeId": "RT-SH-DLX",
+        "roomTypeKey": "deluxe",
+        "deviceOs": "android",
+        "bookerCountry": "VN",
+        "matchRate": 80.0,
+        "savingPct": 9.5,
+    },
+    # --- br_anthuong (+4 bids: 2 paid = +7,000,000 VND, 1 rejected, 1 cancelled) ---
+    {
+        "id": "BQ-LIVE-12",
+        "propertyId": "br_anthuong",
+        "status": "accepted",
+        "bidMode": "auto",
+        "sessionDate": "2026-11-05",
+        "timeLabel": "16:05",
+        "nights": 2,
+        "guestsCount": 4,
+        "offeredRatePerNightVnd": 1_800_000,
+        "bookingCode": "#79",
+        "checkInDate": "2026-11-08",
+        "checkOutDate": "2026-11-10",
+        "roomTypeId": "RT-AT-FAM",
+        "roomTypeKey": "family_suite",
+        "roomNumber": 124,
+        "payoutBatchId": "STL-BQ-AT",
+        "deviceOs": "ios",
+        "bookerCountry": "KR",
+        "matchRate": 93.0,
+        "savingPct": 14.5,
+    },
+    {
+        "id": "BQ-LIVE-13",
+        "propertyId": "br_anthuong",
+        "status": "accepted",
+        "bidMode": "auto",
+        "sessionDate": "2026-10-22",
+        "timeLabel": "10:40",
+        "nights": 2,
+        "guestsCount": 2,
+        "offeredRatePerNightVnd": 1_700_000,
+        "bookingCode": "#80",
+        "checkInDate": "2026-10-26",
+        "checkOutDate": "2026-10-28",
+        "roomTypeId": "RT-AT-DLX",
+        "roomTypeKey": "deluxe",
+        "roomNumber": 115,
+        "payoutBatchId": "STL-BQ-AT",
+        "deviceOs": "android",
+        "bookerCountry": "VN",
+        "matchRate": 91.5,
+        "savingPct": 13.0,
+    },
+    {
+        "id": "BQ-LIVE-14",
+        "propertyId": "br_anthuong",
+        "status": "rejected",
+        "bidMode": "auto",
+        "sessionDate": "2026-11-02",
+        "timeLabel": "15:30",
+        "nights": 2,
+        "guestsCount": 2,
+        "offeredRatePerNightVnd": 1_900_000,
+        "roomTypeId": "RT-AT-DLX",
+        "roomTypeKey": "deluxe",
+        "deviceOs": "ios",
+        "bookerCountry": "US",
+        "matchRate": 77.0,
+        "savingPct": 7.0,
+        "unmatchedKeys": ["late_checkout_missing"],
+    },
+    {
+        "id": "BQ-LIVE-15",
+        "propertyId": "br_anthuong",
+        "status": "cancelled",
+        "bidMode": "manual",
+        "sessionDate": "2026-10-24",
+        "timeLabel": "19:20",
+        "nights": 1,
+        "guestsCount": 2,
+        "offeredRatePerNightVnd": 1_600_000,
+        "roomTypeId": "RT-AT-DLX",
+        "roomTypeKey": "deluxe",
+        "deviceOs": "web",
+        "bookerCountry": "VN",
+        "matchRate": 84.0,
+        "savingPct": 10.0,
+    },
+    # --- stay_h11 (+3 bids: 2 paid = +7,600,000 VND first Seoul bookings on BigQuery Live!, 1 rejected) ---
+    {
+        "id": "BQ-LIVE-16",
+        "propertyId": "stay_h11",
+        "status": "accepted",
+        "bidMode": "auto",
+        "sessionDate": "2026-11-06",
+        "timeLabel": "14:15",
+        "nights": 2,
+        "guestsCount": 2,
+        "offeredRatePerNightVnd": 2_000_000,
+        "bookingCode": "#81",
+        "checkInDate": "2026-11-09",
+        "checkOutDate": "2026-11-11",
+        "roomTypeId": "RT-H11-DLX",
+        "roomTypeKey": "deluxe",
+        "roomNumber": 209,
+        "payoutBatchId": "STL-BQ-H11",
+        "deviceOs": "ios",
+        "bookerCountry": "KR",
+        "matchRate": 94.5,
+        "savingPct": 15.0,
+    },
+    {
+        "id": "BQ-LIVE-17",
+        "propertyId": "stay_h11",
+        "status": "accepted",
+        "bidMode": "auto",
+        "sessionDate": "2026-11-02",
+        "timeLabel": "11:50",
+        "nights": 2,
+        "guestsCount": 2,
+        "offeredRatePerNightVnd": 1_800_000,
+        "bookingCode": "#82",
+        "checkInDate": "2026-11-05",
+        "checkOutDate": "2026-11-07",
+        "roomTypeId": "RT-H11-DLX",
+        "roomTypeKey": "deluxe",
+        "roomNumber": 210,
+        "payoutBatchId": "STL-BQ-H11",
+        "deviceOs": "android",
+        "bookerCountry": "JP",
+        "matchRate": 91.0,
+        "savingPct": 13.5,
+    },
+    {
+        "id": "BQ-LIVE-18",
+        "propertyId": "stay_h11",
+        "status": "rejected",
+        "bidMode": "auto",
+        "sessionDate": "2026-10-29",
+        "timeLabel": "18:40",
+        "nights": 2,
+        "guestsCount": 2,
+        "offeredRatePerNightVnd": 2_100_000,
+        "roomTypeId": "RT-H11-DLX",
+        "roomTypeKey": "deluxe",
+        "deviceOs": "ios",
+        "bookerCountry": "KR",
+        "matchRate": 78.0,
+        "savingPct": 8.5,
+        "unmatchedKeys": ["price_above_target"],
+    },
+]
+
 CONTENT_CATEGORIES = [
     "property_views",
     "facilities",
@@ -349,11 +731,12 @@ def generate_all() -> dict[str, Any]:
     rbac_rows = build_rbac_rows()
     write_jsonl(OUT_DIR / "oltp" / "partner_user_branch_access.jsonl", rbac_rows)
 
-    # 2. Branches table
+    # 2. Branches table (apply distinct BigQuery live ratings/ELO so cloud warehouse stands apart from Local JSON)
     branch_rows: list[dict[str, Any]] = []
     for p in hub_cfg["properties"]:
         bid = p["id"]
         mi = p["marketplaceIdentity"]
+        live_upd = BQ_LIVE_BRANCH_UPDATES.get(bid, {})
         branch_rows.append(
             {
                 "branch_id": bid,
@@ -371,15 +754,15 @@ def generate_all() -> dict[str, Any]:
                 "accommodation_type": mi["accommodation_type"],
                 "rooms_count": int(p["roomsCount"]),
                 "star_rating": int(mi["star_rating"]),
-                "review_rating_5": float(p["reviewRating5"]),
-                "review_count": int(p["reviewCount"]),
-                "elo_score": int(p["eloScore"]),
+                "review_rating_5": float(live_upd.get("review_rating_5", p["reviewRating5"])),
+                "review_count": int(live_upd.get("review_count", p["reviewCount"])),
+                "elo_score": int(live_upd.get("elo_score", p["eloScore"])),
                 "auto_bid_enabled": bool(p["autoBidEnabled"]),
             }
         )
     write_jsonl(OUT_DIR / "oltp" / "partner_branches.jsonl", branch_rows)
 
-    # 3. Payout batches table
+    # 3. Payout batches table (base seed batches + 4 live BigQuery-only batches STL-BQ-*)
     payout_rows: list[dict[str, Any]] = []
     for b in payout_ledgers["batches"]:
         sb = b["settlementBreakdown"]
@@ -403,7 +786,161 @@ def generate_all() -> dict[str, Any]:
                 "booking_codes": list(b["bookingCodes"]),
             }
         )
+
+    # Append 4 live BigQuery-only payout batches matching accepted BQ-LIVE-* orders
+    bq_batch_buckets: dict[str, dict[str, Any]] = {}
+    for ex in BQ_LIVE_EXTRA_RECORDS:
+        if ex["status"] != "accepted":
+            continue
+        batch_id = ex["payoutBatchId"]
+        bid = ex["propertyId"]
+        net_val = int(ex["nights"]) * int(ex["offeredRatePerNightVnd"])
+        fee_val = round(net_val * 0.15)
+        vat_val = round((net_val + fee_val) * 0.10)
+        gmv_val = net_val + fee_val + vat_val
+        bucket = bq_batch_buckets.setdefault(
+            batch_id,
+            {
+                "batch_id": batch_id,
+                "partner_id": BRANCH_TO_PARTNER[bid],
+                "branch_id": bid,
+                "cycle_code": "2026-11-BQ",
+                "period_start": "2026-10-22",
+                "period_end": "2026-11-06",
+                "scheduled_payout_date": "2026-11-12",
+                "paid_at_date": None,
+                "status": "upcoming",
+                "bookings_count": 0,
+                "net_payout_vnd": 0,
+                "platform_fee_vnd": 0,
+                "vat_amount_vnd": 0,
+                "gross_gmv_vnd": 0,
+                "booking_codes": [],
+            },
+        )
+        bucket["bookings_count"] += 1
+        bucket["net_payout_vnd"] += net_val
+        bucket["platform_fee_vnd"] += fee_val
+        bucket["vat_amount_vnd"] += vat_val
+        bucket["gross_gmv_vnd"] += gmv_val
+        bucket["booking_codes"].append(ex["bookingCode"])
+    payout_rows.extend(bq_batch_buckets.values())
     write_jsonl(OUT_DIR / "oltp" / "payout_batches.jsonl", payout_rows)
+
+    # Build expanded bid_records list: 143 base seed records + 18 BigQuery-only live wave records = 161
+    synthetic_live_records: list[dict[str, Any]] = []
+    for seq, ex in enumerate(BQ_LIVE_EXTRA_RECORDS, start=1):
+        bid = ex["propertyId"]
+        is_kr = bid == "stay_h11"
+        nights = int(ex["nights"])
+        rate_vnd = int(ex["offeredRatePerNightVnd"])
+        net_val = nights * rate_vnd
+        fee_val = round(net_val * 0.15)
+        vat_val = round((net_val + fee_val) * 0.10)
+        gmv_val = net_val + fee_val + vat_val
+        status = ex["status"]
+        dev_os = ex["deviceOs"]
+        dev_type = "desktop" if dev_os == "web" else "mobile"
+        ota_price = round(net_val / max(0.5, 1.0 - float(ex["savingPct"]) / 100.0))
+        req_id = f"REQ-BQ-{9000 + seq}"
+        offer_id = f"OFR-BQ-{9000 + seq}"
+        booking_code = ex.get("bookingCode")
+        is_accepted = status == "accepted"
+
+        synthetic_live_records.append(
+            {
+                "id": ex["id"],
+                "propertyId": bid,
+                "status": status,
+                "bidMode": ex["bidMode"],
+                "sessionDate": ex["sessionDate"],
+                "timeLabel": ex["timeLabel"],
+                "nights": nights,
+                "guestsCount": int(ex["guestsCount"]),
+                "offeredRatePerNightVnd": rate_vnd,
+                "bookingCode": booking_code,
+                "checkInDate": ex.get("checkInDate", ex["sessionDate"]),
+                "checkOutDate": ex.get("checkOutDate", ex["sessionDate"]),
+                "roomTypeId": ex["roomTypeId"],
+                "roomNumber": ex.get("roomNumber"),
+                "payoutBatchId": ex.get("payoutBatchId"),
+                "telemetry": {
+                    "booking_form": {
+                        "request_id": req_id,
+                        "request_code": f"CRQ-BQ-{seq:03d}",
+                        "entry_source": "home_hero_cta" if seq % 2 == 0 else "gns_ai_handoff",
+                        "device_os": dev_os,
+                        "device_type": dev_type,
+                        "booker_country": ex["bookerCountry"],
+                        "staying_country": "KR" if is_kr else "VN",
+                        "staying_city": "KR-11" if is_kr else "VN-DN",
+                        "accommodation_type": "hotel",
+                        "check_in_date": ex.get("checkInDate", ex["sessionDate"]),
+                        "check_out_date": ex.get("checkOutDate", ex["sessionDate"]),
+                        "stay_nights": nights,
+                        "lead_time_days": 3,
+                        "total_guests": int(ex["guestsCount"]),
+                        "group_type": "family" if int(ex["guestsCount"]) >= 3 else "couple",
+                        "combo_signature": f"hotel|{ex['roomTypeKey']}|breakfast+wifi",
+                        "criteria_count": 4,
+                        "duration_ms": 48_000 + seq * 1_500,
+                        "cancel_source": "step4_cancel_button" if status == "cancelled" else None,
+                    },
+                    "offer_listing": {
+                        "offer_id": offer_id,
+                        "room_id": ex["roomTypeId"],
+                        "room_type_key": ex["roomTypeKey"],
+                        "is_auto_bid": ex["bidMode"] == "auto",
+                        "match_rate_pct": float(ex["matchRate"]),
+                        "offer_total_price": float(net_val),
+                        "currency": "VND",
+                        "card_position": 1 if is_accepted else 2,
+                        "ota_code": "A" if seq % 2 == 0 else "B",
+                        "ota_price": float(ota_price),
+                        "saving_pct": float(ex["savingPct"]),
+                        "was_impressed": True,
+                        "was_detail_viewed": status != "expired",
+                        "browse_click_count": 3 if is_accepted else (2 if status == "rejected" else 0),
+                        "browse_elapsed_sec_list": [18, 42, 75] if is_accepted else ([24, 61] if status == "rejected" else []),
+                        "decision_duration_sec": 135 if is_accepted else 240,
+                        "unmatched_keys": list(ex.get("unmatchedKeys", [])),
+                    },
+                    "explore_stays": (
+                        {
+                            "view_session_id": f"VS-BQ-{seq:03d}",
+                            "scroll_down_count": 5,
+                            "scroll_up_count": 2,
+                            "max_scroll_depth_pct": 88,
+                            "description_dwell_ms": 14_500 + seq * 400,
+                            "content_category": CONTENT_CATEGORIES[seq % len(CONTENT_CATEGORIES)],
+                            "media_type": "video" if seq % 3 == 0 else "image",
+                            "media_clicked_count": 4 if is_accepted else 2,
+                        }
+                        if status != "expired"
+                        else None
+                    ),
+                    "payment_form": (
+                        {
+                            "checkout_session_id": f"CHK-BQ-{seq:03d}",
+                            "payment_code": f"PM-BQ-2026-{seq:04d}",
+                            "booking_id": booking_code,
+                            "entry_surface": "explore_stay_modal_select",
+                            "gateway_type": "nhn_kcp" if ex["bookerCountry"] == "KR" else "stripe",
+                            "booking_currency": "VND",
+                            "base_price": net_val,
+                            "platform_fee_amount": fee_val,
+                            "vat_amount": vat_val,
+                            "total_booking_amount": gmv_val,
+                            "select_to_paid_sec": 52 + seq * 3,
+                        }
+                        if is_accepted
+                        else None
+                    ),
+                },
+            }
+        )
+
+    all_warehouse_bid_records = list(bid_records) + synthetic_live_records
 
     # Prepare 30-day shards map (2026-10-08 .. 2026-11-06)
     start_dt = date(2026, 10, 8)
@@ -447,8 +984,8 @@ def generate_all() -> dict[str, Any]:
             }
         )
 
-    # 4. Expand all 143 bid_records into OLTP rows + authentic GA4 funnel events
-    for idx, rec in enumerate(bid_records, start=1):
+    # 4. Expand all 161 warehouse bid records (143 seed + 18 BigQuery live wave) into OLTP rows + authentic GA4 funnel events
+    for idx, rec in enumerate(all_warehouse_bid_records, start=1):
         branch_id = rec["propertyId"]
         partner_id = BRANCH_TO_PARTNER[branch_id]
         tel = rec["telemetry"]
@@ -933,6 +1470,7 @@ def generate_all() -> dict[str, Any]:
     accepted_lamour = [
         r for r in oltp_bid_rows if r["partner_id"] == "HTL-DN-024" and r["status"] == "accepted"
     ]
+    accepted_all = [r for r in oltp_bid_rows if r["status"] == "accepted"]
     summary = {
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "gcp_project_id": "aevo-512307",
@@ -948,12 +1486,20 @@ def generate_all() -> dict[str, Any]:
             "ga4_intraday_20261106_events": len(intraday_rows),
         },
         "reconciliation": {
+            "portfolio_accepted_bookings": len(accepted_all),
+            "portfolio_net_revenue_vnd": sum(r["net_revenue_vnd"] for r in accepted_all),
+            "portfolio_platform_fee_vnd": sum(r["platform_fee_vnd"] for r in accepted_all),
+            "portfolio_vat_amount_vnd": sum(r["vat_amount_vnd"] for r in accepted_all),
+            "portfolio_gross_gmv_vnd": sum(r["gross_gmv_vnd"] for r in accepted_all),
             "lamour_accepted_bookings": len(accepted_lamour),
             "lamour_net_revenue_vnd": sum(r["net_revenue_vnd"] for r in accepted_lamour),
             "lamour_platform_fee_vnd": sum(r["platform_fee_vnd"] for r in accepted_lamour),
             "lamour_vat_amount_vnd": sum(r["vat_amount_vnd"] for r in accepted_lamour),
             "lamour_gross_gmv_vnd": sum(r["gross_gmv_vnd"] for r in accepted_lamour),
             "stay_h11_total_bids": sum(1 for r in oltp_bid_rows if r["branch_id"] == "stay_h11"),
+            "stay_h11_accepted_bookings": sum(
+                1 for r in oltp_bid_rows if r["branch_id"] == "stay_h11" and r["status"] == "accepted"
+            ),
             "stay_h11_net_revenue_vnd": sum(
                 r["net_revenue_vnd"] for r in oltp_bid_rows if r["branch_id"] == "stay_h11"
             ),

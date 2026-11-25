@@ -141,11 +141,12 @@ Kiểm thử tự động trên đủ **7 kích thước màn hình chuẩn**:
 
 | Mã TC | Mô tả kiểm thử | Kỳ vọng chuẩn |
 | :--- | :--- | :--- |
-| `TC-BQ-01` | Mở mục `Kho BigQuery` (`nav-item-bigquery`) dưới tài khoản `USR-PARTNER-01`, kiểm tra số liệu sống từ `aevo-512307`, bảng 6 lớp chặn chi phí, bộ 3 biểu đồ ngày của CTO (đổi ống kính `Offer Funnel ↔ Booking Form`), phễu GA4 8 bước và nút `Truy vấn trực tiếp` | Hiển thị chính xác `66.360.000 ₫`, badge `aevo-512307`, telemetry `ms` / `Cache`, `0` lỗi console |
-| `TC-BQ-02` | Đổi sang Quản lý Mỹ Khê (`USR-MGR-MYKHE`), xác nhận bộ chọn cơ sở khóa cứng `br_mykhe`, doanh thu cập nhật `28.290.000 ₫` và bấm nút `Kiểm thử chặn chéo chi nhánh (403)` | BFF chặn chéo chi nhánh thành công và hiển thị trực quan `HTTP 403 · FORBIDDEN_BRANCH_SCOPE (target: br_songhan)` |
+| `TC-BQ-01` | Mở mục `Kho BigQuery` (`nav-item-bigquery`) dưới tài khoản `USR-PARTNER-01`, kiểm tra số liệu sống từ `aevo-512307`, bảng 6 lớp chặn chi phí, bộ 3 biểu đồ ngày của CTO (đổi ống kính `Offer Funnel ↔ Booking Form`), phễu GA4 8 bước và nút `Truy vấn trực tiếp` | Hiển thị chính xác `111.960.000 ₫` (`40 / 161 bids` trên cả 4 cơ sở — khác biệt rõ với `Local JSON`), badge `aevo-512307`, telemetry `ms` / `Cache`, `0` lỗi console |
+| `TC-BQ-02` | Đổi sang Quản lý Mỹ Khê (`USR-MGR-MYKHE`), xác nhận bộ chọn cơ sở khóa cứng `br_mykhe`, doanh thu cập nhật `46.490.000 ₫` và bấm nút `Kiểm thử chặn chéo chi nhánh (403)` | BFF chặn chéo chi nhánh thành công và hiển thị trực quan `HTTP 403 · FORBIDDEN_BRANCH_SCOPE (target: br_songhan)` |
 | `TC-BQ-03` | Đổi sang Lễ tân ca trực (`USR-STAFF-02`), xác nhận khóa cứng `br_mykhe` và che số liệu tài chính cả từ BigQuery SQL lẫn giao diện | Hiển thị `Đã che số tiền` và `•••••• ₫ (Đã che)` trên thẻ doanh thu |
-| `TC-BQ-04` | Chuyển đổi Bộ chuyển nguồn toàn cục (`Local JSON ↔ BigQuery`) ngay trên trang Tổng quan và kết hợp đổi tài khoản (`USR-PARTNER-01` -> `USR-MGR-MYKHE` -> `USR-STAFF-02` -> khôi phục `Local JSON`) | Tổng quan nạp trực tiếp bundle scoped từ BigQuery BFF (`28.290.000 ₫` / `•••••• ₫ (Đã che)`) và quay về `Local JSON` (`66.360.000 ₫`) sạch sẽ |
-| `TC-BQ-05` | Đổi sang Quản lý Stay Hotel H11 (`USR-MGR-H11`) trên `Kho BigQuery` | Bộ chọn cơ sở khóa cứng `stay_h11`, hiển thị `0 ₫` và `0 / 75 bids` từ BigQuery |
+| `TC-BQ-04` | Chuyển đổi Bộ chuyển nguồn toàn cục (`Local JSON ↔ BigQuery`) ngay trên trang Tổng quan và kết hợp đổi tài khoản (`USR-PARTNER-01` -> `USR-MGR-MYKHE` -> `USR-STAFF-02` -> khôi phục `Local JSON`) | Ẩn biểu đồ BigQuery ở `Local JSON`; bật `BigQuery` hiện ngay `OverviewBigQueryChartsPanel` (3 biểu đồ CTO, phễu 8 bước, Media, OS, SQL Scope `br_mykhe`) cùng số liệu nhảy `+66,4tr ₫ → +104,4tr ₫ → +46,5tr ₫ → •••••• ₫ → +66,4tr ₫` |
+| `TC-BQ-05` | Đổi sang Quản lý Stay Hotel H11 (`USR-MGR-H11`) trên `Kho BigQuery` | Bộ chọn cơ sở khóa cứng `stay_h11`, hiển thị `7.600.000 ₫` và `2 / 78 bids` sống từ BigQuery (khác biệt với `0 ₫` của Local JSON) |
+| `TC-BQ-06` | Kiểm tra tràn ngang `OverviewBigQueryChartsPanel` nhúng trực tiếp trên Tổng quan ở màn hình di động hẹp `360×800` và bấm nút chuyển nhanh sang `Kho BigQuery` (`Chi phí & Test 403`) | `scrollWidth <= 360`, chuyển mượt sang `module-bigquery-view`, `0` lỗi console |
 
 ---
 

@@ -396,7 +396,7 @@ export function BigQueryWarehouseView({
           <p className="text-[13px] text-slate-600 mt-1 mb-0">{t.subtitle}</p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 shrink-0">
+        <div className="flex flex-wrap items-center gap-2 min-w-0 max-w-full">
           <select
             data-testid="bq-period-select"
             aria-label="BigQuery period"

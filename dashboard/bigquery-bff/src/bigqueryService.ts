@@ -280,12 +280,18 @@ interface RawOltpBranchRow {
 interface RawOltpPayoutRow {
   batch_id: string;
   branch_id: BranchId;
+  cycle_code: string;
+  period_start: string;
+  period_end: string;
+  scheduled_payout_date: string;
+  paid_at_date: string | null;
   status: string;
   bookings_count: number | string;
   net_payout_vnd: number | string;
   platform_fee_vnd: number | string;
   vat_amount_vnd: number | string;
   gross_gmv_vnd: number | string;
+  booking_codes: string[] | null;
 }
 
 export interface SeedMasterBundleSnapshot {
@@ -951,8 +957,14 @@ export class PartnerAnalyticsService {
           SELECT
             batch_id,
             branch_id,
+            cycle_code,
+            FORMAT_DATE('%Y-%m-%d', period_start) AS period_start,
+            FORMAT_DATE('%Y-%m-%d', period_end) AS period_end,
+            FORMAT_DATE('%Y-%m-%d', scheduled_payout_date) AS scheduled_payout_date,
+            FORMAT_DATE('%Y-%m-%d', paid_at_date) AS paid_at_date,
             status,
             bookings_count,
+            booking_codes,
             CASE WHEN @canViewFinancials THEN net_payout_vnd ELSE 0 END AS net_payout_vnd,
             CASE WHEN @canViewFinancials THEN platform_fee_vnd ELSE 0 END AS platform_fee_vnd,
             CASE WHEN @canViewFinancials THEN vat_amount_vnd ELSE 0 END AS vat_amount_vnd,
@@ -990,6 +1002,9 @@ export class PartnerAnalyticsService {
         const seedPayoutById = new Map(
           this.seedBundle.payoutLedgers.batches.map((b) => [String(b.id), b] as const),
         );
+        const seedRoomTypeById = new Map(
+          this.seedBundle.roomInventory.roomTypes.map((rt) => [String(rt.id), rt] as const),
+        );
 
         const seedHub = structuredClone(this.seedBundle.hubConfig) as Record<string, unknown>;
         const seedProps = (seedHub.properties as Array<Record<string, unknown>>) ?? [];
@@ -1007,11 +1022,40 @@ export class PartnerAnalyticsService {
             };
           });
 
+        // Recompute chainOverview live aggregates from live BigQuery partner_branches
+        const chainLiveProps = scopedProps.filter((p) => Boolean(p.isChainMember));
+        const seedChainOverview = (seedHub.chainOverview as Record<string, unknown>) ?? {};
+        let hydratedChainOverview = seedChainOverview;
+        if (chainLiveProps.length > 0) {
+          const totalReviews = chainLiveProps.reduce((s, p) => s + toNum(p.reviewCount), 0);
+          const weightedRating =
+            totalReviews > 0
+              ? Number(
+                  (
+                    chainLiveProps.reduce(
+                      (s, p) => s + toNum(p.reviewRating5) * toNum(p.reviewCount),
+                      0,
+                    ) / totalReviews
+                  ).toFixed(1),
+                )
+              : toNum(seedChainOverview.reviewRating5);
+          const avgElo = Math.round(
+            chainLiveProps.reduce((s, p) => s + toNum(p.eloScore), 0) / chainLiveProps.length,
+          );
+          hydratedChainOverview = {
+            ...seedChainOverview,
+            reviewRating5: weightedRating,
+            reviewCount: totalReviews,
+            eloScore: avgElo,
+          };
+        }
+
         const activeProfile =
           profiles.find((p) => p.userId === claims.sub) ?? profiles[0];
 
         const hydratedHubConfig = {
           ...seedHub,
+          chainOverview: hydratedChainOverview,
           partnerUser: activeProfile
             ? {
                 userId: activeProfile.userId,
@@ -1040,10 +1084,9 @@ export class PartnerAnalyticsService {
         };
 
         const hydratedBids = bidsRes.rows.map((row) => {
-          const seedRec = structuredClone(seedBidById.get(row.record_id) ?? {}) as Record<
-            string,
-            unknown
-          >;
+          const seedHit = seedBidById.get(row.record_id);
+          const seedRec = structuredClone(seedHit ?? {}) as Record<string, unknown>;
+          const rtMeta = seedRoomTypeById.get(row.room_type_id);
           const merged: Record<string, unknown> = {
             ...seedRec,
             id: row.record_id,
@@ -1065,6 +1108,27 @@ export class PartnerAnalyticsService {
           if (row.check_out_date) merged.checkOutDate = row.check_out_date;
           if (row.room_number !== null) merged.roomNumber = toNum(row.room_number);
           if (row.payout_batch_id) merged.payoutBatchId = row.payout_batch_id;
+
+          // Hydrate rich booking metadata for BigQuery-only live wave records not present in Local JSON seed
+          if (!seedHit) {
+            if (rtMeta?.name) {
+              merged.roomName = structuredClone(rtMeta.name);
+            }
+            if (Array.isArray(rtMeta?.amenities)) {
+              merged.amenities = structuredClone(rtMeta.amenities);
+            } else {
+              merged.amenities = ["breakfast", "wifi"];
+            }
+            if (row.status === "accepted") {
+              merged.guestFullName = `BigQuery Cloud Guest ${row.booking_code ?? row.record_id}`;
+              merged.stayStatus = "upcoming";
+              merged.guestNote = {
+                vi: `Đơn mới đồng bộ từ kho BigQuery Cloud (${this.cfg.gcpProjectId})`,
+                en: `Live booking synced from BigQuery Cloud (${this.cfg.gcpProjectId})`,
+                ko: `BigQuery 클라우드(${this.cfg.gcpProjectId}) 실시간 동기화 예약`,
+              };
+            }
+          }
 
           if (!claims.canViewFinancials && merged.telemetry && typeof merged.telemetry === "object") {
             const tel = merged.telemetry as Record<string, unknown>;
@@ -1096,18 +1160,48 @@ export class PartnerAnalyticsService {
 
         const scopedBatches = claims.canViewFinancials
           ? payoutsRes.rows.map((p) => {
-              const seedBatch = structuredClone(seedPayoutById.get(p.batch_id) ?? {}) as Record<
-                string,
-                unknown
-              >;
-              return {
+              const seedHit = seedPayoutById.get(p.batch_id);
+              const seedBatch = structuredClone(seedHit ?? {}) as Record<string, unknown>;
+              const netPayout = toNum(p.net_payout_vnd);
+              const baseObj: Record<string, unknown> = {
                 ...seedBatch,
                 id: p.batch_id,
                 propertyId: p.branch_id,
+                cycleCode: p.cycle_code || (seedBatch.cycleCode as string) || "2026-11-BQ",
+                periodStart: p.period_start || (seedBatch.periodStart as string) || "2026-10-22",
+                periodEnd: p.period_end || (seedBatch.periodEnd as string) || "2026-11-06",
+                scheduledPayoutDate:
+                  p.scheduled_payout_date || (seedBatch.scheduledPayoutDate as string) || "2026-11-12",
                 status: p.status,
                 bookingsCount: toNum(p.bookings_count),
-                netPayoutVnd: toNum(p.net_payout_vnd),
+                bookingCodes: Array.isArray(p.booking_codes)
+                  ? p.booking_codes
+                  : ((seedBatch.bookingCodes as string[]) ?? []),
+                grossRoomVnd: netPayout,
+                adjustmentVnd: 0,
+                netPayoutVnd: netPayout,
               };
+              if (p.paid_at_date) {
+                baseObj.paidAtDate = p.paid_at_date;
+              }
+              if (!seedHit) {
+                baseObj.note = {
+                  vi: `Kỳ đối soát đồng bộ từ BigQuery Cloud (${this.cfg.gcpProjectId})`,
+                  en: `Live payout cycle synced from BigQuery Cloud (${this.cfg.gcpProjectId})`,
+                  ko: `BigQuery 클라우드(${this.cfg.gcpProjectId}) 실시간 정산 주기`,
+                };
+                baseObj.settlementBreakdown = {
+                  payment_codes: (baseObj.bookingCodes as string[]).map(
+                    (code) => `PM-BQ-${code.replace("#", "")}`,
+                  ),
+                  booking_currency: "VND",
+                  partner_base_price_vnd: netPayout,
+                  platform_fee_15pct_vnd: toNum(p.platform_fee_vnd),
+                  vat_10pct_vnd: toNum(p.vat_amount_vnd),
+                  total_booking_gmv_vnd: toNum(p.gross_gmv_vnd),
+                };
+              }
+              return baseObj;
             })
           : [];
 

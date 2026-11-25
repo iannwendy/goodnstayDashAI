@@ -104,7 +104,7 @@ describe("TC-BFF-LIVE: Real HTTP + Google Cloud BigQuery (aevo-512307) End-to-En
     assert.equal(costGuard.getStatus().counters.liveBqJobsExecuted, beforeJobs);
   });
 
-  it("TC-LIVE-03: Portfolio Manager USR-PARTNER-01 reconciles exact 66,360,000 VND, bounded CTO 3-chart ratios (0..100%), and TTL caching", async () => {
+  it("TC-LIVE-03: Portfolio Manager USR-PARTNER-01 reconciles exact BigQuery live portfolio (111,960,000 VND / 161 bids), bounded CTO 3-chart ratios (0..100%), and TTL caching", async () => {
     const token = await loginAs(baseUrl, "USR-PARTNER-01");
     const res = await fetch(`${baseUrl}/api/v1/analytics/viewport?branchId=all&period=30d`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -114,12 +114,12 @@ describe("TC-BFF-LIVE: Real HTTP + Google Cloud BigQuery (aevo-512307) End-to-En
 
     assert.equal(data.ok, true);
     assert.equal(data.source, "live-bigquery");
-    assert.equal(data.kpis.totalBids, 143);
-    assert.equal(data.kpis.paidBookings, 29);
-    assert.equal(data.kpis.netRevenueVnd, 66_360_000);
-    assert.equal(data.kpis.platformFeeVnd, 9_954_000);
-    assert.equal(data.kpis.vatAmountVnd, 7_631_400);
-    assert.equal(data.kpis.grossGmvVnd, 83_945_400);
+    assert.equal(data.kpis.totalBids, 161);
+    assert.equal(data.kpis.paidBookings, 40);
+    assert.equal(data.kpis.netRevenueVnd, 111_960_000);
+    assert.equal(data.kpis.platformFeeVnd, 16_794_000);
+    assert.equal(data.kpis.vatAmountVnd, 12_875_400);
+    assert.equal(data.kpis.grossGmvVnd, 141_629_400);
     assert.ok(
       data.kpis.totalBrowseClicks > data.kpis.uniqueViewedOffers,
       "Total browse clicks must exceed unique viewed offers",
@@ -156,7 +156,7 @@ describe("TC-BFF-LIVE: Real HTTP + Google Cloud BigQuery (aevo-512307) End-to-En
     assert.equal(costGuard.getStatus().counters.liveBqJobsExecuted, jobsAfterFirst);
   });
 
-  it("TC-LIVE-04: Branch Manager USR-MGR-MYKHE sees only br_mykhe (28,290,000 VND) and gets 403 on cross-branch BOLA attempts", async () => {
+  it("TC-LIVE-04: Branch Manager USR-MGR-MYKHE sees only br_mykhe (46,490,000 VND / 32 bids) and gets 403 on cross-branch BOLA attempts", async () => {
     const token = await loginAs(baseUrl, "USR-MGR-MYKHE");
 
     const okRes = await fetch(`${baseUrl}/api/v1/analytics/viewport?branchId=br_mykhe&period=30d`, {
@@ -164,9 +164,9 @@ describe("TC-BFF-LIVE: Real HTTP + Google Cloud BigQuery (aevo-512307) End-to-En
     });
     assert.equal(okRes.status, 200);
     const okData = (await okRes.json()) as ViewportAnalyticsResponse;
-    assert.equal(okData.kpis.totalBids, 26);
-    assert.equal(okData.kpis.paidBookings, 13);
-    assert.equal(okData.kpis.netRevenueVnd, 28_290_000);
+    assert.equal(okData.kpis.totalBids, 32);
+    assert.equal(okData.kpis.paidBookings, 17);
+    assert.equal(okData.kpis.netRevenueVnd, 46_490_000);
     assert.deepEqual(okData.rbacContext.effectiveBranchIds, ["br_mykhe"]);
     assert.equal(okData.aiSnapshots.length, 1);
     assert.equal(okData.aiSnapshots[0]?.branchId, "br_mykhe");
@@ -198,7 +198,7 @@ describe("TC-BFF-LIVE: Real HTTP + Google Cloud BigQuery (aevo-512307) End-to-En
     });
     assert.equal(vpRes.status, 200);
     const vp = (await vpRes.json()) as ViewportAnalyticsResponse;
-    assert.equal(vp.kpis.totalBids, 26);
+    assert.equal(vp.kpis.totalBids, 32);
     assert.equal(vp.rbacContext.financialsMasked, true);
     assert.equal(vp.kpis.netRevenueVnd, null);
     assert.equal(vp.kpis.platformFeeVnd, null);
@@ -223,7 +223,7 @@ describe("TC-BFF-LIVE: Real HTTP + Google Cloud BigQuery (aevo-512307) End-to-En
       bundleJson.bundle.hubConfig.properties.map((p) => p.id),
       ["br_mykhe"],
     );
-    assert.equal(bundleJson.bundle.bidRecords.length, 26);
+    assert.equal(bundleJson.bundle.bidRecords.length, 32);
     assert.ok(bundleJson.bundle.bidRecords.every((b) => b.propertyId === "br_mykhe" && b.netRevenueVnd === 0));
     assert.equal(bundleJson.bundle.payoutLedgers.batches.length, 0);
     assert.equal(bundleJson.bundle.payoutLedgers.bankAccounts[0]?.accountNumber, "•••• •••• ••••");
@@ -259,16 +259,16 @@ describe("TC-BFF-LIVE: Real HTTP + Google Cloud BigQuery (aevo-512307) End-to-En
     assert.equal(resetOverlay.status, 200);
   });
 
-  it("TC-LIVE-06: Stay Hotel H11 Manager USR-MGR-H11 sees exact 75 Seoul bids (0 VND) and is blocked from Da Nang branches", async () => {
+  it("TC-LIVE-06: Stay Hotel H11 Manager USR-MGR-H11 sees exact 78 Seoul bids (2 paid / 7,600,000 VND) and is blocked from Da Nang branches", async () => {
     const token = await loginAs(baseUrl, "USR-MGR-H11");
     const res = await fetch(`${baseUrl}/api/v1/analytics/viewport?branchId=stay_h11&period=30d`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     assert.equal(res.status, 200);
     const vp = (await res.json()) as ViewportAnalyticsResponse;
-    assert.equal(vp.kpis.totalBids, 75);
-    assert.equal(vp.kpis.paidBookings, 0);
-    assert.equal(vp.kpis.netRevenueVnd, 0);
+    assert.equal(vp.kpis.totalBids, 78);
+    assert.equal(vp.kpis.paidBookings, 2);
+    assert.equal(vp.kpis.netRevenueVnd, 7_600_000);
 
     const crossRes = await fetch(`${baseUrl}/api/v1/analytics/viewport?branchId=br_mykhe&period=30d`, {
       headers: { Authorization: `Bearer ${token}` },
