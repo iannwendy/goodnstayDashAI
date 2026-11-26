@@ -95,6 +95,7 @@ import { GuestMessagesView } from "@/components/modules/GuestMessagesView";
 import { MarketingCampaignsView } from "@/components/modules/MarketingCampaignsView";
 import { BigQueryWarehouseView } from "@/components/modules/BigQueryWarehouseView";
 import { OverviewBigQueryChartsPanel } from "@/components/OverviewBigQueryChartsPanel";
+import { BiViewportFrame } from "@/components/BiViewportFrame";
 
 const HUB_PREFS_STORAGE_KEY = "gns_partner_hub_prefs_v1";
 
@@ -189,8 +190,9 @@ function readInitialHubPrefs(): PersistedHubPrefs {
       activeRoleKey: resolvedRole,
       activeUserId: resolvedUserId,
       dataSourceMode:
-        parsed.dataSourceMode === "live-bigquery"
-          ? "live-bigquery"
+        parsed.dataSourceMode === "live-bigquery" ||
+        parsed.dataSourceMode === "bi-viewport"
+          ? parsed.dataSourceMode
           : "local-json",
     };
   } catch {
@@ -438,11 +440,14 @@ export function App() {
   const copy = useMemo(() => getDictionary(locale), [locale]);
   const mCopy = useMemo(() => getModulesDictionary(locale), [locale]);
 
+  const overviewPeriodKey: DateRangeKey =
+    dataSourceMode === "bi-viewport" ? "30d" : periodKey;
+
   const vm = useMemo(() => {
     if (!bundle) return null;
     return buildOverviewViewModel(bundle, {
       propertyKey: effectivePropertyKey,
-      periodKey,
+      periodKey: overviewPeriodKey,
       locale,
       currency,
       analyzedTimeText: analyzedTimeOverride,
@@ -450,7 +455,7 @@ export function App() {
   }, [
     bundle,
     effectivePropertyKey,
-    periodKey,
+    overviewPeriodKey,
     locale,
     currency,
     analyzedTimeOverride,
@@ -698,7 +703,8 @@ export function App() {
   const rangeEnd = Math.min(totalBookings, startIdx + pagedBookings.length);
 
   const isOverviewFinancialsMasked =
-    dataSourceMode === "live-bigquery" && !canViewFinancials;
+    (dataSourceMode === "live-bigquery" || dataSourceMode === "bi-viewport") &&
+    !canViewFinancials;
   const maskedMoneyText =
     locale === "vi"
       ? "•••••• ₫ (Đã che)"
@@ -797,6 +803,20 @@ export function App() {
 
   const renderActiveSection = () => {
     if (activeSection === "bigquery_live") {
+      if (dataSourceMode === "bi-viewport") {
+        return (
+          <div className="space-y-4 min-w-0">
+            <BiViewportFrame
+              slotId="deep_analytics"
+              activeUserId={activeStaffProfile.userId}
+              canUseDemoTools={canManagePricing}
+              locale={locale}
+              onFallbackToNative={() => setDataSourceMode("local-json")}
+            />
+          </div>
+        );
+      }
+
       return (
         <BigQueryWarehouseView
           activeUserId={activeStaffProfile.userId}
@@ -916,30 +936,44 @@ export function App() {
       );
     }
 
+    const isBiViewportMode = dataSourceMode === "bi-viewport";
+
     return (
       <div className="space-y-6 min-w-0">
-        {/* Page Header + Period Filter */}
+        {/* Page Header + Period Filter (Hidden in BI Viewport mode because filters live inside the BI tool) */}
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h1 className="text-[20px] sm:text-[22px] font-bold tracking-tight text-slate-900 m-0">
             {copy.pageTitle}
           </h1>
 
-          <div className="relative flex items-center">
-            <select
-              data-testid="period-select"
-              aria-label="Period"
-              value={periodKey}
-              onChange={(e) => setPeriodKey(e.target.value as DateRangeKey)}
-              className="appearance-none bg-white border border-slate-200/95 rounded-lg pl-3.5 pr-9 py-2 text-[13px] font-medium text-slate-700 shadow-[0_1px_2px_rgba(15,23,42,0.03)] hover:border-slate-300 focus:outline-none"
-            >
-              <option value="30d">{copy.periodOptions["30d"]}</option>
-              <option value="7d">{copy.periodOptions["7d"]}</option>
-              <option value="today">{copy.periodOptions.today}</option>
-            </select>
-            <ChevronDown className="w-4 h-4 text-slate-400 pointer-events-none absolute right-2.5" />
-          </div>
+          {!isBiViewportMode && (
+            <div className="relative flex items-center">
+              <select
+                data-testid="period-select"
+                aria-label="Period"
+                value={periodKey}
+                onChange={(e) => setPeriodKey(e.target.value as DateRangeKey)}
+                className="appearance-none bg-white border border-slate-200/95 rounded-lg pl-3.5 pr-9 py-2 text-[13px] font-medium text-slate-700 shadow-[0_1px_2px_rgba(15,23,42,0.03)] hover:border-slate-300 focus:outline-none"
+              >
+                <option value="30d">{copy.periodOptions["30d"]}</option>
+                <option value="7d">{copy.periodOptions["7d"]}</option>
+                <option value="today">{copy.periodOptions.today}</option>
+              </select>
+              <ChevronDown className="w-4 h-4 text-slate-400 pointer-events-none absolute right-2.5" />
+            </div>
+          )}
         </div>
 
+        {isBiViewportMode ? (
+          <BiViewportFrame
+            slotId="overview_analytics"
+            activeUserId={activeStaffProfile.userId}
+            canUseDemoTools={canManagePricing}
+            locale={locale}
+            onFallbackToNative={() => setDataSourceMode("local-json")}
+          />
+        ) : (
+          <>
         {/* 1. Top 5 Business KPI Cards */}
         <section
           aria-label="Key business metrics"
@@ -1443,15 +1477,27 @@ export function App() {
             </div>
           </div>
         </section>
+          </>
+        )}
 
         {/* 5. Recent Bookings Card */}
         <section
           data-testid="section-recent-bookings"
           className="rounded-2xl border border-slate-200/90 bg-white p-4 sm:p-6 shadow-[0_1px_3px_rgba(15,23,42,0.03)] min-w-0"
         >
-          <h2 className="text-[17px] sm:text-[18px] font-bold text-slate-900 m-0">
-            {copy.recentBookingsTitle} · {vm.selectedProperty.shortName}
-          </h2>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h2 className="text-[17px] sm:text-[18px] font-bold text-slate-900 m-0">
+              {copy.recentBookingsTitle} · {vm.selectedProperty.shortName}
+            </h2>
+            {isBiViewportMode && (
+              <span
+                data-testid="recent-bookings-fixed-window-badge"
+                className="inline-flex items-center rounded-full bg-slate-100 border border-slate-200 px-2.5 py-0.5 text-[11px] font-semibold text-slate-600"
+              >
+                {copy.periodOptions["30d"]}
+              </span>
+            )}
+          </div>
 
           {totalBookings === 0 ? (
             <div
@@ -1632,6 +1678,14 @@ export function App() {
                 ? "데이터 소스를 Local JSON으로 전환했습니다."
                 : "Switched data source to Local JSON.",
           );
+        } else if (nextMode === "bi-viewport") {
+          setToastMessage(
+            locale === "vi"
+              ? "Đã bật chế độ BI Viewport — Nội dung phân tích & bộ lọc do đội Data Science / BI điều khiển."
+              : locale === "ko"
+                ? "BI 뷰포트 모드를 활성화했습니다 — 차트 및 필터를 데이터/BI 팀이 직접 제어합니다."
+                : "BI Viewport mode active — Analytics & internal filters are now owned by the BI tool.",
+          );
         }
       }}
       bqSyncing={bqSyncing}
@@ -1667,6 +1721,8 @@ export function App() {
         currency={currency}
         currencyRates={vm.currencyRates}
         copy={copy}
+        maskFinancials={isOverviewFinancialsMasked}
+        maskedMoneyText={maskedMoneyText}
       />
     </PartnerHubShell>
   );

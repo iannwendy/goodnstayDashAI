@@ -20,6 +20,7 @@ import {
   AlertCircle,
   ShieldCheck,
   Database,
+  MonitorPlay,
 } from "lucide-react";
 import {
   Dialog,
@@ -521,18 +522,18 @@ export function PartnerHubShell({
 
           {/* Right: Data Source + Language + Currency + Utility Icons + Profile */}
           <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap justify-between sm:justify-end w-full sm:w-auto">
-            {/* Global Data Source Toggle: Local JSON vs Live BigQuery */}
+            {/* Global Data Source Toggle: Local JSON vs Live BigQuery vs BI Viewport */}
             <div
               data-testid="topbar-data-source-switcher"
               role="group"
               aria-label="Data source"
-              className="inline-flex items-center rounded-lg border border-slate-200/95 bg-slate-50 p-0.5 shrink-0"
+              className="inline-flex items-center rounded-lg border border-slate-200/95 bg-slate-50 p-0.5 shrink-0 max-w-full"
             >
               <button
                 type="button"
                 data-testid="source-toggle-local"
                 onClick={() => onChangeDataSourceMode("local-json")}
-                className={`px-2 py-1 rounded-md text-[11.5px] font-semibold transition-colors whitespace-nowrap ${
+                className={`px-1.5 sm:px-2 py-1 rounded-md text-[11px] sm:text-[11.5px] font-semibold transition-colors whitespace-nowrap ${
                   dataSourceMode === "local-json"
                     ? "bg-white text-slate-900 shadow-xs"
                     : "text-slate-500 hover:text-slate-800"
@@ -544,7 +545,7 @@ export function PartnerHubShell({
                 type="button"
                 data-testid="source-toggle-bigquery"
                 onClick={() => onChangeDataSourceMode("live-bigquery")}
-                className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11.5px] font-semibold transition-colors whitespace-nowrap ${
+                className={`inline-flex items-center gap-1 px-1.5 sm:px-2 py-1 rounded-md text-[11px] sm:text-[11.5px] font-semibold transition-colors whitespace-nowrap ${
                   dataSourceMode === "live-bigquery"
                     ? "bg-indigo-600 text-white shadow-xs"
                     : "text-slate-600 hover:text-indigo-700"
@@ -552,6 +553,19 @@ export function PartnerHubShell({
               >
                 <Database className="w-3 h-3 shrink-0" />
                 <span>{bqSyncing ? "BQ..." : "BigQuery"}</span>
+              </button>
+              <button
+                type="button"
+                data-testid="source-toggle-bi-viewport"
+                onClick={() => onChangeDataSourceMode("bi-viewport")}
+                className={`inline-flex items-center gap-1 px-1.5 sm:px-2 py-1 rounded-md text-[11px] sm:text-[11.5px] font-semibold transition-colors whitespace-nowrap ${
+                  dataSourceMode === "bi-viewport"
+                    ? "bg-sky-600 text-white shadow-xs"
+                    : "text-slate-600 hover:text-sky-700"
+                }`}
+              >
+                <MonitorPlay className="w-3 h-3 shrink-0" />
+                <span>BI Viewport</span>
               </button>
             </div>
 

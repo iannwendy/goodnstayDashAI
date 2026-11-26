@@ -27,6 +27,8 @@ interface BookingDetailModalProps {
   currency: CurrencyCode;
   currencyRates: CurrencyRateMap;
   copy: OverviewCopy;
+  maskFinancials?: boolean;
+  maskedMoneyText?: string;
 }
 
 export function BookingDetailModal({
@@ -35,6 +37,8 @@ export function BookingDetailModal({
   currency,
   currencyRates,
   copy,
+  maskFinancials = false,
+  maskedMoneyText = "•••••• (Restricted)",
 }: BookingDetailModalProps) {
   return (
     <Dialog open={Boolean(booking)} onOpenChange={(open) => !open && onClose()}>
@@ -147,21 +151,44 @@ export function BookingDetailModal({
               </div>
 
               {/* Highlighted Net Payout */}
-              <div className="rounded-xl border border-emerald-200 bg-emerald-50/75 p-4">
+              <div
+                className={`rounded-xl border p-4 ${
+                  maskFinancials
+                    ? "border-amber-200 bg-amber-50/75"
+                    : "border-emerald-200 bg-emerald-50/75"
+                }`}
+              >
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-[13px] font-semibold text-emerald-900 flex items-center gap-1.5">
-                    <Wallet className="w-4 h-4 text-emerald-700" />
+                  <span
+                    className={`text-[13px] font-semibold flex items-center gap-1.5 ${
+                      maskFinancials ? "text-amber-900" : "text-emerald-900"
+                    }`}
+                  >
+                    <Wallet
+                      className={`w-4 h-4 ${
+                        maskFinancials ? "text-amber-700" : "text-emerald-700"
+                      }`}
+                    />
                     {copy.bookingFieldNetPayout}
                   </span>
-                  <span className="text-[18px] font-bold text-emerald-700 tabular">
-                    {formatBusinessMoney(booking.netRevenueVnd, currency, {
-                      rates: currencyRates,
-                    })}
+                  <span
+                    data-testid="booking-modal-net-payout"
+                    className={`text-[18px] font-bold tabular ${
+                      maskFinancials ? "text-amber-800" : "text-emerald-700"
+                    }`}
+                  >
+                    {maskFinancials
+                      ? maskedMoneyText
+                      : formatBusinessMoney(booking.netRevenueVnd, currency, {
+                          rates: currencyRates,
+                        })}
                   </span>
                 </div>
-                <p className="text-[11.5px] text-emerald-800/85 mt-1.5 mb-0 leading-relaxed">
-                  {copy.bookingFieldPayoutNote}
-                </p>
+                {!maskFinancials && (
+                  <p className="text-[11.5px] text-emerald-800/85 mt-1.5 mb-0 leading-relaxed">
+                    {copy.bookingFieldPayoutNote}
+                  </p>
+                )}
               </div>
             </div>
 
