@@ -11,6 +11,7 @@ Designed directly around the CTO's 3-year roadmap:
 from __future__ import annotations
 
 import json
+import math
 import re
 from abc import ABC, abstractmethod
 from typing import Any, Literal, Mapping, Sequence
@@ -20,6 +21,31 @@ from pydantic import BaseModel, Field
 from .config import NotebookSettings, load_settings
 from .keyword_rules import extract_tier1_keywords
 from .pii_scrubber import scrub_pii
+
+
+def _safe_float(value: Any, default: float = 0.0) -> float:
+    if value is None:
+        return default
+    try:
+        parsed = float(value)
+    except (TypeError, ValueError):
+        return default
+    return default if math.isnan(parsed) or math.isinf(parsed) else parsed
+
+
+def _safe_int(value: Any, default: int = 0) -> int:
+    return int(round(_safe_float(value, float(default))))
+
+
+def _normalize_missing_criteria(raw: Any) -> list[Mapping[str, Any]]:
+    """Normalize BigQuery ARRAY<STRUCT> (numpy.ndarray or list) into a plain Python list."""
+    if raw is None:
+        return []
+    if hasattr(raw, "tolist"):
+        raw = raw.tolist()
+    if isinstance(raw, (list, tuple)):
+        return [item for item in raw if isinstance(item, Mapping)]
+    return []
 
 try:
     from openai import OpenAI
@@ -123,23 +149,23 @@ class RuleBasedFallbackProvider(AiAdvisorProvider):
 
     def diagnose_branch(self, snapshot: Mapping[str, Any]) -> BranchAiDiagnosis:
         branch_id = str(snapshot.get("branch_id") or "unknown")
-        total = max(int(snapshot.get("total_bids_30d") or 0), 1)
-        won = int(snapshot.get("won_bids_30d") or 0)
-        rejected = int(snapshot.get("rejected_bids_30d") or 0)
-        expired = int(snapshot.get("expired_bids_30d") or 0)
-        won_saving = float(snapshot.get("avg_won_saving_pct") or 0.0)
-        rej_saving = float(snapshot.get("avg_rejected_saving_pct") or 0.0)
-        won_match = float(snapshot.get("avg_won_match_pct") or 0.0)
-        rej_match = float(snapshot.get("avg_rejected_match_pct") or 0.0)
-        decision_sec = float(snapshot.get("avg_decision_sec") or 0.0)
+        total = max(_safe_int(snapshot.get("total_bids_30d"), 0), 1)
+        won = _safe_int(snapshot.get("won_bids_30d"), 0)
+        rejected = _safe_int(snapshot.get("rejected_bids_30d"), 0)
+        expired = _safe_int(snapshot.get("expired_bids_30d"), 0)
+        won_saving = _safe_float(snapshot.get("avg_won_saving_pct"), 0.0)
+        rej_saving = _safe_float(snapshot.get("avg_rejected_saving_pct"), 0.0)
+        won_match = _safe_float(snapshot.get("avg_won_match_pct"), 0.0)
+        rej_match = _safe_float(snapshot.get("avg_rejected_match_pct"), 0.0)
+        decision_sec = _safe_float(snapshot.get("avg_decision_sec"), 0.0)
 
         win_rate = round((won / total) * 100.0, 1)
         expired_rate = round((expired / total) * 100.0, 1)
         saving_gap = round(won_saving - rej_saving, 1)
 
-        missing_items = snapshot.get("top_missing_criteria") or []
+        missing_items = _normalize_missing_criteria(snapshot.get("top_missing_criteria"))
         top_missing_label = "tiện ích bổ sung"
-        if isinstance(missing_items, list) and missing_items:
+        if missing_items:
             raw_key = str(missing_items[0].get("unmatched_key") or "")
             label_map = {
                 "breakfast": "bữa sáng",
@@ -269,15 +295,15 @@ class OpenAiAdvisorProvider(AiAdvisorProvider):
     def diagnose_branch(self, snapshot: Mapping[str, Any]) -> BranchAiDiagnosis:
         safe_payload = {
             "branch_id": str(snapshot.get("branch_id") or "unknown"),
-            "total_bids_30d": int(snapshot.get("total_bids_30d") or 0),
-            "won_bids_30d": int(snapshot.get("won_bids_30d") or 0),
-            "rejected_bids_30d": int(snapshot.get("rejected_bids_30d") or 0),
-            "expired_bids_30d": int(snapshot.get("expired_bids_30d") or 0),
-            "avg_won_saving_pct": float(snapshot.get("avg_won_saving_pct") or 0.0),
-            "avg_rejected_saving_pct": float(snapshot.get("avg_rejected_saving_pct") or 0.0),
-            "avg_won_match_pct": float(snapshot.get("avg_won_match_pct") or 0.0),
-            "avg_rejected_match_pct": float(snapshot.get("avg_rejected_match_pct") or 0.0),
-            "avg_decision_sec": float(snapshot.get("avg_decision_sec") or 0.0),
+            "total_bids_30d": _safe_int(snapshot.get("total_bids_30d"), 0),
+            "won_bids_30d": _safe_int(snapshot.get("won_bids_30d"), 0),
+            "rejected_bids_30d": _safe_int(snapshot.get("rejected_bids_30d"), 0),
+            "expired_bids_30d": _safe_int(snapshot.get("expired_bids_30d"), 0),
+            "avg_won_saving_pct": _safe_float(snapshot.get("avg_won_saving_pct"), 0.0),
+            "avg_rejected_saving_pct": _safe_float(snapshot.get("avg_rejected_saving_pct"), 0.0),
+            "avg_won_match_pct": _safe_float(snapshot.get("avg_won_match_pct"), 0.0),
+            "avg_rejected_match_pct": _safe_float(snapshot.get("avg_rejected_match_pct"), 0.0),
+            "avg_decision_sec": _safe_float(snapshot.get("avg_decision_sec"), 0.0),
         }
         response = self._client.responses.parse(
             model=self.model_used,

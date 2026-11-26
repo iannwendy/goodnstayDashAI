@@ -152,6 +152,35 @@ class TestAiProviderAbstraction(unittest.TestCase):
         self.assertEqual(len(diagnosis.cards), 3)
         self.assertEqual(validate_business_prose(diagnosis), [])
 
+    def test_handles_bigquery_numpy_array_and_nan_values(self) -> None:
+        import numpy as np
+
+        provider = RuleBasedFallbackProvider()
+        diagnosis = provider.diagnose_branch(
+            {
+                "branch_id": "stay_h11",
+                "total_bids_30d": 12,
+                "won_bids_30d": 0,
+                "rejected_bids_30d": 10,
+                "expired_bids_30d": 2,
+                "avg_won_saving_pct": float("nan"),
+                "avg_rejected_saving_pct": 6.5,
+                "avg_won_match_pct": None,
+                "avg_rejected_match_pct": 72.0,
+                "avg_decision_sec": float("nan"),
+                "top_missing_criteria": np.array(
+                    [
+                        {"unmatched_key": "swimmingPool", "miss_count": 5},
+                        {"unmatched_key": "breakfast", "miss_count": 3},
+                    ],
+                    dtype=object,
+                ),
+            }
+        )
+        self.assertEqual(diagnosis.branch_id, "stay_h11")
+        self.assertEqual(len(diagnosis.cards), 3)
+        self.assertEqual(validate_business_prose(diagnosis), [])
+
     def test_strict_openai_mode_rejects_placeholder_and_batch_jsonl_scrubs_pii(self) -> None:
         settings = load_settings(
             environ={
