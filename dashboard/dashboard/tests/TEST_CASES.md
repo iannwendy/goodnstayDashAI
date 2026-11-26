@@ -150,6 +150,21 @@ Kiểm thử tự động trên đủ **7 kích thước màn hình chuẩn**:
 
 ---
 
+## 12. Kiến Trúc BI Viewport Khối Lớn (`tests/unit/viewport-contract.test.ts` & `tests/e2e/bi-viewport.spec.ts`)
+
+| Mã TC | Mô tả kiểm thử | Kỳ vọng chuẩn |
+| :--- | :--- | :--- |
+| `TC-VP-UNIT-01..04` | Đăng ký 2 slot khối lớn (`overview_analytics`, `deep_analytics`), bộ lọc URL chống XSS (`javascript:`, `data:`, `blob:`, `file:`) & origin ngoài allowlist, chính sách `sandbox` thích ứng (tự bỏ `allow-same-origin` khi proxy cùng origin qua tunnel HTTPS) | 100% URL nguy hiểm bị chặn; localhost cross-origin giữ `allow-same-origin`; tunnel same-origin bỏ `allow-same-origin` và kiểm tra `postMessage` origin `"null"` |
+| `TC-VP-01` | Chuyển nguồn sang `BI Viewport` trên trang Tổng quan (`periodKey` trước đó ở `today`) | Ẩn `period-select` ngoài và thay toàn bộ KPI/Biểu đồ/AI bằng `<BiViewportFrame slotId="overview_analytics">`; bộ lọc ngày/chi nhánh/preset nằm trong iframe hoạt động bình thường; `section-recent-bookings` cố định khung `30d` và mở được `BookingDetailModal` |
+| `TC-VP-02` | Mở tab `Kho BigQuery` khi đang bật `BI Viewport` | Render `<BiViewportFrame slotId="deep_analytics">` toàn trang với phễu GA4 8 bước và bật/tắt `Fullscreen` (`Escape`) |
+| `TC-VP-03` | Đổi bộ lọc chi nhánh trên Header vs. đổi tài khoản sang `USR-MGR-MYKHE` | Đổi `topbar-property-select` không gọi lại `/embed-session`; đổi tài khoản sang `USR-MGR-MYKHE` tự cấp lại token mới và khóa dropdown chi nhánh bên trong BI chỉ còn `["br_mykhe"]` |
+| `TC-VP-04` | Đổi tài khoản sang Lễ tân `USR-STAFF-02` trong chế độ `BI Viewport` | Ẩn nút `Đổi URL (Demo)`, BI iframe hiện cảnh báo che doanh thu từ Server, đồng thời thanh *Tác động ròng* và `BookingDetailModal` đều che số tiền (`•••••• ₫ (Đã che)`) |
+| `TC-VP-05` | Hộp `Đổi URL (Demo)` (chặn `javascript:alert(1)`, đổi preset, hiện băng rôn `DEV DEMO OVERRIDE`, khôi phục mặc định) & kiểm thử cô lập lỗi `HTTP 503` | Từ chối XSS, đổi preset mượt, lỗi `503` chỉ hiện card lỗi trong khung Viewport trong khi bảng vận hành vẫn chạy và nút fallback đưa về `Local JSON` an toàn |
+| `TC-VP-06` | Ma trận Responsive 7 kích thước màn hình (`1440×900` $\rightarrow$ `360×800`) ở chế độ `BI Viewport` | `scrollWidth <= innerWidth`, `0` lỗi console, `0` lỗi pageerror |
+| `TC-VP-07` | Đổi ngôn ngữ (`VI` $\rightarrow$ `EN` $\rightarrow$ `KO`) và tiền tệ (`VND` $\rightarrow$ `USD` $\rightarrow$ `KRW`) trực tiếp bên trong BI Viewport cho Quản lý & Lễ tân | Toàn bộ nhãn/KPI/biểu đồ bên trong iframe đổi ngôn ngữ & quy đổi tỷ giá chuẩn (`1 / 18.5 / 25400`); Lễ tân `USR-STAFF-02` đổi sang `USD`/`KRW` vẫn giữ nguyên che tài chính RBAC |
+
+---
+
 **Tiêu chuẩn bắt buộc trên mọi viewport**:
 1. `document.documentElement.scrollWidth <= window.innerWidth` trên **trang Tổng quan** (cả có đơn & `stay_h11` trống đơn), **toàn bộ 8 màn hình phân hệ menu trái** (`Calendar`, `Payout`, `Rooms`, `Bidding`, `Messages`, `BigQuery Live`, `Marketing Deals`, `Marketing Upsell`), thanh chuyển nguồn `Local JSON ↔ BigQuery`, popover thông báo, ngăn kéo menu di động và `BookingDetailModal`.
 2. `>= 1024px` hiển thị thanh menu trái cố định (`sidebar-nav`); `< 1024px` chuyển sang nút mở ngăn kéo trượt (`mobile-menu-btn` -> `mobile-sidebar-drawer`).

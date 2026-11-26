@@ -2,7 +2,7 @@ import { expect, type APIRequestContext, type Page } from "@playwright/test";
 
 export function attachErrorMonitor(
   page: Page,
-  options?: { ignoreNetAbort?: boolean; ignoreHttp403?: boolean },
+  options?: { ignoreNetAbort?: boolean; ignoreHttp403?: boolean; ignoreHttp503?: boolean },
 ): {
   errors: string[];
   assertZeroErrors: () => void;
@@ -23,6 +23,12 @@ export function attachErrorMonitor(
       if (
         options?.ignoreHttp403 &&
         text.includes("Failed to load resource: the server responded with a status of 403")
+      ) {
+        return;
+      }
+      if (
+        options?.ignoreHttp503 &&
+        text.includes("Failed to load resource: the server responded with a status of 503")
       ) {
         return;
       }
