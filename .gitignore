@@ -24,6 +24,9 @@ skills/system/
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.ipynb_checkpoints/
+analytics-notebooks/.venv/
+analytics-notebooks/outputs/
 ota-rate-shopping-demo/dist/
 ota-rate-shopping-demo/node_modules
 dashboard/bigquery-bff/.generated_warehouse/

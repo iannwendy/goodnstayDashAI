@@ -1,0 +1,19 @@
+# Core Jupyter Workbench
+jupyterlab>=4.3.0
+ipykernel>=6.29.0
+nbconvert>=7.16.0
+nbstripout>=0.8.1
+papermill>=2.6.0
+
+# Data & BigQuery
+google-cloud-bigquery>=3.27.0
+bigquery-magics>=0.4.0
+pandas>=2.2.3
+pyarrow>=18.0.0
+scikit-learn>=1.6.0
+matplotlib>=3.10.0
+
+# OpenAI API (Structured Outputs) & Environment
+openai>=1.68.0
+pydantic>=2.10.0
+python-dotenv>=1.0.1
