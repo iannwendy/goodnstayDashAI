@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import type { ViewportProvider } from "./types.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -37,6 +38,13 @@ export interface BffConfig {
   forceRefreshLimitPerMin: number;
   corsAllowedOrigins: string[];
   seedMasterDataDir: string;
+  offlineSeedFallback: boolean;
+  viewportProvider: ViewportProvider;
+  viewportOverviewEmbedUrl: string | null;
+  viewportDeepEmbedUrl: string | null;
+  viewportPublicBaseUrl: string | null;
+  viewportEmbedTtlSec: number;
+  viewportAllowedOrigins: string[];
 }
 
 const HARD_CAP_BYTES_PER_QUERY = 100 * 1024 * 1024; // 100 MiB absolute server maximum (~$0.0006/query)
@@ -53,6 +61,22 @@ function parseBool(raw: string | undefined, fallback: boolean): boolean {
   if (normalized === "true" || normalized === "1") return true;
   if (normalized === "false" || normalized === "0") return false;
   return fallback;
+}
+
+const VALID_VIEWPORT_PROVIDERS: ReadonlySet<string> = new Set([
+  "simulated_bi",
+  "superset",
+  "metabase",
+  "looker",
+  "generic_iframe",
+]);
+
+function parseViewportProvider(raw: string | undefined): ViewportProvider {
+  const normalized = raw?.trim().toLowerCase() ?? "";
+  if (VALID_VIEWPORT_PROVIDERS.has(normalized)) {
+    return normalized as ViewportProvider;
+  }
+  return "simulated_bi";
 }
 
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): BffConfig {
@@ -73,6 +97,15 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): BffConfig {
         .map((s) => s.trim())
         .filter(Boolean)
     : defaultOrigins;
+
+  const viewportAllowedOrigins = env.VIEWPORT_ALLOWED_ORIGINS
+    ? env.VIEWPORT_ALLOWED_ORIGINS.split(",")
+        .map((s) => s.trim())
+        .filter(Boolean)
+    : [];
+
+  const isProd = env.NODE_ENV?.trim().toLowerCase() === "production";
+  const rawViewportTtl = parsePositiveInt(env.VIEWPORT_EMBED_TTL_SEC, 900);
 
   return {
     port: parsePositiveInt(env.PORT, 4000),
@@ -97,5 +130,12 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): BffConfig {
     corsAllowedOrigins,
     seedMasterDataDir:
       env.SEED_MASTER_DATA_DIR?.trim() || resolveDefaultSeedDir(),
+    offlineSeedFallback: parseBool(env.BFF_OFFLINE_SEED_FALLBACK, !isProd),
+    viewportProvider: parseViewportProvider(env.VIEWPORT_PROVIDER),
+    viewportOverviewEmbedUrl: env.VIEWPORT_OVERVIEW_EMBED_URL?.trim() || null,
+    viewportDeepEmbedUrl: env.VIEWPORT_DEEP_EMBED_URL?.trim() || null,
+    viewportPublicBaseUrl: env.VIEWPORT_PUBLIC_BASE_URL?.trim().replace(/\/+$/, "") || null,
+    viewportEmbedTtlSec: Math.max(60, Math.min(rawViewportTtl, 3600)),
+    viewportAllowedOrigins,
   };
 }

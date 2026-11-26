@@ -349,6 +349,57 @@ export class PartnerAnalyticsService {
     };
   }
 
+  getSeedMasterBundle(): SeedMasterBundleSnapshot {
+    return this.seedBundle;
+  }
+
+  private buildSeedFallbackProfiles(): RbacProfile[] {
+    const rawProfiles = (
+      this.seedBundle.hubConfig as {
+        staffProfiles?: Array<{
+          userId: string;
+          roleKey?: RoleKey;
+          displayName: { vi: string; en: string; ko: string };
+          initials: { vi: string; en: string; ko: string };
+          roleBadge: { vi: string; en: string; ko: string };
+          allowedBranchIds?: BranchId[];
+          canViewChainAll?: boolean;
+          canViewFinancials?: boolean;
+          canManagePricing?: boolean;
+        }>;
+      }
+    ).staffProfiles;
+
+    if (!Array.isArray(rawProfiles) || rawProfiles.length === 0) {
+      return [];
+    }
+
+    return rawProfiles.map((sp): RbacProfile => {
+      const allowedBranchIds: BranchId[] =
+        Array.isArray(sp.allowedBranchIds) && sp.allowedBranchIds.length > 0
+          ? [...sp.allowedBranchIds]
+          : ["br_mykhe", "br_songhan", "br_anthuong", "stay_h11"];
+      const canViewChainAll = Boolean(sp.canViewChainAll);
+      const partnerId = canViewChainAll
+        ? "HTL-PORTFOLIO-01"
+        : allowedBranchIds.includes("stay_h11") && allowedBranchIds.length === 1
+          ? "HTL-KR-011"
+          : "HTL-DN-024";
+      return {
+        userId: sp.userId,
+        partnerId,
+        roleKey: sp.roleKey ?? "manager",
+        displayName: sp.displayName,
+        initials: sp.initials,
+        roleBadge: sp.roleBadge,
+        allowedBranchIds,
+        canViewChainAll,
+        canViewFinancials: sp.canViewFinancials ?? sp.roleKey !== "receptionist",
+        canManagePricing: sp.canManagePricing ?? sp.roleKey !== "receptionist",
+      };
+    });
+  }
+
   async listRbacProfiles(): Promise<RbacProfile[]> {
     const cacheKey = `v1:rbac_profiles:${this.cfg.gcpProjectId}`;
     const { value } = await this.costGuard.runCachedSingleflight(
@@ -384,34 +435,46 @@ export class PartnerAnalyticsService {
             END,
             user_id ASC
         `;
-        const res = await this.executor.runProtectedQuery<RawRbacRow>({
-          sql,
-          endpointLabel: "auth_profiles",
-        });
-        return res.rows.map((r): RbacProfile => ({
-          userId: r.user_id,
-          partnerId: r.partner_id,
-          roleKey: r.role_key,
-          displayName: {
-            vi: r.display_name_vi,
-            en: r.display_name_en,
-            ko: r.display_name_ko,
-          },
-          initials: {
-            vi: r.initials_vi,
-            en: r.initials_en,
-            ko: r.initials_ko,
-          },
-          roleBadge: {
-            vi: r.role_badge_vi,
-            en: r.role_badge_en,
-            ko: r.role_badge_ko,
-          },
-          allowedBranchIds: (r.allowed_branch_ids ?? []) as BranchId[],
-          canViewChainAll: Boolean(r.can_view_chain_all),
-          canViewFinancials: Boolean(r.can_view_financials),
-          canManagePricing: Boolean(r.can_manage_pricing),
-        }));
+        try {
+          const res = await this.executor.runProtectedQuery<RawRbacRow>({
+            sql,
+            endpointLabel: "auth_profiles",
+          });
+          return res.rows.map((r): RbacProfile => ({
+            userId: r.user_id,
+            partnerId: r.partner_id,
+            roleKey: r.role_key,
+            displayName: {
+              vi: r.display_name_vi,
+              en: r.display_name_en,
+              ko: r.display_name_ko,
+            },
+            initials: {
+              vi: r.initials_vi,
+              en: r.initials_en,
+              ko: r.initials_ko,
+            },
+            roleBadge: {
+              vi: r.role_badge_vi,
+              en: r.role_badge_en,
+              ko: r.role_badge_ko,
+            },
+            allowedBranchIds: (r.allowed_branch_ids ?? []) as BranchId[],
+            canViewChainAll: Boolean(r.can_view_chain_all),
+            canViewFinancials: Boolean(r.can_view_financials),
+            canManagePricing: Boolean(r.can_manage_pricing),
+          }));
+        } catch (err) {
+          // Never swallow CostGuardError — only fall back to local seed on offline GCP connectivity/auth errors
+          if (err instanceof CostGuardError || !this.cfg.offlineSeedFallback) {
+            throw err;
+          }
+          const fallback = this.buildSeedFallbackProfiles();
+          if (fallback.length === 0) {
+            throw err;
+          }
+          return fallback;
+        }
       },
     );
     return value;
@@ -427,8 +490,11 @@ export class PartnerAnalyticsService {
     scopedBranches: BranchId[],
     period: PeriodKey,
     forceRefresh: boolean,
+    skipRateLimit: boolean = false,
   ): Promise<ViewportAnalyticsResponse> {
-    this.costGuard.checkRateLimit(claims.sub, forceRefresh);
+    if (!skipRateLimit) {
+      this.costGuard.checkRateLimit(claims.sub, forceRefresh);
+    }
 
     const window = PERIOD_WINDOWS[period];
     const sortedBranches = [...scopedBranches].sort();

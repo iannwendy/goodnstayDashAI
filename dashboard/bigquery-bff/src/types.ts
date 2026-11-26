@@ -1,6 +1,55 @@
 export type RoleKey = "manager" | "branch_manager" | "receptionist";
 export type PeriodKey = "today" | "7d" | "30d";
 export type BranchId = "br_mykhe" | "br_songhan" | "br_anthuong" | "stay_h11";
+export type ViewportSlotId = "overview_analytics" | "deep_analytics";
+export type ViewportProvider =
+  | "simulated_bi"
+  | "superset"
+  | "metabase"
+  | "looker"
+  | "generic_iframe";
+
+export interface ViewportEmbedClaims {
+  sub: string;
+  partnerId: string;
+  roleKey: RoleKey;
+  slotId: ViewportSlotId;
+  allowedBranchIds: BranchId[];
+  canViewChainAll: boolean;
+  canViewFinancials: boolean;
+  canManagePricing: boolean;
+  iat: number;
+  exp: number;
+}
+
+export interface ViewportRegistrySlot {
+  slotId: ViewportSlotId;
+  provider: ViewportProvider;
+  mode: "simulated" | "external" | "disabled";
+  defaultMinHeightPx: number;
+  allowFullscreen: boolean;
+}
+
+export interface ViewportEmbedSessionResponse {
+  ok: true;
+  slotId: ViewportSlotId;
+  provider: ViewportProvider;
+  embedUrl: string;
+  guestToken: string | null;
+  issuedAt: string;
+  expiresAt: string;
+  ttlSec: number;
+  minHeightPx: number;
+  allowFullscreen: boolean;
+  scopeSummary: {
+    userId: string;
+    partnerId: string;
+    roleKey: RoleKey;
+    allowedBranchIds: BranchId[];
+    canViewChainAll: boolean;
+    canViewFinancials: boolean;
+  };
+}
 
 export interface LocalizedText {
   vi: string;

@@ -9,6 +9,12 @@ import {
 import type { PartnerAnalyticsService, SeedMasterBundleSnapshot } from "./bigqueryService.js";
 import type { BffConfig } from "./config.js";
 import { CostGuardError } from "./costGuard.js";
+import {
+  buildViewportCspHeader,
+  createViewportEmbedSession,
+  listViewportRegistry,
+  renderSimulatedBiViewport,
+} from "./viewportService.js";
 import type { PeriodKey } from "./types.js";
 
 const MAX_BODY_BYTES = 512 * 1024; // 512 KiB max request payload
@@ -111,6 +117,27 @@ export function createBffServer(cfg: BffConfig, service: PartnerAnalyticsService
         return;
       }
 
+      // 1b. Standalone Simulated BI Tool Embed Host (Authenticated via short-lived HS256 BI_EMBED token)
+      if (req.method === "GET" && pathname === "/bi-embed/render") {
+        const embedToken = (url.searchParams.get("token") ?? "").trim();
+        const preset = url.searchParams.get("preset");
+        const lang = url.searchParams.get("lang");
+        const currency = url.searchParams.get("currency");
+        const rendered = await renderSimulatedBiViewport(cfg, service, embedToken, {
+          preset,
+          lang,
+          currency,
+        });
+        res.setHeader("Content-Type", "text/html; charset=utf-8");
+        res.setHeader("Content-Security-Policy", buildViewportCspHeader(cfg));
+        res.setHeader("Referrer-Policy", "no-referrer");
+        res.setHeader("Cache-Control", "no-store");
+        res.setHeader("X-Content-Type-Options", "nosniff");
+        res.statusCode = rendered.statusCode;
+        res.end(rendered.html);
+        return;
+      }
+
       // 2. Public Demo RBAC Profile Directory (for Dashboard account switcher)
       if (req.method === "GET" && pathname === "/api/v1/auth/profiles") {
         const profiles = await service.listRbacProfiles();
@@ -163,6 +190,42 @@ export function createBffServer(cfg: BffConfig, service: PartnerAnalyticsService
           bqLocation: cfg.bqLocation,
           costGuard: service.costGuard.getStatus(),
         });
+        return;
+      }
+
+      // 4b. Authenticated BI Viewport Registry
+      if (req.method === "GET" && pathname === "/api/v1/viewports/registry") {
+        sendJson(res, 200, {
+          ok: true,
+          slots: listViewportRegistry(cfg),
+        });
+        return;
+      }
+
+      // 4c. Authenticated BI Viewport Embed Session Broker (BI-Agnostic Signed Token)
+      if (
+        req.method === "POST" &&
+        pathname.startsWith("/api/v1/viewports/") &&
+        pathname.endsWith("/embed-session")
+      ) {
+        const rawSlotId = pathname.slice(
+          "/api/v1/viewports/".length,
+          pathname.length - "/embed-session".length,
+        );
+        const body = await readJsonBody(req);
+        const localeHint = typeof body.localeHint === "string" ? body.localeHint : undefined;
+        const presetHint = typeof body.presetHint === "string" ? body.presetHint : undefined;
+        const currencyHint = typeof body.currencyHint === "string" ? body.currencyHint : undefined;
+        const session = createViewportEmbedSession(
+          cfg,
+          req,
+          claims,
+          decodeURIComponent(rawSlotId),
+          localeHint,
+          presetHint,
+          currencyHint,
+        );
+        sendJson(res, 200, session);
         return;
       }
 
