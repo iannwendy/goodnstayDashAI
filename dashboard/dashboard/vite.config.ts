@@ -211,6 +211,16 @@ export default defineConfig({
     port: 5182,
     strictPort: true,
     allowedHosts: [".trycloudflare.com", ".ts.net"],
+    proxy: {
+      "/api/v1": {
+        target: "http://127.0.0.1:4000",
+        changeOrigin: false,
+      },
+      "/bi-embed": {
+        target: "http://127.0.0.1:4000",
+        changeOrigin: false,
+      },
+    },
     watch: {
       ignored: ["**/master-data/**"],
     },
@@ -220,5 +230,15 @@ export default defineConfig({
     port: 4182,
     strictPort: true,
     allowedHosts: [".trycloudflare.com", ".ts.net"],
+    proxy: {
+      "/api/v1": {
+        target: "http://127.0.0.1:4000",
+        changeOrigin: false,
+      },
+      "/bi-embed": {
+        target: "http://127.0.0.1:4000",
+        changeOrigin: false,
+      },
+    },
   },
 });

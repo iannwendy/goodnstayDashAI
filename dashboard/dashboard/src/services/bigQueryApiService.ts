@@ -6,7 +6,7 @@ import type {
 } from "@/data";
 import type { PropertyFilterKey } from "@/services/overviewAnalytics";
 
-export type DataSourceMode = "local-json" | "live-bigquery";
+export type DataSourceMode = "local-json" | "live-bigquery" | "bi-viewport";
 
 export interface BffQueryTelemetry {
   projectId: string;
@@ -182,16 +182,34 @@ export interface BffScopedBundleResult {
   syncedAt: string;
 }
 
-const DEFAULT_BFF_BASE_URL =
-  (
+function resolveDefaultBffBaseUrl(): string {
+  const envOverride = (
     (import.meta as ImportMeta & { env?: Record<string, string | undefined> })
       .env?.VITE_BIGQUERY_BFF_URL
-  )?.replace(/\/+$/, "") || "http://127.0.0.1:4000";
+  )?.replace(/\/+$/, "");
+  if (envOverride) return envOverride;
+
+  if (
+    typeof window !== "undefined" &&
+    window.location.hostname !== "localhost" &&
+    window.location.hostname !== "127.0.0.1"
+  ) {
+    // Public HTTPS tunnel (*.ts.net / *.trycloudflare.com): use same-origin `/api/v1/*`
+    return "";
+  }
+  return "http://127.0.0.1:4000";
+}
+
+const DEFAULT_BFF_BASE_URL = resolveDefaultBffBaseUrl();
 
 const tokenCache = new Map<string, { token: string; expiresAtMs: number }>();
 
-export function getBffBaseUrl(): string {
+export function getBffRequestBaseUrl(): string {
   return DEFAULT_BFF_BASE_URL;
+}
+
+export function getBffBaseUrl(): string {
+  return DEFAULT_BFF_BASE_URL || "/api/v1 (Tailscale HTTPS tunnel → :4000)";
 }
 
 export function clearBffTokenCache(): void {
